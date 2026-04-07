@@ -1,0 +1,152 @@
+# ============================================================
+#  图书热点工作台 - GitHub Actions 定时自动更新
+#  触发方式:
+#    1. 定时: 每天 UTC 02:30 = 北京时间 10:30
+#    2. 手动: workflow_dispatch (GitHub 页面 Run workflow)
+#  流程:
+#    抓取热搜 → 渲染HTML → commit到main分支 → Vercel自动构建部署
+# ============================================================
+
+name: 📊 热点工作台每日更新
+
+on:
+  schedule:
+    # 每天 02:30 UTC = 10:30 Beijing Time
+    - cron: '30 2 * * *'
+  
+  # 支持手动触发（方便调试或临时更新）
+  workflow_dispatch:
+
+  # 每次 push 到 main 也自动跑一遍（可选，用于测试）
+  # push:
+  #   branches: [ main ]
+
+# 并发控制：同一时间只允许一个运行
+concurrency:
+  group: hot-update
+  cancel-in-progress: false
+
+jobs:
+  # ===== Job 1: 抓取数据 + 生成 HTML =====
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      # ---- Step 1: 拉取代码 ----
+      - name: 📥 Checkout 代码
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      # ---- Step 2: 设置 Python 环境 ----
+      - name: 🐍 设置 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # ---- Step 3: 安装依赖 ----
+      - name: 📦 安装 Python 依赖
+        run: |
+          pip install --upgrade pip
+          # hot_update.py 只用标准库(urllib/json)，无需额外安装
+          # 但保留 jinja2 以防模板引擎需要
+          pip install jinja2 requests beautifulsoup4
+
+      # ---- Step 4: 执行数据更新脚本（云模式）----
+      - name: 🔥 执行热点数据更新
+        env:
+          HOT_OUTPUT_MODE: cloud   # 关键！告诉脚本走云模式输出到 site_output/
+        run: |
+          echo "🚀 开始执行热点数据更新..."
+          python3 hot_update.py
+          echo ""
+          echo "✅ 脚本执行完成"
+          echo "---"
+          ls -lh site_output/
+          
+      # ---- Step 5: 验证输出文件 ----
+      - name: ✅ 验证生成结果
+        run: |
+          if [ ! -f "site_output/index.html" ]; then
+            echo "❌ 错误: site_output/index.html 未生成"
+            exit 1
+          fi
+          
+          FILE_SIZE=$(stat -c%s "site_output/index.html" || stat -f%z "site_output/index.html")
+          echo "📄 文件大小: ${FILE_SIZE} bytes"
+          
+          if [ "$FILE_SIZE" -lt 1000 ]; then
+            echo "⚠️ 警告: 生成的文件过小 (${FILE_SIZE} bytes)，可能数据异常"
+            exit 1
+          fi
+          
+          echo "✅ 输出文件验证通过"
+
+      # ---- Step 6: 提交变更并推送（触发 Vercel 构建）----
+      - name: 📝 Git 配置 & 提交
+        run: |
+          git config user.name "hot-update-bot"
+          git config user.email "bot@github-actions[bot]"
+          
+          # 检查是否有变化
+          git diff --quiet site_output/ && git diff --cached --quiet site_output/ && data/hot_data.json
+          NO_CHANGES=$?
+          
+          if [ $NO_CHANGES -eq 0 ]; then
+            echo "ℹ️ 无内容变化，跳过提交"
+            echo "NO_CHANGES=true" >> "$GITHUB_ENV"
+          else
+            echo "🔄 检测到内容更新，提交中..."
+            git add site_output/index.html data/hot_data.json
+            
+            TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+            git commit -m "🔥 自动更新热点数据 | ${TIMESTAMP}
+            
+            - 数据源: 公网API自动抓取(鬼鬼API)
+            - 平台: 微信生态(搜狗) / 抖音 / 百度
+            - 由 GitHub Actions 自动触发"
+            
+            echo "CHANGES_COMMITTED=true" >> "$GITHUB_ENV"
+          fi
+
+      # ---- Step 7: 推送到仓库 ----
+      - name: 🚀 推送到 Main 分支
+        if: env.CHANGES_COMMITTED == 'true'
+        run: |
+          git push origin main
+          echo "✅ 推送成功！Vercel 将自动触发重新部署"
+
+      # ---- Step 8: 输出摘要 ----
+      - name: 📊 执行摘要
+        if: always()
+        run: |
+          echo "## 执行摘要" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 项目 | 值 |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|------|----|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ⏰ 时间 | $(date '+%Y-%m-%d %H:%M:%S %Z') |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🖥️ 运行器 | ubuntu-latest |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 📄 输出文件 | \`site_output/index.html\` |" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f "site_output/index.html" ]; then
+            SIZE=$(ls -lh site_output/index.html | awk '{print $5}')
+            echo "| 📦 文件大小 | $SIZE |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "| 🔗 下一步 | Vercel 自动构建部署 |" >> "$GITHUB_STEP_SUMMARY"
+
+  # ===== Job 2: 通知（可选）=====
+  notify:
+    needs: update-and-deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📢 结果通知
+        run: |
+          RESULT="${{ needs.update-and-deploy.result }}"
+          if [ "$RESULT" == "success" ]; then
+            echo "✅ 热点数据更新任务执行成功！Vercel 正在自动部署..."
+          else
+            echo "❌ 热点数据更新任务失败，请检查上方日志"
+          fi

@@ -1,0 +1,892 @@
+#!/usr/bin/env python3
+"""
+图书热点营销工作台 - 定时数据更新脚本
+
+功能：
+  - 从数据源获取最新热搜数据（微信生态 / 抖音 / 百度）
+  - 自动标注图书类目相关度和匹配类目标签
+  - 渲染生成完整HTML，URL保持不变
+
+数据源支持：
+  - JSON文件 (默认，适合手动编辑或API缓存)
+  - API接口 (自动拉取)
+  - SQLite/MySQL 数据库
+
+定时执行：
+  crontab -e 添加：
+    0 8 * * * cd /path/to/site-updater && python3 hot_update.py >> logs/update.log 2>&1
+
+依赖：
+  pip install jinja2 requests beautifulsoup4
+"""
+
+import json
+import os
+import re
+import shutil
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+
+# ============================================================
+#                        配置区
+# ============================================================
+
+# --- 路径配置 ---
+BASE_DIR = Path(__file__).parent
+TEMPLATE_FILE = BASE_DIR / "templates" / "hot_dashboard_template.html"
+
+# ===== 输出模式切换 =====
+# 环境变量 HOT_OUTPUT_MODE 控制：
+#   - 未设置或 = "local"(默认): 输出到微信临时文件目录(本地Mac使用)
+#   - = "cloud": 输出到 site_output/ 目录(GitHub Actions + Vercel 云部署)
+OUTPUT_MODE = os.environ.get("HOT_OUTPUT_MODE", "local")
+
+if OUTPUT_MODE == "cloud":
+    # 云模式：输出到项目内 site_output/ 目录，由 Vercel 托管
+    _OUTPUT_DIR = BASE_DIR / "site_output"
+    OUTPUT_FILE = _OUTPUT_DIR / "index.html"
+else:
+    # 本地模式：输出到微信临时文件目录（文件名固定，链接不变）
+    _OUTPUT_DIR = Path(
+        "/Users/kayla/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+        "2.0b4.0.9/ca831fa7c4537afee279714759edeb43/Message/MessageTemp/"
+        "ca831fa7c4537afee279714759edeb43/File"
+    )
+    OUTPUT_FILE = _OUTPUT_DIR / "全网热点与图书营销_20260401.html"
+BACKUP_DIR = BASE_DIR / "backups"
+LOG_DIR = BASE_DIR / "logs"
+
+# --- 数据源配置 ---
+DATA_SOURCE = "auto"  # "auto" (公网API自动抓取) | "json" | "api" | "database"
+JSON_DATA_FILE = BASE_DIR / "data" / "hot_data.json"
+
+# --- 公网热搜API配置（auto模式使用）---
+HOT_API_CONFIG = {
+    # 鬼鬼API - 免费聚合热榜，支持百度/抖音/搜狗(微信生态)/头条/微博等
+    "base_url": "https://api.guiguiya.com/api/hotlist",
+    # 平台映射：我们的名称 → API的type参数
+    "platform_map": {
+        "wechat": "sogou",   # 搜狗热搜 = 微信生态
+        "douyin": "douyin",
+        "baidu": "baidu",
+    },
+    # 每个平台抓取条数
+    "fetch_count": 20,
+    # 请求超时秒数
+    "timeout": 15,
+}
+
+# 数据库配置（可选）
+DB_TYPE = os.environ.get("HOT_DB_TYPE", "sqlite")  # sqlite | mysql
+DB_PATH = os.environ.get("HOT_DB_PATH", str(BASE_DIR / "data" / "hot_dashboard.db"))
+
+# --- 类目关键词映射（用于自动标注相关度和标签）---
+CATEGORY_KEYWORDS: Dict[str, Dict[str, Any]] = {
+    "童书-科普百科": {"keywords": ["科学", "科普", "天文", "地理", "动物", "植物", "恐龙", "太空", "实验"], "relevance": "高"},
+    "童书-故事绘本": {"keywords": ["绘本", "故事", "儿童", "孩子", "绘本", "节日", "英雄", "色彩"], "relevance": "高"},
+    "童书-儿童成长": {"keywords": ["成长", "孩子", "儿童", "青春期", "勇敢", "自信", "体重", "跳水"], "relevance": "中"},
+    "生活-养生保健": {"keywords": ["养生", "健康", "睡眠", "午睡", "饮食", "节气", "清明", "中医", "减糖"], "relevance": "高"},
+    "生活-体育运动": {"keywords": ["体育", "运动", "足球", "篮球", "世界杯", "乒乓球", "赛车", "奥运"], "relevance": "低"},
+    "生活-旅游/地图": {"keywords": ["旅游", "地图", "高铁", "景区", "台湾", "台海", "西安", "沿江"], "relevance": "中"},
+    "人文社科-法律": {"keywords": ["法律", "新规", "法规", "遗嘱", "继承", "安全带", "消费", "物业", "交通"], "relevance": "高"},
+    "人文社科-政治/军事": {"keywords": ["军事", "政治", "台海", "两岸", "伊朗", "战争", "国防部", "机密"], "relevance": "中"},
+    "人文社科-历史": {"keywords": ["历史", "周年", "文物", "盘库", "博物馆", "明清", "朝代", "意大利"], "relevance": "中"},
+    "人文社科-传记": {"keywords": ["传记", "张雪", "创业", "裁员", "职场", "全红婵", "运动员"], "relevance": "中"},
+    "人文社科-管理": {"keywords": ["管理", "企业", "裁员", "甲骨文", "创业"], "relevance": "中"},
+    "人文社科-自我实现/励志": {"keywords": ["励志", "自我实现", "勇气", "勇敢", "焦虑", "乐起来", "反脆弱"], "relevance": "中"},
+    "人文社科-心理学": {"keywords": ["心理", "早恋", "青春期", "情绪", "抑郁", "emo"], "relevance": "中"},
+    "人文社科-国学/古籍": {"keywords": ["国学", "古籍", "诗词", "清明", "传统", "经典", "道德经"], "relevance": "中"},
+    "人文社科-经济/金融": {"keywords": ["经济", "金融", "投资", "消费", "网购", "小卡宴"], "relevance": "低"},
+    "人文社科-艺术-绘画": {"keywords": ["艺术", "绘画", "colorwalk", "色彩", "审美", "书法"], "relevance": "中"},
+    "人文社科-文学/小说": {"keywords": ["文学", "小说", "四月", "春天", "书单", "阅读"], "relevance": "低"},
+    "自然科技-计算机/网络": {"keywords": ["AI", "人工智能", "源码", "Claude", "Sora", "DeepSeek", "计算机", "网络", "信息", "泄露"], "relevance": "中"},
+    "自然科技-自然科学": {"keywords": ["极光", "磁暴", "天文", "自然科学"], "relevance": "高"},
+    "自然科技-工业技术": {"keywords": ["高铁", "工业", "机车", "制造", "工程", "达喀尔"], "relevance": "中"},
+    "自然科技-医学": {"keywords": ["医学", "健康", "养生", "睡眠"], "relevance": "中"},
+    "教辅/考试": {"keywords": ["教育部", "学校", "考试", "作文", "教辅", "中考", "期中", "思维导图"], "relevance": "高"},
+    "育儿-家庭教育": {"keywords": ["育儿", "家庭教育", "家长", "孩子", "早恋", "青春期", "食堂"], "relevance": "高"},
+}
+
+# 平台颜色映射
+PLATFORM_STYLES = {
+    "微信生态": {"bg": "#07c160", "short": "微"},
+    "抖音热榜": {"bg": "#000000", "short": "抖"},
+    "百度热搜": {"bg": "#2196f3", "short": "百"},
+}
+
+
+# ============================================================
+#                     工具函数
+# ============================================================
+
+def ensure_dirs():
+    """确保所需目录存在"""
+    # 云模式下不需要创建微信临时目录
+    if OUTPUT_MODE == "cloud":
+        for d in [OUTPUT_FILE.parent, BACKUP_DIR, LOG_DIR, JSON_DATA_FILE.parent]:
+            d.mkdir(parents=True, exist_ok=True)
+    else:
+        for d in [OUTPUT_FILE.parent, BACKUP_DIR, LOG_DIR, JSON_DATA_FILE.parent]:
+            d.mkdir(parents=True, exist_ok=True)
+
+
+def log(message: str, level: str = "INFO"):
+    """日志输出"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{timestamp}] [{level}] {message}"
+    print(line)
+    
+    # 同时写入日志文件
+    log_file = LOG_DIR / f"update_{datetime.now().strftime('%Y%m%d')}.log"
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write(line + "\n")
+
+
+def backup_existing():
+    """备份当前输出文件"""
+    if not OUTPUT_FILE.exists():
+        return None
+    
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_path = BACKUP_DIR / f"hot_dashboard_{timestamp}.html"
+    shutil.copy2(OUTPUT_FILE, backup_path)
+    log(f"已备份到 {backup_path.name}")
+    return backup_path
+
+
+def match_categories(title: str) -> tuple:
+    """
+    根据标题匹配图书类目和相关度
+    返回: (matched_tags_list, highest_relevance)
+    """
+    title_lower = title.lower()
+    matched_tags = []
+    highest_rel = "—"
+    rel_order = {"高": 3, "中": 2, "低": 1, "—": 0}
+    
+    for cat_name, cat_info in CATEGORY_KEYWORDS.items():
+        for kw in cat_info["keywords"]:
+            if kw.lower() in title_lower:
+                matched_tags.append(cat_name)
+                rel = cat_info["relevance"]
+                if rel_order.get(rel, 0) > rel_order.get(highest_rel, 0):
+                    highest_rel = rel
+                break  # 每个类别只匹配一次
+    
+    return matched_tags, highest_rel
+
+
+def generate_category_html(tags: List[str], direction: str = "") -> str:
+    """生成类目标签HTML"""
+    if not tags:
+        return ""
+    
+    tags_html = "".join(
+        f'<span class="cat-tag">{t}</span>' for t in tags[:4]  # 最多显示4个标签
+    )
+    
+    if direction:
+        return f'<span class="dir">{tags_html} {direction}</span>'
+    return f'<span class="dir">{tags_html}</span>'
+
+
+def generate_relevance_badge(relevance: str) -> str:
+    """生成相关度徽章HTML"""
+    rel_classes = {
+        "高": "rel-h",
+        "中": "rel-m",
+        "低": "rel-l",
+        "—": "rel-n",
+    }
+    cls = rel_classes.get(relevance, "rel-n")
+    return f'<span class="{cls}">{relevance}</span>'
+
+
+def generate_row_class(relevance: str) -> str:
+    """根据相关度返回行样式类"""
+    row_classes = {
+        "高": "rh",
+        "中": "rm",
+        "低": "rl",
+        "—": "",
+    }
+    return row_classes.get(relevance, "")
+
+
+# ============================================================
+#                   数据获取层
+# ============================================================
+
+class HotDataFetcher:
+    """热搜数据获取器 - 支持多数据源"""
+    
+    # ================================================================
+    #  auto 模式：从公网免费API自动抓取热搜数据
+    # ================================================================
+    
+    # 备用API列表（按优先级排序，主API失败时自动切换）
+    BACKUP_APIS = [
+        {
+            "name": "鬼鬼API",
+            "base_url": "https://api.guiguiya.com/api/hotlist",
+            "platform_map": {"wechat": "sogou", "douyin": "douyin", "baidu": "baidu"},
+            "data_key": "data",
+            "title_field": "title",
+            "hot_field": "hot",
+            "url_field": "url",
+            "index_field": "index",
+        },
+        {
+            "name": "小尘API",
+            "base_url": "https://api.xcvts.cn/api/hotlist",
+            "platform_map": {"wechat": "sogou", "douyin": "douyin", "baidu": "baidu"},
+            "data_key": "data",
+            "title_field": "title",
+            "hot_field": "hot",
+            "url_field": "url",
+            "index_field": "index",
+        },
+    ]
+    
+    @staticmethod
+    def _fetch_from_public_api(api_config: dict, platform: str, 
+                                api_type: str, count: int = 20) -> List[Dict]:
+        """
+        从单个公网API抓取指定平台的热搜数据
+        
+        Args:
+            api_config: API配置字典
+            platform: 平台名称 (wechat/douyin/baidu)
+            api_type: 该平台在API中的type参数名
+            count: 获取条数
+        
+        Returns:
+            标准化的热搜列表 [{"rank":1,"title":"...","url":"...","heat":"..."},...]
+        """
+        import urllib.request
+        import urllib.error
+        
+        base_url = api_config["base_url"]
+        url = f"{base_url}?type={api_type}"
+        
+        log(f"  📡 请求 {api_config['name']} → {platform}({api_type})")
+        
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                                  "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    "Accept": "application/json, text/plain, */*",
+                }
+            )
+            with urllib.request.urlopen(req, timeout=HOT_API_CONFIG.get("timeout", 15)) as resp:
+                raw = resp.read().decode("utf-8")
+                result = json.loads(raw)
+            
+            # 校验响应
+            if not result.get("success", True):
+                log(f"  ⚠️ {api_config['name']} 返回失败: {result.get('message', '未知错误')}", "WARN")
+                return []
+            
+            # 提取数据列表
+            data_key = api_config.get("data_key", "data")
+            items = result.get(data_key, [])
+            
+            if not items:
+                log(f"  ⚠️ {api_config['name']} 返回空列表", "WARN")
+                return []
+            
+            # 标准化字段
+            title_field = api_config.get("title_field", "title")
+            hot_field = api_config.get("hot_field", "hot")
+            url_field = api_config.get("url_field", "url")
+            index_field = api_config.get("index_field", "index")
+            
+            standardized = []
+            for item in items[:count]:
+                standardized.append({
+                    "rank": item.get(index_field, len(standardized) + 1),
+                    "title": item.get(title_field, ""),
+                    "url": item.get(url_field, ""),
+                    "heat": item.get(hot_field, ""),
+                })
+            
+            log(f"  ✅ {api_config['name']} 成功获取 {len(standardized)} 条 {platform} 热搜")
+            return standardized
+            
+        except urllib.error.URLError as e:
+            log(f"  ❌ {api_config['name']} 网络错误: {e.reason}", "ERROR")
+            return []
+        except json.JSONDecodeError as e:
+            log(f"  ❌ {api_config['name']} JSON解析失败: {e}", "ERROR")
+            return []
+        except Exception as e:
+            log(f"  ❌ {api_config['name']} 未知错误: {e}", "ERROR")
+            return []
+    
+    @staticmethod
+    def from_auto() -> Dict:
+        """
+        自动模式：从公网API抓取三平台热搜数据
+        支持主备API自动切换，并将结果保存到JSON文件作为缓存
+        """
+        import copy
+        
+        result = {"wechat": [], "douyin": [], "baidu": []}
+        platform_map = HOT_API_CONFIG.get("platform_map", 
+            HotDataFetcher.BACKUP_APIS[0]["platform_map"])
+        fetch_count = HOT_API_CONFIG.get("fetch_count", 20)
+        
+        for platform, api_type in platform_map.items():
+            fetched = None
+            
+            # 遍历所有备用API，直到成功为止
+            for api_cfg in HotDataFetcher.BACKUP_APIS:
+                # 确认该API支持这个平台类型
+                if api_type not in list(api_cfg["platform_map"].values()):
+                    continue
+                
+                items = HotDataFetcher._fetch_from_public_api(
+                    api_cfg, platform, api_type, fetch_count
+                )
+                
+                if items:
+                    fetched = items
+                    break
+            
+            if fetched:
+                result[platform] = fetched
+            else:
+                log(f"  ⚠️ 所有API都无法获取{platform}热搜，尝试使用JSON缓存", "WARN")
+                # 尝试从本地JSON缓存读取该平台的数据
+                cached = HotDataFetcher._read_cached_platform(platform)
+                if cached:
+                    result[platform] = cached
+                    log(f"  ✅ 使用{platform}的JSON缓存数据 ({len(cached)}条)")
+        
+        total = sum(len(v) for v in result.values())
+        log(f"🎉 公网API自动抓取完成：共获取 {total} 条热搜数据")
+        
+        # ===== 将结果保存到JSON文件（作为缓存）=====
+        try:
+            HotDataFetcher._save_auto_result(result)
+            log(f"💾 数据已缓存到 {JSON_DATA_FILE.name}")
+        except Exception as e:
+            log(f"⚠️ 保存缓存失败: {e}", "WARN")
+        
+        return result
+    
+    @staticmethod
+    def _read_cached_platform(platform: str) -> List[Dict]:
+        """从本地JSON缓存读取指定平台的旧数据"""
+        if not JSON_DATA_FILE.exists():
+            return []
+        try:
+            with open(JSON_DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            cached_items = data.get(platform, [])
+            if cached_items:
+                log(f"  📦 从缓存读取到 {len(cached_items)} 条 {platform} 历史数据")
+            return cached_items
+        except Exception:
+            return []
+    
+    @staticmethod
+    def _save_auto_result(data: Dict):
+        """将auto模式获取的数据保存为标准JSON格式"""
+        now = datetime.now()
+        output = {
+            "date": now.strftime("%Y-%m-%d"),
+            "updated_at": now.strftime("%Y-%m-%dT%H:%M:%S"),
+            "source": "auto-api",
+            "wechat": data.get("wechat", []),
+            "douyin": data.get("douyin", []),
+            "baidu": data.get("baidu", []),
+        }
+        JSON_DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(JSON_DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+    
+    # ================================================================
+    #  json 模式：从本地JSON文件读取
+    # ================================================================
+    
+    @staticmethod
+    def from_json() -> Dict:
+        """从JSON文件读取数据"""
+        if not JSON_DATA_FILE.exists():
+            log(f"JSON数据文件不存在: {JSON_DATA_FILE}", "WARN")
+            return HotDataFetcher._empty_data()
+        
+        with open(JSON_DATA_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        log(f"从JSON读取数据成功，包含 {len(data.get('wechat', []))} 条微信 + "
+            f"{len(data.get('douyin', []))} 条抖音 + {len(data.get('baidu', []))} 条百度热搜")
+        return data
+    
+    @staticmethod
+    def from_api() -> Dict:
+        """从API接口获取数据（示例结构）"""
+        import requests
+        
+        result = {"wechat": [], "douyin": [], "baidu": []}
+        apis = {
+            "wechat": os.environ.get("WECHAT_HOT_API", ""),
+            "douyin": os.environ.get("DOUYIN_HOT_API", ""),
+            "baidu": os.environ.get("BAIDU_HOT_API", ""),
+        }
+        
+        for platform, url in apis.items():
+            if not url:
+                log(f"{platform} API未配置，跳过", "WARN")
+                continue
+            try:
+                resp = requests.get(url, timeout=15)
+                resp.raise_for_status()
+                result[platform] = resp.json().get("data", resp.json())
+                log(f"API获取 {platform} 热搜 {len(result[platform])} 条")
+            except Exception as e:
+                log(f"API获取 {platform} 失败: {e}", "ERROR")
+        
+        return result
+    
+    @staticmethod
+    def from_database() -> Dict:
+        """从数据库读取数据"""
+        db_type = DB_TYPE
+        
+        if db_type == "sqlite":
+            import sqlite3
+            
+            conn = sqlite3.connect(DB_PATH)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            
+            result = {"wechat": [], "douyin": [], "baidu": []}
+            
+            for platform in result.keys():
+                cursor.execute("""
+                    SELECT rank, title, url, heat, category_tags, direction, relevance
+                    FROM hot_searches 
+                    WHERE platform = ? AND date = date('now')
+                    ORDER BY rank ASC
+                    LIMIT 30
+                """, (platform,))
+                
+                rows = cursor.fetchall()
+                for row in rows:
+                    result[platform].append({
+                        "rank": row["rank"],
+                        "title": row["title"],
+                        "url": row["url"] or "",
+                        "heat": row["heat"] or "",
+                        "category_tags": row["category_tags"] or "",
+                        "direction": row["direction"] or "",
+                        "relevance": row["relevance"] or "—",
+                    })
+            
+            conn.close()
+            total = sum(len(v) for v in result.values())
+            log(f"从SQLite数据库读取 {total} 条热搜数据")
+            return result
+        
+        elif db_type == "mysql":
+            try:
+                import mysql.connector
+                conn = mysql.connector.connect(
+                    host=os.environ.get("HOT_DB_HOST", "localhost"),
+                    user=os.environ.get("HOT_DB_USER", "root"),
+                    password=os.environ.get("HOT_DB_PASSWORD", ""),
+                    database=os.environ.get("HOT_DB_NAME", "hot_db"),
+                    charset='utf8mb4',
+                )
+                cursor = conn.cursor(dictionary=True)
+                
+                result = {"wechat": [], "douyin": [], "baidu": []}
+                for platform in result.keys():
+                    cursor.execute("""
+                        SELECT rank, title, url, heat, category_tags, direction, relevance
+                        FROM hot_searches 
+                        WHERE platform = ? AND date = CURDATE()
+                        ORDER BY rank ASC
+                        LIMIT 30
+                    """, (platform,))
+                    result[platform] = cursor.fetchall()
+                
+                conn.close()
+                total = sum(len(v) for v in result.values())
+                log(f"MySQL读取 {total} 条热搜数据")
+                return result
+            except ImportError:
+                log("mysql-connector-python 未安装，回退到空数据", "ERROR")
+                return HotDataFetcher._empty_data()
+            except Exception as e:
+                log(f"MySQL连接失败: {e}", "ERROR")
+                return HotDataFetcher._empty_data()
+        
+        else:
+            log(f"不支持的数据库类型: {db_type}", "ERROR")
+            return HotDataFetcher._empty_data()
+    
+    @staticmethod
+    def _empty_data() -> Dict:
+        """返回空数据结构"""
+        return {
+            "wechat": [],
+            "douyin": [],
+            "baidu": [],
+        }
+
+
+# ============================================================
+#                   数据处理 & 标注
+# ============================================================
+
+def process_hot_items(items: List[Dict], platform: str) -> List[Dict]:
+    """
+    处理单条热搜数据：
+      - 自动匹配图书类目
+      - 自动计算相关度
+      - 补充缺失字段
+    """
+    processed = []
+    
+    for idx, item in enumerate(items):
+        title = item.get("title", "")
+        rank = item.get("rank", idx + 1)
+        
+        # 如果已有标注则使用已有数据，否则自动标注
+        existing_tags = item.get("category_tags", "")
+        existing_rel = item.get("relevance", "")
+        existing_dir = item.get("direction", "")
+        
+        if existing_tags and existing_rel:
+            tags = existing_tags.split(",") if isinstance(existing_tags, str) else existing_tags
+            relevance = existing_rel
+            direction = existing_dir
+        else:
+            # 自动匹配类目
+            tags, relevance = match_categories(title)
+            direction = item.get("direction", "")
+            # 如果没有方向说明，尝试从标签推断
+            if not direction and tags:
+                # 取前两个标签作为简短描述
+                direction = " · ".join(tags[:2])
+        
+        processed.append({
+            "rank": rank,
+            "title": title,
+            "url": item.get("url", ""),
+            "heat": item.get("heat", ""),
+            "tags": tags,
+            "relevance": relevance,
+            "direction": direction,
+            "row_class": generate_row_class(relevance),
+        })
+    
+    return processed
+
+
+# ============================================================
+#                   HTML 渲染引擎
+# ============================================================
+
+class DashboardRenderer:
+    """工作台HTML渲染器"""
+    
+    def __init__(self, template_path: Path):
+        self.template_path = template_path
+        self.template_content = ""
+        self._load_template()
+    
+    def _load_template(self):
+        """加载HTML模板"""
+        if not self.template_path.exists():
+            log(f"模板文件不存在: {self.template_path}", "ERROR")
+            raise FileNotFoundError(f"Template not found: {self.template_path}")
+        
+        with open(self.template_path, "r", encoding="utf-8") as f:
+            self.template_content = f.read()
+        
+        log(f"加载模板成功: {self.template_path.name}")
+    
+    def render_column(self, platform_name: str, platform_key: str, 
+                      items: List[Dict], source_url: str) -> str:
+        """渲染单个平台的热搜列表列"""
+        
+        style = PLATFORM_STYLES.get(platform_name, {"bg": "#666", "short": "?"})
+        short_name = style["short"]
+        bg_color = style["bg"]
+        
+        # 表头
+        html = f"""<div class="col">
+<div class="col-h"><div class="ic" style="background:{bg_color}">{short_name}</div><h3>{platform_name}</h3><a href="{source_url}" target="_blank">查看来源 →</a></div>
+<table><thead><tr><th class="rk">#</th><th>热搜话题</th><th style="width:30px">相关</th></tr></thead>
+<tbody>
+"""
+        
+        # 数据行
+        for item in items:
+            rank = item["rank"]
+            rank_cls = f"r{rank}" if rank <= 3 else ""
+            
+            # 链接或纯文本
+            if item["url"]:
+                title_html = f'<a href="{item["url"]}" target="_blank">{item["title"]}</a>'
+            else:
+                title_html = item["title"]
+            
+            # 类目标签 + 方向说明
+            dir_html = generate_category_html(item["tags"], item["direction"])
+            
+            # 相关度徽章
+            rel_badge = generate_relevance_badge(item["relevance"])
+            
+            # 热度值
+            heat_html = f'<span class="ht" style="margin-left:auto">{item["heat"]}</span>' if item["heat"] else ""
+            
+            html += (
+                f'<tr class="{item["row_class"]}">'
+                f'<td class="rk {rank_cls}">{rank}</td>'
+                f'<td class="tp">{title_html}{dir_html}</td>'
+                f'<td>{rel_badge}</td>'
+                f'</tr>\n'
+            )
+        
+        html += "</tbody></table>\n</div>\n"
+        return html
+    
+    def render(self, data: Dict, extra_context: Dict = None) -> str:
+        """
+        渲染完整的HTML页面
+        
+        data 结构:
+        {
+            "wechat": [{"rank": 1, "title": "...", ...}, ...],
+            "douyin": [...],
+            "baidu": [...]
+        }
+        """
+        now = datetime.now()
+        date_str = now.strftime("%Y.%m.%d")
+        generated_at = now.strftime("%Y年%m月%d日 %H:%M")
+        
+        # 处理各平台数据
+        wechat_data = process_hot_items(data.get("wechat", []), "wechat")
+        douyin_data = process_hot_items(data.get("douyin", []), "douyin")
+        baidu_data = process_hot_items(data.get("baidu", []), "baidu")
+        
+        # 渲染三列
+        columns_html = (
+            self.render_column(
+                "微信生态", "wechat", wechat_data,
+                "https://ie.sogou.com/top/"
+            ) +
+            self.render_column(
+                "抖音热榜", "douyin", douyin_data,
+                "https://www.xpaihang.com/platform/douyin"
+            ) +
+            self.render_column(
+                "百度热搜", "baidu", baidu_data,
+                "https://top.baidu.com/board?tab=realtime"
+            )
+        )
+        
+        # ===== 页面2 数据：生成类目热点JSON =====
+        page2_wechat_hots = []
+        for item in wechat_data[:6]:  # 取前6条高相关度热点
+            page2_wechat_hots.append({
+                "p": "微信", "t": item["title"], 
+                "h": item["heat"] if item["heat"] else ""
+            })
+        
+        page2_douyin_hots = []
+        for item in douyin_data[:6]:
+            page2_douyin_hots.append({
+                "p": "抖音", "t": item["title"],
+                "h": item["heat"] if item["heat"] else ""
+            })
+        
+        page2_baidu_hots = []
+        for item in baidu_data[:6]:
+            page2_baidu_hots.append({
+                "p": "百度", "t": item["title"],
+                "h": item["heat"] if item["heat"] else ""
+            })
+        
+        # ===== 页面3 数据：生成所有热点关键词字典（JS对象格式）=====
+        all_hot_keywords_js = {}
+        all_items = wechat_data + douyin_data + baidu_data
+        hot_keywords_map = {
+            "科学流言榜": ["科学", "流言", "辟谣", "谣言"],
+            "西安高铁": ["西安", "高铁", "米字形"],
+            "强磁暴极光": ["极光", "磁暴", "天文"],
+            "午睡": ["午睡", "睡眠", "午休"],
+            "海空卫士王伟": ["王伟", "81192", "海空", "卫士", "英雄", "牺牲"],
+            "4月新规": ["新规", "4月", "法规", "安全带", "旅游新规"],
+            "甲骨文裁员": ["甲骨文", "裁员", "失业", "被裁"],
+            "台湾抢塑潮": ["台湾", "台海", "两岸", "国台办"],
+            "沿江高铁东西大动脉": ["沿江", "高铁", "大动脉"],
+            "教育部食堂": ["食堂", "教育部", "学校"],
+            "清明": ["清明", "祭祀", "节日"],
+            "Colorwalk": ["colorwalk", "色彩", "漫步"],
+            "张雪机车": ["张雪", "机车", "达喀尔"],
+            "全红婵": ["全红婵", "体重", "跳水"],
+            "禁止早恋": ["早恋", "青春期", "恋爱"],
+            "Sora关停": ["sora", "ai", "人工智能", "deepseek"],
+            "ClaudeCode源码": ["claude", "源码", "ai"],
+            "文物盘库": ["文物", "盘库", "国宝", "博物馆"],
+            "军事机密运动手表": ["军事", "机密", "手表", "泄露"],
+            "旅游新规": ["旅游", "新规", "景区"],
+            "遗嘱": ["遗嘱", "继承", "遗产"],
+            "安全带": ["安全带", "交通"],
+        }
+        
+        # 用实际热搜标题补充关键词映射
+        for item in all_items:
+            title = item["title"]
+            if title not in hot_keywords_map:
+                # 从标题中提取关键词
+                keywords = [w for w in title if len(w) > 1][:5]
+                if not keywords:
+                    keywords = [title.lower()]
+                hot_keywords_map[title] = keywords + [title.lower()]
+            all_hot_keywords_js[title] = hot_keywords_map[title]
+        
+        import json as _json
+        page2_wechat_json = _json.dumps(page2_wechat_hots, ensure_ascii=False)
+        page2_douyin_json = _json.dumps(page2_douyin_hots, ensure_ascii=False)
+        page2_baidu_json = _json.dumps(page2_baidu_hots, ensure_ascii=False)
+        all_hots_json = _json.dumps(all_hot_keywords_js, ensure_ascii=False)
+        
+        # 替换模板中的占位符
+        output = self.template_content
+        
+        # 基础信息替换
+        output = output.replace("{{DATE_STR}}", date_str)
+        output = output.replace("{{GENERATED_AT}}", generated_at)
+        output = output.replace("{{GENERATED_ISO}}", now.isoformat())
+        
+        # 核心数据：三列热搜列表
+        output = output.replace("{{HOT_COLUMNS}}", columns_html)
+        
+        # 页面2数据：各平台热点（用于类目匹配）
+        output = output.replace("{{WECHAT_HOTS_FOR_PAGE2}}", page2_wechat_json)
+        output = output.replace("{{DOUYIN_HOTS_FOR_PAGE2}}", page2_douyin_json)
+        output = output.replace("{{BAIDU_HOTS_FOR_PAGE2}}", page2_baidu_json)
+        
+        # 页面3数据：所有热点关键词（用于文案利用率检测）
+        output = output.replace("{{ALL_HOT_KEYWORDS_JSON}}", all_hots_json)
+        
+        # 统计信息
+        total_count = len(wechat_data) + len(douyin_data) + len(baidu_data)
+        high_rel_count = sum(
+            1 for d in wechat_data + douyin_data + baidu_data 
+            if d["relevance"] == "高"
+        )
+        output = output.replace("{{TOTAL_COUNT}}", str(total_count))
+        output = output.replace("{{HIGH_REL_COUNT}}", str(high_rel_count))
+        
+        # 自定义上下文替换
+        if extra_context:
+            for key, value in extra_context.items():
+                output = output.replace(f"{{{{{key}}}}}", str(value))
+        
+        log(f"HTML渲染完成：{len(wechat_data)} 微信 + {len(douyin_data)} 抖音 + "
+            f"{len(baidu_data)} 百度 = 共 {total_count} 条 | 高相关度 {high_rel_count} 条")
+        
+        return output
+
+
+# ============================================================
+#                      主流程
+# ============================================================
+
+def main():
+    """主函数"""
+    mode_label = "☁️ 云端模式 (Vercel)" if OUTPUT_MODE == "cloud" else "🏠 本地模式 (微信临时文件)"
+    print("=" * 65)
+    print(f"🔄 图书热点工作台 - 数据更新开始")
+    print(f"   时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"   模式: {mode_label}")
+    print("=" * 65)
+    
+    # Step 0: 准备环境
+    ensure_dirs()
+    
+    # Step 1: 备份现有文件
+    backup_existing()
+    
+    # Step 2: 获取数据
+    print("\n📡 [Step 1/4] 获取热搜数据...")
+    fetchers = {
+        "auto": HotDataFetcher.from_auto,
+        "json": HotDataFetcher.from_json,
+        "api": HotDataFetcher.from_api,
+        "database": HotDataFetcher.from_database,
+    }
+    
+    if DATA_SOURCE not in fetchers:
+        log(f"⚠️ 未知的DATA_SOURCE: {DATA_SOURCE}，回退到auto模式", "WARN")
+        _source = "auto"
+    else:
+        _source = DATA_SOURCE
+    
+    # auto模式时显示额外提示
+    if _source == "auto":
+        print("   🌐 模式: 自动从公网API抓取（百度/抖音/搜狗=微信生态）")
+        print(f"   📦 缓存: {JSON_DATA_FILE.name}")
+    
+    # 云模式提示
+    if OUTPUT_MODE == "cloud":
+        print(f"   📂 输出目录: {OUTPUT_FILE.parent}")
+    else:
+        print(f"   📄 输出文件: {OUTPUT_FILE}")
+    
+    fetcher = fetchers[_source]
+    raw_data = fetcher()
+    
+    # 校验数据
+    total_raw = sum(len(v) for v in raw_data.values())
+    if total_raw == 0:
+        log("⚠️ 未获取到任何数据！将使用空数据渲染（页面将显示暂无内容）", "WARN")
+    
+    # Step 3: 渲染HTML
+    print("\n🖥️  [Step 2/4] 渲染HTML页面...")
+    try:
+        renderer = DashboardRenderer(TEMPLATE_FILE)
+        html_output = renderer.render(raw_data, {
+            "UPDATE_FREQUENCY": "每日自动更新",
+            "SOURCE_NOTE": f"数据源: {DATA_SOURCE}",
+        })
+    except FileNotFoundError:
+        log("模板文件不存在，无法继续！", "ERROR")
+        sys.exit(1)
+    
+    # Step 4: 写入输出文件
+    print("\n💾 [Step 3/4] 写入输出文件...")
+    OUTPUT_FILE.write_text(html_output, encoding="utf-8")
+    file_size = OUTPUT_FILE.stat().st_size
+    
+    # 完成
+    print("\n" + "=" * 65)
+    print(f"✅ 更新完成！")
+    print(f"   📄 输出文件: {OUTPUT_FILE}")
+    print(f"   📦 文件大小: {file_size:,} bytes ({file_size // 1024} KB)")
+    if OUTPUT_MODE == "cloud":
+        print(f"   🔗 访问方式: Vercel 自动部署后通过域名访问 index.html")
+    else:
+        print(f"   🔗 访问链接: 不变（同一文件被内容覆盖）")
+    print(f"   📊 数据条数: {total_raw}")
+    print(f"   ⏰ 更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 65)
+    
+    return True
+
+
+if __name__ == "__main__":
+    main()

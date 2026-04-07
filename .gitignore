@@ -1,0 +1,50 @@
+# ============================================================
+#  图书热点工作台 - Git 忽略规则
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# --- 虚拟环境 ---
+.venv/
+venv/
+
+# --- 本地敏感/临时文件（不上传）---
+# 微信临时文件目录中的输出文件（仅本地使用）
+# logs/ 日志文件（每次运行都生成）
+logs/*.log
+
+# --- 环境配置 ---
+.env
+.env.local
+.env.production
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- 备份文件（可选：保留最近几个，其余忽略）---
+backups/hot_dashboard_*.html
+
+# ============================================================
+# 注意：以下文件需要提交到 Git 仓库！
+#   ✅ site_output/index.html     — 云端输出的最终页面
+#   ✅ data/hot_data.json         — API数据缓存
+#   ✅ templates/*.html           — HTML模板
+#   ✅ hot_update.py              — 核心脚本
+#   ✅ .github/workflows/*.yml    — Actions 工作流
+#   ✅ vercel.json                — Vercel 部署配置
+# ============================================================

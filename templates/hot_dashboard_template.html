@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图书热点营销工作台 - {{DATE_STR}}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
+.bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,17,23,.95);backdrop-filter:blur(12px);padding:0 16px;box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.bar-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;height:48px;gap:6px}
+.bar .lg{color:#fff;font-size:14px;font-weight:700;white-space:nowrap;margin-right:14px}
+.tb{padding:6px 18px;border-radius:18px;border:none;background:0;color:rgba(255,255,255,.4);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.2s}
+.tb:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tb.on{background:#e63946;color:#fff}
+.wrap{padding-top:60px;min-height:100vh}
+.ct{max-width:1400px;margin:0 auto;padding:14px 16px 36px}
+.pg{display:none}.pg.on{display:block}
+/* 三列 */
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:900px){.tri{grid-template-columns:1fr}}
+.col{background:#161b22;border-radius:10px;border:1px solid #21262d;overflow:hidden}
+.col-h{padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #21262d}
+.col-h .ic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex-shrink:0}
+.col-h h3{font-size:14px;color:#f0f6fc;flex:1}
+.col-h a{font-size:10px;color:#58a6ff;text-decoration:none}
+.col table{width:100%;border-collapse:collapse}
+.col th{background:#0d1117;padding:5px 10px;text-align:left;font-size:10px;color:#8b949e;font-weight:600}
+.col td{padding:5px 10px;border-top:1px solid #21262d;font-size:11.5px}
+.col tr:hover td{background:rgba(255,255,255,.03)}
+.rk{width:24px;text-align:center;font-weight:700;font-size:11px;color:#8b949e}
+.r1{color:#ff6b6b}.r2{color:#ff8c42}.r3{color:#ffd43b}
+.ht{color:#ff6b6b;font-size:10px;white-space:nowrap}
+.tp a{color:#c9d1d9;text-decoration:none;font-size:11.5px}.tp a:hover{color:#58a6ff}
+.subtitle{font-size:11px;color:#8b949e;margin-bottom:12px}
+/* 相关度-红色系 */
+.rel-h{background:#e63946;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;white-space:nowrap}
+.rel-m{background:#c1374a;color:rgba(255,255,255,.9);padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;white-space:nowrap}
+.rel-l{background:rgba(230,57,70,.25);color:#ff8a94;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;white-space:nowrap}
+.rel-n{background:rgba(255,255,255,.06);color:#484f58;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;white-space:nowrap}
+tr.rh td{background:rgba(230,57,70,.08)}
+tr.rm td{background:rgba(230,57,70,.04)}
+tr.rl td{background:rgba(230,57,70,.02)}
+.cat-tag{display:inline-block;padding:0 5px;border-radius:6px;font-size:8px;font-weight:600;margin:0 1px;vertical-align:middle;background:rgba(88,166,255,.15);color:#58a6ff;border:1px solid rgba(88,166,255,.2)}
+.dir{color:#8b949e;font-size:9px;display:block;margin-top:1px}
+.ft{text-align:center;padding:20px 0;color:#484f58;font-size:10px}
+.ft a{color:#484f58}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="bar"><div class="bar-in">
+<div class="lg">📊 图书热点工作台</div>
+<button class="tb on" onclick="go('p1',this)">热点监控</button>
+<button class="tb" onclick="go('p2',this)">类目找热点</button>
+<button class="tb" onclick="go('p3',this)">利用率监控</button>
+</div></div>
+
+<div class="wrap">
+
+<!-- ==================== 页面1: 热点监控 (数据区) ==================== -->
+<div class="ct pg on" id="pg-p1">
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔥 实时热点监控</h2>
+<p class="subtitle">三大信息源 TOP20 并列展示 | {{DATE_STR}} | 图书相关度：<span class="rel-h">高</span> <span class="rel-m">中</span> <span class="rel-l">低</span> <span class="rel-n">—</span> 颜色越深越值得蹭 | 🔄 {{UPDATE_FREQUENCY}}</p>
+
+<div class="tri">
+{{HOT_COLUMNS}}
+</div>
+
+<div class="ft">数据源：<a href="https://ie.sogou.com/top/" style="color:#999">搜狗热搜</a> · <a href="https://www.xpaihang.com/platform/douyin" style="color:#999">X排行-抖音</a> · <a href="https://top.baidu.com/board?tab=realtime" style="color:#999">百度官方</a> | {{DATE_STR}} | 页面生成于 {{GENERATED_AT}}</div>
+</div>
+
+<!-- ==================== 页面2: 类目找热点 (保留原逻辑) ==================== -->
+<div class="ct pg" id="pg-p2">
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔍 按类目找热点</h2>
+<p class="subtitle">选择图书类目 → 匹配今日热点 → 生成前贴文案 → 标注审核风险</p>
+
+<div class="search-box" style="background:#161b22;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #21262d">
+<input id="catInput" type="text" placeholder="输入类目关键词：养生、童书、教辅、励志、AI、法律…" oninput="doSearch()" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s">
+<div class="cat-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-top:12px">
+<span class="qt" onclick="pick('养生')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🍵 养生保健</span>
+<span class="qt" onclick="pick('童书')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🧒 童书</span>
+<span class="qt" onclick="pick('教辅')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">📖 教辅/考试</span>
+<span class="qt" onclick="pick('育儿')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">👶 育儿/家庭教育</span>
+<span class="qt" onclick="pick('励志')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">💪 自我实现/励志</span>
+<span class="qt" onclick="pick('心理')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🧠 心理学</span>
+<span class="qt" onclick="pick('历史')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">📜 历史</span>
+<span class="qt" onclick="pick('法律')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">⚖️ 法律</span>
+<span class="qt" onclick="pick('AI')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🤖 AI/人工智能</span>
+<span class="qt" onclick="pick('军事')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🎖️ 政治/军事</span>
+<span class="qt" onclick="pick('文学')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">📚 文学/小说</span>
+<span class="qt" onclick="pick('艺术')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🎨 艺术</span>
+<span class="qt" onclick="pick('经济')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">📈 经济/金融</span>
+<span class="qt" onclick="pick('旅游')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🗺️ 旅游/地图</span>
+<span class="qt" onclick="pick('管理')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🏢 管理</span>
+<span class="qt" onclick="pick('科普')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🔬 科普百科</span>
+<span class="qt" onclick="pick('国学')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">☯️ 国学/古籍</span>
+<span class="qt" onclick="pick('传记')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">👤 传记</span>
+<span class="qt" onclick="pick('体育')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">⚽ 体育运动</span>
+</div></div>
+<div id="catOut"><div class="empty" style="text-align:center;padding:40px;color:#484f58;font-size:13px">👆 输入类目关键词或点击快捷标签</div></div>
+</div>
+
+<!-- ==================== 页面3: 利用率监控 (保留原逻辑) ==================== -->
+<div class="ct pg" id="pg-p3">
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">📈 热点利用率监控</h2>
+<p class="subtitle">上传投放脚本/素材文案（txt），自动比对今日热点，检测热点耦合度和利用率</p>
+
+<div class="upload-zone" id="dropZone" onclick="document.getElementById('fileIn').click()" style="background:#161b22;border:2px dashed #30363d;border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:16px">
+<div class="icon" style="font-size:36px;margin-bottom:8px">📄</div>
+<p>点击上传 或 拖拽文件到此处</p>
+<p style="font-size:11px;color:#bbb;margin-top:4px">支持 .txt 文件，内容为广告脚本/素材文案</p>
+<input type="file" id="fileIn" accept=".txt" onchange="analyzeFile(this)" style="display:none">
+</div>
+
+<div id="analysisOut"></div>
+
+<div style="background:#161b22;border-radius:10px;padding:14px;border:1px solid #21262d">
+<h3 style="font-size:13px;color:#f0f6fc;margin-bottom:8px">💡 使用说明</h3>
+<p style="font-size:11.5px;color:#8b949e;line-height:1.7">
+1. 将你的广告脚本/素材文案保存为 <strong>.txt</strong> 文件<br>
+2. 上传后系统会自动将文案内容与今日三大平台 TOP20 热点做关键词匹配<br>
+3. 输出：<strong>热点利用率</strong>（命中热点数/总热点数）、<strong>具体命中项</strong>、<strong>未覆盖的高价值热点建议</strong><br>
+4. 可反复上传不同版本的脚本，对比优化效果
+</p>
+</div>
+</div>
+
+</div>
+
+<script>
+// === 导航切换 ===
+function go(id,el){
+  var pgs=document.querySelectorAll('.pg');
+  for(var i=0;i<pgs.length;i++) pgs[i].classList.remove('on');
+  var tbs=document.querySelectorAll('.tb');
+  for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
+  document.getElementById('pg-'+id).classList.add('on');
+  if(el) el.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+// === 页面2: 类目数据库 ===
+var DB=[
+{k:["养生","饮食健康","中医养生","其他养生保健"],
+hots:[{{WECHAT_HOTS_FOR_PAGE2}}],
+copies:[
+"清明前后湿气重，这本节气养生书教你怎么吃对每一餐",
+"午睡超过30分钟反而更累？书里的睡眠科学比热搜说得更清楚",
+"跟着二十四节气吃，比跟着热搜养生靠谱一百倍",
+"科学流言榜又更新了，这本书帮你一次性搞清哪些养生是真的",
+],
+warn:"❌ 禁止伪科学：不得用偏方秘方/\"不吃XX会生病\"等无依据观点。❌ 禁止制造焦虑。",
+safe:"✅ 合规表达：用\"科普分享\"\"营养知识\"等客观表述"},
+
+{k:["童书","幼儿认知书","立体书","学前启蒙","故事绘本","科普百科","儿童文学","儿童成长"],
+hots:[{{DOUYIN_HOTS_FOR_PAGE2}}],
+copies:[
+"给孩子讲真正的中国英雄故事",
+"国家要给6000万件文物盘库了，你家孩子认识几件国宝？",
+"北方可能出现极光！这本天文绘本比新闻讲得更精彩",
+],
+warn:"❌ 不得涉及K12学科培训。❌ 需明确体现推广的是实物书籍。",
+safe:"✅ 用\"陪伴成长\"\"文化启蒙\"等正向引导"},
+
+{k:["教辅","考试","小学教辅","初中教辅","高中教辅","考研","公务员"],
+hots:[{{BAIDU_HOTS_FOR_PAGE2}}],
+copies:[
+"教育部食堂新规来了，但保护孩子最好的方式是教他自己判断",
+"清明将至，用一篇满分作文素材致敬英雄",
+"四月新规扎堆上线，这本法律常识教辅比热搜讲得透",
+],
+warn:"❌ 严禁推广K12学科培训课程。❌ 不得用数字效果承诺。",
+safe:"✅ 实物书籍推广可支持 | 配套视频讲解可支持"},
+];
+
+function pick(v){document.getElementById('catInput').value=v;doSearch();}
+
+function doSearch(){
+  var q=document.getElementById('catInput').value.trim().toLowerCase();
+  var box=document.getElementById('catOut');
+  if(!q){box.innerHTML='<div class="empty">👆 输入类目关键词或点击快捷标签</div>';return;}
+  var html='';var found=0;
+  var pColors={"微信":"background:#e8f5e9;color:#2e7d32","抖音":"background:#f0f0f0;color:#333","百度":"background:#e3f2fd;color:#1976d2"};
+  for(var i=0;i<DB.length;i++){
+    var m=DB[i];var hit=false;
+    for(var j=0;j<m.k.length;j++){if(m.k[j].toLowerCase().indexOf(q)!==-1){hit=true;break;}}
+    if(!hit) continue;
+    found++;
+    var matched=[];
+    for(var j=0;j<m.k.length;j++){if(m.k[j].toLowerCase().indexOf(q)!==-1) matched.push(m.k[j]);}
+    html+='<div class="res-card" style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:12px;border:1px solid #21262d;border-left:3px solid #e63946">';
+    html+='<div class="res-label" style="font-size:11px;color:#e63946;font-weight:600;margin-bottom:8px">匹配类目：'+matched.join(' · ')+'</div>';
+    html+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:4px">📌 今日可蹭热点（'+m.hots.length+'条）</h3>';
+    for(var j=0;j<m.hots.length;j++){
+      var h=m.hots[j];
+      html+='<div class="hot-item" style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #21262d;font-size:11.5px"><span class="plat" style="padding:1px 6px;border-radius:8px;font-size:9px;font-weight:600;flex-shrink:0">'+h.p+'</span><span>'+h.t+'</span>'+(h.h?'<span class="ht" style="margin-left:auto">'+h.h+'</span>':'')+'</div>';
+    }
+    html+='<div class="copy-box" style="background:#0d1117;border-radius:8px;padding:10px 12px;margin-top:10px;border:1px solid #21262d"><h4 style="font-size:12px;color:#8b949e;margin-bottom:6px">📝 前贴文案参考</h4>';
+    for(var j=0;j<m.copies.length;j++){
+      html+='<div class="copy-line" style="display:flex;align-items:flex-start;gap:6px;padding:5px 0;border-bottom:1px solid #21262d;font-size:11.5px;line-height:1.5"><span class="copy-num" style="color:#e63946;font-weight:700;flex-shrink:0;width:18px">'+(j+1)+'</span><span class="copy-text" id="cp_'+i+'_'+j+'">'+m.copies[j]+'</span><button class="copy-btn" style="padding:2px 8px;border-radius:4px;border:1px solid #30363d;background:#21262d;font-size:10px;color:#8b949e;cursor:pointer;flex-shrink:0" onclick="doCopy(\'cp_'+i+'_'+j+'\')">复制</button></div>';
+    }
+    html+='</div>';
+    html+='<div class="warn-box" style="background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.2);border-radius:6px;padding:8px 10px;margin-top:8px;font-size:10.5px;color:#ff8a94;line-height:1.6">🚨 审核风险：'+m.warn+'</div>';
+    html+='<div class="safe-box" style="background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.15);border-radius:6px;padding:8px 10px;margin-top:4px;font-size:10.5px;color:#3fb950;line-height:1.6">'+m.safe+'</div>';
+    html+='</div>';
+  }
+  if(!found) html='<div class="empty" style="text-align:center;padding:40px;color:#484f58;font-size:13px">未找到匹配类目，试试其他关键词</div>';
+  box.innerHTML=html;
+}
+
+function doCopy(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  var text=el.innerText;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      var btn=el.parentNode.querySelector('.copy-btn');
+      if(btn){btn.textContent='已复制';btn.style.background='#07c160';btn.style.color='#fff';btn.style.borderColor='#07c160';setTimeout(function(){btn.textContent='复制';btn.style.background='';btn.style.color='';btn.style.borderColor='';},1500);}
+    });
+  }
+}
+
+// === 页面3: 利用率分析 ===
+var ALL_HOTS={{ALL_HOT_KEYWORDS_JSON}};
+
+// 拖拽上传
+var dz=document.getElementById('dropZone');
+if(dz){
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#4a6cf7';dz.style.background='#fafbff';});
+  dz.addEventListener('dragleave',function(e){e.preventDefault();dz.style.borderColor='#ddd';dz.style.background='#fff';});
+  dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='#ddd';dz.style.background='#fff';if(e.dataTransfer.files.length>0) processFile(e.dataTransfer.files[0]);});
+}
+
+function analyzeFile(input){if(input.files.length>0) processFile(input.files[0]);}
+
+function processFile(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var text=e.target.result.toLowerCase();
+    var matched=[];var unmatched=[];
+    for(var i=0;i<ALL_HOTS.length;i++){
+      var name=ALL_HOTS[i];
+      var kws=ALL_HOTS[name]||[name.toLowerCase()];
+      var hit=false;
+      for(var j=0;j<kws.length;j++){
+        if(text.indexOf(kws[j].toLowerCase())!==-1){hit=true;break;}
+      }
+      if(hit) matched.push(name); else unmatched.push(name);
+    }
+    var rate=Math.round(matched.length/Object.keys(ALL_HOTS).length*100);
+    var color=rate>=50?'#07c160':rate>=25?'#f9a825':'#e63946';
+    var html='';
+    html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">📊 热点利用率分析</h3>';
+    html+='<p style="font-size:12px;color:#666;margin-bottom:8px">文件：'+file.name+' | 共检测 '+Object.keys(ALL_HOTS).length+' 个热点关键词</p>';
+    html+='<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px"><span style="font-size:28px;font-weight:800;color:'+color+'">'+rate+'%</span><span style="font-size:12px;color:#999">热点利用率（'+matched.length+'/'+Object.keys(ALL_HOTS).length+'）</span></div>';
+    html+='<div class="meter" style="height:8px;background:#21262d;border-radius:4px;overflow:hidden;margin:4px 0 8px"><div class="meter-fill" style="height:100%;border-radius:4px;transition:width .5s;width:'+rate+'%;background:'+color+'"></div></div>';
+    if(rate>=50) html+='<p style="font-size:11px;color:#07c160">🟢 优秀！脚本对今日热点的覆盖率较高。</p>';
+    else if(rate>=25) html+='<p style="font-size:11px;color:#f9a825">🟡 中等。建议补充更多热点话题的关联内容。</p>';
+    else html+='<p style="font-size:11px;color:#e63946">🔴 偏低。脚本与今日热点关联度不足，建议优化。</p>';
+    html+='</div>';
+
+    if(matched.length>0){
+      html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">✅ 已命中热点（'+matched.length+'个）</h3>';
+      for(var i=0;i<matched.length;i++){
+        html+='<div class="match-item" style="padding:8px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;align-items:start;gap:8px"><span class="match-tag high" style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;flex-shrink:0;background:rgba(63,185,80,.15);color:#3fb950">命中</span><span>'+matched[i]+'</span></div>';
+      }
+      html+='</div>';
+    }
+
+    if(unmatched.length>0){
+      html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">💡 未覆盖的高价值热点建议（'+unmatched.length+'个）</h3>';
+      html+='<p style="font-size:11px;color:#999;margin-bottom:8px">以下热点今日热度较高但脚本中未涉及：</p>';
+      for(var i=0;i<Math.min(unmatched.length,15);i++){
+        html+='<div class="match-item" style="padding:8px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;align-items:start;gap:8px"><span class="match-tag low" style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;flex-shrink:0;background:rgba(255,255,255,.06);color:#484f58">未覆盖</span><span>'+unmatched[i]+'</span></div>';
+      }
+      html+='</div>';
+    }
+    document.getElementById('analysisOut').innerHTML=html;
+  };
+  reader.readAsText(file);
+}
+</script>
+
+</body>
+</html>
