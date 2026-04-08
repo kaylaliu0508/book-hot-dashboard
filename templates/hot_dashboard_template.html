@@ -54,7 +54,6 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="lg">📊 图书热点工作台</div>
 <button class="tb on" onclick="go('p1',this)">热点监控</button>
 <button class="tb" onclick="go('p2',this)">类目找热点</button>
-<button class="tb" onclick="go('p3',this)">利用率监控</button>
 </div></div>
 
 <div class="wrap">
@@ -106,29 +105,6 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div id="catOut"><div class="empty" style="text-align:center;padding:40px;color:#484f58;font-size:13px">👆 输入类目关键词或点击快捷标签</div></div>
 </div>
 
-<!-- ==================== 页面3: 利用率监控 (保留原逻辑) ==================== -->
-<div class="ct pg" id="pg-p3">
-<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">📈 热点利用率监控</h2>
-<p class="subtitle">上传投放脚本/素材文案（txt），自动比对今日热点，检测热点耦合度和利用率</p>
-
-<div class="upload-zone" id="dropZone" onclick="document.getElementById('fileIn').click()" style="background:#161b22;border:2px dashed #30363d;border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:16px">
-<div class="icon" style="font-size:36px;margin-bottom:8px">📄</div>
-<p>点击上传 或 拖拽文件到此处</p>
-<p style="font-size:11px;color:#bbb;margin-top:4px">支持 .txt 文件，内容为广告脚本/素材文案</p>
-<input type="file" id="fileIn" accept=".txt" onchange="analyzeFile(this)" style="display:none">
-</div>
-
-<div id="analysisOut"></div>
-
-<div style="background:#161b22;border-radius:10px;padding:14px;border:1px solid #21262d">
-<h3 style="font-size:13px;color:#f0f6fc;margin-bottom:8px">💡 使用说明</h3>
-<p style="font-size:11.5px;color:#8b949e;line-height:1.7">
-1. 将你的广告脚本/素材文案保存为 <strong>.txt</strong> 文件<br>
-2. 上传后系统会自动将文案内容与今日三大平台 TOP20 热点做关键词匹配<br>
-3. 输出：<strong>热点利用率</strong>（命中热点数/总热点数）、<strong>具体命中项</strong>、<strong>未覆盖的高价值热点建议</strong><br>
-4. 可反复上传不同版本的脚本，对比优化效果
-</p>
-</div>
 </div>
 
 </div>
@@ -226,65 +202,6 @@ function doCopy(id){
   }
 }
 
-// === 页面3: 利用率分析 ===
-var ALL_HOTS={{ALL_HOT_KEYWORDS_JSON}};
-
-// 拖拽上传
-var dz=document.getElementById('dropZone');
-if(dz){
-  dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='#4a6cf7';dz.style.background='#fafbff';});
-  dz.addEventListener('dragleave',function(e){e.preventDefault();dz.style.borderColor='#ddd';dz.style.background='#fff';});
-  dz.addEventListener('drop',function(e){e.preventDefault();dz.style.borderColor='#ddd';dz.style.background='#fff';if(e.dataTransfer.files.length>0) processFile(e.dataTransfer.files[0]);});
-}
-
-function analyzeFile(input){if(input.files.length>0) processFile(input.files[0]);}
-
-function processFile(file){
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var text=e.target.result.toLowerCase();
-    var matched=[];var unmatched=[];
-    for(var i=0;i<ALL_HOTS.length;i++){
-      var name=ALL_HOTS[i];
-      var kws=ALL_HOTS[name]||[name.toLowerCase()];
-      var hit=false;
-      for(var j=0;j<kws.length;j++){
-        if(text.indexOf(kws[j].toLowerCase())!==-1){hit=true;break;}
-      }
-      if(hit) matched.push(name); else unmatched.push(name);
-    }
-    var rate=Math.round(matched.length/Object.keys(ALL_HOTS).length*100);
-    var color=rate>=50?'#07c160':rate>=25?'#f9a825':'#e63946';
-    var html='';
-    html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">📊 热点利用率分析</h3>';
-    html+='<p style="font-size:12px;color:#666;margin-bottom:8px">文件：'+file.name+' | 共检测 '+Object.keys(ALL_HOTS).length+' 个热点关键词</p>';
-    html+='<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px"><span style="font-size:28px;font-weight:800;color:'+color+'">'+rate+'%</span><span style="font-size:12px;color:#999">热点利用率（'+matched.length+'/'+Object.keys(ALL_HOTS).length+'）</span></div>';
-    html+='<div class="meter" style="height:8px;background:#21262d;border-radius:4px;overflow:hidden;margin:4px 0 8px"><div class="meter-fill" style="height:100%;border-radius:4px;transition:width .5s;width:'+rate+'%;background:'+color+'"></div></div>';
-    if(rate>=50) html+='<p style="font-size:11px;color:#07c160">🟢 优秀！脚本对今日热点的覆盖率较高。</p>';
-    else if(rate>=25) html+='<p style="font-size:11px;color:#f9a825">🟡 中等。建议补充更多热点话题的关联内容。</p>';
-    else html+='<p style="font-size:11px;color:#e63946">🔴 偏低。脚本与今日热点关联度不足，建议优化。</p>';
-    html+='</div>';
-
-    if(matched.length>0){
-      html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">✅ 已命中热点（'+matched.length+'个）</h3>';
-      for(var i=0;i<matched.length;i++){
-        html+='<div class="match-item" style="padding:8px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;align-items:start;gap:8px"><span class="match-tag high" style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;flex-shrink:0;background:rgba(63,185,80,.15);color:#3fb950">命中</span><span>'+matched[i]+'</span></div>';
-      }
-      html+='</div>';
-    }
-
-    if(unmatched.length>0){
-      html+='<div class="analysis" style="background:#161b22;border-radius:10px;padding:16px;border:1px solid #21262d;margin-bottom:14px"><h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">💡 未覆盖的高价值热点建议（'+unmatched.length+'个）</h3>';
-      html+='<p style="font-size:11px;color:#999;margin-bottom:8px">以下热点今日热度较高但脚本中未涉及：</p>';
-      for(var i=0;i<Math.min(unmatched.length,15);i++){
-        html+='<div class="match-item" style="padding:8px 0;border-bottom:1px solid #21262d;font-size:12px;display:flex;align-items:start;gap:8px"><span class="match-tag low" style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;flex-shrink:0;background:rgba(255,255,255,.06);color:#484f58">未覆盖</span><span>'+unmatched[i]+'</span></div>';
-      }
-      html+='</div>';
-    }
-    document.getElementById('analysisOut').innerHTML=html;
-  };
-  reader.readAsText(file);
-}
 </script>
 
 </body>
