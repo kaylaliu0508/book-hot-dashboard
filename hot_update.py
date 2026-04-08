@@ -187,8 +187,14 @@ def generate_category_html(tags: List[str], direction: str = "") -> str:
         f'<span class="cat-tag">{t}</span>' for t in tags[:4]  # 最多显示4个标签
     )
     
+    # 如果 direction 内容和已显示的标签重复，就不再重复显示
     if direction:
-        return f'<span class="dir">{tags_html} {direction}</span>'
+        dir_parts = [p.strip() for p in direction.replace(" · ", ",").split(",")]
+        # 去掉和 tags 完全相同的部分
+        unique_parts = [p for p in dir_parts if p not in tags[:4]]
+        if unique_parts:
+            return f'<span class="dir">{tags_html} {" · ".join(unique_parts)}</span>'
+    
     return f'<span class="dir">{tags_html}</span>'
 
 
