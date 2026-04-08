@@ -26,6 +26,10 @@ concurrency:
   group: hot-update
   cancel-in-progress: false
 
+# 授予写权限（push 回仓库需要）
+permissions:
+  contents: write
+
 jobs:
   # ===== Job 1: 抓取数据 + 生成 HTML =====
   update-and-deploy:
@@ -49,11 +53,7 @@ jobs:
 
       # ---- Step 3: 安装依赖 ----
       - name: 📦 安装 Python 依赖
-        run: |
-          pip install --upgrade pip
-          # hot_update.py 只用标准库(urllib/json)，无需额外安装
-          # 但保留 jinja2 以防模板引擎需要
-          pip install jinja2 requests beautifulsoup4
+        run: pip install -r requirements.txt
 
       # ---- Step 4: 执行数据更新脚本（云模式）----
       - name: 🔥 执行热点数据更新
@@ -92,10 +92,7 @@ jobs:
           git config user.email "bot@github-actions[bot]"
           
           # 检查是否有变化
-          git diff --quiet site_output/ && git diff --cached --quiet site_output/ && data/hot_data.json
-          NO_CHANGES=$?
-          
-          if [ $NO_CHANGES -eq 0 ]; then
+          if git diff --quiet site_output/ data/hot_data.json 2>/dev/null; then
             echo "ℹ️ 无内容变化，跳过提交"
             echo "NO_CHANGES=true" >> "$GITHUB_ENV"
           else
