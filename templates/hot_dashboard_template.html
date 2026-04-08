@@ -82,7 +82,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="search-box" style="background:#161b22;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #21262d">
 <input id="catInput" type="text" placeholder="输入类目关键词：养生、童书、教辅、励志、AI、法律…" oninput="doSearch()" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s">
 <div class="cat-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-top:12px">
-<span class="qt" onclick="pick('养生')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🍵 养生保健</span>
+<span class="qt" onclick="pick('健康')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🍵 泛健康</span>
 <span class="qt" onclick="pick('童书')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">🧒 童书</span>
 <span class="qt" onclick="pick('教辅')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">📖 教辅/考试</span>
 <span class="qt" onclick="pick('育儿')" style="padding:8px 10px;border-radius:8px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer:transition:.15s;text-align:center;border:1px solid transparent;">👶 育儿/家庭教育</span>
@@ -126,7 +126,7 @@ var ALL_HOTS={{ALL_HOTS_FOR_PAGE2}};
 
 // === 页面2: 类目数据库 ===
 var DB=[
-{k:["养生","饮食健康","中医养生","其他养生保健","保健","健康","穴位","按摩","节气"],
+{k:["泛健康","养生","饮食健康","中医养生","其他养生保健","保健","健康","穴位","按摩","节气"],
 hotKw:["养生","健康","感冒","输液","睡眠","午睡","饮食","节气","春天","过敏","保健","穴位","按摩","中医","减糖"],
 copies:[
 "感冒了，你第一反应是不是去输液？今天热搜又在吵这个。说实话，大部分人连自己是风寒还是风热都分不清就往医院跑。这本养生书里把日常小毛病的应对讲得特别细，翻两页你就知道什么时候该扛、什么时候该去，家里放一本，比百度靠谱多了。",
@@ -271,7 +271,7 @@ function doSearch(){
     var hots=matchHots(m.hotKw||[]);
     html+='<div class="res-card" style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:12px;border:1px solid #21262d;border-left:3px solid #e63946">';
     html+='<div class="res-label" style="font-size:11px;color:#e63946;font-weight:600;margin-bottom:8px">匹配类目：'+matched.join(' · ')+'</div>';
-    html+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:4px">📌 今日可蹭热点</h3>';
+    html+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:4px">📌 今日可参考热点</h3>';
     if(hots.length>0){
       for(var j=0;j<hots.length;j++){
         var h=hots[j];
