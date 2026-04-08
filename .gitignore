@@ -48,3 +48,4 @@ backups/hot_dashboard_*.html
 #   ✅ .github/workflows/*.yml    — Actions 工作流
 #   ✅ vercel.json                — Vercel 部署配置
 # ============================================================
+.vercel
