@@ -702,27 +702,20 @@ class DashboardRenderer:
             )
         )
         
-        # ===== 页面2 数据：生成类目热点JSON =====
-        page2_wechat_hots = []
-        for item in wechat_data[:6]:  # 取前6条高相关度热点
-            page2_wechat_hots.append({
-                "p": "微信", "t": item["title"], 
-                "h": item["heat"] if item["heat"] else ""
-            })
-        
-        page2_douyin_hots = []
-        for item in douyin_data[:6]:
-            page2_douyin_hots.append({
-                "p": "抖音", "t": item["title"],
-                "h": item["heat"] if item["heat"] else ""
-            })
-        
-        page2_baidu_hots = []
-        for item in baidu_data[:6]:
-            page2_baidu_hots.append({
-                "p": "百度", "t": item["title"],
-                "h": item["heat"] if item["heat"] else ""
-            })
+        # ===== 页面2 数据：生成全平台热点合集JSON（含url、平台、热度）=====
+        all_hots_for_page2 = []
+        platform_labels = {"wechat": "微信", "douyin": "抖音", "baidu": "百度"}
+        for platform_key, platform_label in platform_labels.items():
+            data_list = {"wechat": wechat_data, "douyin": douyin_data, "baidu": baidu_data}[platform_key]
+            for item in data_list:
+                all_hots_for_page2.append({
+                    "p": platform_label,
+                    "t": item["title"],
+                    "u": item.get("url", ""),
+                    "h": item["heat"] if item["heat"] else "",
+                    "tags": item.get("tags", []),
+                    "rel": item.get("relevance", "—"),
+                })
         
         # ===== 页面3 数据：生成所有热点关键词字典（JS对象格式）=====
         all_hot_keywords_js = {}
@@ -764,9 +757,7 @@ class DashboardRenderer:
             all_hot_keywords_js[title] = hot_keywords_map[title]
         
         import json as _json
-        page2_wechat_json = _json.dumps(page2_wechat_hots, ensure_ascii=False)
-        page2_douyin_json = _json.dumps(page2_douyin_hots, ensure_ascii=False)
-        page2_baidu_json = _json.dumps(page2_baidu_hots, ensure_ascii=False)
+        page2_all_hots_json = _json.dumps(all_hots_for_page2, ensure_ascii=False)
         all_hots_json = _json.dumps(all_hot_keywords_js, ensure_ascii=False)
         
         # 替换模板中的占位符
@@ -780,10 +771,8 @@ class DashboardRenderer:
         # 核心数据：三列热搜列表
         output = output.replace("{{HOT_COLUMNS}}", columns_html)
         
-        # 页面2数据：各平台热点（用于类目匹配）
-        output = output.replace("{{WECHAT_HOTS_FOR_PAGE2}}", page2_wechat_json)
-        output = output.replace("{{DOUYIN_HOTS_FOR_PAGE2}}", page2_douyin_json)
-        output = output.replace("{{BAIDU_HOTS_FOR_PAGE2}}", page2_baidu_json)
+        # 页面2数据：全平台热点合集（用于类目智能匹配）
+        output = output.replace("{{ALL_HOTS_FOR_PAGE2}}", page2_all_hots_json)
         
         # 页面3数据：所有热点关键词（用于文案利用率检测）
         output = output.replace("{{ALL_HOT_KEYWORDS_JSON}}", all_hots_json)
