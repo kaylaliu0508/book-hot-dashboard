@@ -598,8 +598,154 @@ def process_hot_items(items: List[Dict], platform: str) -> List[Dict]:
 
 
 # ============================================================
-#                AI 前贴文案生成（DeepSeek API）
+#                AI 前贴文案生成（智谱 GLM API）
 # ============================================================
+
+# --- 敏感话题黑名单：匹配到的热点若包含以下关键词，直接跳过不用于文案生成 ---
+# 来源：V6规则文档 - 时政政治敏感 / 外交军事 / 负面社会事件 / 涉台涉政
+SENSITIVE_TOPIC_BLACKLIST = [
+    # === 时政政治 ===
+    "中央", "巡视", "纪委", "监察", "中纪委", "反腐", "落马",
+    # === 外交军事 ===
+    "访华", "访问朝鲜", "访朝", "访美", "外交", "国防部", "军事", "军队", "解放军",
+    "霍尔木兹海峡", "伊朗", "黎巴嫩", "以色列", "联合国谴责",
+    # === 涉台涉港涉藏 ===
+    "台湾", "台海", "两岸", "一国两制", "港独", "台独",
+    # === 负面社会事件 ===
+    "造假", "诈骗", "骗局", "曝光黑", "被查", "判了", "死刑", "致死", "死亡",
+    "坠楼", "自杀", "他杀", "事故", "灾难", "伤亡",
+    # === 军人/英雄人物（不得商用） ===
+    "将军", "逝世", "烈士", "牺牲", "军人", "退役战神",
+    # === 医疗负面 ===
+    "黑中医", "医疗事故", "医闹", "假药",
+    # === 教育政策敏感（禁止借势） ===
+    "教育部", "双减", "新课改", "升学政策", "新政", "新规",
+    # === 金融风险 ===
+    "暴跌", "崩盘", "金融危机", "跑路", "非法集资",
+    # === 仿新闻/官方样式 ===
+    "紧急通知", "最新通知", "重要公告", "红头文件",
+]
+
+# --- 文案审核过滤器：AI 输出的文案如果命中以下模式，标记为违规并过滤 ---
+# 来源：V6规则文档 - 全行业通用虚假夸大 + 教育行业 + 阅读短剧行业
+COPY_FILTER_RULES = {
+    # --- 绝对化用语 / 极限词 ---
+    "absolute": [
+        r"最\s*(好|棒|强|优|全|新|火|畅销|权威|专业|有效)",
+        r"(绝对|一定|肯定|必须|唯一|第一|顶级|领先|极致|完美|永久|彻底)",
+        r"全网?(最|第一|独家|仅此|空前)",
+        r"100%", r"百分百", r"零风险", r"0风险",
+    ],
+    # --- 虚假效果承诺 / 结果保证 ---
+    "effect_promise": [
+        r"\d+\s*天(学会|掌握|学会|变|瘦|涨|提|升)",
+        r"(看完|读完|学完)(就|即|立刻|马上)(变|会|能|提|升)",
+        r"(保过|稳过|一次通过|不过退费|押题密卷)",
+        r"(成绩|分数|排名)(蹭蹭|突飞猛进|稳拿|暴涨|飙升)",
+        r"(薪资翻倍|年入|月入|赚\d+)",
+        r"解决所有?问题?", r"治(好|愈|愈?)\s*(全部|一切|所有)",
+    ],
+    # --- 焦虑营销 / 制造恐慌 ---
+    "anxiety": [
+        r"不(买|读|看|学|做|用).{0,5}(就)?(晚|亏|落后|后悔|来不及|out|淘汰)",
+        r"再不.{0,4}(就|就真的|晚了|来不及|落后|错过)",
+        r"别人家?.{0,3}(孩子|家长|人).{0,5}(都|已经|全)在?",
+        r"你还不知道.{0,3}(吗|吧|？)\s*$",  # 句尾反问焦虑
+        r"大部分?人.{0,10}(不知道|不了解|不清楚|后悔|亏了)",
+    ],
+    # --- 饥饿营销 / 虚假稀缺 ---
+    "scarcity": [
+        r"(仅|只|仅剩|只剩|最后|马上|即将|马上).{0,4}(几?\d?\s*(本|套|份|个|名|位)|断货|下架|售罄|结束|失效|过期)",
+        r"(限时|限量|秒杀|抢购|手慢无|库存紧张)",
+    ],
+    # --- 虚构人设 / 虚假事件 ---
+    "fake_persona": [
+        r"\d+\s*岁.{0,6}(老奶奶|奶奶|老人|大爷|爷爷|老头).{0,20}(还在|吃|用|推荐)",
+        r"(震惊医学界|填补.*空白|突破.*壁垒|解密|机密|高层重视)",
+        r"(发往.{0,10}(海外|国外|德国|美国).{0,10}(又运回来|低价甩卖))",
+    ],
+    # --- K12 学科培训暗示（教育专项）---
+    "k12_violation": [
+        r"(保过|稳上|冲刺|考入|考上).{0,5}(985|211|清华|北大|重点|名校)",
+        r"(提升成绩|提高分数|成绩飞跃|学科能力|稳坐年级前排)",
+        r"(超前学习|抢跑|弯道超车)",
+    ],
+    # --- 价格违规 ---
+    "price_violation": [
+        r"\d\.\d\s*元",  # 过低价格（如9.9元、1元等）
+        r"(免费|0元|不要钱).{0,5}(领|送|拿|带回家)",
+    ],
+}
+
+import re as _re_module
+
+def _is_sensitive_topic(title: str) -> bool:
+    """检查热搜标题是否属于敏感话题，若是则不应用于文案生成"""
+    for keyword in SENSITIVE_TOPIC_BLACKLIST:
+        if keyword in title:
+            return True
+    return False
+
+
+def _audit_copy(copy_text: str) -> tuple:
+    """
+    审核单条文案，返回 (is_pass: bool, violations: list[str])
+    
+    基于 V6 规则文档的审核红线对 AI 输出进行后处理过滤：
+    - 绝对化用语 / 极限词
+    - 虚假效果承诺
+    - 焦虑营销
+    - 饥饿营销
+    - 虚构人设
+    - K12培训暗示
+    - 价格违规
+    """
+    violations = []
+    text = copy_text
+    
+    for rule_name, patterns in COPY_FILTER_RULES.items():
+        for pattern in patterns:
+            matches = _re_module.findall(pattern, text)
+            if matches:
+                violations.append(f"[{rule_name}] 命中: '{matches[0]}'")
+    
+    return len(violations) == 0, violations
+
+
+def _filter_copies(copies: List[str]) -> List[str]:
+    """
+    对 AI 生成的文案列表进行审核过滤
+    返回过滤后的合规文案列表
+    """
+    passed = []
+    for i, copy in enumerate(copies):
+        is_pass, violations = _audit_copy(copy)
+        if is_pass:
+            passed.append(copy)
+        else:
+            log(f"  ⚠️ 文案第{i+1}条未通过审核: {'; '.join(violations)}", "WARN")
+    
+    return passed
+
+
+def _sanitize_matched_hots(hots: List[str], all_items: List[Dict]) -> List[Dict]:
+    """
+    过滤掉敏感话题的热点，只返回安全可用的热点
+    同时从原始数据中移除已过滤条目
+    """
+    safe_hots = []
+    filtered_titles = set()
+    
+    for item in all_items:
+        title = item.get("title", "")
+        if _is_sensitive_topic(title):
+            filtered_titles.add(title)
+            log(f"  🔒 过滤敏感话题: {title}", "WARN")
+            continue
+        safe_hots.append(item)
+    
+    return safe_hots, filtered_titles
+
 
 # 页面2使用的图书类目及其匹配关键词（和模板中的 DB 保持一致）
 PAGE2_CATEGORIES = {
@@ -636,12 +782,15 @@ AI_API_KEY_ENV = "ZHIPU_API_KEY"  # 环境变量名
 
 
 def _match_hots_for_category(cat_info: Dict, all_items: List[Dict], top_n: int = 5) -> List[str]:
-    """为一个类目从全部热搜中匹配最相关的 top_n 条标题"""
+    """为一个类目从全部热搜中匹配最相关的 top_n 条标题（已过滤敏感话题）"""
     hot_kw = cat_info["hotKw"]
     scored = []
     seen = set()
     for item in all_items:
         title = item["title"]
+        # 跳过敏感话题
+        if _is_sensitive_topic(title):
+            continue
         if title in seen:
             continue
         score = sum(1 for kw in hot_kw if kw.lower() in title.lower())
@@ -655,9 +804,77 @@ def _match_hots_for_category(cat_info: Dict, all_items: List[Dict], top_n: int =
     return [t for t, s in scored[:top_n]]
 
 
+# V6 审核规则详细版 Prompt（基于全行业通用+教育行业+阅读短剧规则文档）
+V6_AUDIT_RULES_PROMPT = """## 腾讯广告 V6 审核红线（基于最新 V6 规则文档，严格遵守）
+
+### 一、绝对化用语（❌ 直接拒审）
+- 禁止：最好、最棒、最强、最优、最全、最新、最火、最畅销、最权威、最专业、最有效
+- 禁止：绝对、肯定、必须、唯一、第一、顶级、领先、极致、完美、永久、彻底
+- 禁止：全网第一/独家/仅此/空前、100%、百分百、零风险
+- ✅ 替代：畅销、热门、备受喜爱、广受好评、值得关注
+
+### 二、虚假夸大 / 效果承诺（❌ 直接拒审）
+- 禁止：3天学会/5天掌握/X天变瘦/读完就变/看完就会
+- 禁止：保过/稳过/一次通过/不过退费/押题密卷/押题准
+- 禁止：成绩突飞猛进/分数蹭蹭涨/稳拿年级前排/想不考高分都难
+- 禁止：薪资翻倍/年入百万/赚大钱/买房买车
+- 禁止：解决所有问题/治好一切/效果立竿见影
+- ✅ 替代：助力学习/陪伴阅读之旅/帮助了解/有助于拓展认知
+
+### 三、焦虑营销 / 制造恐慌（❌ 直接拒审）
+- 禁止：不买就晚了/再不读就落后了/别人家孩子都在看
+- 禁止：你还不知道吧？(反问式焦虑)
+- 禁止：大部分人都后悔了/很多人不知道(暗示信息差恐慌)
+- ✅ 替代：翻开下一页，发现新可能/今天开始也不晚
+
+### 四、饥饿营销 / 虚假稀缺（⚠️ 需资质）
+- 禁止：仅剩XX本/马上断货/马上下架/最后X小时/限量抢购
+- ⚠️ 如需使用"售完即止""售完下架"需提交活动备案资质
+- ✅ 无资质时可用：数量有限/感兴趣速看
+
+### 五、虚构人设 / 虚假事件（❌ 直接拒审）
+- 禁止：110岁老奶奶推荐/震惊医学界的发明/填补XX界空白
+- 禁止：发往海外又运回来了/解密/高层重视研发
+- 禁止：人生逆袭剧场(穷→富)/情感导师自述经历
+- ✅ 替代：真实读者证言/客观描述书籍内容特色
+
+### 六、K12 学科培训（教育专项 ❌ 直接拒审）
+- 禁止：保上985/211/冲刺名校/提升分数/成绩飞跃
+- 禁止：超前学习/弯道超车/替代校内教学
+- 禁止：暗示可提高学科能力/考试通过率
+- ✅ 允许：实物书籍+"XX节"描述(如19.9元=物理大全+9节课)
+- ✅ 允许：课外阅读/兴趣拓展/亲子共读/文化启蒙
+
+### 七、价格违规
+- 养生书价格不得低于19.9元
+- "免费领""0元购"需活动备案资质
+- 文案中不要出现具体价格数字
+
+### 八、对比贬低（❌ 直接拒审）
+- 禁止：比报班强100倍/比其他家好/比XX有效
+- 禁止："学前vs学后"效果对比展示
+- ✅ 替代：只突出自身优势，不提竞品
+
+### 九、仿新闻/政策借用（❌ 直接拒审）
+- 禁止：快讯/独家报道/紧急通知/最新通知等新闻标题样式
+- 禁止：借时政热点营销（巡视/外交/政策/民生事件）
+- 禁止：政府指定/国补/政策补贴/新课改等政策关联表述
+- ✅ 替代：正常广告文案风格/文化/生活/中性话题借势
+
+### 十、第二人称定向规范
+- ❌ "30-40岁的你"/"20岁的你"（年龄+你直接定向）
+- ✅ "想要阅读的你"/"渴望成长的你"/"要装修的你们"（愿景+泛指）
+"""
+
+
 def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
     """
-    调用 DeepSeek API 为每个图书类目生成结合今日热搜的前贴文案
+    调用智谱 GLM API 为每个图书类目生成结合今日热搜的前贴文案
+    
+    改进点（基于V6规则文档）：
+    1. 预过滤敏感话题（时政/军事/负面事件），不用于文案生成
+    2. 增强版审核规则 Prompt（从6条扩展到10大类50+细则）
+    3. 输出后处理审核过滤器，对AI输出逐条校验
     
     返回: {"泛健康": ["文案1", "文案2", ...], "童书": [...], ...}
     如果 API 不可用或失败，返回空字典（模板中会使用硬编码的兜底文案）
@@ -673,40 +890,41 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
     
     result = {}
     
+    # ===== 预过滤：移除敏感话题热点 =====
+    safe_items, filtered_titles = _sanitize_matched_hots(all_items)
+    if filtered_titles:
+        log(f"🔒 已过滤 {len(filtered_titles)} 条敏感话题热点，剩余 {len(safe_items)} 条可用于文案生成")
+    
     for idx, (cat_name, cat_info) in enumerate(PAGE2_CATEGORIES.items()):
         # 请求间隔：避免触发限速（Too Many Requests）
         if idx > 0:
             time.sleep(8)
-        # 为该类目匹配今日热搜
-        matched_hots = _match_hots_for_category(cat_info, all_items)
+        
+        # 为该类目匹配今日安全热搜
+        matched_hots = _match_hots_for_category(cat_info, safe_items)
         if not matched_hots:
-            log(f"  ⚠️ 类目[{cat_name}]无匹配热搜，跳过", "WARN")
+            log(f"  ⚠️ 类目[{cat_name}]无匹配安全热搜，跳过", "WARN")
             continue
         
         hots_text = "\n".join(f"  - {t}" for t in matched_hots)
         
         prompt = f"""你是一名图书广告的资深文案策划。请根据今日热搜话题，为「{cat_info['bookDesc']}」撰写10条前贴视频广告文案。
 
-## 今日匹配热搜
+## 今日匹配热搜（已过滤敏感话题，可安全借势）
 {hots_text}
 
 ## 文案要求
-1. 每条约100字，共10条
+1. 每条约80-120字，共10条
 2. 语言风格：口语化、有感染力、能吸引用户停留
 3. 写作技巧：反常识开头/信息差钩子/设问反问/场景代入
-4. 每条文案必须结合至少一个今日热搜话题，自然引入图书推荐
+4. 每条文案必须自然结合至少一个今日热搜话题引入图书推荐
 5. 落点到图书产品，用"这本书""这套书"等泛指，不编造具体书名
+6. 不使用任何具体价格数字
 
-## 腾讯广告审核红线（严格遵守）
-- 禁止绝对化用语（"最好""必须""第一"）
-- 禁止虚假稀缺（"仅剩XX本""马上下架""限量"）
-- 禁止焦虑营销（"不买就晚了""别人家孩子都在看"）
-- 禁止虚假承诺效果（"3天学会""看完就变"）
-- 禁止利用专家/名师形象背书
-- 禁止诱导性表述（"点击""赶紧下单"）
+{V6_AUDIT_RULES_PROMPT}
 
 ## 输出格式
-只输出10条文案，每条一行，用数字编号，不要输出任何其他内容。
+只输出10条合规文案，每条一行，用数字编号。如果某条无法确保合规，请替换为其他表达方式。
 1. 文案内容
 2. 文案内容
 ...
@@ -716,11 +934,11 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
             req_body = json.dumps({
                 "model": AI_MODEL,
                 "messages": [
-                    {"role": "system", "content": "你是专业的图书广告文案策划师，擅长结合热点话题撰写合规的广告前贴文案。"},
+                    {"role": "system", "content": "你是专业的图书广告文案策划师，精通腾讯广告V6审核规则，擅长结合热点话题撰写完全合规的广告前贴文案。你的文案通过率极高。"},
                     {"role": "user", "content": prompt}
                 ],
-                "temperature": 0.8,
-                "max_tokens": 3000,
+                "temperature": 0.75,
+                "max_tokens": 3500,
             }).encode("utf-8")
             
             req = urllib.request.Request(
@@ -733,7 +951,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
                 method="POST",
             )
             
-            log(f"  🤖 正在为[{cat_name}]生成 AI 文案（匹配{len(matched_hots)}条热搜）...")
+            log(f"  🤖 正在为[{cat_name}]生成 AI 文案（匹配{len(matched_hots)}条安全热搜）...")
             
             with urllib.request.urlopen(req, timeout=90) as resp:
                 resp_data = json.loads(resp.read().decode("utf-8"))
@@ -741,22 +959,27 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
             content = resp_data.get("choices", [{}])[0].get("message", {}).get("content", "")
             
             # 解析文案：提取编号行
-            copies = []
+            raw_copies = []
             for line in content.strip().split("\n"):
                 line = line.strip()
                 if not line:
                     continue
-                # 去掉编号前缀 "1. " "2. " 等
-                import re as _re
-                cleaned = _re.sub(r"^\d+[\.\、\)\]]\s*", "", line).strip()
+                cleaned = _re_module.sub(r"^\d+[\.\、\)\]]\s*", "", line).strip()
                 if len(cleaned) > 30:  # 有效文案至少30字
-                    copies.append(cleaned)
+                    raw_copies.append(cleaned)
             
-            if copies:
-                result[cat_name] = copies[:10]
-                log(f"  ✅ [{cat_name}] 生成 {len(result[cat_name])} 条文案")
+            # ===== 后处理审核过滤 =====
+            passed_copies = _filter_copies(raw_copies)
+            
+            if passed_copies:
+                result[cat_name] = passed_copies[:10]
+                filtered_count = len(raw_copies) - len(passed_copies)
+                log_msg = f"  ✅ [{cat_name}] 输出{len(raw_copies)}条 → 审核通过{len(passed_copies)}条"
+                if filtered_count > 0:
+                    log_msg += f"（过滤{filtered_count}条违规）"
+                log(log_msg)
             else:
-                log(f"  ⚠️ [{cat_name}] AI返回内容解析失败", "WARN")
+                log(f"  ⚠️ [{cat_name}] AI返回的全部文案均未通过审核过滤，该类目跳过", "WARN")
                 
         except urllib.error.URLError as e:
             log(f"  ❌ [{cat_name}] API网络错误: {e.reason}", "ERROR")
@@ -765,7 +988,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
     
     total = sum(len(v) for v in result.values())
     if total > 0:
-        log(f"🤖 AI文案生成完成：{len(result)} 个类目共 {total} 条")
+        log(f"🤖 AI文案生成完成（V6审核增强版）：{len(result)} 个类目共 {total} 条合规文案")
     
     return result
 
