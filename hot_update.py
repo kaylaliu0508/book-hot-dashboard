@@ -629,9 +629,9 @@ PAGE2_CATEGORIES = {
     },
 }
 
-# AI API 配置（智谱 GLM-4-Flash，完全免费无限调用）
+# AI API 配置（智谱 GLM-4.7-Flash，最新免费模型，无限调用）
 AI_API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-AI_MODEL = "glm-4-flash"
+AI_MODEL = "glm-4.7-flash"
 AI_API_KEY_ENV = "ZHIPU_API_KEY"  # 环境变量名
 
 
