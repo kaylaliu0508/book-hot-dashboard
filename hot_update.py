@@ -629,9 +629,10 @@ PAGE2_CATEGORIES = {
     },
 }
 
-# DeepSeek API 配置
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
-DEEPSEEK_MODEL = "deepseek-chat"
+# AI API 配置（智谱 GLM-4-Flash，完全免费无限调用）
+AI_API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+AI_MODEL = "glm-4-flash"
+AI_API_KEY_ENV = "ZHIPU_API_KEY"  # 环境变量名
 
 
 def _match_hots_for_category(cat_info: Dict, all_items: List[Dict], top_n: int = 5) -> List[str]:
@@ -661,9 +662,9 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
     返回: {"泛健康": ["文案1", "文案2", ...], "童书": [...], ...}
     如果 API 不可用或失败，返回空字典（模板中会使用硬编码的兜底文案）
     """
-    api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+    api_key = os.environ.get(AI_API_KEY_ENV, "")
     if not api_key:
-        log("⚠️ 未设置 DEEPSEEK_API_KEY，跳过 AI 文案生成（使用模板默认文案）", "WARN")
+        log(f"⚠️ 未设置 {AI_API_KEY_ENV}，跳过 AI 文案生成（使用模板默认文案）", "WARN")
         return {}
     
     import urllib.request
@@ -709,7 +710,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
         
         try:
             req_body = json.dumps({
-                "model": DEEPSEEK_MODEL,
+                "model": AI_MODEL,
                 "messages": [
                     {"role": "system", "content": "你是专业的图书广告文案策划师，擅长结合热点话题撰写合规的广告前贴文案。"},
                     {"role": "user", "content": prompt}
@@ -719,7 +720,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
             }).encode("utf-8")
             
             req = urllib.request.Request(
-                DEEPSEEK_API_URL,
+                AI_API_URL,
                 data=req_body,
                 headers={
                     "Content-Type": "application/json",
