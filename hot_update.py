@@ -728,10 +728,11 @@ def _filter_copies(copies: List[str]) -> List[str]:
     return passed
 
 
-def _sanitize_matched_hots(hots: List[str], all_items: List[Dict]) -> List[Dict]:
+def _sanitize_matched_hots(all_items: List[Dict]) -> tuple:
     """
     过滤掉敏感话题的热点，只返回安全可用的热点
-    同时从原始数据中移除已过滤条目
+    
+    返回: (safe_items: List[Dict], filtered_titles: Set[str])
     """
     safe_hots = []
     filtered_titles = set()
