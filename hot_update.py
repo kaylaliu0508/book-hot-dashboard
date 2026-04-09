@@ -899,7 +899,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
     for idx, (cat_name, cat_info) in enumerate(PAGE2_CATEGORIES.items()):
         # 请求间隔：避免触发限速（Too Many Requests）
         if idx > 0:
-            time.sleep(8)
+            time.sleep(15)  # 从8秒增加到15秒，避免连续请求触发429限流
         
         # 为该类目匹配今日安全热搜
         matched_hots = _match_hots_for_category(cat_info, safe_items)
@@ -954,7 +954,7 @@ def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
             
             log(f"  🤖 正在为[{cat_name}]生成 AI 文案（匹配{len(matched_hots)}条安全热搜）...")
             
-            with urllib.request.urlopen(req, timeout=90) as resp:
+            with urllib.request.urlopen(req, timeout=180) as resp:  # 90s→180s，V6 Prompt较长需更长响应时间
                 resp_data = json.loads(resp.read().decode("utf-8"))
             
             content = resp_data.get("choices", [{}])[0].get("message", {}).get("content", "")
