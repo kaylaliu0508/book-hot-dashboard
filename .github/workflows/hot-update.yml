@@ -60,7 +60,8 @@ jobs:
       # ---- Step 4: 执行数据更新脚本（云模式）----
       - name: 🔥 执行热点数据更新
         env:
-          HOT_OUTPUT_MODE: cloud   # 关键！告诉脚本走云模式输出到 site_output/
+          HOT_OUTPUT_MODE: cloud
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           echo "🚀 开始执行热点数据更新..."
           python3 hot_update.py

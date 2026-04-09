@@ -598,6 +598,174 @@ def process_hot_items(items: List[Dict], platform: str) -> List[Dict]:
 
 
 # ============================================================
+#                AI 前贴文案生成（DeepSeek API）
+# ============================================================
+
+# 页面2使用的图书类目及其匹配关键词（和模板中的 DB 保持一致）
+PAGE2_CATEGORIES = {
+    "泛健康": {
+        "hotKw": ["养生", "健康", "感冒", "输液", "睡眠", "午睡", "饮食", "节气", "春天", "过敏", "保健", "穴位", "按摩", "中医", "减糖"],
+        "bookDesc": "养生保健/穴位按摩/节气饮食/健康科普类图书",
+    },
+    "童书": {
+        "hotKw": ["孩子", "儿童", "科学", "太空", "火箭", "卫星", "恐龙", "绘本", "动物", "植物", "实验", "极光", "磁暴", "航天", "极地", "发射", "英雄"],
+        "bookDesc": "少儿科普/绘本/儿童文学/学前启蒙类图书",
+    },
+    "教辅": {
+        "hotKw": ["教育", "学校", "考试", "作文", "教辅", "期中", "思维", "学生", "读书", "历史", "地理", "知识", "文化", "常识"],
+        "bookDesc": "中小学教辅/课外阅读/综合素养类图书",
+    },
+    "育儿": {
+        "hotKw": ["孩子", "家长", "教育", "亲子", "成长", "青春期", "早恋", "食堂", "家庭", "团圆", "母亲", "父亲", "儿子", "女儿", "产假", "假期"],
+        "bookDesc": "家庭教育/亲子沟通/育儿方法类图书",
+    },
+    "法律": {
+        "hotKw": ["法律", "法规", "新规", "遗嘱", "继承", "安全带", "消费", "物业", "交通", "婚姻", "房产", "离婚", "维权", "合同", "报警", "产假", "公司"],
+        "bookDesc": "法律常识/婚姻财产/消费维权/劳动权益类图书",
+    },
+    "AI": {
+        "hotKw": ["AI", "人工智能", "源码", "Claude", "Sora", "DeepSeek", "计算机", "网络", "信息", "泄露", "科技", "芯片", "算力", "大模型", "航天", "发射", "卫星", "极地"],
+        "bookDesc": "人工智能科普/前沿科技/计算机/互联网类图书",
+    },
+}
+
+# DeepSeek API 配置
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
+DEEPSEEK_MODEL = "deepseek-chat"
+
+
+def _match_hots_for_category(cat_info: Dict, all_items: List[Dict], top_n: int = 5) -> List[str]:
+    """为一个类目从全部热搜中匹配最相关的 top_n 条标题"""
+    hot_kw = cat_info["hotKw"]
+    scored = []
+    seen = set()
+    for item in all_items:
+        title = item["title"]
+        if title in seen:
+            continue
+        score = sum(1 for kw in hot_kw if kw.lower() in title.lower())
+        # 加上类目标签匹配
+        if item.get("tags"):
+            score += len(item["tags"])
+        if score > 0:
+            scored.append((title, score))
+            seen.add(title)
+    scored.sort(key=lambda x: -x[1])
+    return [t for t, s in scored[:top_n]]
+
+
+def generate_ai_copies(all_items: List[Dict]) -> Dict[str, List[str]]:
+    """
+    调用 DeepSeek API 为每个图书类目生成结合今日热搜的前贴文案
+    
+    返回: {"泛健康": ["文案1", "文案2", ...], "童书": [...], ...}
+    如果 API 不可用或失败，返回空字典（模板中会使用硬编码的兜底文案）
+    """
+    api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+    if not api_key:
+        log("⚠️ 未设置 DEEPSEEK_API_KEY，跳过 AI 文案生成（使用模板默认文案）", "WARN")
+        return {}
+    
+    import urllib.request
+    import urllib.error
+    
+    result = {}
+    
+    for cat_name, cat_info in PAGE2_CATEGORIES.items():
+        # 为该类目匹配今日热搜
+        matched_hots = _match_hots_for_category(cat_info, all_items)
+        if not matched_hots:
+            log(f"  ⚠️ 类目[{cat_name}]无匹配热搜，跳过", "WARN")
+            continue
+        
+        hots_text = "\n".join(f"  - {t}" for t in matched_hots)
+        
+        prompt = f"""你是一名图书广告的资深文案策划。请根据今日热搜话题，为「{cat_info['bookDesc']}」撰写10条前贴视频广告文案。
+
+## 今日匹配热搜
+{hots_text}
+
+## 文案要求
+1. 每条约100字，共10条
+2. 语言风格：口语化、有感染力、能吸引用户停留
+3. 写作技巧：反常识开头/信息差钩子/设问反问/场景代入
+4. 每条文案必须结合至少一个今日热搜话题，自然引入图书推荐
+5. 落点到图书产品，用"这本书""这套书"等泛指，不编造具体书名
+
+## 腾讯广告审核红线（严格遵守）
+- 禁止绝对化用语（"最好""必须""第一"）
+- 禁止虚假稀缺（"仅剩XX本""马上下架""限量"）
+- 禁止焦虑营销（"不买就晚了""别人家孩子都在看"）
+- 禁止虚假承诺效果（"3天学会""看完就变"）
+- 禁止利用专家/名师形象背书
+- 禁止诱导性表述（"点击""赶紧下单"）
+
+## 输出格式
+只输出10条文案，每条一行，用数字编号，不要输出任何其他内容。
+1. 文案内容
+2. 文案内容
+...
+"""
+        
+        try:
+            req_body = json.dumps({
+                "model": DEEPSEEK_MODEL,
+                "messages": [
+                    {"role": "system", "content": "你是专业的图书广告文案策划师，擅长结合热点话题撰写合规的广告前贴文案。"},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.8,
+                "max_tokens": 3000,
+            }).encode("utf-8")
+            
+            req = urllib.request.Request(
+                DEEPSEEK_API_URL,
+                data=req_body,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {api_key}",
+                },
+                method="POST",
+            )
+            
+            log(f"  🤖 正在为[{cat_name}]生成 AI 文案（匹配{len(matched_hots)}条热搜）...")
+            
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                resp_data = json.loads(resp.read().decode("utf-8"))
+            
+            content = resp_data.get("choices", [{}])[0].get("message", {}).get("content", "")
+            
+            # 解析文案：提取编号行
+            copies = []
+            for line in content.strip().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                # 去掉编号前缀 "1. " "2. " 等
+                import re as _re
+                cleaned = _re.sub(r"^\d+[\.\、\)\]]\s*", "", line).strip()
+                if len(cleaned) > 30:  # 有效文案至少30字
+                    copies.append(cleaned)
+            
+            if copies:
+                result[cat_name] = copies[:10]
+                log(f"  ✅ [{cat_name}] 生成 {len(result[cat_name])} 条文案")
+            else:
+                log(f"  ⚠️ [{cat_name}] AI返回内容解析失败", "WARN")
+                
+        except urllib.error.URLError as e:
+            log(f"  ❌ [{cat_name}] API网络错误: {e.reason}", "ERROR")
+        except Exception as e:
+            log(f"  ❌ [{cat_name}] AI文案生成失败: {e}", "ERROR")
+    
+    total = sum(len(v) for v in result.values())
+    if total > 0:
+        log(f"🤖 AI文案生成完成：{len(result)} 个类目共 {total} 条")
+    
+    return result
+
+
+# ============================================================
 #                   HTML 渲染引擎
 # ============================================================
 
@@ -760,6 +928,11 @@ class DashboardRenderer:
         page2_all_hots_json = _json.dumps(all_hots_for_page2, ensure_ascii=False)
         all_hots_json = _json.dumps(all_hot_keywords_js, ensure_ascii=False)
         
+        # ===== 页面2 AI文案：调用 DeepSeek 生成每日前贴文案 =====
+        ai_copies = generate_ai_copies(all_items)
+        # 将 AI 文案注入模板数据（JSON格式，供 JS 使用）
+        ai_copies_json = _json.dumps(ai_copies, ensure_ascii=False) if ai_copies else "{}"
+        
         # 替换模板中的占位符
         output = self.template_content
         
@@ -773,6 +946,9 @@ class DashboardRenderer:
         
         # 页面2数据：全平台热点合集（用于类目智能匹配）
         output = output.replace("{{ALL_HOTS_FOR_PAGE2}}", page2_all_hots_json)
+        
+        # 页面2数据：AI生成的每日前贴文案
+        output = output.replace("{{AI_COPIES_JSON}}", ai_copies_json)
         
         # 页面3数据：所有热点关键词（用于文案利用率检测）
         output = output.replace("{{ALL_HOT_KEYWORDS_JSON}}", all_hots_json)
