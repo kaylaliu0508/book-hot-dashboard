@@ -234,12 +234,39 @@ safe:"✅ 用\"了解趋势\"\"科普入门\"\"拓展认知\"等客观表述"},
 
 function pick(v){document.getElementById('catInput').value=v;doSearch();}
 
+// === 页面2: 敏感话题黑名单（与 Python 端 SENSITIVE_TOPIC_BLACKLIST 保持同步） ===
+// 命中以下关键词的热点不用于类目匹配和文案参考展示
+var PAGE2_SENSITIVE_KW=[
+  "中央","巡视","纪委","监察","中纪委","反腐","落马",
+  "访华","访问朝鲜","访朝","访美","外交","国防部","军事","军队","解放军",
+  "霍尔木兹海峡","伊朗","黎巴嫩","以色列","联合国谴责",
+  "台湾","台海","两岸","一国两制",
+  "造假","诈骗","骗局","曝光黑","被查","判了","死刑","致死","死亡",
+  "坠楼","自杀","他杀","事故","灾难","伤亡",
+  "将军","逝世","烈士","牺牲",
+  "黑中医","医疗事故",
+  "教育部","双减","新课改","升学政策","新政","新规",
+  "暴跌","崩盘","金融危机","跑路",
+  "紧急通知","最新通知","重要公告","红头文件"
+];
+
+// 检查标题是否为敏感话题
+function isSensitiveTopic(title){
+  for(var i=0;i<PAGE2_SENSITIVE_KW.length;i++){
+    if(title.indexOf(PAGE2_SENSITIVE_KW[i])!==-1) return true;
+  }
+  return false;
+}
+
 // 从全平台热搜中为类目匹配热点（按关键词命中数排序，取TOP5）
+// 已加入敏感话题前置过滤：敏感热点自动排除
 function matchHots(hotKw){
   var scored=[];
   var seen={};
   for(var i=0;i<ALL_HOTS.length;i++){
     var h=ALL_HOTS[i];
+    // ===== 前置审核过滤：跳过敏感话题 =====
+    if(isSensitiveTopic(h.t)) continue;
     if(seen[h.t]) continue; // 去重（同一标题跨平台可能重复）
     var score=0;
     var tLow=h.t.toLowerCase();

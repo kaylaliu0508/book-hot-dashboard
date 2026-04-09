@@ -1099,19 +1099,28 @@ class DashboardRenderer:
         )
         
         # ===== 页面2 数据：生成全平台热点合集JSON（含url、平台、热度）=====
+        # 前置审核过滤：敏感话题不传入模板的类目匹配模块
         all_hots_for_page2 = []
         platform_labels = {"wechat": "微信", "douyin": "抖音", "baidu": "百度"}
+        filtered_page2_count = 0
         for platform_key, platform_label in platform_labels.items():
             data_list = {"wechat": wechat_data, "douyin": douyin_data, "baidu": baidu_data}[platform_key]
             for item in data_list:
+                title = item["title"]
+                # 敏感话题过滤：不传给类目找热点模块
+                if _is_sensitive_topic(title):
+                    filtered_page2_count += 1
+                    continue
                 all_hots_for_page2.append({
                     "p": platform_label,
-                    "t": item["title"],
+                    "t": title,
                     "u": item.get("url", ""),
                     "h": item["heat"] if item["heat"] else "",
                     "tags": item.get("tags", []),
                     "rel": item.get("relevance", "—"),
                 })
+        if filtered_page2_count > 0:
+            log(f"🔒 页面2(类目找热点)已预过滤 {filtered_page2_count} 条敏感话题，剩余 {len(all_hots_for_page2)} 条")
         
         # ===== 页面3 数据：生成所有热点关键词字典（JS对象格式）=====
         all_hot_keywords_js = {}
