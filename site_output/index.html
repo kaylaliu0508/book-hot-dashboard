@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图书热点营销工作台 - 2026.04.09</title>
+<title>图书创意灵感中心 - 2026.04.09</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -51,16 +51,16 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 <!-- Header -->
 <div class="bar"><div class="bar-in">
-<div class="lg">📊 图书热点工作台</div>
-<button class="tb on" onclick="go('p1',this)">热点监控</button>
-<button class="tb" onclick="go('p2',this)">类目找热点</button>
+<div class="lg">📊 图书创意灵感中心</div>
+<button class="tb on" onclick="go('p1',this)">话题监控</button>
+<button class="tb" onclick="go('p2',this)">类目找灵感</button>
 </div></div>
 
 <div class="wrap">
 
-<!-- ==================== 页面1: 热点监控 (数据区) ==================== -->
+<!-- ==================== 页面1: 话题监控 (数据区) ==================== -->
 <div class="ct pg on" id="pg-p1">
-<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔥 实时热点监控</h2>
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔥 实时话题监控</h2>
 <p class="subtitle">三大信息源 TOP20 并列展示 | 2026.04.09 | 图书相关度：<span class="rel-h">高</span> <span class="rel-m">中</span> <span class="rel-l">低</span> <span class="rel-n">—</span> 颜色越深越值得蹭 | 🔄 每日自动更新</p>
 
 <div class="tri">
@@ -148,10 +148,10 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="ft">数据源：<a href="https://ie.sogou.com/top/" style="color:#999">搜狗热搜</a> · <a href="https://www.xpaihang.com/platform/douyin" style="color:#999">X排行-抖音</a> · <a href="https://top.baidu.com/board?tab=realtime" style="color:#999">百度官方</a> | 2026.04.09 | 页面生成于 2026年04月09日 10:45</div>
 </div>
 
-<!-- ==================== 页面2: 类目找热点 (保留原逻辑) ==================== -->
+<!-- ==================== 页面2: 类目找灵感 (保留原逻辑) ==================== -->
 <div class="ct pg" id="pg-p2">
-<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔍 按类目找热点</h2>
-<p class="subtitle">选择图书类目 → 匹配今日热点 → 生成前贴文案 → 标注审核风险</p>
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🔍 按类目找灵感</h2>
+<p class="subtitle">选择图书类目 → 匹配今日话题 → 生成前贴文案 → 标注审核风险</p>
 <div style="background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2);border-radius:8px;padding:8px 12px;margin:8px 0 12px;display:flex;align-items:flex-start;gap:6px">
 <span style="flex-shrink:0;font-size:13px">⚠️</span>
 <p style="font-size:10.5px;color:#b8a24e;line-height:1.6;margin:0"><strong>免责声明</strong>：以下文案建议由系统基于热点关键词自动生成，仅供创意参考，不构成投放指导。实际素材请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯广告</a>平台审核规范为准，投放前请自行完成合规审查。</p>
@@ -379,7 +379,7 @@ function doSearch(){
     var hots=matchHots(m.hotKw||[]);
     html+='<div class="res-card" style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:12px;border:1px solid #21262d;border-left:3px solid #e63946">';
     html+='<div class="res-label" style="font-size:11px;color:#e63946;font-weight:600;margin-bottom:8px">匹配类目：'+matched.join(' · ')+'</div>';
-    html+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:4px">📌 今日可参考热点</h3>';
+    html+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:4px">📌 今日可参考话题</h3>';
     if(hots.length>0){
       for(var j=0;j<hots.length;j++){
         var h=hots[j];

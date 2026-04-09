@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-图书热点营销工作台 - 定时数据更新脚本
+图书创意灵感中心 - 定时数据更新脚本
 
 功能：
   - 从数据源获取最新热搜数据（微信生态 / 抖音 / 百度）
@@ -1108,7 +1108,7 @@ class DashboardRenderer:
             data_list = {"wechat": wechat_data, "douyin": douyin_data, "baidu": baidu_data}[platform_key]
             for item in data_list:
                 title = item["title"]
-                # 敏感话题过滤：不传给类目找热点模块
+                # 敏感话题过滤：不传给类目找灵感模块
                 if _is_sensitive_topic(title):
                     filtered_page2_count += 1
                     continue
@@ -1121,7 +1121,7 @@ class DashboardRenderer:
                     "rel": item.get("relevance", "—"),
                 })
         if filtered_page2_count > 0:
-            log(f"🔒 页面2(类目找热点)已预过滤 {filtered_page2_count} 条敏感话题，剩余 {len(all_hots_for_page2)} 条")
+            log(f"🔒 页面2(类目找灵感)已预过滤 {filtered_page2_count} 条敏感话题，剩余 {len(all_hots_for_page2)} 条")
         
         # ===== 页面3 数据：生成所有热点关键词字典（JS对象格式）=====
         all_hot_keywords_js = {}
@@ -1219,7 +1219,7 @@ def main():
     """主函数"""
     mode_label = "☁️ 云端模式 (Vercel)" if OUTPUT_MODE == "cloud" else "🏠 本地模式 (微信临时文件)"
     print("=" * 65)
-    print(f"🔄 图书热点工作台 - 数据更新开始")
+    print(f"🔄 图书创意灵感中心 - 数据更新开始")
     print(f"   时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"   模式: {mode_label}")
     print("=" * 65)
