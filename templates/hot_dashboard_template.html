@@ -54,6 +54,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="lg">📊 图书创意灵感中心</div>
 <button class="tb on" onclick="go('p1',this)">话题监控</button>
 <button class="tb" onclick="go('p2',this)">类目找灵感</button>
+<button class="tb" onclick="go('p3',this)">AI预审</button>
 </div></div>
 
 <div class="wrap">
@@ -105,6 +106,38 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div id="catOut"><div class="empty" style="text-align:center;padding:40px;color:#484f58;font-size:13px">👆 输入类目关键词或点击快捷标签</div></div>
 </div>
 
+</div>
+
+<!-- ==================== 页面3: AI预审 ==================== -->
+<div class="ct pg" id="pg-p3">
+<h2 style="font-size:18px;color:#1a1a2e;margin-bottom:2px">🛡️ AI 脚本预审</h2>
+<p class="subtitle">粘贴/上传脚本文案 → AI 风控审核 → 逐条给出修改建议 → 生成合规文案 → 一键复制</p>
+
+<div style="background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:8px 12px;margin:8px 0 12px;display:flex;align-items:flex-start;gap:6px">
+<span style="flex-shrink:0;font-size:13px">ℹ️</span>
+<p style="font-size:10.5px;color:#58a6ff;line-height:1.6;margin:0"><strong>审核规则来源</strong>：腾讯广告V6审核规则 + 中华人民共和国《广告法》+ 教育图书行业专项规则 + 平台通用红线。审核结果仅供参考，最终以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯广告</a>平台实际审核为准。</p>
+</div>
+
+<!-- 输入区 -->
+<div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<h3 style="font-size:13px;color:#f0f6fc">📋 输入脚本文案</h3>
+<div style="display:flex;gap:6px">
+<label for="fileUpload" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">📁 上传文件</label>
+<input type="file" id="fileUpload" accept=".txt,.doc,.docx,.md" style="display:none" onchange="handleFileUpload(event)">
+<button onclick="loadSampleScript()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">📝 示例文案</button>
+<button onclick="clearAudit()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">🗑️ 清空</button>
+</div>
+</div>
+<textarea id="scriptInput" rows="8" placeholder="在此粘贴脚本文案，支持多条（每条一段或一行），系统将逐条进行风控审核并给出修改建议…&#10;&#10;示例：&#10;大家苦苦寻找的按摩大全，有些按摩店不想让你知道这本书，因为这本书里的按摩技法完全是0成本……" style="width:100%;padding:12px;border:2px solid #30363d;border-radius:8px;font-size:12px;line-height:1.7;outline:none;background:#0d1117;color:#c9d1d9;resize:vertical;font-family:inherit;transition:.2s"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+<span id="charCount" style="font-size:10px;color:#484f58">0 字 / 0 条</span>
+<button onclick="runAudit()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'">🔍 开始预审</button>
+</div>
+</div>
+
+<!-- 审核结果区 -->
+<div id="auditResult"></div>
 </div>
 
 </div>
@@ -343,6 +376,466 @@ function doCopy(id){
       var btn=el.parentNode.querySelector('.copy-btn');
       if(btn){btn.textContent='已复制';btn.style.background='#07c160';btn.style.color='#fff';btn.style.borderColor='#07c160';setTimeout(function(){btn.textContent='复制';btn.style.background='';btn.style.color='';btn.style.borderColor='';},1500);}
     });
+  }
+}
+
+// ==================== 页面3: AI预审引擎 ====================
+
+// --- 审核规则库：基于广告法 + 腾讯广告V6规则 + 教育图书专项 + xlsx审核规则 ---
+var AUDIT_RULES=[
+// ====== 一、绝对化用语（广告法第9条 + V6规则）======
+{id:"ABS_1",cat:"绝对化用语",level:"reject",
+ re:/最\s*(好|棒|强|优|全|新|火|畅销|权威|专业|有效|佳|牛|厉害)/,
+ desc:"禁止使用极限词「最+X」",
+ fix:"删除「最」，改用「广受好评」「备受喜爱」「热门」等"},
+{id:"ABS_2",cat:"绝对化用语",level:"reject",
+ re:/(绝对|肯定|必须|唯一|第一|顶级|领先|极致|完美|永久|彻底|首选|顶尖|无敌|无与伦比)/,
+ desc:"禁止绝对化断言",
+ fix:"改用「值得关注」「颇受欢迎」等委婉表述"},
+{id:"ABS_3",cat:"绝对化用语",level:"reject",
+ re:/(全网|全国|全球)?(最|第一|独家|仅此|空前|No\.?1|Top\s*1|冠军|金牌)/,
+ desc:"禁止全网/全球级极限词",
+ fix:"删除排名类表述，改为客观描述产品特色"},
+{id:"ABS_4",cat:"绝对化用语",level:"reject",
+ re:/(100%|百分百|零风险|0风险)/,
+ desc:"禁止100%/零风险等绝对保证",
+ fix:"删除绝对数据，可改为「有助于」「帮助了解」"},
+
+// ====== 二、虚假夸大/效果承诺（广告法第28条 + V6规则）======
+{id:"EFF_1",cat:"虚假效果承诺",level:"reject",
+ re:/\d+\s*(天|小时|分钟)(学会|掌握|变|瘦|涨|提|升|改变|逆袭)/,
+ desc:"禁止限时效果承诺「X天学会/变XX」",
+ fix:"删除时间+效果关联，改为「循序渐进」「陪伴阅读之旅」"},
+{id:"EFF_2",cat:"虚假效果承诺",level:"reject",
+ re:/(看完|读完|学完|翻完)(就|即|立刻|马上|直接)(变|会|能|提|升|懂|通)/,
+ desc:"禁止「读完就变/就会」类即时效果暗示",
+ fix:"改为「有助于拓展认知」「帮助了解」"},
+{id:"EFF_3",cat:"虚假效果承诺",level:"reject",
+ re:/(保过|稳过|一次通过|不过退费|押题密卷|押题准|想不.*都难)/,
+ desc:"禁止考试保过/押题类承诺",
+ fix:"删除保证性承诺，改为「助力备考」「陪伴学习」"},
+{id:"EFF_4",cat:"虚假效果承诺",level:"reject",
+ re:/(成绩|分数|排名)(蹭蹭|突飞猛进|稳拿|暴涨|飙升|翻倍|直线上升)/,
+ desc:"禁止成绩飙升类效果暗示",
+ fix:"删除成绩相关承诺"},
+{id:"EFF_5",cat:"虚假效果承诺",level:"reject",
+ re:/(薪资翻倍|年入|月入|赚\d+|财务自由|一夜暴富)/,
+ desc:"禁止收入/财务承诺",
+ fix:"删除金钱相关效果承诺"},
+{id:"EFF_6",cat:"虚假效果承诺",level:"reject",
+ re:/解决所有?问题|治(好|愈)\s*(全部|一切|所有)|效果立竿见影/,
+ desc:"禁止「解决所有问题」类全能承诺",
+ fix:"改为「有助于」「帮助了解」"},
+
+// ====== 三、焦虑营销（V6规则 + 广告法）======
+{id:"ANX_1",cat:"焦虑营销",level:"reject",
+ re:/不(买|读|看|学|做|用).{0,5}(就)?(晚|亏|落后|后悔|来不及|out|淘汰|完了)/,
+ desc:"禁止「不买就晚了/落后了」式焦虑逼单",
+ fix:"删除焦虑话术，改为正向引导「翻开下一页，发现新可能」"},
+{id:"ANX_2",cat:"焦虑营销",level:"reject",
+ re:/再不.{0,4}(就|就真的|晚了|来不及|落后|错过)/,
+ desc:"禁止「再不X就晚了」式紧迫感制造",
+ fix:"删除紧迫感表述"},
+{id:"ANX_3",cat:"焦虑营销",level:"warn",
+ re:/别人家?.{0,3}(孩子|家长|人).{0,5}(都|已经|全)在?/,
+ desc:"涉嫌「别人家孩子都在」攀比式焦虑",
+ fix:"删除与他人比较的表述，聚焦产品本身价值"},
+{id:"ANX_4",cat:"焦虑营销",level:"warn",
+ re:/大部分?人.{0,10}(不知道|不了解|不清楚|后悔|亏了)/,
+ desc:"涉嫌信息差恐慌营销",
+ fix:"改为客观描述，不暗示「大部分人不知道」"},
+
+// ====== 四、饥饿营销/虚假稀缺（V6规则）======
+{id:"SCA_1",cat:"饥饿营销",level:"reject",
+ re:/(仅|只|仅剩|只剩|最后|马上|即将).{0,4}(几?\d?\s*(本|套|份|个|名|位)|断货|下架|售罄|结束|失效|过期)/,
+ desc:"禁止虚假限量/即将下架逼单",
+ fix:"删除虚假稀缺表述，如需使用需提交活动备案资质"},
+{id:"SCA_2",cat:"饥饿营销",level:"reject",
+ re:/(限时|限量|秒杀|抢购|手慢无|库存紧张|且买且珍惜|且拍且珍惜)/,
+ desc:"禁止无资质的限时抢购/库存紧张话术",
+ fix:"删除饥饿营销话术，改为「数量有限，感兴趣速看」"},
+
+// ====== 五、虚构人设/虚假事件（V6规则 + 广告法第28条）======
+{id:"FAKE_1",cat:"虚构人设",level:"reject",
+ re:/\d+\s*岁.{0,6}(老奶奶|奶奶|老人|大爷|爷爷|老头).{0,20}(还在|吃|用|推荐)/,
+ desc:"禁止虚构高龄人设背书",
+ fix:"删除虚构人物故事"},
+{id:"FAKE_2",cat:"虚构人设",level:"reject",
+ re:/(震惊医学界|填补.*空白|突破.*壁垒|解密|机密|高层重视|祖传秘方|不外传)/,
+ desc:"禁止虚构权威背景/神秘化表述",
+ fix:"删除夸张渲染，用客观事实描述"},
+{id:"FAKE_3",cat:"虚构人设",level:"reject",
+ re:/(发往.{0,10}(海外|国外|德国|美国).{0,10}(又运回来|低价甩卖))/,
+ desc:"禁止虚构进出口故事",
+ fix:"删除虚假场景"},
+{id:"FAKE_4",cat:"虚构人设",level:"warn",
+ re:/(老仓库|上次印刷还是.{0,5}\d+年前|稀有的书籍)/,
+ desc:"涉嫌虚构稀缺场景制造紧迫感",
+ fix:"删除虚构场景描述，客观介绍产品"},
+
+// ====== 六、K12学科培训暗示（教育专项 + 广告法第24条）======
+{id:"K12_1",cat:"K12违规",level:"reject",
+ re:/(保上|稳上|冲刺|考入|考上).{0,5}(985|211|清华|北大|重点|名校)/,
+ desc:"禁止升学保证性承诺（广告法第24条）",
+ fix:"删除升学承诺"},
+{id:"K12_2",cat:"K12违规",level:"reject",
+ re:/(提升成绩|提高分数|成绩飞跃|学科能力|稳坐年级前排)/,
+ desc:"禁止暗示可提高学科成绩",
+ fix:"改为「陪伴学习」「课外阅读」「兴趣拓展」"},
+{id:"K12_3",cat:"K12违规",level:"reject",
+ re:/(超前学习|抢跑|弯道超车|碾压同龄人)/,
+ desc:"禁止超前学习/弯道超车等竞争暗示",
+ fix:"删除竞争性表述，改为「拓展视野」「培养兴趣」"},
+
+// ====== 七、价格违规 ======
+{id:"PRI_1",cat:"价格违规",level:"warn",
+ re:/\d\.\d\s*元|[0-9]+\.9\s*元/,
+ desc:"文案中出现具体低价（养生书价不得低于19.9元）",
+ fix:"建议删除具体价格数字，引导至落地页查看"},
+{id:"PRI_2",cat:"价格违规",level:"reject",
+ re:/(免费|0元|不要钱).{0,5}(领|送|拿|带回家|获取)/,
+ desc:"禁止无资质的免费领/0元购",
+ fix:"删除免费话术，如有活动资质需单独备案"},
+
+// ====== 八、未授权代言/官方背书（广告法第9/10/11条）======
+{id:"END_1",cat:"未授权背书",level:"reject",
+ re:/(央视|CCTV|人民日报|新华社|新华网).{0,5}(力荐|推荐|点赞|报道|认可|好评)/,
+ desc:"禁止未授权使用官方媒体背书",
+ fix:"删除官媒背书，产品推广不得借用官方名义"},
+{id:"END_2",cat:"未授权背书",level:"reject",
+ re:/(教育部|卫生部|文化部|科技部|国务院|中科院).{0,5}(推荐|指定|认可|发布|批准)/,
+ desc:"禁止使用国家机关推荐/指定",
+ fix:"删除政府机构背书"},
+{id:"END_3",cat:"未授权背书",level:"reject",
+ re:/(钟南山|院士|教授|博导|主任医师|名医).{0,5}(推荐|亲测|力荐|认可|代言)/,
+ desc:"禁止未授权名人代言/专家推荐",
+ fix:"删除名人背书，改为客观产品描述"},
+
+// ====== 九、健康疗效暗示（广告法第17/18条）======
+{id:"HP_1",cat:"健康疗效暗示",level:"reject",
+ re:/(治好|治愈|根治|治疗|疗愈|调理好).{0,8}(失眠|颈椎|腰椎|三高|糖尿病|高血压|便秘|肥胖|近视|脊椎)/,
+ desc:"禁止暗示治疗疾病效果（广告法第17/18条）",
+ fix:"删除疗效暗示，改为「科普分享」「营养知识」「日常参考」"},
+{id:"HP_2",cat:"健康疗效暗示",level:"reject",
+ re:/(药到病除|有病治病|无病强身|包治百病|手到病除|妙手回春)/,
+ desc:"禁止医疗断言用语",
+ fix:"删除医疗断言"},
+{id:"HP_3",cat:"健康疗效暗示",level:"reject",
+ re:/(替代|不用|不需要|省去).{0,5}(就医|看病|去医院|挂号|吃药)/,
+ desc:"禁止暗示替代就医",
+ fix:"删除替代就医暗示，养生书不得暗示替代医疗"},
+{id:"HP_4",cat:"健康疗效暗示",level:"warn",
+ re:/(保驾护航|为.*健康.*护航)/,
+ desc:"涉嫌健康效果暗示",
+ fix:"改为「了解健康知识」「日常参考」"},
+
+// ====== 十、虚假数据/无依据断言（广告法第28条）======
+{id:"DATA_1",cat:"虚假数据",level:"reject",
+ re:/\d{2,}%\s*的?(人|读者|用户|家长|孩子|学生|妈妈|爸爸|家庭)/,
+ desc:"禁止无依据的百分比数据「XX%的人」",
+ fix:"删除未经证实的统计数据"},
+{id:"DATA_2",cat:"虚假数据",level:"reject",
+ re:/(销量|销售).{0,5}(突破|超过|高达).{0,5}\d/,
+ desc:"禁止无法验证的销量数据",
+ fix:"删除销量宣称"},
+{id:"DATA_3",cat:"虚假数据",level:"reject",
+ re:/畅销\d+\s*(年|万|亿)/,
+ desc:"禁止无依据的畅销数据",
+ fix:"删除畅销宣称"},
+
+// ====== 十一、对比贬低 ======
+{id:"CMP_1",cat:"对比贬低",level:"reject",
+ re:/比(报班|其他|别家|XX|竞品).{0,5}(强|好|有效|管用|靠谱)/,
+ desc:"禁止对比贬低竞品",
+ fix:"只突出自身优势，不提竞品"},
+
+// ====== 十二、仿新闻/政策借用 ======
+{id:"NEWS_1",cat:"仿新闻",level:"reject",
+ re:/(快讯|独家报道|紧急通知|最新通知|重要公告|红头文件|出大事了)/,
+ desc:"禁止仿新闻/官方公告样式",
+ fix:"使用正常广告文案风格"},
+{id:"NEWS_2",cat:"仿新闻",level:"reject",
+ re:/(国补|政策补贴|新课改|政府指定|国家补助).{0,10}(买|购|领|抢)/,
+ desc:"禁止借用政策名义营销",
+ fix:"删除政策关联表述"},
+
+// ====== 十三、诱导未成年人（广告法第40条）======
+{id:"MIN_1",cat:"诱导未成年人",level:"reject",
+ re:/(别的|其他|隔壁|人家)(孩子|小朋友|同学).{0,10}(都有|都在|都买|都用|都看)/,
+ desc:"禁止诱导儿童攀比消费",
+ fix:"删除攀比表述，改为正向引导"},
+{id:"MIN_2",cat:"诱导未成年人",level:"reject",
+ re:/(不买|不读|不学).{0,5}(被笑话|被嘲笑|被孤立|丢人|没面子)/,
+ desc:"禁止利用儿童天性制造焦虑",
+ fix:"删除负面后果暗示"},
+
+// ====== 十四、教育图书行业专项（来自xlsx审核规则）======
+{id:"EDU_1",cat:"教育专项",level:"reject",
+ re:/(教辅工具).{0,10}(单独推广|仅推).{0,5}(出版物|书籍)/,
+ desc:"教辅工具行业不得单独推广出版物",
+ fix:"需搭配教辅工具一起推广"},
+{id:"EDU_2",cat:"教育专项",level:"warn",
+ re:/(免考|免试|免联考).{0,10}(拿|获得|入学)/,
+ desc:"「免考/免试」需说明免考条件和要求",
+ fix:"需在文案中明确免考条件（免考学科+学校）"},
+{id:"EDU_3",cat:"教育专项",level:"warn",
+ re:/(只考|仅考)\s*\d+\s*门/,
+ desc:"考研科目数量需明确具体专业",
+ fix:"需明确具体专业，如「工商管理（MBA）只考2门」"},
+{id:"EDU_4",cat:"教育专项",level:"warn",
+ re:/(品牌名称|门店信息).{0,10}(缺失|未标注)/,
+ desc:"教育行业素材需清晰展示品牌名称",
+ fix:"需在素材中清晰标注品牌名称（不小于25px）"},
+
+// ====== 十五、第二人称定向规范 ======
+{id:"P2_1",cat:"定向规范",level:"warn",
+ re:/\d{2,}\s*(岁|后)的你/,
+ desc:"禁止年龄+你直接定向（如30岁的你）",
+ fix:"改为「想要阅读的你」「渴望成长的你」等愿景式泛指"},
+
+// ====== 十六、敏感话题借势 ======
+{id:"SEN_1",cat:"敏感话题",level:"reject",
+ re:/(巡视|纪委|反腐|访华|访朝|台海|两岸|港独|台独|军队|解放军)/,
+ desc:"禁止借用时政/军事/涉台话题营销",
+ fix:"删除敏感话题关联，使用文化/生活/中性话题"},
+];
+
+// --- 文案分段 ---
+function splitCopies(text){
+  var lines=text.split(/\n+/).map(function(l){return l.trim();}).filter(function(l){return l.length>15;});
+  if(lines.length<=1 && text.length>200){
+    // 尝试按句号分段
+    lines=text.split(/。/).map(function(s){return s.trim();}).filter(function(s){return s.length>15;});
+    // 重新合并为每2-3句一条
+    var merged=[];var buf='';
+    for(var i=0;i<lines.length;i++){
+      buf+=(buf?'。':'')+lines[i];
+      if(buf.length>80||(i===lines.length-1 && buf.length>15)){
+        merged.push(buf+(buf.charAt(buf.length-1)==='。'?'':'。'));buf='';
+      }
+    }
+    if(buf.length>15) merged.push(buf);
+    return merged.length>0?merged:[text];
+  }
+  return lines.length>0?lines:[text];
+}
+
+// --- 审核单条文案 ---
+function auditOneCopy(text){
+  var violations=[];
+  for(var i=0;i<AUDIT_RULES.length;i++){
+    var rule=AUDIT_RULES[i];
+    var matches=text.match(rule.re);
+    if(matches){
+      violations.push({
+        id:rule.id,cat:rule.cat,level:rule.level,
+        desc:rule.desc,fix:rule.fix,
+        matched:matches[0]
+      });
+    }
+  }
+  return violations;
+}
+
+// --- 生成合规化建议文案 ---
+function generateCompliantCopy(text,violations){
+  var result=text;
+  // 按匹配长度降序排列，先替换长的
+  var sorted=violations.slice().sort(function(a,b){return b.matched.length-a.matched.length;});
+  for(var i=0;i<sorted.length;i++){
+    var v=sorted[i];
+    // 对于 reject 级别，直接删除违规词
+    if(v.level==='reject'){
+      result=result.replace(v.matched,'');
+    }
+  }
+  // 清理多余的标点
+  result=result.replace(/[，。、]{2,}/g,'，').replace(/^[，。、]+/,'').replace(/[，]+$/,'。');
+  if(result.length<20) return null; // 修改后太短则标记为不可修复
+  return result;
+}
+
+// 字数统计
+var scriptTA=document.getElementById('scriptInput');
+if(scriptTA){
+  scriptTA.addEventListener('input',function(){
+    var text=this.value.trim();
+    var chars=text.length;
+    var lines=text?splitCopies(text).length:0;
+    document.getElementById('charCount').textContent=chars+' 字 / '+lines+' 条';
+  });
+}
+
+// 文件上传
+function handleFileUpload(e){
+  var file=e.target.files[0];
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    document.getElementById('scriptInput').value=ev.target.result;
+    document.getElementById('scriptInput').dispatchEvent(new Event('input'));
+  };
+  reader.readAsText(file,'utf-8');
+}
+
+// 示例文案
+function loadSampleScript(){
+  var sample="大家苦苦寻找的按摩大全，有些按摩店不想让你知道这本书，因为这本书里的按摩技法完全是0成本，自己在家就能学会，那你都知道了，他们店里还怎么挣钱？所以就算这本书多管用，他们都不告诉你，但是我要让普通老百姓都看见这本书。令人遗憾的是，这套稀有的书籍上次印刷还是在10年前，幸运的是，就在不久前，我来到一个穷市图书出版的老仓库选书，惊喜的发现仓库中居然还有这本书，不过库存不多了，我赶紧把它推荐给大家。它里面收录了600多种按摩技法，每天10分钟，按一按、揉一揉、捏一捏。那就能够为自己的健康保驾护航了。\n\n出大事了，全球局势动荡不安，告诉大家一个全球都不知道的秘密，有高人预警，2026年3月份过后，这6样东西马上就要涨价了。\n\n你从来不按太冲穴，所以心情总烦躁。你从来不按三阴交，所以手脚总是冰凉。你从来不按涌泉穴，所以早上起来没精神。如果记不住这些穴位，又找不到位置，这本3秒精准取穴，一定要拍一本回去，全彩印刷，图文清晰，收藏自用都合适。要不是出版社活动，这价格想都不敢想。现在我把它放在左下角，小黄车链接还能动，就说明还有库存，有需要的抓紧去拍。\n\n注意看这个位置是颈椎的开关，在大拇指根部和手腕之间找到一个感觉点，用大拇指按揉即可，每天两次，每次按揉30下。我们身上所有的问题，其实靠穴位按摩就可以调理好，这就是大家苦苦寻找的按摩大全。";
+  document.getElementById('scriptInput').value=sample;
+  document.getElementById('scriptInput').dispatchEvent(new Event('input'));
+}
+
+// 清空
+function clearAudit(){
+  document.getElementById('scriptInput').value='';
+  document.getElementById('auditResult').innerHTML='';
+  document.getElementById('charCount').textContent='0 字 / 0 条';
+}
+
+// --- 主审核流程 ---
+function runAudit(){
+  var text=document.getElementById('scriptInput').value.trim();
+  if(!text){alert('请先输入或粘贴脚本文案');return;}
+  
+  var copies=splitCopies(text);
+  var totalReject=0,totalWarn=0,totalPass=0;
+  var html='';
+  
+  // 汇总统计
+  var allViolations=[];
+  
+  for(var i=0;i<copies.length;i++){
+    var copy=copies[i];
+    var violations=auditOneCopy(copy);
+    allViolations=allViolations.concat(violations);
+    
+    var rejectCount=0,warnCount=0;
+    for(var j=0;j<violations.length;j++){
+      if(violations[j].level==='reject') rejectCount++;
+      else warnCount++;
+    }
+    
+    var status,statusColor,statusBg,statusIcon;
+    if(rejectCount>0){
+      status='不通过';statusColor='#ff6b6b';statusBg='rgba(230,57,70,.1)';statusIcon='❌';totalReject++;
+    } else if(warnCount>0){
+      status='需修改';statusColor='#ffd43b';statusBg='rgba(255,212,59,.08)';statusIcon='⚠️';totalWarn++;
+    } else {
+      status='通过';statusColor='#3fb950';statusBg='rgba(63,185,80,.08)';statusIcon='✅';totalPass++;
+    }
+    
+    html+='<div style="background:#161b22;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #21262d;border-left:3px solid '+statusColor+'">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    html+='<span style="font-size:12px;color:#f0f6fc;font-weight:600">'+statusIcon+' 第'+(i+1)+'条</span>';
+    html+='<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:'+statusBg+';color:'+statusColor+'">'+status+(rejectCount?' ('+rejectCount+'项拒审)':'')+(warnCount?' ('+warnCount+'项警告)':'')+'</span>';
+    html+='</div>';
+    
+    // 原文
+    html+='<div style="background:#0d1117;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:11.5px;line-height:1.6;color:#8b949e;border:1px solid #21262d">';
+    // 高亮违规词
+    var highlighted=copy;
+    for(var j=0;j<violations.length;j++){
+      var v=violations[j];
+      var color=v.level==='reject'?'#ff6b6b':'#ffd43b';
+      highlighted=highlighted.replace(v.matched,'<span style="background:rgba(230,57,70,.2);color:'+color+';font-weight:700;padding:0 2px;border-radius:2px;text-decoration:underline wavy '+color+'">'+v.matched+'</span>');
+    }
+    html+=highlighted;
+    html+='</div>';
+    
+    // 违规详情
+    if(violations.length>0){
+      html+='<div style="margin-bottom:8px">';
+      for(var j=0;j<violations.length;j++){
+        var v=violations[j];
+        var levelTag=v.level==='reject'?
+          '<span style="background:#e63946;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700">拒审</span>':
+          '<span style="background:#b8860b;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700">警告</span>';
+        html+='<div style="display:flex;align-items:flex-start;gap:6px;padding:4px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,.04)">';
+        html+=levelTag;
+        html+='<div style="flex:1"><span style="color:#c9d1d9">['+v.cat+']</span> <span style="color:#8b949e">'+v.desc+'</span>';
+        html+='<br><span style="color:#ff8a94;font-size:10px">命中：「'+v.matched+'」</span>';
+        html+='<br><span style="color:#3fb950;font-size:10px">💡 '+v.fix+'</span></div></div>';
+      }
+      html+='</div>';
+      
+      // 合规化建议文案
+      var compliant=generateCompliantCopy(copy,violations);
+      if(compliant){
+        html+='<div style="background:rgba(63,185,80,.06);border:1px solid rgba(63,185,80,.15);border-radius:6px;padding:8px 10px;margin-top:6px">';
+        html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:#3fb950;font-weight:600">✨ 合规化建议文案（自动删除违规词）</span>';
+        html+='<button class="copy-btn" style="padding:2px 8px;border-radius:4px;border:1px solid #30363d;background:#21262d;font-size:10px;color:#8b949e;cursor:pointer;flex-shrink:0" onclick="doCopyText(this,\''+btoa(unescape(encodeURIComponent(compliant)))+'\')">一键复制</button></div>';
+        html+='<div style="font-size:11.5px;line-height:1.6;color:#c9d1d9">'+compliant+'</div>';
+        html+='</div>';
+      } else {
+        html+='<div style="background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.15);border-radius:6px;padding:8px 10px;margin-top:6px;font-size:10px;color:#ff8a94">⚠️ 违规内容过多，建议整条重写</div>';
+      }
+    }
+    
+    html+='</div>';
+  }
+  
+  // 汇总面板
+  var summaryHtml='<div style="background:#161b22;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #21262d">';
+  summaryHtml+='<h3 style="font-size:14px;color:#f0f6fc;margin-bottom:10px">📊 预审汇总</h3>';
+  summaryHtml+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px">';
+  summaryHtml+='<div style="background:#0d1117;border-radius:8px;padding:10px;text-align:center;border:1px solid #21262d"><div style="font-size:20px;font-weight:700;color:#f0f6fc">'+copies.length+'</div><div style="font-size:10px;color:#8b949e">总条数</div></div>';
+  summaryHtml+='<div style="background:rgba(63,185,80,.06);border-radius:8px;padding:10px;text-align:center;border:1px solid rgba(63,185,80,.15)"><div style="font-size:20px;font-weight:700;color:#3fb950">'+totalPass+'</div><div style="font-size:10px;color:#3fb950">通过</div></div>';
+  summaryHtml+='<div style="background:rgba(255,212,59,.06);border-radius:8px;padding:10px;text-align:center;border:1px solid rgba(255,212,59,.15)"><div style="font-size:20px;font-weight:700;color:#ffd43b">'+totalWarn+'</div><div style="font-size:10px;color:#ffd43b">需修改</div></div>';
+  summaryHtml+='<div style="background:rgba(230,57,70,.06);border-radius:8px;padding:10px;text-align:center;border:1px solid rgba(230,57,70,.15)"><div style="font-size:20px;font-weight:700;color:#ff6b6b">'+totalReject+'</div><div style="font-size:10px;color:#ff6b6b">不通过</div></div>';
+  summaryHtml+='</div>';
+  
+  // 违规类型分布
+  if(allViolations.length>0){
+    var catCount={};
+    for(var i=0;i<allViolations.length;i++){
+      var c=allViolations[i].cat;
+      catCount[c]=(catCount[c]||0)+1;
+    }
+    summaryHtml+='<div style="font-size:11px;color:#8b949e;margin-bottom:4px">违规类型分布：</div><div style="display:flex;flex-wrap:wrap;gap:4px">';
+    for(var cat in catCount){
+      summaryHtml+='<span style="padding:2px 8px;border-radius:10px;font-size:10px;background:rgba(230,57,70,.1);color:#ff8a94;border:1px solid rgba(230,57,70,.2)">'+cat+' ×'+catCount[cat]+'</span>';
+    }
+    summaryHtml+='</div>';
+  }
+  
+  // 一键复制全部合规文案
+  var allCompliant=[];
+  for(var i=0;i<copies.length;i++){
+    var v=auditOneCopy(copies[i]);
+    if(v.length===0){
+      allCompliant.push(copies[i]);
+    } else {
+      var c=generateCompliantCopy(copies[i],v);
+      if(c) allCompliant.push(c);
+    }
+  }
+  if(allCompliant.length>0){
+    summaryHtml+='<div style="margin-top:12px;display:flex;gap:8px">';
+    summaryHtml+='<button onclick="doCopyText(this,\''+btoa(unescape(encodeURIComponent(allCompliant.join('\n\n'))))+'\')" style="padding:6px 16px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;font-weight:600">📋 一键复制全部合规文案 ('+allCompliant.length+'条)</button>';
+    summaryHtml+='</div>';
+  }
+  
+  summaryHtml+='</div>';
+  
+  document.getElementById('auditResult').innerHTML=summaryHtml+html;
+}
+
+// 一键复制工具
+function doCopyText(btn,b64text){
+  try{
+    var text=decodeURIComponent(escape(atob(b64text)));
+    navigator.clipboard.writeText(text).then(function(){
+      var orig=btn.textContent;
+      btn.textContent='已复制 ✓';btn.style.background='#07c160';btn.style.color='#fff';btn.style.borderColor='#07c160';
+      setTimeout(function(){btn.textContent=orig;btn.style.background='';btn.style.color='';btn.style.borderColor='';},1500);
+    });
+  }catch(e){
+    // fallback
+    var ta=document.createElement('textarea');
+    ta.value=decodeURIComponent(escape(atob(b64text)));
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent='已复制 ✓';setTimeout(function(){btn.textContent='复制';},1500);
   }
 }
 
