@@ -305,8 +305,15 @@ function matchHots(hotKw){
     for(var j=0;j<hotKw.length;j++){
       if(tLow.indexOf(hotKw[j].toLowerCase())!==-1) score++;
     }
-    // 也检查 tags 字段
-    if(h.tags && h.tags.length>0) score+=h.tags.length;
+    // tags加分：只有tag文字与类目关键词有交集时才加分
+    if(h.tags && h.tags.length>0){
+      for(var j=0;j<h.tags.length;j++){
+        var tagLow=h.tags[j].toLowerCase();
+        for(var k=0;k<hotKw.length;k++){
+          if(tagLow.indexOf(hotKw[k].toLowerCase())!==-1){score++;break;}
+        }
+      }
+    }
     if(score>0){
       scored.push({item:h,score:score});
       seen[h.t]=true;

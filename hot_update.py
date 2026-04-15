@@ -878,9 +878,12 @@ def _match_hots_for_category(cat_info: Dict, all_items: List[Dict], top_n: int =
         if title in seen:
             continue
         score = sum(1 for kw in hot_kw if kw.lower() in title.lower())
-        # 加上类目标签匹配
+        # 加上类目标签匹配：tag 文字需与当前类目关键词有交集才加分
         if item.get("tags"):
-            score += len(item["tags"])
+            for tag in item["tags"]:
+                tag_lower = tag.lower()
+                if any(kw.lower() in tag_lower for kw in hot_kw):
+                    score += 1
         if score > 0:
             scored.append((title, score))
             seen.add(title)
