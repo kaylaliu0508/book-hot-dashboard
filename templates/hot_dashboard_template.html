@@ -279,7 +279,10 @@ var PAGE2_SENSITIVE_KW=[
   "紧急通知","最新通知","重要公告","红头文件",
   "算命","风水","面相","手相","八字","星盘","塔罗","占卜",
   "批命","改命","改运","转运","运势","批卦",
-  "血腥","恐怖","惊悚","裸露","色情","低俗","擦边"
+  "算卦","天罡","地煞","道冠",
+  "血腥","恐怖","惊悚","裸露","色情","低俗","擦边",
+  "裸体","注射","解剖",
+  "国旗","国徽","五角星","人民币","长征","革命烈士"
 ];
 
 // 检查标题是否为敏感话题
@@ -728,7 +731,104 @@ var AUDIT_RULES=[
  re:/(免费|0元).{0,5}(课程|课|学习|听课)/,
  desc:"免费/低价课程需标注课程周期",
  fix:"需标注「此价格为体验课，仅前X天免费试听」"},
+
+// ====== ADQ违规词.xlsx — 效果承诺/无法核实 ======
+{id:"ADQ_EF1",cat:"ADQ效果承诺",level:"reject",
+ re:/成绩.{0,5}不会低于\d+/,
+ desc:"禁止「成绩不会低于XX」等效果保证",
+ fix:"删除成绩保证类表述"},
+{id:"ADQ_EF2",cat:"ADQ效果承诺",level:"reject",
+ re:/(送分题|永远考不过)/,
+ desc:"禁止「送分题/永远考不过」等效果暗示或焦虑话术",
+ fix:"删除考试效果暗示"},
+{id:"ADQ_EF3",cat:"ADQ效果承诺",level:"reject",
+ re:/人生.{0,5}(开了挂|像开挂|就像开了挂)/,
+ desc:"禁止「人生开挂」类夸张效果承诺",
+ fix:"改为客观描述，如「帮助拓展视野」"},
+{id:"ADQ_EF4",cat:"ADQ效果承诺",level:"reject",
+ re:/长脑子最快/,
+ desc:"禁止「长脑子最快」等极端表述",
+ fix:"改为「有助于拓展知识面」"},
+{id:"ADQ_EF5",cat:"ADQ效果承诺",level:"reject",
+ re:/(洞察天地|领悟天地|天地自然|天地规律)/,
+ desc:"禁止「洞察/领悟天地」类玄学夸张承诺",
+ fix:"删除玄学化表述"},
+{id:"ADQ_EF6",cat:"ADQ效果承诺",level:"reject",
+ re:/(抓住|错过).{0,5}(财富|风口|机会|红利)/,
+ desc:"禁止「抓住财富风口」类投资暗示",
+ fix:"删除财富承诺话术"},
+{id:"ADQ_EF7",cat:"ADQ效果承诺",level:"reject",
+ re:/(未来|以后).{0,5}(不再是|没人用|就没有)/,
+ desc:"禁止「未来不再是XX时代」类恐吓性预测",
+ fix:"删除恐吓式预测"},
+{id:"ADQ_EF8",cat:"ADQ效果承诺",level:"reject",
+ re:/花几倍的价格.{0,5}找不到/,
+ desc:"禁止「花几倍价格也找不到」虚假稀缺暗示",
+ fix:"删除虚假稀缺表述"},
+{id:"ADQ_EF9",cat:"ADQ效果承诺",level:"reject",
+ re:/(一眼看透|三秒破解|秒破解|秒看透)/,
+ desc:"禁止「一眼看透/三秒破解」等不切实际的效果",
+ fix:"改为「帮助理解」「有助于了解」"},
+{id:"ADQ_EF10",cat:"ADQ效果承诺",level:"reject",
+ re:/\d+岁.{0,5}(都能|就能|也能)(看懂|学会|掌握)/,
+ desc:"禁止「X岁都能看懂」等年龄+效果承诺",
+ fix:"改为「适合XX年龄段阅读」"},
+{id:"ADQ_EF11",cat:"ADQ效果承诺",level:"reject",
+ re:/(作文|成绩|分数).{0,5}(惊喜|飞跃|突破|不止一点点)/,
+ desc:"禁止作文/成绩相关效果承诺",
+ fix:"删除效果承诺"},
+{id:"ADQ_EF12",cat:"ADQ效果承诺",level:"reject",
+ re:/不是可以买.{0,5}是必须买/,
+ desc:"禁止强制购买暗示「不是可以买，是必须买」",
+ fix:"删除强制购买话术"},
+{id:"ADQ_EF13",cat:"ADQ效果承诺",level:"reject",
+ re:/中考真题讲解/,
+ desc:"禁止「中考真题讲解」等K12学科培训内容",
+ fix:"删除K12学科内容"},
+{id:"ADQ_EF14",cat:"ADQ效果承诺",level:"warn",
+ re:/你永远也斗不过/,
+ desc:"涉嫌焦虑营销「你永远也斗不过」",
+ fix:"删除焦虑化表述"},
+
+// ====== ADQ违规词.xlsx — 极限词/绝对化扩展 ======
+{id:"ADQ_ABS1",cat:"ADQ极限词",level:"reject",
+ re:/(最美|最好|最管用|最神秘|最后一批)/,
+ desc:"禁止极限词「最美/最好/最管用/最神秘/最后一批」",
+ fix:"删除极限词，改用「广受好评」「备受喜爱」"},
+
+// ====== ADQ违规词.xlsx — 封建迷信/违规描述 ======
+{id:"ADQ_SUP1",cat:"ADQ封建迷信",level:"reject",
+ re:/(灭佛|灭道|天罡|地煞|算卦|道冠)/,
+ desc:"禁止封建迷信相关词汇",
+ fix:"删除封建迷信内容"},
+
+// ====== ADQ违规词.xlsx — 名人背书 ======
+{id:"ADQ_CEL1",cat:"ADQ名人背书",level:"reject",
+ re:/(马云|马化腾|任正非|董明珠|雷军|刘强东|李嘉诚|王健林).{0,5}(都说|说过|推荐|都在|也在|曾说)/,
+ desc:"禁止未授权使用名人背书「XX都说/推荐」",
+ fix:"删除名人引用"},
+
+// ====== ADQ违规词.xlsx — 虚假百分比 ======
+{id:"ADQ_PCT1",cat:"ADQ虚假数据",level:"reject",
+ re:/(90|80|70|60|95|99|98|85)%.{0,5}(的|以上).{0,5}(人|企业|家长|孩子|学生|用户|中小型)/,
+ desc:"禁止「XX%的人/企业」等无依据百分比数据",
+ fix:"删除未经证实的统计数据"},
+
+// ====== ADQ违规词.xlsx — 政治元素 ======
+{id:"ADQ_POL1",cat:"ADQ政治元素",level:"reject",
+ re:/(国旗|国徽|五角星|人民币|革命烈士)/,
+ desc:"禁止在广告文案中出现政治元素",
+ fix:"删除政治元素相关内容"},
+
+// ====== ADQ违规词.xlsx — 未授权品牌/平台元素 ======
+{id:"ADQ_BR1",cat:"ADQ品牌侵权",level:"warn",
+ re:/(抖音直播|抖音粉丝团|抖音符号|抖音奖杯)/,
+ desc:"涉嫌未授权使用抖音平台UI元素",
+ fix:"删除第三方平台UI元素"},
 ];
+
+// --- ADQ违规词精确匹配列表（非正则，用于逐词检测）---
+var ADQ_BANNED_WORDS=["送分题","永远考不过","盈利","长脑子最快","洞察天地","领悟天地","天地自然","天地规律","财富风口","最后一批","最神秘","最美","最管用","天罡","地煞","算卦","道冠","裸体","注射","解剖","解剖学","司法考试","中考真题讲解","繁体字","被迫结婚","郭继承"];
 
 // --- 文案分段 ---
 function splitCopies(text){
@@ -753,6 +853,7 @@ function splitCopies(text){
 // --- 审核单条文案 ---
 function auditOneCopy(text){
   var violations=[];
+  // 正则规则检测
   for(var i=0;i<AUDIT_RULES.length;i++){
     var rule=AUDIT_RULES[i];
     var matches=text.match(rule.re);
@@ -762,6 +863,25 @@ function auditOneCopy(text){
         desc:rule.desc,fix:rule.fix,
         matched:matches[0]
       });
+    }
+  }
+  // ADQ精确违规词检测
+  for(var i=0;i<ADQ_BANNED_WORDS.length;i++){
+    var w=ADQ_BANNED_WORDS[i];
+    if(text.indexOf(w)!==-1){
+      // 避免与正则规则重复报告
+      var dup=false;
+      for(var j=0;j<violations.length;j++){
+        if(violations[j].matched && violations[j].matched.indexOf(w)!==-1){dup=true;break;}
+      }
+      if(!dup){
+        violations.push({
+          id:"ADQ_BAN",cat:"ADQ违规词",level:"reject",
+          desc:"命中ADQ违规词库禁用词",
+          fix:"删除或替换该违规词",
+          matched:w
+        });
+      }
     }
   }
   return violations;
