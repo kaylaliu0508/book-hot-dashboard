@@ -52,17 +52,17 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书创意灵感中心</div>
-<button class="tb on" onclick="go('p1',this)">话题监控</button>
+<button class="tb on" onclick="go('p4',this)">图书内容提取</button>
+<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
+<button class="tb" onclick="go('p1',this)">话题监控</button>
 <button class="tb" onclick="go('p2',this)">类目找灵感</button>
 <button class="tb" onclick="go('p3',this)">AI预审</button>
-<button class="tb" onclick="go('p4',this)">图书内容提取</button>
-<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
 </div></div>
 
 <div class="wrap">
 
 <!-- ==================== 页面1: 话题监控 (数据区) ==================== -->
-<div class="ct pg on" id="pg-p1">
+<div class="ct pg" id="pg-p1">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🔥 实时话题监控</h2>
 <p class="subtitle">三大信息源 TOP20 并列展示 | {{DATE_STR}} | 图书相关度：<span class="rel-h">高</span> <span class="rel-m">中</span> <span class="rel-l">低</span> <span class="rel-n">—</span> 颜色越深越值得蹭 | 🔄 {{UPDATE_FREQUENCY}}</p>
 
@@ -140,7 +140,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 
 <!-- ==================== 页面4: ISBN采集 ==================== -->
-<div class="ct pg" id="pg-p4">
+<div class="ct pg on" id="pg-p4">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📚 图书内容提取</h2>
 <p class="subtitle">输入 ISBN编号，一键检索全维度图书内容</p>
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
