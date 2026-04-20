@@ -1354,19 +1354,42 @@ class DashboardRenderer:
         douyin_data = process_hot_items(data.get("douyin", []), "douyin")
         baidu_data = process_hot_items(data.get("baidu", []), "baidu")
         
-        # ===== 页面1也做敏感话题过滤：不在话题监控中展示政治敏感内容 =====
-        def _filter_sensitive(items):
-            return [item for item in items if not _is_sensitive_topic(item["title"])]
+        # ===== 页面1：敏感话题过滤 + 图书相关度排序 =====
+        # 合并所有类目关键词用于判断图书相关性
+        _all_book_keywords = set()
+        for _cat_info in PAGE2_CATEGORIES.values():
+            _all_book_keywords.update(kw.lower() for kw in _cat_info["hotKw"])
         
-        wechat_display = _filter_sensitive(wechat_data)
-        douyin_display = _filter_sensitive(douyin_data)
-        baidu_display = _filter_sensitive(baidu_data)
+        def _is_book_related(title):
+            """判断热搜是否与图书类目相关"""
+            t = title.lower()
+            return any(kw in t for kw in _all_book_keywords)
+        
+        def _filter_and_sort(items):
+            """过滤敏感话题 + 按图书相关度排序（相关在前、无关在后）"""
+            safe = [item for item in items if not _is_sensitive_topic(item["title"])]
+            related = [item for item in safe if _is_book_related(item["title"])]
+            unrelated = [item for item in safe if not _is_book_related(item["title"])]
+            # 重新编排排名：相关话题在前
+            result = []
+            for i, item in enumerate(related + unrelated):
+                item_copy = dict(item)
+                item_copy["rank"] = i + 1
+                result.append(item_copy)
+            return result, len(related), len(unrelated)
+        
+        wechat_display, wc_rel, wc_unrel = _filter_and_sort(wechat_data)
+        douyin_display, dy_rel, dy_unrel = _filter_and_sort(douyin_data)
+        baidu_display, bd_rel, bd_unrel = _filter_and_sort(baidu_data)
         
         page1_filtered = (len(wechat_data) - len(wechat_display)) + \
                          (len(douyin_data) - len(douyin_display)) + \
                          (len(baidu_data) - len(baidu_display))
+        total_related = wc_rel + dy_rel + bd_rel
+        total_unrelated = wc_unrel + dy_unrel + bd_unrel
         if page1_filtered > 0:
             log(f"🔒 页面1(话题监控)已过滤 {page1_filtered} 条敏感话题")
+        log(f"📚 页面1 图书相关排序：{total_related} 条相关优先 + {total_unrelated} 条其他")
         
         # 渲染三列（使用过滤后的数据）
         columns_html = (
