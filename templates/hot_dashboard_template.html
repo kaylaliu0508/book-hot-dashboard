@@ -1478,7 +1478,14 @@ var sid=selectedStyles[i];var type=SCRIPT_TYPES.find(function(t){return t.id===s
 loadingText.textContent='正在生成 '+type.emoji+' '+type.name+'（'+(i+1)+'/'+selectedStyles.length+'）...';
 try{var prompt=scriptBuildPrompt(bookContent,audience,type);
 if(usedExamples.length>0){prompt+='\n\n## ⚠️ 素材差异化要求\n前面的脚本已经使用了以下案例/人物/片段，本篇必须选取完全不同的内容展开：\n- '+usedExamples.join('\n- ')+'\n\n请从书中选取其他章节、其他知识点、其他人物故事来创作，确保和前面的脚本没有重复素材。';}
-var script=await scriptCallAI(prompt);results.push({typeId:sid,script:script});
+var script=await scriptCallAI(prompt);
+// === 前置审核：用页面3完整审核规则校验，自动删除违规词 ===
+var scriptViolations=auditOneCopy(script);
+if(scriptViolations.length>0){
+  var cleaned=generateCompliantCopy(script,scriptViolations);
+  if(cleaned && cleaned.length>100){script=cleaned;}
+}
+results.push({typeId:sid,script:script});
 var examples=script.match(/[""「]([^""」]{4,20})[""」]/g);if(examples){usedExamples=usedExamples.concat(examples.slice(0,3).map(function(e){return e.replace(/[""「」]/g,'');}));}
 if(usedExamples.length>12)usedExamples=usedExamples.slice(-8);
 }
