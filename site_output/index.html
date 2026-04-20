@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图书创意灵感中心 - 2026.04.20</title>
+<title>图书创意灵感中心 - 2026.04.17</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -55,6 +55,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <button class="tb on" onclick="go('p1',this)">话题监控</button>
 <button class="tb" onclick="go('p2',this)">类目找灵感</button>
 <button class="tb" onclick="go('p3',this)">AI预审</button>
+<button class="tb" onclick="go('p4',this)">图书内容提取</button>
+<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
 </div></div>
 
 <div class="wrap">
@@ -62,91 +64,91 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面1: 话题监控 (数据区) ==================== -->
 <div class="ct pg on" id="pg-p1">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🔥 实时话题监控</h2>
-<p class="subtitle">三大信息源 TOP20 并列展示 | 2026.04.20 | 图书相关度：<span class="rel-h">高</span> <span class="rel-m">中</span> <span class="rel-l">低</span> <span class="rel-n">—</span> 颜色越深越值得蹭 | 🔄 每日自动更新</p>
+<p class="subtitle">三大信息源 TOP20 并列展示 | 2026.04.17 | 图书相关度：<span class="rel-h">高</span> <span class="rel-m">中</span> <span class="rel-l">低</span> <span class="rel-n">—</span> 颜色越深越值得蹭 | 🔄 每日自动更新</p>
 
 <div class="tri">
 <div class="col">
 <div class="col-h"><div class="ic" style="background:#07c160">微</div><h3>微信生态</h3><a href="https://ie.sogou.com/top/" target="_blank">查看来源 →</a></div>
 <table><thead><tr><th class="rk">#</th><th>热搜话题</th><th style="width:30px">相关</th></tr></thead>
 <tbody>
-<tr class="rl"><td class="rk r1">1</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%96%87%E6%97%85%E6%B7%B1%E5%BA%A6%E8%9E%8D%E5%90%88+%E6%98%A5%E6%97%A5%E7%BB%8F%E6%B5%8E%E6%8C%81%E7%BB%AD%E7%81%AB%E7%83%AD" target="_blank">文旅深度融合 春日经济持续火热</a><span class="dir"><span class="cat-tag">人文社科-经济/金融</span></span></td><td><span class="rel-l">低</span></td></tr>
-<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E7%94%B5%E5%8A%A8%E6%B1%BD%E8%BD%A6%E5%9C%A8%E6%97%A5%E6%9C%AC%E9%94%80%E9%87%8F%E6%98%8E%E6%98%BE%E5%A2%9E%E5%8A%A0" target="_blank">中国电动汽车在日本销量明显增加</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk r3">3</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E2%80%9C%E5%80%92%E6%98%A5%E5%AF%92%E2%80%9D%E4%B8%8D%E5%8D%95%E6%98%AF%E2%80%9C%E6%B0%94%E6%B8%A9%E8%B7%B3%E6%B0%B4%E2%80%9D" target="_blank">“倒春寒”不单是“气温跳水”</a><span class="dir"><span class="cat-tag">童书-儿童成长</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">4</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%8C%97%E4%BA%AC%E4%BA%A4%E8%AD%A6%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%A6%96%E6%AC%A1%E6%AD%A3%E5%BC%8F%E4%BA%AE%E7%9B%B8" target="_blank">北京交警机器人首次正式亮相</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">5</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%AE%89%E5%85%A8%E6%84%9F%E5%9C%A8%E5%A4%96%E7%BD%91%E5%88%B7%E5%B1%8F%E5%87%BA%E5%9C%88" target="_blank">中国式安全感在外网刷屏出圈</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">6</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%9C%E9%83%A8%E6%88%98%E5%8C%BA%E8%88%B0%E8%89%87%E7%BC%96%E9%98%9F%E8%B5%B4%E8%A5%BF%E5%A4%AA%E5%B9%B3%E6%B4%8B%E6%BC%94%E8%AE%AD" target="_blank">东部战区舰艇编队赴西太平洋演训</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">7</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E6%B5%B7%E6%B2%B9%E4%B8%8E%E4%B8%AD%E6%A0%B8%E7%AA%81%E7%84%B6%E7%89%B5%E6%89%8B" target="_blank">中海油与中核突然牵手</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">8</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%BB%8F%E5%B8%B8%E7%8A%AF%E5%9B%B0%E5%8F%AF%E8%83%BD%E4%B8%8D%E6%98%AF%E6%87%92%E8%80%8C%E6%98%AF%E7%9C%9F%E7%9A%84%E7%97%85%E4%BA%86" target="_blank">经常犯困可能不是懒而是真的病了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">9</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E6%AF%94%E8%B5%9B%E5%9B%A0%E7%BA%A2%E6%97%97%E4%B8%AD%E6%96%AD%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F" target="_blank">张雪机车比赛因红旗中断提前结束</a><span class="dir"><span class="cat-tag">人文社科-传记</span><span class="cat-tag">自然科技-工业技术</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">10</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%B6%89%E5%AF%86%E6%96%87%E4%BB%B6%E5%B8%A6%E5%9B%9E%E5%AE%B6%E9%81%AD%22%E5%A5%BD%E5%8F%8B%22%E4%BC%A0%E8%87%B3%E5%A2%83%E5%A4%96" target="_blank">涉密文件带回家遭"好友"传至境外</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=12306%E6%8B%92%E7%BB%9D%E6%8A%A2%E7%A5%A8%E8%BD%AF%E4%BB%B6%E5%87%BA%E7%A5%A8%E8%B6%85%E7%99%BE%E4%B8%87%E5%BC%A0" target="_blank">12306拒绝抢票软件出票超百万张</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">12</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%88%AB%E5%A2%85%E8%A3%85%E4%BF%AE%E6%95%88%E6%9E%9C%E5%9B%BE" target="_blank">别墅装修效果图</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">13</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%9C%BC%E9%95%9C%22%E9%9C%80%E8%A6%81%E6%97%B6%E6%88%B4%22%E5%B0%B1%E8%A1%8C%3F" target="_blank">眼镜"需要时戴"就行?</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rh"><td class="rk ">14</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%BB%8A%E6%97%A5%22%E8%B0%B7%E9%9B%A8%22%3A%E6%98%A5%E5%A4%A9%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E8%8A%82%E6%B0%94" target="_blank">今日"谷雨":春天最后一个节气</a><span class="dir"><span class="cat-tag">生活-养生保健</span><span class="cat-tag">人文社科-文学/小说</span></span></td><td><span class="rel-h">高</span></td></tr>
-<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%A2%81%E5%AE%B6%E8%BE%89%E4%BA%94%E5%B0%81%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D" target="_blank">梁家辉五封金像奖影帝</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">16</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%A4%AE%E5%AA%92%E6%9B%9D%E5%85%89%22%E5%B9%B4%E4%BB%BD%E8%80%81%E9%85%92%22%E7%9B%B4%E6%92%AD%E9%97%B4%E9%AA%97%E5%B1%80" target="_blank">央媒曝光"年份老酒"直播间骗局</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%B0%8F%E9%BC%BB%E5%98%8E%E7%B4%AF%E8%B6%B4+%E8%B7%AF%E8%BF%87%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9C%8B%E7%83%AD%E9%97%B9%E9%BC%93%E6%8E%8C" target="_blank">小鼻嘎累趴 路过机器人看热闹鼓掌</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">18</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%A4%BE%E8%AF%84%3A%E8%AD%A6%E6%83%95%E6%97%A5%E6%9C%AC%E5%86%9B%E4%BA%8B%E6%9A%B4%E8%B5%B0%E9%A3%8E%E9%99%A9" target="_blank">社评:警惕日本军事暴走风险</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">19</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E9%87%8D%E5%A4%A7%E6%B0%94%E8%B1%A1%E7%81%BE%E5%AE%B3%E5%9B%9B%E7%BA%A7%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%90%AF%E5%8A%A8" target="_blank">重大气象灾害四级应急响应启动</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">20</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%BA%BA%E5%9D%8780%E5%9D%97%E7%9A%84%E7%81%AB%E9%94%85%E5%BA%97%2C%E6%AD%A3%E5%9C%A8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%85%B3%E9%97%A8" target="_blank">人均80块的火锅店,正在大面积关门</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r1">1</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=140%E5%B9%B4%E6%9D%A5%E6%9C%80%E5%BC%BA%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E6%AD%A3%E5%9C%A8%E9%85%9D%E9%85%BF" target="_blank">140年来最强厄尔尼诺正在酝酿</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%A5%9E21%E8%88%AA%E5%A4%A9%E5%91%98%E5%9C%86%E6%BB%A1%E5%AE%8C%E6%88%90%E7%AC%AC3%E6%AC%A1%E5%87%BA%E8%88%B1%E6%B4%BB%E5%8A%A8" target="_blank">神21航天员圆满完成第3次出舱活动</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r3">3</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E5%AF%BC%E5%BC%B9%E9%A9%B1%E9%80%90%E8%88%B0%E9%A6%96%E6%AC%A1%E4%BA%AE%E7%9B%B8%E5%A4%AA%E5%B9%B3%E6%B4%8B" target="_blank">中国导弹驱逐舰首次亮相太平洋</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rh"><td class="rk ">4</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E5%AE%B6%E9%80%A0%E5%87%BA%22%E8%B6%85%E7%BA%A7%E9%93%9C%E7%AE%94%22" target="_blank">中国科学家造出"超级铜箔"</a><span class="dir"><span class="cat-tag">童书-科普百科</span></span></td><td><span class="rel-h">高</span></td></tr>
+<tr class=""><td class="rk ">5</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%22%E4%B8%80%E4%BA%BA%E5%85%AC%E5%8F%B8%22%E8%BF%8E%E6%9D%A5%E5%A4%A7%E7%88%86%E5%8F%91" target="_blank">"一人公司"迎来大爆发</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">6</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E9%97%B4%E8%B0%8D%E7%AD%96%E5%8F%8D%E4%B8%AD%E4%BC%81%E5%91%98%E5%B7%A5%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%81%9C%E5%B7%A5%E5%81%9C%E4%BA%A7" target="_blank">间谍策反中企员工致项目停工停产</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">7</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%22%E5%8E%A6%E9%87%91%E9%80%9A%E6%A1%A5%22%E6%88%90%E5%B2%9B%E5%86%85%E7%83%AD%E8%AF%8D" target="_blank">"厦金通桥"成岛内热词</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">8</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%8D%97%E4%BA%AC%E9%93%B6%E8%A1%8C%E5%8E%9F%E8%A1%8C%E9%95%BF%E6%8C%AA%E7%94%A84.8%E4%BA%BF%E8%8E%B7%E5%88%A9%E5%8D%83%E4%B8%87" target="_blank">南京银行原行长挪用4.8亿获利千万</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">9</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%B8%AA%E7%A8%8E%E9%A2%84%E7%BC%B4%E8%A7%84%E5%88%99%E8%B0%83%E6%95%B4" target="_blank">个税预缴规则调整</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">10</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%89%99%E9%BD%BF%E4%B8%8D%E7%97%9B%E5%B0%B1%E4%B8%8D%E7%94%A8%E7%9C%8B%E7%89%99%3F" target="_blank">牙齿不痛就不用看牙?</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%95%99%E8%B5%84%E7%AC%94%E8%AF%95%E6%88%90%E7%BB%A9%E5%85%AC%E5%B8%83" target="_blank">教资笔试成绩公布</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">12</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%85%A8%E5%8F%8B%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E6%8A%A5%E4%BB%B7%E6%98%8E%E7%BB%86%E8%A1%A8" target="_blank">全友全屋定制报价明细表</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rm"><td class="rk ">13</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%BC%8A%E6%9C%97%E6%84%9F%E8%B0%A2%E4%B8%AD%E6%96%B9%E6%8F%B4%E5%8A%A9%E8%BF%9160%E5%90%A8%E8%8D%AF%E5%93%81" target="_blank">伊朗感谢中方援助近60吨药品</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
+<tr class=""><td class="rk ">14</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%BA%90%E6%9D%B0%E7%A7%91%E6%8A%80%E8%82%A1%E4%BB%B7%E8%B6%85%E8%B6%8A%E8%8C%85%E5%8F%B0+%E6%88%90A%E8%82%A1%E6%96%B0%E8%82%A1%E7%8E%8B" target="_blank">源杰科技股价超越茅台 成A股新股王</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E9%9B%B7%E5%86%9B%E5%9B%9E%E5%BA%94%E6%98%AF%E5%90%A6%E5%81%9A10%E4%B8%87%E4%BB%A5%E5%86%85%E8%BD%A6%E5%9E%8B" target="_blank">雷军回应是否做10万以内车型</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">16</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E5%B9%B4%E8%BD%BB%E4%BA%BA%E6%B5%81%E8%A1%8C%E6%8A%8A%E8%BD%A6%E6%94%B9%E6%88%90%E7%A7%BB%E5%8A%A8%E5%A4%A7%E5%BA%8A%E6%88%BF" target="_blank">年轻人流行把车改成移动大床房</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E7%94%B7%E5%AD%90%E6%8C%81%E6%89%8B%E7%94%B5%E7%AD%92%E5%9B%BD%E9%81%93%E6%8B%A6%E8%BD%A6+%E5%B9%BF%E8%A5%BF%E9%80%9A%E6%8A%A5" target="_blank">男子持手电筒国道拦车 广西通报</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rm"><td class="rk ">18</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E4%BC%8A%E6%80%BB%E7%BB%9F%3A%E4%BC%8A%E6%9C%97%E4%BA%BA%E6%B0%91%E5%AF%B9%E7%BE%8E%E5%9B%BD%E5%A4%B1%E5%8E%BB%E4%BF%A1%E4%BB%BB" target="_blank">伊总统:伊朗人民对美国失去信任</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
+<tr class=""><td class="rk ">19</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E8%B4%9D%E5%AB%82%E9%A6%96%E8%B0%88%E4%B8%8E%E9%95%BF%E5%AD%90%E5%86%B3%E8%A3%82+%E5%85%B3%E7%B3%BB%E9%9A%BE%E4%BF%AE%E5%A4%8D" target="_blank">贝嫂首谈与长子决裂 关系难修复</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">20</td><td class="tp"><a href="https://www.sogou.com/web?ie=utf8&query=%E6%B5%B7%E5%B0%94%E6%97%97%E8%88%B0%E5%BA%97%E6%B7%B1%E5%A4%9C%E6%A0%87%E4%BB%B7%E5%BC%82%E5%B8%B8+%E5%86%B0%E6%9F%9C76%E5%85%83" target="_blank">海尔旗舰店深夜标价异常 冰柜76元</a></td><td><span class="rel-n">—</span></td></tr>
 </tbody></table>
 </div>
 <div class="col">
 <div class="col-h"><div class="ic" style="background:#000000">抖</div><h3>抖音热榜</h3><a href="https://www.xpaihang.com/platform/douyin" target="_blank">查看来源 →</a></div>
 <table><thead><tr><th class="rk">#</th><th>热搜话题</th><th style="width:30px">相关</th></tr></thead>
 <tbody>
-<tr class=""><td class="rk r1">1</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%9C%E9%83%A8%E6%88%98%E5%8C%BA%E8%88%B0%E8%89%87%E7%BC%96%E9%98%9F%E8%BF%87%E8%88%AA%E6%A8%AA%E5%BD%93%E6%B0%B4%E9%81%93" target="_blank">东部战区舰艇编队过航横当水道</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.douyin.com/search/%E4%BB%8A%E5%B9%B4%E7%9A%84%E5%B0%8F%E9%BE%99%E8%99%BE%E4%B8%BA%E5%95%A5%E4%BE%BF%E5%AE%9C" target="_blank">今年的小龙虾为啥便宜</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk r3">3</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E6%AF%8F3%E5%BA%A6%E7%94%B5%E5%B0%B1%E6%9C%891%E5%BA%A6%E6%98%AF%E7%BB%BF%E7%94%B5" target="_blank">中国每3度电就有1度是绿电</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">4</td><td class="tp"><a href="https://www.douyin.com/search/%E6%97%A5%E6%9C%AC%E5%90%AF%E5%8A%A8%E5%8D%81%E4%BA%8C%E5%B9%B4%E6%9D%A5%E6%9C%80%E9%87%8D%E5%A4%A7%E5%86%9B%E5%94%AE" target="_blank">日本启动十二年来最重大军售</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">5</td><td class="tp"><a href="https://www.douyin.com/search/%E6%9B%BC%E5%9F%8E2%3A1%E9%98%BF%E6%A3%AE%E7%BA%B3" target="_blank">曼城2:1阿森纳</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">6</td><td class="tp"><a href="https://www.douyin.com/search/%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E8%8D%B7%E5%85%B0%E7%AB%99%E7%AC%AC%E4%BA%8C%E5%9B%9E%E5%90%88%E7%AC%AC%E4%B8%83" target="_blank">张雪机车荷兰站第二回合第七</a><span class="dir"><span class="cat-tag">人文社科-传记</span><span class="cat-tag">自然科技-工业技术</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">7</td><td class="tp"><a href="https://www.douyin.com/search/%E4%BB%8A%E6%97%A5%E8%B0%B7%E9%9B%A8" target="_blank">今日谷雨</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">8</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%87%E8%BE%BE%E7%94%B5%E5%BD%B1%E6%94%B9%E5%90%8D%E5%84%92%E6%84%8F%E7%94%B5%E5%BD%B1" target="_blank">万达电影改名儒意电影</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">9</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E8%88%AA%E5%8F%B8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%8F%96%E6%B6%88%E6%97%A5%E6%9C%AC%E8%88%AA%E7%8F%AD" target="_blank">中国航司大面积取消日本航班</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">10</td><td class="tp"><a href="https://www.douyin.com/search/%E5%90%8E%E6%B9%96%E7%85%8E%E9%A5%BC%E4%B9%9F%E6%98%AF%E5%90%83%E4%B8%8A%E4%BA%86" target="_blank">后湖煎饼也是吃上了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.douyin.com/search/%E5%9B%BD%E4%BA%A7%E5%85%89%E7%BA%A4%E5%85%A8%E7%90%83%E7%88%86%E5%8D%95+%E4%BB%B7%E6%A0%BC%E6%B6%A8650%25" target="_blank">国产光纤全球爆单 价格涨650%</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">12</td><td class="tp"><a href="https://www.douyin.com/search/%E8%8B%8F%E8%B6%85%E7%A7%AF%E5%88%86%E6%A6%9C%E4%B9%B1%E6%88%90%E4%B8%80%E9%94%85%E7%B2%A5%E4%BA%86" target="_blank">苏超积分榜乱成一锅粥了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">13</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%93%E5%AE%B6%E8%BE%9F%E8%B0%A3%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E5%BC%95%E5%8F%91%E6%9E%81%E9%99%90%E9%AB%98%E6%B8%A9" target="_blank">专家辟谣厄尔尼诺引发极限高温</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">14</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%81%E4%BF%8A%E6%99%96%E5%8D%8A%E5%9C%BA7%3A2%E5%90%89%E5%B0%94%E4%BC%AF%E7%89%B9" target="_blank">丁俊晖半场7:2吉尔伯特</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.douyin.com/search/%E4%BB%8A%E5%B9%B4%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%B7%91%E5%8D%8A%E9%A9%AC%E4%B9%9F%E5%A4%AA%E5%BF%AB%E4%BA%86" target="_blank">今年机器人跑半马也太快了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">16</td><td class="tp"><a href="https://www.douyin.com/search/%E5%91%A8%E6%9D%B0%E4%BC%A6%E5%8D%97%E5%AE%81%E6%BC%94%E5%94%B1%E4%BC%9ADay3%E8%B5%9A%E9%BA%BB%E4%BA%86" target="_blank">周杰伦南宁演唱会Day3赚麻了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.douyin.com/search/%E5%AD%94%E9%9B%AA%E5%84%BF%E9%9F%A9%E8%95%BE%E7%B2%89%E5%BD%A9%E5%A6%86%E7%BE%8E%E5%88%B0%E5%BF%83%E5%B7%B4%E4%B8%8A" target="_blank">孔雪儿韩蕾粉彩妆美到心巴上</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rh"><td class="rk ">18</td><td class="tp"><a href="https://www.douyin.com/search/%E8%B0%B7%E9%9B%A8%E6%98%AF%E6%98%A5%E5%A4%A9%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E8%8A%82%E6%B0%94" target="_blank">谷雨是春天的最后一个节气</a><span class="dir"><span class="cat-tag">生活-养生保健</span><span class="cat-tag">人文社科-文学/小说</span></span></td><td><span class="rel-h">高</span></td></tr>
-<tr class=""><td class="rk ">19</td><td class="tp"><a href="https://www.douyin.com/search/%E6%A2%81%E5%AE%B6%E8%BE%89%E4%BA%94%E5%B0%81%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D" target="_blank">梁家辉五封金像奖影帝</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">20</td><td class="tp"><a href="https://www.douyin.com/search/%E5%B9%BF%E8%A5%BF%E4%BA%BA%E7%9A%84%E4%B8%89%E6%9C%88%E4%B8%89%E5%88%B0%E5%BA%95%E7%9E%92%E4%BA%86%E6%88%91%E4%BB%AC%E5%A4%9A%E5%B0%91" target="_blank">广西人的三月三到底瞒了我们多少</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rl"><td class="rk r1">1</td><td class="tp"><a href="https://www.douyin.com/search/%E4%BA%A4%E6%8D%A2%E4%BD%A0%E9%95%9C%E5%A4%B4%E9%87%8C%E7%9A%84%E6%98%A5%E5%A4%A9" target="_blank">交换你镜头里的春天</a><span class="dir"><span class="cat-tag">人文社科-文学/小说</span></span></td><td><span class="rel-l">低</span></td></tr>
+<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E6%B5%B7%E6%B4%8B%E9%87%87%E6%B2%B9%E6%8A%80%E6%9C%AF%E6%9C%89%E5%A4%9A%E7%89%9B" target="_blank">中国海洋采油技术有多牛</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r3">3</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%80%E5%AD%A3%E5%BA%A6GDP%E5%A2%9E%E9%95%BF5.0%25%E5%BC%80%E5%B1%80%E8%89%AF%E5%A5%BD" target="_blank">一季度GDP增长5.0%开局良好</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rl"><td class="rk ">4</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%80%E5%AD%A3%E5%BA%A6%E7%BB%8F%E6%B5%8E%E2%80%9C%E6%88%90%E7%BB%A9%E5%8D%95%E2%80%9D%E9%87%8C%E7%9A%84%E6%96%B0%E5%8F%98%E5%8C%96" target="_blank">一季度经济“成绩单”里的新变化</a><span class="dir"><span class="cat-tag">人文社科-经济/金融</span></span></td><td><span class="rel-l">低</span></td></tr>
+<tr class=""><td class="rk ">5</td><td class="tp"><a href="https://www.douyin.com/search/%E4%B8%87%E5%8D%83%E6%B0%94%E8%B1%A1%E7%9C%8B%E6%B1%9F%E8%A5%BF" target="_blank">万千气象看江西</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">6</td><td class="tp"><a href="https://www.douyin.com/search/%E9%83%91%E4%B8%BD%E6%96%87%E5%86%8D%E8%B0%88%E8%AE%BF%E9%99%86%E6%84%9F%E5%8F%97" target="_blank">郑丽文再谈访陆感受</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">7</td><td class="tp"><a href="https://www.douyin.com/search/%E8%B5%96%E6%B8%85%E5%BE%B7%E5%BC%B9%E5%8A%BE%E6%A1%885%E6%9C%8819%E6%97%A5%E6%8A%95%E7%A5%A8%E8%A1%A8%E5%86%B3" target="_blank">赖清德弹劾案5月19日投票表决</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">8</td><td class="tp"><a href="https://www.douyin.com/search/%E6%88%91%E7%9A%84%E5%BC%B9%E7%B0%A7%E8%A3%99%E6%91%86%E5%BE%88%E6%9B%BC%E5%A6%99" target="_blank">我的弹簧裙摆很曼妙</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">9</td><td class="tp"><a href="https://www.douyin.com/search/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E4%B8%96%E7%95%8C%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%B8%8A%E7%BA%BF" target="_blank">王者荣耀世界移动端上线</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">10</td><td class="tp"><a href="https://www.douyin.com/search/%E5%87%BA%E6%B8%B8%E5%89%8D%E7%9A%84%E5%AF%B9%E9%95%9Cqq%E7%A7%80" target="_blank">出游前的对镜qq秀</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.douyin.com/search/%E6%89%8B%E6%90%93%E6%AF%9B%E7%BA%BF%E6%88%91%E4%BB%AC%E4%BE%BF%E5%8F%AF%E5%BE%97%E5%88%B0" target="_blank">手搓毛线我们便可得到</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">12</td><td class="tp"><a href="https://www.douyin.com/search/%E6%B3%B8%E5%B7%9E%E2%80%9C%E6%A5%BC%E6%88%BF%E5%80%92%E5%A1%8C%E5%A4%9A%E4%BA%BA%E5%9D%A0%E8%90%BD%E2%80%9D%E7%B3%BB%E8%B0%A3%E8%A8%80" target="_blank">泸州“楼房倒塌多人坠落”系谣言</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">13</td><td class="tp"><a href="https://www.douyin.com/search/%E7%A9%BF%E5%A4%A7%E8%A3%99%E6%91%86%E9%AA%91%E9%A9%AC%E5%BD%93%E4%B8%80%E5%9B%9E%E5%85%AC%E4%B8%BB" target="_blank">穿大裙摆骑马当一回公主</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">14</td><td class="tp"><a href="https://www.douyin.com/search/%E9%83%91%E4%B8%BD%E6%96%87%E5%96%8A%E8%AF%9D%E5%BC%A0%E5%87%8C%E8%B5%AB%E8%B5%B4%E5%8F%B0" target="_blank">郑丽文喊话张凌赫赴台</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.douyin.com/search/%E9%9B%B7%E5%86%9B%E5%9B%9E%E5%BA%94%E6%98%AF%E5%90%A6%E5%81%9A10%E4%B8%87%E4%BB%A5%E5%86%85%E8%BD%A6%E5%9E%8B" target="_blank">雷军回应是否做10万以内车型</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">16</td><td class="tp"><a href="https://www.douyin.com/search/%E5%A4%96%E4%BA%A4%E9%83%A8%E5%9B%9E%E5%BA%94%E6%88%90%E4%B8%BA%E4%B8%AD%E5%9B%BD%E4%BA%BA%E5%8A%A9%E6%8E%A8%E4%B8%AD%E6%96%87%E7%83%AD" target="_blank">外交部回应成为中国人助推中文热</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.douyin.com/search/%E6%96%87%E6%98%8E%E6%B3%BC%E6%B0%B4%E5%BC%80%E5%BF%83%E8%BF%87%E8%8A%82" target="_blank">文明泼水开心过节</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">18</td><td class="tp"><a href="https://www.douyin.com/search/%E8%9C%9C%E8%AF%AD%E7%BA%AA%E5%85%A8%E5%91%98%E7%88%B1%E6%83%85%E9%B8%9F%E8%88%9E%E8%B9%88%E6%8C%91%E6%88%98" target="_blank">蜜语纪全员爱情鸟舞蹈挑战</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">19</td><td class="tp"><a href="https://www.douyin.com/search/%E9%9B%B7%E5%86%9B15%E5%B0%8F%E6%97%B6%E4%BA%AC%E6%B2%AA%E7%BB%AD%E8%88%AA%E7%9B%B4%E6%92%AD" target="_blank">雷军15小时京沪续航直播</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rm"><td class="rk ">20</td><td class="tp"><a href="https://www.douyin.com/search/%E6%9C%B1%E7%8F%A0%E7%89%88wait%E4%B8%80%E5%BC%80%E5%8F%A3%E5%AF%B9%E5%91%B3%E4%BA%86" target="_blank">朱珠版wait一开口对味了</a><span class="dir"><span class="cat-tag">自然科技-计算机/网络</span></span></td><td><span class="rel-m">中</span></td></tr>
 </tbody></table>
 </div>
 <div class="col">
 <div class="col-h"><div class="ic" style="background:#2196f3">百</div><h3>百度热搜</h3><a href="https://top.baidu.com/board?tab=realtime" target="_blank">查看来源 →</a></div>
 <table><thead><tr><th class="rk">#</th><th>热搜话题</th><th style="width:30px">相关</th></tr></thead>
 <tbody>
-<tr class="rm"><td class="rk r1">1</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%BB%BA%E8%AE%BE%E7%BD%91%E7%BB%9C%E5%BC%BA%E5%9B%BD&sa=fyb_news&rsv_dl=fyb_news" target="_blank">建设网络强国</a><span class="dir"><span class="cat-tag">自然科技-计算机/网络</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%BE%AE%E4%BF%A1%E8%BF%99%E4%B8%A4%E9%A1%B9%E8%AE%BE%E7%BD%AE%E5%BE%88%E5%85%B3%E9%94%AE+%E6%B6%89%E5%8F%8A%E8%B5%84%E9%87%91%E5%AE%89%E5%85%A8&sa=fyb_news&rsv_dl=fyb_news" target="_blank">微信这两项设置很关键涉及资金安全</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk r3">3</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%B0%8F%E7%B1%B3%E5%9B%9E%E5%BA%94%E7%BD%91%E4%BC%A0%E2%80%9C%E9%9B%B7%E5%86%9B%E8%A2%AB%E5%A0%B5%E8%BD%A6%E9%87%8C%E7%BB%B4%E6%9D%83%E2%80%9D&sa=fyb_news&rsv_dl=fyb_news" target="_blank">小米回应网传“雷军被堵车里维权”</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">4</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BB%8A%E6%97%A5%E8%B0%B7%E9%9B%A8&sa=fyb_news&rsv_dl=fyb_news" target="_blank">今日谷雨</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">5</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E8%8E%AB%E6%B0%8F%E9%B8%A1%E7%85%B2%E4%BC%91%E6%81%AF1%E5%A4%A9%EF%BC%9A%E7%9C%9F%E7%9A%84%E5%B9%B2%E4%B8%8D%E5%8A%A8%E4%BA%86&sa=fyb_news&rsv_dl=fyb_news" target="_blank">莫氏鸡煲休息1天：真的干不动了</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">6</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E2%80%9C%E7%AC%8B%E4%B9%8B%E5%A4%A7+%E4%B8%80%E7%8C%AB%E5%90%83%E4%B8%8D%E4%B8%8B%E2%80%9D&sa=fyb_news&rsv_dl=fyb_news" target="_blank">“笋之大一猫吃不下”</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">7</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BC%8A%E6%9C%97%EF%BC%9A%E7%BE%8E%E5%86%9B%E5%90%91%E4%BC%8A%E6%9C%97%E8%B4%A7%E8%88%B9%E5%BC%80%E7%81%AB+%E4%BC%8A%E5%86%9B%E8%BF%98%E5%87%BB&sa=fyb_news&rsv_dl=fyb_news" target="_blank">伊朗：美军向伊朗货船开火伊军还击</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class="rm"><td class="rk ">8</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%AF%94%E8%B5%9B%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F+%E5%BC%A0%E9%9B%AA%E5%AE%89%E6%8A%9A%E7%8E%B0%E5%9C%BA%E8%A7%82%E4%BC%97%E6%83%85%E7%BB%AA&sa=fyb_news&rsv_dl=fyb_news" target="_blank">比赛提前结束张雪安抚现场观众情绪</a><span class="dir"><span class="cat-tag">人文社科-传记</span><span class="cat-tag">人文社科-心理学</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">9</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E8%88%AA%E5%8F%B8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%8F%96%E6%B6%88%E6%97%A5%E6%9C%AC%E8%88%AA%E7%8F%AD&sa=fyb_news&rsv_dl=fyb_news" target="_blank">中国航司大面积取消日本航班</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">10</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E6%AF%94%E8%B5%9B%E5%9B%A0%E7%BA%A2%E6%97%97%E4%B8%AD%E6%96%AD%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F&sa=fyb_news&rsv_dl=fyb_news" target="_blank">张雪机车比赛因红旗中断提前结束</a><span class="dir"><span class="cat-tag">人文社科-传记</span><span class="cat-tag">自然科技-工业技术</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%B6%89%E5%AF%86%E6%96%87%E4%BB%B6%E5%B8%A6%E5%9B%9E%E5%AE%B6%E9%81%AD%E2%80%9C%E5%A5%BD%E5%8F%8B%E2%80%9D%E4%BC%A0%E8%87%B3%E5%A2%83%E5%A4%96&sa=fyb_news&rsv_dl=fyb_news" target="_blank">涉密文件带回家遭“好友”传至境外</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rh"><td class="rk ">12</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E7%8E%AF%E4%BF%9D%E6%96%B0%E8%A7%84%E8%87%B4%E8%9B%8B%E4%BB%B7%E4%B8%8A%E6%B6%A8%E7%B3%BB%E8%B0%A3%E8%A8%80&sa=fyb_news&rsv_dl=fyb_news" target="_blank">环保新规致蛋价上涨系谣言</a><span class="dir"><span class="cat-tag">人文社科-法律</span></span></td><td><span class="rel-h">高</span></td></tr>
-<tr class=""><td class="rk ">13</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%A2%81%E5%AE%B6%E8%BE%89%E5%87%AD%E5%80%9F%E3%80%8A%E6%8D%95%E9%A3%8E%E8%BF%BD%E5%BD%B1%E3%80%8B%E8%8E%B7%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D&sa=fyb_news&rsv_dl=fyb_news" target="_blank">梁家辉凭借《捕风追影》获金像奖影帝</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">14</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BC%8A%E6%9C%97%E6%8B%92%E7%BB%9D%E5%8F%82%E5%8A%A0%E4%B8%8E%E7%BE%8E%E5%9B%BD%E7%9A%84%E7%AC%AC%E4%BA%8C%E8%BD%AE%E8%B0%88%E5%88%A4&sa=fyb_news&rsv_dl=fyb_news" target="_blank">伊朗拒绝参加与美国的第二轮谈判</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%8C%81%E8%82%A1%E5%B8%82%E5%80%BC%E4%B8%8D%E5%88%B07%E4%B8%87%E5%85%83%E6%88%90%E5%85%AC%E5%8F%B8%E7%AC%AC8%E5%A4%A7%E8%82%A1%E4%B8%9C&sa=fyb_news&rsv_dl=fyb_news" target="_blank">持股市值不到7万元成公司第8大股东</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rh"><td class="rk ">16</td><td class="tp"><a href="https://www.baidu.com/s?wd=A%E8%82%A1%E5%BC%80%E7%9B%98%EF%BC%9A%E6%B6%88%E8%B4%B9%E7%94%B5%E5%AD%90%E6%9D%BF%E5%9D%97%E6%B4%BB%E8%B7%83&sa=fyb_news&rsv_dl=fyb_news" target="_blank">A股开盘：消费电子板块活跃</a><span class="dir"><span class="cat-tag">人文社科-法律</span><span class="cat-tag">人文社科-经济/金融</span></span></td><td><span class="rel-h">高</span></td></tr>
-<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%B0%8F%E8%8B%8F%E6%89%93%E7%9A%84%E2%80%9C%E9%9A%90%E8%97%8F%E6%8A%80%E8%83%BD%E2%80%9D%E4%BD%A0%E9%83%BD%E7%9F%A5%E9%81%93%E5%90%97&sa=fyb_news&rsv_dl=fyb_news" target="_blank">小苏打的“隐藏技能”你都知道吗</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class=""><td class="rk ">18</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%85%A8%E7%90%83%E6%9C%80%E5%A4%A7%E9%9B%B6%E9%A3%9F%E5%BA%97%E5%BC%80%E4%B8%9A3%E5%A4%A9%E5%B0%B1%E8%A2%AB%E6%8C%A4%E5%81%9C%E5%94%AE&sa=fyb_news&rsv_dl=fyb_news" target="_blank">全球最大零食店开业3天就被挤停售</a></td><td><span class="rel-n">—</span></td></tr>
-<tr class="rm"><td class="rk ">19</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E7%A7%AF%E5%88%86%E4%BB%85%E6%AC%A1%E4%BA%8E%E6%9D%9C%E5%8D%A1%E8%BF%AA%E5%92%8C%E9%9B%85%E9%A9%AC%E5%93%88&sa=fyb_news&rsv_dl=fyb_news" target="_blank">张雪机车积分仅次于杜卡迪和雅马哈</a><span class="dir"><span class="cat-tag">人文社科-传记</span><span class="cat-tag">自然科技-工业技术</span></span></td><td><span class="rel-m">中</span></td></tr>
-<tr class=""><td class="rk ">20</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%9B%BD%E9%99%85%E6%B2%B9%E4%BB%B7%E5%A4%A7%E5%B9%85%E8%B5%B0%E9%AB%98&sa=fyb_news&rsv_dl=fyb_news" target="_blank">国际油价大幅走高</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r1">1</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%B8%AD%E8%B6%8A%E9%A2%86%E5%AF%BC%E4%BA%BA%E4%BC%9A%E8%B0%88+3%E4%B8%AA%E7%89%B9%E6%AE%8A%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8&sa=fyb_news&rsv_dl=fyb_news" target="_blank">中越领导人会谈3个特殊值得关注</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r2">2</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E2%80%9C%E4%B8%80%E4%BA%BA%E5%85%AC%E5%8F%B8%E2%80%9D%E8%BF%8E%E6%9D%A5%E5%A4%A7%E7%88%86%E5%8F%91&sa=fyb_news&rsv_dl=fyb_news" target="_blank">“一人公司”迎来大爆发</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk r3">3</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E9%97%B4%E8%B0%8D%E7%AD%96%E5%8F%8D%E4%B8%AD%E4%BC%81%E5%91%98%E5%B7%A5%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%81%9C%E5%B7%A5%E5%81%9C%E4%BA%A7&sa=fyb_news&rsv_dl=fyb_news" target="_blank">间谍策反中企员工致项目停工停产</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rh"><td class="rk ">4</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E5%9C%A8%E6%B6%88%E5%8D%9A%E4%BC%9A%E4%B8%8A%E8%A7%A6%E6%91%B8%E6%B6%88%E8%B4%B9%E5%B8%82%E5%9C%BA%E6%96%B0%E9%A3%8E%E5%90%91&sa=fyb_news&rsv_dl=fyb_news" target="_blank">在消博会上触摸消费市场新风向</a><span class="dir"><span class="cat-tag">人文社科-法律</span><span class="cat-tag">人文社科-经济/金融</span></span></td><td><span class="rel-h">高</span></td></tr>
+<tr class="rm"><td class="rk ">5</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E9%9B%B7%E5%86%9B%EF%BC%9A%E6%9C%80%E5%A4%A7%E7%9A%84%E5%BF%83%E7%90%86%E8%B4%9F%E6%8B%85%E6%98%AF%E4%B8%8D%E8%83%BD%E8%AF%B4%E9%94%99%E8%AF%9D&sa=fyb_news&rsv_dl=fyb_news" target="_blank">雷军：最大的心理负担是不能说错话</a><span class="dir"><span class="cat-tag">人文社科-心理学</span></span></td><td><span class="rel-m">中</span></td></tr>
+<tr class="rh"><td class="rk ">6</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E8%B5%B7%E7%8C%9B%E4%BA%86+%E7%9C%8B%E5%88%B0%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BA%A4%E8%AD%A6%E5%9C%A8%E6%8C%87%E6%8C%A5%E4%BA%A4%E9%80%9A&sa=fyb_news&rsv_dl=fyb_news" target="_blank">起猛了看到机器人交警在指挥交通</a><span class="dir"><span class="cat-tag">人文社科-法律</span></span></td><td><span class="rel-h">高</span></td></tr>
+<tr class="rm"><td class="rk ">7</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BC%8A%E6%9C%97%E6%84%9F%E8%B0%A2%E4%B8%AD%E6%96%B9%E6%8F%B4%E5%8A%A9%E8%BF%9160%E5%90%A8%E8%8D%AF%E5%93%81&sa=fyb_news&rsv_dl=fyb_news" target="_blank">伊朗感谢中方援助近60吨药品</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
+<tr class=""><td class="rk ">8</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E8%AF%84%E2%80%9C%E7%BB%AD%E8%B4%B9%E5%88%BA%E5%AE%A2%E2%80%9D%EF%BC%9A%E5%BF%85%E6%92%9E%E5%8D%97%E5%A2%99&sa=fyb_news&rsv_dl=fyb_news" target="_blank">人民日报评“续费刺客”：必撞南墙</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">9</td><td class="tp"><a href="https://www.baidu.com/s?wd=A%E8%82%A1%E8%82%A1%E7%8E%8B%E6%98%93%E4%B8%BB+%E6%BA%90%E6%9D%B0%E7%A7%91%E6%8A%80%E5%8F%96%E4%BB%A3%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0&sa=fyb_news&rsv_dl=fyb_news" target="_blank">A股股王易主源杰科技取代贵州茅台</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">10</td><td class="tp"><a href="https://www.baidu.com/s?wd=140%E5%B9%B4%E6%9D%A5%E6%9C%80%E5%BC%BA%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E6%AD%A3%E5%9C%A8%E9%85%9D%E9%85%BF&sa=fyb_news&rsv_dl=fyb_news" target="_blank">140年来最强厄尔尼诺正在酝酿</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">11</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0%E5%BC%80%E7%9B%98%E5%A4%A7%E8%B7%8C&sa=fyb_news&rsv_dl=fyb_news" target="_blank">贵州茅台开盘大跌</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">12</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E9%80%A0%E8%B0%A3%E2%80%9C%E5%A4%A9%E6%B4%A5%E7%AA%81%E5%8F%918.8%E7%BA%A7%E5%9C%B0%E9%9C%87%E2%80%9D%E8%80%85%E8%A2%AB%E7%BD%9A&sa=fyb_news&rsv_dl=fyb_news" target="_blank">造谣“天津突发8.8级地震”者被罚</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">13</td><td class="tp"><a href="https://www.baidu.com/s?wd=1.5%E5%85%83%E6%94%B6%E4%B8%80%E5%BC%A0%E6%97%A7CT%E7%89%87%EF%BC%9F%E5%8D%83%E4%B8%87%E5%88%AB%E5%8D%96&sa=fyb_news&rsv_dl=fyb_news" target="_blank">1.5元收一张旧CT片？千万别卖</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">14</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E9%BB%84%E4%BB%81%E5%8B%8B%EF%BC%9A%E8%8A%AF%E7%89%87%E4%B8%8D%E6%98%AF%E6%B5%93%E7%BC%A9%E9%93%80+%E5%8D%96%E4%B8%AD%E5%9B%BD%E5%92%8B%E4%BA%86&sa=fyb_news&rsv_dl=fyb_news" target="_blank">黄仁勋：芯片不是浓缩铀卖中国咋了</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">15</td><td class="tp"><a href="https://www.baidu.com/s?wd=15%E6%97%B64%E5%88%86%E8%BF%98%E6%B2%A1%E4%BA%BA%E4%B8%8A%E7%8F%AD+%E5%B9%BF%E8%A5%BF%E9%92%A6%E5%B7%9E%E9%80%9A%E6%8A%A5&sa=fyb_news&rsv_dl=fyb_news" target="_blank">15时4分还没人上班广西钦州通报</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">16</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0%E4%B8%8A%E5%B8%82%E4%BB%A5%E6%9D%A5%E9%A6%96%E6%AC%A1%E4%B8%9A%E7%BB%A9%E5%8F%8C%E4%B8%8B%E6%BB%91&sa=fyb_news&rsv_dl=fyb_news" target="_blank">贵州茅台上市以来首次业绩双下滑</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">17</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%AC%A7%E6%B4%B2%E4%BB%85%E5%89%A9%E5%A4%9F%E7%94%A86%E5%91%A8%E8%88%AA%E7%A9%BA%E7%87%83%E6%B2%B9&sa=fyb_news&rsv_dl=fyb_news" target="_blank">欧洲仅剩够用6周航空燃油</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class="rm"><td class="rk ">18</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%BC%8A%E6%80%BB%E7%BB%9F%EF%BC%9A%E4%BC%8A%E6%9C%97%E4%BA%BA%E6%B0%91%E5%AF%B9%E7%BE%8E%E5%9B%BD%E5%AE%8C%E5%85%A8%E5%A4%B1%E5%8E%BB%E4%BF%A1%E4%BB%BB&sa=fyb_news&rsv_dl=fyb_news" target="_blank">伊总统：伊朗人民对美国完全失去信任</a><span class="dir"><span class="cat-tag">人文社科-政治/军事</span></span></td><td><span class="rel-m">中</span></td></tr>
+<tr class=""><td class="rk ">19</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E6%B8%AF%E8%82%A1%E7%BE%A4%E6%A0%B8%E7%A7%91%E6%8A%80%E4%B8%8A%E5%B8%82%E9%A6%96%E6%97%A5%E9%AB%98%E5%BC%80%E8%B6%85170%25&sa=fyb_news&rsv_dl=fyb_news" target="_blank">港股群核科技上市首日高开超170%</a></td><td><span class="rel-n">—</span></td></tr>
+<tr class=""><td class="rk ">20</td><td class="tp"><a href="https://www.baidu.com/s?wd=%E4%B8%AD%E4%BD%BF%E9%A6%86%E6%8F%90%E9%86%92%E5%9C%A8%E6%97%A5%E4%B8%AD%E5%9B%BD%E5%85%AC%E6%B0%91%E6%B3%A8%E6%84%8F%E4%BA%BA%E8%BA%AB%E5%AE%89%E5%85%A8&sa=fyb_news&rsv_dl=fyb_news" target="_blank">中使馆提醒在日中国公民注意人身安全</a></td><td><span class="rel-n">—</span></td></tr>
 </tbody></table>
 </div>
 
 </div>
 
-<div class="ft">数据源：<a href="https://ie.sogou.com/top/" style="color:#999">搜狗热搜</a> · <a href="https://www.xpaihang.com/platform/douyin" style="color:#999">X排行-抖音</a> · <a href="https://top.baidu.com/board?tab=realtime" style="color:#999">百度官方</a> | 2026.04.20 | 页面生成于 2026年04月20日 10:30</div>
+<div class="ft">数据源：<a href="https://ie.sogou.com/top/" style="color:#999">搜狗热搜</a> · <a href="https://www.xpaihang.com/platform/douyin" style="color:#999">X排行-抖音</a> · <a href="https://top.baidu.com/board?tab=realtime" style="color:#999">百度官方</a> | 2026.04.17 | 页面生成于 2026年04月17日 10:49</div>
 </div>
 
 <!-- ==================== 页面2: 类目找灵感 (保留原逻辑) ==================== -->
@@ -214,6 +216,123 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div id="auditResult"></div>
 </div>
 
+<!-- ==================== 页面4: ISBN采集 ==================== -->
+<div class="ct pg" id="pg-p4">
+<h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📚 图书内容提取</h2>
+<p class="subtitle">输入 ISBN编号，一键检索全维度图书内容</p>
+<div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+<div style="flex:1;min-width:180px">
+<label style="display:block;font-size:11px;color:#8b949e;margin-bottom:4px;font-weight:600">ISBN编号 <span style="color:#f85149">*</span></label>
+<input type="text" id="isbnInput" placeholder="输入13位ISBN编号" maxlength="17" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s" onblur="autoLookupISBN()">
+</div>
+<div style="flex:2;min-width:200px">
+<label style="display:block;font-size:11px;color:#8b949e;margin-bottom:4px;font-weight:600">书名 <span style="color:#f85149">*</span></label>
+<input type="text" id="bookTitleInput" placeholder="" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s" onkeydown="if(event.key==='Enter')runIsbnCollect()">
+</div>
+</div>
+<div id="isbnLookupStatus" style="display:none;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;color:#c9d1d9"></div>
+<div style="display:flex;justify-content:flex-end">
+<button id="isbnBtn" onclick="runIsbnCollect()" style="padding:8px 24px;border-radius:8px;border:none;background:#1a73e8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#1557b0'" onmouseout="this.style.background='#1a73e8'">🚀 开始采集</button>
+</div>
+</div>
+<div id="isbnProgress" style="display:none;margin-bottom:14px">
+<div style="height:4px;background:#21262d;border-radius:2px;overflow:hidden"><div id="isbnProgressFill" style="height:100%;background:linear-gradient(90deg,#1a73e8,#e65100);border-radius:2px;transition:width .3s;width:0%"></div></div>
+<p id="isbnProgressText" style="font-size:11px;color:#8b949e;margin-top:6px;text-align:center">准备中...</p>
+</div>
+<div id="isbnOutput" style="display:none;background:#0d1117;border-radius:10px;border:1px solid #21262d;overflow:hidden">
+<div style="background:#161b22;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #21262d">
+<h3 id="isbnOutputTitle" style="font-size:14px;color:#f0f6fc">📊 采集报告</h3>
+<div style="display:flex;gap:6px">
+<button onclick="copyIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制</button>
+<button onclick="downloadIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">💾 下载</button>
+</div>
+</div>
+<div id="isbnOutputBody" style="padding:16px;color:#c9d1d9;font-size:13px;line-height:1.7"></div>
+</div>
+<style>
+#isbnOutputBody h2{font-size:15px;margin:20px 0 8px;padding:6px 12px;background:linear-gradient(90deg,#1a73e8,#4285f4);color:#fff;border-radius:5px}
+#isbnOutputBody h2.pain-point{background:linear-gradient(90deg,#e65100,#ff9800)}
+#isbnOutputBody h3{color:#58a6ff;font-size:13px;margin:14px 0 6px;padding-left:8px;border-left:3px solid #58a6ff}
+#isbnOutputBody .card{background:#161b22;border-radius:8px;padding:14px;margin:8px 0;border:1px solid #21262d}
+#isbnOutputBody table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12px}
+#isbnOutputBody th,#isbnOutputBody td{border:1px solid #21262d;padding:6px 10px;text-align:left}
+#isbnOutputBody th{background:#161b22;font-weight:600;color:#f0f6fc}
+#isbnOutputBody tr:nth-child(even){background:#0d1117}
+#isbnOutputBody blockquote{border-left:3px solid #58a6ff;padding:8px 12px;margin:8px 0;background:#161b22;border-radius:0 5px 5px 0;color:#c9d1d9}
+#isbnOutputBody .source{font-size:11px;color:#484f58;margin-top:4px}
+#isbnOutputBody .source a{color:#58a6ff}
+#isbnOutputBody ul,#isbnOutputBody ol{margin:6px 0 6px 16px}
+#isbnOutputBody li{margin:3px 0}
+</style>
+</div>
+
+<!-- ==================== 页面5: 口播脚本 ==================== -->
+<div class="ct pg" id="pg-p5">
+<h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
+<p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（约2分钟/篇）</p>
+<div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
+⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
+</div>
+
+<div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
+<label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">图书内容 <span style="color:#484f58;font-weight:400">（粘贴简介、目录、精彩片段等，越丰富脚本越好）</span></label>
+<textarea id="scriptBookContent" placeholder="把图书的内容粘贴到这里...&#10;&#10;可以包含：&#10;· 图书简介 / 内容提要&#10;· 目录结构&#10;· 精彩段落 / 金句摘录&#10;· 作者简介&#10;· 读者评价" style="width:100%;min-height:160px;padding:12px;border:2px solid #30363d;border-radius:8px;font-size:12px;outline:none;background:#0d1117;color:#c9d1d9;resize:vertical;font-family:inherit;line-height:1.7"></textarea>
+<div style="text-align:right;font-size:11px;color:#484f58;margin-top:4px"><span id="scriptCharCount">0</span> 字</div>
+
+<label style="display:block;font-size:12px;color:#8b949e;margin:12px 0 6px;font-weight:600">目标受众</label>
+<div id="scriptAudienceChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+<span class="qt scp on" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="通用人群" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">通用人群</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="都市银发：50岁以上中老年人，关注健康养生" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">都市银发</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="都市蓝领：务实、追求性价比" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">都市蓝领</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="都市白领：关注职场成长、效率提升" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">都市白领</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="精致妈妈：注重育儿品质的年轻妈妈" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">精致妈妈</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="小镇青年：三四线年轻人，追求性价比" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">小镇青年</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="小镇中老年：关注养生、家庭、实惠" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">小镇中老年</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="Z世代：18-25岁，追求潮流、个性、自我成长" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">Z世代</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="新锐白领：高收入年轻白领，追求品质" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">新锐白领</span>
+</div>
+
+<label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">口播风格 <span style="color:#484f58;font-weight:400">（可多选）</span></label>
+<div id="scriptStyleChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+<span class="qt scp on" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="全部" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">全部生成</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="信息差揭秘" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🔓 信息差揭秘</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="稀缺紧迫" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">⏰ 稀缺紧迫</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="知识干货" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💎 知识干货</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="情感共鸣" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💗 情感共鸣</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="颠覆认知" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🤯 颠覆认知</span>
+</div>
+
+<div style="display:flex;justify-content:center;gap:10px">
+<button onclick="scriptFillDemo()" style="padding:6px 18px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:12px;cursor:pointer">📝 示例</button>
+<button id="scriptGenBtn" onclick="scriptGenerate()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer">✨ 生成口播脚本</button>
+</div>
+</div>
+
+<div id="scriptOutput" style="display:none">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+<h3 style="font-size:15px;color:#f0f6fc">🎬 生成结果</h3>
+<div style="display:flex;gap:6px">
+<button onclick="scriptCopyAll()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制全部</button>
+<button onclick="scriptExportMd()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📄 导出MD</button>
+</div>
+</div>
+<div id="scriptCards"></div>
+<div id="scriptAuditSection" style="display:none;margin-top:16px">
+<div style="background:rgba(253,203,110,0.06);border:1px solid rgba(253,203,110,0.15);border-radius:10px;padding:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span style="font-size:16px">🛡️</span><h3 style="font-size:14px;color:#f0f6fc">该书品类审核注意事项</h3></div>
+<div id="scriptAuditContent" style="font-size:12px;line-height:1.8;color:#c9d1d9"></div>
+</div>
+</div>
+</div>
+
+<div id="scriptLoading" style="display:none;text-align:center;padding:40px 0">
+<div style="display:inline-block;width:36px;height:36px;border:3px solid #21262d;border-top-color:#e63946;border-radius:50%;animation:spin .8s linear infinite"></div>
+<p id="scriptLoadingText" style="color:#8b949e;font-size:12px;margin-top:10px">AI 正在创作口播脚本...</p>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}.scp.on{background:#e63946!important;color:#fff!important;border-color:#e63946!important}</style>
+</div>
+
 </div>
 
 <script>
@@ -229,10 +348,10 @@ function go(id,el){
 }
 
 // === 页面2: 全平台热搜数据（含url） ===
-var ALL_HOTS=[{"p": "微信", "t": "文旅深度融合 春日经济持续火热", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%96%87%E6%97%85%E6%B7%B1%E5%BA%A6%E8%9E%8D%E5%90%88+%E6%98%A5%E6%97%A5%E7%BB%8F%E6%B5%8E%E6%8C%81%E7%BB%AD%E7%81%AB%E7%83%AD", "h": "583.1万", "tags": ["人文社科-经济/金融"], "rel": "低"}, {"p": "微信", "t": "中国电动汽车在日本销量明显增加", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E7%94%B5%E5%8A%A8%E6%B1%BD%E8%BD%A6%E5%9C%A8%E6%97%A5%E6%9C%AC%E9%94%80%E9%87%8F%E6%98%8E%E6%98%BE%E5%A2%9E%E5%8A%A0", "h": "544万", "tags": [], "rel": "—"}, {"p": "微信", "t": "“倒春寒”不单是“气温跳水”", "u": "https://www.sogou.com/web?ie=utf8&query=%E2%80%9C%E5%80%92%E6%98%A5%E5%AF%92%E2%80%9D%E4%B8%8D%E5%8D%95%E6%98%AF%E2%80%9C%E6%B0%94%E6%B8%A9%E8%B7%B3%E6%B0%B4%E2%80%9D", "h": "534万", "tags": ["童书-儿童成长"], "rel": "中"}, {"p": "微信", "t": "北京交警机器人首次正式亮相", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%8C%97%E4%BA%AC%E4%BA%A4%E8%AD%A6%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%A6%96%E6%AC%A1%E6%AD%A3%E5%BC%8F%E4%BA%AE%E7%9B%B8", "h": "490.2万", "tags": [], "rel": "—"}, {"p": "微信", "t": "中国式安全感在外网刷屏出圈", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%AE%89%E5%85%A8%E6%84%9F%E5%9C%A8%E5%A4%96%E7%BD%91%E5%88%B7%E5%B1%8F%E5%87%BA%E5%9C%88", "h": "481.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "东部战区舰艇编队赴西太平洋演训", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%9C%E9%83%A8%E6%88%98%E5%8C%BA%E8%88%B0%E8%89%87%E7%BC%96%E9%98%9F%E8%B5%B4%E8%A5%BF%E5%A4%AA%E5%B9%B3%E6%B4%8B%E6%BC%94%E8%AE%AD", "h": "479.3万", "tags": [], "rel": "—"}, {"p": "微信", "t": "中海油与中核突然牵手", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E6%B5%B7%E6%B2%B9%E4%B8%8E%E4%B8%AD%E6%A0%B8%E7%AA%81%E7%84%B6%E7%89%B5%E6%89%8B", "h": "475.3万", "tags": [], "rel": "—"}, {"p": "微信", "t": "经常犯困可能不是懒而是真的病了", "u": "https://www.sogou.com/web?ie=utf8&query=%E7%BB%8F%E5%B8%B8%E7%8A%AF%E5%9B%B0%E5%8F%AF%E8%83%BD%E4%B8%8D%E6%98%AF%E6%87%92%E8%80%8C%E6%98%AF%E7%9C%9F%E7%9A%84%E7%97%85%E4%BA%86", "h": "466.8万", "tags": [], "rel": "—"}, {"p": "微信", "t": "张雪机车比赛因红旗中断提前结束", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E6%AF%94%E8%B5%9B%E5%9B%A0%E7%BA%A2%E6%97%97%E4%B8%AD%E6%96%AD%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F", "h": "450.1万", "tags": ["人文社科-传记", "自然科技-工业技术"], "rel": "中"}, {"p": "微信", "t": "涉密文件带回家遭\"好友\"传至境外", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%B6%89%E5%AF%86%E6%96%87%E4%BB%B6%E5%B8%A6%E5%9B%9E%E5%AE%B6%E9%81%AD%22%E5%A5%BD%E5%8F%8B%22%E4%BC%A0%E8%87%B3%E5%A2%83%E5%A4%96", "h": "445.1万", "tags": [], "rel": "—"}, {"p": "微信", "t": "12306拒绝抢票软件出票超百万张", "u": "https://www.sogou.com/web?ie=utf8&query=12306%E6%8B%92%E7%BB%9D%E6%8A%A2%E7%A5%A8%E8%BD%AF%E4%BB%B6%E5%87%BA%E7%A5%A8%E8%B6%85%E7%99%BE%E4%B8%87%E5%BC%A0", "h": "437.9万", "tags": [], "rel": "—"}, {"p": "微信", "t": "别墅装修效果图", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%88%AB%E5%A2%85%E8%A3%85%E4%BF%AE%E6%95%88%E6%9E%9C%E5%9B%BE", "h": "422.1万", "tags": [], "rel": "—"}, {"p": "微信", "t": "眼镜\"需要时戴\"就行?", "u": "https://www.sogou.com/web?ie=utf8&query=%E7%9C%BC%E9%95%9C%22%E9%9C%80%E8%A6%81%E6%97%B6%E6%88%B4%22%E5%B0%B1%E8%A1%8C%3F", "h": "406.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "今日\"谷雨\":春天最后一个节气", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%BB%8A%E6%97%A5%22%E8%B0%B7%E9%9B%A8%22%3A%E6%98%A5%E5%A4%A9%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E8%8A%82%E6%B0%94", "h": "428.5万", "tags": ["生活-养生保健", "人文社科-文学/小说"], "rel": "高"}, {"p": "微信", "t": "梁家辉五封金像奖影帝", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%A2%81%E5%AE%B6%E8%BE%89%E4%BA%94%E5%B0%81%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D", "h": "401.3万", "tags": [], "rel": "—"}, {"p": "微信", "t": "小鼻嘎累趴 路过机器人看热闹鼓掌", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%B0%8F%E9%BC%BB%E5%98%8E%E7%B4%AF%E8%B6%B4+%E8%B7%AF%E8%BF%87%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9C%8B%E7%83%AD%E9%97%B9%E9%BC%93%E6%8E%8C", "h": "379.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "重大气象灾害四级应急响应启动", "u": "https://www.sogou.com/web?ie=utf8&query=%E9%87%8D%E5%A4%A7%E6%B0%94%E8%B1%A1%E7%81%BE%E5%AE%B3%E5%9B%9B%E7%BA%A7%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%90%AF%E5%8A%A8", "h": "361.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "人均80块的火锅店,正在大面积关门", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%BA%BA%E5%9D%8780%E5%9D%97%E7%9A%84%E7%81%AB%E9%94%85%E5%BA%97%2C%E6%AD%A3%E5%9C%A8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%85%B3%E9%97%A8", "h": "351.1万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "东部战区舰艇编队过航横当水道", "u": "https://www.douyin.com/search/%E4%B8%9C%E9%83%A8%E6%88%98%E5%8C%BA%E8%88%B0%E8%89%87%E7%BC%96%E9%98%9F%E8%BF%87%E8%88%AA%E6%A8%AA%E5%BD%93%E6%B0%B4%E9%81%93", "h": "1188.9万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "今年的小龙虾为啥便宜", "u": "https://www.douyin.com/search/%E4%BB%8A%E5%B9%B4%E7%9A%84%E5%B0%8F%E9%BE%99%E8%99%BE%E4%B8%BA%E5%95%A5%E4%BE%BF%E5%AE%9C", "h": "1165.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "中国每3度电就有1度是绿电", "u": "https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E6%AF%8F3%E5%BA%A6%E7%94%B5%E5%B0%B1%E6%9C%891%E5%BA%A6%E6%98%AF%E7%BB%BF%E7%94%B5", "h": "1154.5万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "日本启动十二年来最重大军售", "u": "https://www.douyin.com/search/%E6%97%A5%E6%9C%AC%E5%90%AF%E5%8A%A8%E5%8D%81%E4%BA%8C%E5%B9%B4%E6%9D%A5%E6%9C%80%E9%87%8D%E5%A4%A7%E5%86%9B%E5%94%AE", "h": "1135.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "曼城2:1阿森纳", "u": "https://www.douyin.com/search/%E6%9B%BC%E5%9F%8E2%3A1%E9%98%BF%E6%A3%AE%E7%BA%B3", "h": "1055.7万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "张雪机车荷兰站第二回合第七", "u": "https://www.douyin.com/search/%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E8%8D%B7%E5%85%B0%E7%AB%99%E7%AC%AC%E4%BA%8C%E5%9B%9E%E5%90%88%E7%AC%AC%E4%B8%83", "h": "1054.3万", "tags": ["人文社科-传记", "自然科技-工业技术"], "rel": "中"}, {"p": "抖音", "t": "今日谷雨", "u": "https://www.douyin.com/search/%E4%BB%8A%E6%97%A5%E8%B0%B7%E9%9B%A8", "h": "934.2万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "万达电影改名儒意电影", "u": "https://www.douyin.com/search/%E4%B8%87%E8%BE%BE%E7%94%B5%E5%BD%B1%E6%94%B9%E5%90%8D%E5%84%92%E6%84%8F%E7%94%B5%E5%BD%B1", "h": "932.9万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "中国航司大面积取消日本航班", "u": "https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E8%88%AA%E5%8F%B8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%8F%96%E6%B6%88%E6%97%A5%E6%9C%AC%E8%88%AA%E7%8F%AD", "h": "921.7万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "后湖煎饼也是吃上了", "u": "https://www.douyin.com/search/%E5%90%8E%E6%B9%96%E7%85%8E%E9%A5%BC%E4%B9%9F%E6%98%AF%E5%90%83%E4%B8%8A%E4%BA%86", "h": "918.8万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "国产光纤全球爆单 价格涨650%", "u": "https://www.douyin.com/search/%E5%9B%BD%E4%BA%A7%E5%85%89%E7%BA%A4%E5%85%A8%E7%90%83%E7%88%86%E5%8D%95+%E4%BB%B7%E6%A0%BC%E6%B6%A8650%25", "h": "913.8万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "苏超积分榜乱成一锅粥了", "u": "https://www.douyin.com/search/%E8%8B%8F%E8%B6%85%E7%A7%AF%E5%88%86%E6%A6%9C%E4%B9%B1%E6%88%90%E4%B8%80%E9%94%85%E7%B2%A5%E4%BA%86", "h": "912.2万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "专家辟谣厄尔尼诺引发极限高温", "u": "https://www.douyin.com/search/%E4%B8%93%E5%AE%B6%E8%BE%9F%E8%B0%A3%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E5%BC%95%E5%8F%91%E6%9E%81%E9%99%90%E9%AB%98%E6%B8%A9", "h": "906.8万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "丁俊晖半场7:2吉尔伯特", "u": "https://www.douyin.com/search/%E4%B8%81%E4%BF%8A%E6%99%96%E5%8D%8A%E5%9C%BA7%3A2%E5%90%89%E5%B0%94%E4%BC%AF%E7%89%B9", "h": "855.1万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "今年机器人跑半马也太快了", "u": "https://www.douyin.com/search/%E4%BB%8A%E5%B9%B4%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%B7%91%E5%8D%8A%E9%A9%AC%E4%B9%9F%E5%A4%AA%E5%BF%AB%E4%BA%86", "h": "825.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "周杰伦南宁演唱会Day3赚麻了", "u": "https://www.douyin.com/search/%E5%91%A8%E6%9D%B0%E4%BC%A6%E5%8D%97%E5%AE%81%E6%BC%94%E5%94%B1%E4%BC%9ADay3%E8%B5%9A%E9%BA%BB%E4%BA%86", "h": "776.7万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "孔雪儿韩蕾粉彩妆美到心巴上", "u": "https://www.douyin.com/search/%E5%AD%94%E9%9B%AA%E5%84%BF%E9%9F%A9%E8%95%BE%E7%B2%89%E5%BD%A9%E5%A6%86%E7%BE%8E%E5%88%B0%E5%BF%83%E5%B7%B4%E4%B8%8A", "h": "775.7万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "谷雨是春天的最后一个节气", "u": "https://www.douyin.com/search/%E8%B0%B7%E9%9B%A8%E6%98%AF%E6%98%A5%E5%A4%A9%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E8%8A%82%E6%B0%94", "h": "775万", "tags": ["生活-养生保健", "人文社科-文学/小说"], "rel": "高"}, {"p": "抖音", "t": "梁家辉五封金像奖影帝", "u": "https://www.douyin.com/search/%E6%A2%81%E5%AE%B6%E8%BE%89%E4%BA%94%E5%B0%81%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D", "h": "774.4万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "广西人的三月三到底瞒了我们多少", "u": "https://www.douyin.com/search/%E5%B9%BF%E8%A5%BF%E4%BA%BA%E7%9A%84%E4%B8%89%E6%9C%88%E4%B8%89%E5%88%B0%E5%BA%95%E7%9E%92%E4%BA%86%E6%88%91%E4%BB%AC%E5%A4%9A%E5%B0%91", "h": "774.3万", "tags": [], "rel": "—"}, {"p": "百度", "t": "建设网络强国", "u": "https://www.baidu.com/s?wd=%E5%BB%BA%E8%AE%BE%E7%BD%91%E7%BB%9C%E5%BC%BA%E5%9B%BD&sa=fyb_news&rsv_dl=fyb_news", "h": "790.5万", "tags": ["自然科技-计算机/网络"], "rel": "中"}, {"p": "百度", "t": "微信这两项设置很关键涉及资金安全", "u": "https://www.baidu.com/s?wd=%E5%BE%AE%E4%BF%A1%E8%BF%99%E4%B8%A4%E9%A1%B9%E8%AE%BE%E7%BD%AE%E5%BE%88%E5%85%B3%E9%94%AE+%E6%B6%89%E5%8F%8A%E8%B5%84%E9%87%91%E5%AE%89%E5%85%A8&sa=fyb_news&rsv_dl=fyb_news", "h": "780.8万", "tags": [], "rel": "—"}, {"p": "百度", "t": "小米回应网传“雷军被堵车里维权”", "u": "https://www.baidu.com/s?wd=%E5%B0%8F%E7%B1%B3%E5%9B%9E%E5%BA%94%E7%BD%91%E4%BC%A0%E2%80%9C%E9%9B%B7%E5%86%9B%E8%A2%AB%E5%A0%B5%E8%BD%A6%E9%87%8C%E7%BB%B4%E6%9D%83%E2%80%9D&sa=fyb_news&rsv_dl=fyb_news", "h": "771.3万", "tags": [], "rel": "—"}, {"p": "百度", "t": "今日谷雨", "u": "https://www.baidu.com/s?wd=%E4%BB%8A%E6%97%A5%E8%B0%B7%E9%9B%A8&sa=fyb_news&rsv_dl=fyb_news", "h": "761.8万", "tags": [], "rel": "—"}, {"p": "百度", "t": "莫氏鸡煲休息1天：真的干不动了", "u": "https://www.baidu.com/s?wd=%E8%8E%AB%E6%B0%8F%E9%B8%A1%E7%85%B2%E4%BC%91%E6%81%AF1%E5%A4%A9%EF%BC%9A%E7%9C%9F%E7%9A%84%E5%B9%B2%E4%B8%8D%E5%8A%A8%E4%BA%86&sa=fyb_news&rsv_dl=fyb_news", "h": "752.1万", "tags": [], "rel": "—"}, {"p": "百度", "t": "“笋之大一猫吃不下”", "u": "https://www.baidu.com/s?wd=%E2%80%9C%E7%AC%8B%E4%B9%8B%E5%A4%A7+%E4%B8%80%E7%8C%AB%E5%90%83%E4%B8%8D%E4%B8%8B%E2%80%9D&sa=fyb_news&rsv_dl=fyb_news", "h": "742.4万", "tags": [], "rel": "—"}, {"p": "百度", "t": "比赛提前结束张雪安抚现场观众情绪", "u": "https://www.baidu.com/s?wd=%E6%AF%94%E8%B5%9B%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F+%E5%BC%A0%E9%9B%AA%E5%AE%89%E6%8A%9A%E7%8E%B0%E5%9C%BA%E8%A7%82%E4%BC%97%E6%83%85%E7%BB%AA&sa=fyb_news&rsv_dl=fyb_news", "h": "723.3万", "tags": ["人文社科-传记", "人文社科-心理学"], "rel": "中"}, {"p": "百度", "t": "中国航司大面积取消日本航班", "u": "https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E8%88%AA%E5%8F%B8%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%8F%96%E6%B6%88%E6%97%A5%E6%9C%AC%E8%88%AA%E7%8F%AD&sa=fyb_news&rsv_dl=fyb_news", "h": "714.2万", "tags": [], "rel": "—"}, {"p": "百度", "t": "张雪机车比赛因红旗中断提前结束", "u": "https://www.baidu.com/s?wd=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E6%AF%94%E8%B5%9B%E5%9B%A0%E7%BA%A2%E6%97%97%E4%B8%AD%E6%96%AD%E6%8F%90%E5%89%8D%E7%BB%93%E6%9D%9F&sa=fyb_news&rsv_dl=fyb_news", "h": "704.1万", "tags": ["人文社科-传记", "自然科技-工业技术"], "rel": "中"}, {"p": "百度", "t": "涉密文件带回家遭“好友”传至境外", "u": "https://www.baidu.com/s?wd=%E6%B6%89%E5%AF%86%E6%96%87%E4%BB%B6%E5%B8%A6%E5%9B%9E%E5%AE%B6%E9%81%AD%E2%80%9C%E5%A5%BD%E5%8F%8B%E2%80%9D%E4%BC%A0%E8%87%B3%E5%A2%83%E5%A4%96&sa=fyb_news&rsv_dl=fyb_news", "h": "694.3万", "tags": [], "rel": "—"}, {"p": "百度", "t": "梁家辉凭借《捕风追影》获金像奖影帝", "u": "https://www.baidu.com/s?wd=%E6%A2%81%E5%AE%B6%E8%BE%89%E5%87%AD%E5%80%9F%E3%80%8A%E6%8D%95%E9%A3%8E%E8%BF%BD%E5%BD%B1%E3%80%8B%E8%8E%B7%E9%87%91%E5%83%8F%E5%A5%96%E5%BD%B1%E5%B8%9D&sa=fyb_news&rsv_dl=fyb_news", "h": "676万", "tags": [], "rel": "—"}, {"p": "百度", "t": "持股市值不到7万元成公司第8大股东", "u": "https://www.baidu.com/s?wd=%E6%8C%81%E8%82%A1%E5%B8%82%E5%80%BC%E4%B8%8D%E5%88%B07%E4%B8%87%E5%85%83%E6%88%90%E5%85%AC%E5%8F%B8%E7%AC%AC8%E5%A4%A7%E8%82%A1%E4%B8%9C&sa=fyb_news&rsv_dl=fyb_news", "h": "656.2万", "tags": [], "rel": "—"}, {"p": "百度", "t": "A股开盘：消费电子板块活跃", "u": "https://www.baidu.com/s?wd=A%E8%82%A1%E5%BC%80%E7%9B%98%EF%BC%9A%E6%B6%88%E8%B4%B9%E7%94%B5%E5%AD%90%E6%9D%BF%E5%9D%97%E6%B4%BB%E8%B7%83&sa=fyb_news&rsv_dl=fyb_news", "h": "646.3万", "tags": ["人文社科-法律", "人文社科-经济/金融"], "rel": "高"}, {"p": "百度", "t": "小苏打的“隐藏技能”你都知道吗", "u": "https://www.baidu.com/s?wd=%E5%B0%8F%E8%8B%8F%E6%89%93%E7%9A%84%E2%80%9C%E9%9A%90%E8%97%8F%E6%8A%80%E8%83%BD%E2%80%9D%E4%BD%A0%E9%83%BD%E7%9F%A5%E9%81%93%E5%90%97&sa=fyb_news&rsv_dl=fyb_news", "h": "637万", "tags": [], "rel": "—"}, {"p": "百度", "t": "全球最大零食店开业3天就被挤停售", "u": "https://www.baidu.com/s?wd=%E5%85%A8%E7%90%83%E6%9C%80%E5%A4%A7%E9%9B%B6%E9%A3%9F%E5%BA%97%E5%BC%80%E4%B8%9A3%E5%A4%A9%E5%B0%B1%E8%A2%AB%E6%8C%A4%E5%81%9C%E5%94%AE&sa=fyb_news&rsv_dl=fyb_news", "h": "627.8万", "tags": [], "rel": "—"}, {"p": "百度", "t": "张雪机车积分仅次于杜卡迪和雅马哈", "u": "https://www.baidu.com/s?wd=%E5%BC%A0%E9%9B%AA%E6%9C%BA%E8%BD%A6%E7%A7%AF%E5%88%86%E4%BB%85%E6%AC%A1%E4%BA%8E%E6%9D%9C%E5%8D%A1%E8%BF%AA%E5%92%8C%E9%9B%85%E9%A9%AC%E5%93%88&sa=fyb_news&rsv_dl=fyb_news", "h": "617.5万", "tags": ["人文社科-传记", "自然科技-工业技术"], "rel": "中"}, {"p": "百度", "t": "国际油价大幅走高", "u": "https://www.baidu.com/s?wd=%E5%9B%BD%E9%99%85%E6%B2%B9%E4%BB%B7%E5%A4%A7%E5%B9%85%E8%B5%B0%E9%AB%98&sa=fyb_news&rsv_dl=fyb_news", "h": "608.4万", "tags": [], "rel": "—"}];
+var ALL_HOTS=[{"p": "微信", "t": "140年来最强厄尔尼诺正在酝酿", "u": "https://www.sogou.com/web?ie=utf8&query=140%E5%B9%B4%E6%9D%A5%E6%9C%80%E5%BC%BA%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E6%AD%A3%E5%9C%A8%E9%85%9D%E9%85%BF", "h": "541万", "tags": [], "rel": "—"}, {"p": "微信", "t": "神21航天员圆满完成第3次出舱活动", "u": "https://www.sogou.com/web?ie=utf8&query=%E7%A5%9E21%E8%88%AA%E5%A4%A9%E5%91%98%E5%9C%86%E6%BB%A1%E5%AE%8C%E6%88%90%E7%AC%AC3%E6%AC%A1%E5%87%BA%E8%88%B1%E6%B4%BB%E5%8A%A8", "h": "530.6万", "tags": [], "rel": "—"}, {"p": "微信", "t": "中国导弹驱逐舰首次亮相太平洋", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E5%AF%BC%E5%BC%B9%E9%A9%B1%E9%80%90%E8%88%B0%E9%A6%96%E6%AC%A1%E4%BA%AE%E7%9B%B8%E5%A4%AA%E5%B9%B3%E6%B4%8B", "h": "528.9万", "tags": [], "rel": "—"}, {"p": "微信", "t": "中国科学家造出\"超级铜箔\"", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E5%AE%B6%E9%80%A0%E5%87%BA%22%E8%B6%85%E7%BA%A7%E9%93%9C%E7%AE%94%22", "h": "472.7万", "tags": ["童书-科普百科"], "rel": "高"}, {"p": "微信", "t": "\"一人公司\"迎来大爆发", "u": "https://www.sogou.com/web?ie=utf8&query=%22%E4%B8%80%E4%BA%BA%E5%85%AC%E5%8F%B8%22%E8%BF%8E%E6%9D%A5%E5%A4%A7%E7%88%86%E5%8F%91", "h": "451.5万", "tags": [], "rel": "—"}, {"p": "微信", "t": "间谍策反中企员工致项目停工停产", "u": "https://www.sogou.com/web?ie=utf8&query=%E9%97%B4%E8%B0%8D%E7%AD%96%E5%8F%8D%E4%B8%AD%E4%BC%81%E5%91%98%E5%B7%A5%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%81%9C%E5%B7%A5%E5%81%9C%E4%BA%A7", "h": "447.8万", "tags": [], "rel": "—"}, {"p": "微信", "t": "\"厦金通桥\"成岛内热词", "u": "https://www.sogou.com/web?ie=utf8&query=%22%E5%8E%A6%E9%87%91%E9%80%9A%E6%A1%A5%22%E6%88%90%E5%B2%9B%E5%86%85%E7%83%AD%E8%AF%8D", "h": "446.8万", "tags": [], "rel": "—"}, {"p": "微信", "t": "南京银行原行长挪用4.8亿获利千万", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%8D%97%E4%BA%AC%E9%93%B6%E8%A1%8C%E5%8E%9F%E8%A1%8C%E9%95%BF%E6%8C%AA%E7%94%A84.8%E4%BA%BF%E8%8E%B7%E5%88%A9%E5%8D%83%E4%B8%87", "h": "426万", "tags": [], "rel": "—"}, {"p": "微信", "t": "个税预缴规则调整", "u": "https://www.sogou.com/web?ie=utf8&query=%E4%B8%AA%E7%A8%8E%E9%A2%84%E7%BC%B4%E8%A7%84%E5%88%99%E8%B0%83%E6%95%B4", "h": "411.3万", "tags": [], "rel": "—"}, {"p": "微信", "t": "牙齿不痛就不用看牙?", "u": "https://www.sogou.com/web?ie=utf8&query=%E7%89%99%E9%BD%BF%E4%B8%8D%E7%97%9B%E5%B0%B1%E4%B8%8D%E7%94%A8%E7%9C%8B%E7%89%99%3F", "h": "409.1万", "tags": [], "rel": "—"}, {"p": "微信", "t": "教资笔试成绩公布", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%95%99%E8%B5%84%E7%AC%94%E8%AF%95%E6%88%90%E7%BB%A9%E5%85%AC%E5%B8%83", "h": "423.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "全友全屋定制报价明细表", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%85%A8%E5%8F%8B%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E6%8A%A5%E4%BB%B7%E6%98%8E%E7%BB%86%E8%A1%A8", "h": "415.9万", "tags": [], "rel": "—"}, {"p": "微信", "t": "源杰科技股价超越茅台 成A股新股王", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%BA%90%E6%9D%B0%E7%A7%91%E6%8A%80%E8%82%A1%E4%BB%B7%E8%B6%85%E8%B6%8A%E8%8C%85%E5%8F%B0+%E6%88%90A%E8%82%A1%E6%96%B0%E8%82%A1%E7%8E%8B", "h": "390万", "tags": [], "rel": "—"}, {"p": "微信", "t": "雷军回应是否做10万以内车型", "u": "https://www.sogou.com/web?ie=utf8&query=%E9%9B%B7%E5%86%9B%E5%9B%9E%E5%BA%94%E6%98%AF%E5%90%A6%E5%81%9A10%E4%B8%87%E4%BB%A5%E5%86%85%E8%BD%A6%E5%9E%8B", "h": "386.8万", "tags": [], "rel": "—"}, {"p": "微信", "t": "年轻人流行把车改成移动大床房", "u": "https://www.sogou.com/web?ie=utf8&query=%E5%B9%B4%E8%BD%BB%E4%BA%BA%E6%B5%81%E8%A1%8C%E6%8A%8A%E8%BD%A6%E6%94%B9%E6%88%90%E7%A7%BB%E5%8A%A8%E5%A4%A7%E5%BA%8A%E6%88%BF", "h": "382.2万", "tags": [], "rel": "—"}, {"p": "微信", "t": "男子持手电筒国道拦车 广西通报", "u": "https://www.sogou.com/web?ie=utf8&query=%E7%94%B7%E5%AD%90%E6%8C%81%E6%89%8B%E7%94%B5%E7%AD%92%E5%9B%BD%E9%81%93%E6%8B%A6%E8%BD%A6+%E5%B9%BF%E8%A5%BF%E9%80%9A%E6%8A%A5", "h": "374.4万", "tags": [], "rel": "—"}, {"p": "微信", "t": "贝嫂首谈与长子决裂 关系难修复", "u": "https://www.sogou.com/web?ie=utf8&query=%E8%B4%9D%E5%AB%82%E9%A6%96%E8%B0%88%E4%B8%8E%E9%95%BF%E5%AD%90%E5%86%B3%E8%A3%82+%E5%85%B3%E7%B3%BB%E9%9A%BE%E4%BF%AE%E5%A4%8D", "h": "352.6万", "tags": [], "rel": "—"}, {"p": "微信", "t": "海尔旗舰店深夜标价异常 冰柜76元", "u": "https://www.sogou.com/web?ie=utf8&query=%E6%B5%B7%E5%B0%94%E6%97%97%E8%88%B0%E5%BA%97%E6%B7%B1%E5%A4%9C%E6%A0%87%E4%BB%B7%E5%BC%82%E5%B8%B8+%E5%86%B0%E6%9F%9C76%E5%85%83", "h": "336.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "交换你镜头里的春天", "u": "https://www.douyin.com/search/%E4%BA%A4%E6%8D%A2%E4%BD%A0%E9%95%9C%E5%A4%B4%E9%87%8C%E7%9A%84%E6%98%A5%E5%A4%A9", "h": "1111.1万", "tags": ["人文社科-文学/小说"], "rel": "低"}, {"p": "抖音", "t": "中国海洋采油技术有多牛", "u": "https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E6%B5%B7%E6%B4%8B%E9%87%87%E6%B2%B9%E6%8A%80%E6%9C%AF%E6%9C%89%E5%A4%9A%E7%89%9B", "h": "1110万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "一季度GDP增长5.0%开局良好", "u": "https://www.douyin.com/search/%E4%B8%80%E5%AD%A3%E5%BA%A6GDP%E5%A2%9E%E9%95%BF5.0%25%E5%BC%80%E5%B1%80%E8%89%AF%E5%A5%BD", "h": "1108.1万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "一季度经济“成绩单”里的新变化", "u": "https://www.douyin.com/search/%E4%B8%80%E5%AD%A3%E5%BA%A6%E7%BB%8F%E6%B5%8E%E2%80%9C%E6%88%90%E7%BB%A9%E5%8D%95%E2%80%9D%E9%87%8C%E7%9A%84%E6%96%B0%E5%8F%98%E5%8C%96", "h": "1092.7万", "tags": ["人文社科-经济/金融"], "rel": "低"}, {"p": "抖音", "t": "万千气象看江西", "u": "https://www.douyin.com/search/%E4%B8%87%E5%8D%83%E6%B0%94%E8%B1%A1%E7%9C%8B%E6%B1%9F%E8%A5%BF", "h": "1033.3万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "郑丽文再谈访陆感受", "u": "https://www.douyin.com/search/%E9%83%91%E4%B8%BD%E6%96%87%E5%86%8D%E8%B0%88%E8%AE%BF%E9%99%86%E6%84%9F%E5%8F%97", "h": "1020.1万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "赖清德弹劾案5月19日投票表决", "u": "https://www.douyin.com/search/%E8%B5%96%E6%B8%85%E5%BE%B7%E5%BC%B9%E5%8A%BE%E6%A1%885%E6%9C%8819%E6%97%A5%E6%8A%95%E7%A5%A8%E8%A1%A8%E5%86%B3", "h": "912.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "我的弹簧裙摆很曼妙", "u": "https://www.douyin.com/search/%E6%88%91%E7%9A%84%E5%BC%B9%E7%B0%A7%E8%A3%99%E6%91%86%E5%BE%88%E6%9B%BC%E5%A6%99", "h": "911.9万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "王者荣耀世界移动端上线", "u": "https://www.douyin.com/search/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E4%B8%96%E7%95%8C%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%B8%8A%E7%BA%BF", "h": "911.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "出游前的对镜qq秀", "u": "https://www.douyin.com/search/%E5%87%BA%E6%B8%B8%E5%89%8D%E7%9A%84%E5%AF%B9%E9%95%9Cqq%E7%A7%80", "h": "908.3万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "手搓毛线我们便可得到", "u": "https://www.douyin.com/search/%E6%89%8B%E6%90%93%E6%AF%9B%E7%BA%BF%E6%88%91%E4%BB%AC%E4%BE%BF%E5%8F%AF%E5%BE%97%E5%88%B0", "h": "907.2万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "泸州“楼房倒塌多人坠落”系谣言", "u": "https://www.douyin.com/search/%E6%B3%B8%E5%B7%9E%E2%80%9C%E6%A5%BC%E6%88%BF%E5%80%92%E5%A1%8C%E5%A4%9A%E4%BA%BA%E5%9D%A0%E8%90%BD%E2%80%9D%E7%B3%BB%E8%B0%A3%E8%A8%80", "h": "870.3万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "穿大裙摆骑马当一回公主", "u": "https://www.douyin.com/search/%E7%A9%BF%E5%A4%A7%E8%A3%99%E6%91%86%E9%AA%91%E9%A9%AC%E5%BD%93%E4%B8%80%E5%9B%9E%E5%85%AC%E4%B8%BB", "h": "850万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "郑丽文喊话张凌赫赴台", "u": "https://www.douyin.com/search/%E9%83%91%E4%B8%BD%E6%96%87%E5%96%8A%E8%AF%9D%E5%BC%A0%E5%87%8C%E8%B5%AB%E8%B5%B4%E5%8F%B0", "h": "844.5万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "雷军回应是否做10万以内车型", "u": "https://www.douyin.com/search/%E9%9B%B7%E5%86%9B%E5%9B%9E%E5%BA%94%E6%98%AF%E5%90%A6%E5%81%9A10%E4%B8%87%E4%BB%A5%E5%86%85%E8%BD%A6%E5%9E%8B", "h": "823.9万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "文明泼水开心过节", "u": "https://www.douyin.com/search/%E6%96%87%E6%98%8E%E6%B3%BC%E6%B0%B4%E5%BC%80%E5%BF%83%E8%BF%87%E8%8A%82", "h": "779.6万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "蜜语纪全员爱情鸟舞蹈挑战", "u": "https://www.douyin.com/search/%E8%9C%9C%E8%AF%AD%E7%BA%AA%E5%85%A8%E5%91%98%E7%88%B1%E6%83%85%E9%B8%9F%E8%88%9E%E8%B9%88%E6%8C%91%E6%88%98", "h": "774万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "雷军15小时京沪续航直播", "u": "https://www.douyin.com/search/%E9%9B%B7%E5%86%9B15%E5%B0%8F%E6%97%B6%E4%BA%AC%E6%B2%AA%E7%BB%AD%E8%88%AA%E7%9B%B4%E6%92%AD", "h": "773.8万", "tags": [], "rel": "—"}, {"p": "抖音", "t": "朱珠版wait一开口对味了", "u": "https://www.douyin.com/search/%E6%9C%B1%E7%8F%A0%E7%89%88wait%E4%B8%80%E5%BC%80%E5%8F%A3%E5%AF%B9%E5%91%B3%E4%BA%86", "h": "769.3万", "tags": ["自然科技-计算机/网络"], "rel": "中"}, {"p": "百度", "t": "中越领导人会谈3个特殊值得关注", "u": "https://www.baidu.com/s?wd=%E4%B8%AD%E8%B6%8A%E9%A2%86%E5%AF%BC%E4%BA%BA%E4%BC%9A%E8%B0%88+3%E4%B8%AA%E7%89%B9%E6%AE%8A%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8&sa=fyb_news&rsv_dl=fyb_news", "h": "790.5万", "tags": [], "rel": "—"}, {"p": "百度", "t": "“一人公司”迎来大爆发", "u": "https://www.baidu.com/s?wd=%E2%80%9C%E4%B8%80%E4%BA%BA%E5%85%AC%E5%8F%B8%E2%80%9D%E8%BF%8E%E6%9D%A5%E5%A4%A7%E7%88%86%E5%8F%91&sa=fyb_news&rsv_dl=fyb_news", "h": "780.8万", "tags": [], "rel": "—"}, {"p": "百度", "t": "间谍策反中企员工致项目停工停产", "u": "https://www.baidu.com/s?wd=%E9%97%B4%E8%B0%8D%E7%AD%96%E5%8F%8D%E4%B8%AD%E4%BC%81%E5%91%98%E5%B7%A5%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%81%9C%E5%B7%A5%E5%81%9C%E4%BA%A7&sa=fyb_news&rsv_dl=fyb_news", "h": "771.4万", "tags": [], "rel": "—"}, {"p": "百度", "t": "在消博会上触摸消费市场新风向", "u": "https://www.baidu.com/s?wd=%E5%9C%A8%E6%B6%88%E5%8D%9A%E4%BC%9A%E4%B8%8A%E8%A7%A6%E6%91%B8%E6%B6%88%E8%B4%B9%E5%B8%82%E5%9C%BA%E6%96%B0%E9%A3%8E%E5%90%91&sa=fyb_news&rsv_dl=fyb_news", "h": "761.6万", "tags": ["人文社科-法律", "人文社科-经济/金融"], "rel": "高"}, {"p": "百度", "t": "雷军：最大的心理负担是不能说错话", "u": "https://www.baidu.com/s?wd=%E9%9B%B7%E5%86%9B%EF%BC%9A%E6%9C%80%E5%A4%A7%E7%9A%84%E5%BF%83%E7%90%86%E8%B4%9F%E6%8B%85%E6%98%AF%E4%B8%8D%E8%83%BD%E8%AF%B4%E9%94%99%E8%AF%9D&sa=fyb_news&rsv_dl=fyb_news", "h": "752.2万", "tags": ["人文社科-心理学"], "rel": "中"}, {"p": "百度", "t": "起猛了看到机器人交警在指挥交通", "u": "https://www.baidu.com/s?wd=%E8%B5%B7%E7%8C%9B%E4%BA%86+%E7%9C%8B%E5%88%B0%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BA%A4%E8%AD%A6%E5%9C%A8%E6%8C%87%E6%8C%A5%E4%BA%A4%E9%80%9A&sa=fyb_news&rsv_dl=fyb_news", "h": "742.4万", "tags": ["人文社科-法律"], "rel": "高"}, {"p": "百度", "t": "人民日报评“续费刺客”：必撞南墙", "u": "https://www.baidu.com/s?wd=%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E8%AF%84%E2%80%9C%E7%BB%AD%E8%B4%B9%E5%88%BA%E5%AE%A2%E2%80%9D%EF%BC%9A%E5%BF%85%E6%92%9E%E5%8D%97%E5%A2%99&sa=fyb_news&rsv_dl=fyb_news", "h": "723.9万", "tags": [], "rel": "—"}, {"p": "百度", "t": "A股股王易主源杰科技取代贵州茅台", "u": "https://www.baidu.com/s?wd=A%E8%82%A1%E8%82%A1%E7%8E%8B%E6%98%93%E4%B8%BB+%E6%BA%90%E6%9D%B0%E7%A7%91%E6%8A%80%E5%8F%96%E4%BB%A3%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0&sa=fyb_news&rsv_dl=fyb_news", "h": "713.7万", "tags": [], "rel": "—"}, {"p": "百度", "t": "140年来最强厄尔尼诺正在酝酿", "u": "https://www.baidu.com/s?wd=140%E5%B9%B4%E6%9D%A5%E6%9C%80%E5%BC%BA%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E6%AD%A3%E5%9C%A8%E9%85%9D%E9%85%BF&sa=fyb_news&rsv_dl=fyb_news", "h": "704.9万", "tags": [], "rel": "—"}, {"p": "百度", "t": "贵州茅台开盘大跌", "u": "https://www.baidu.com/s?wd=%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0%E5%BC%80%E7%9B%98%E5%A4%A7%E8%B7%8C&sa=fyb_news&rsv_dl=fyb_news", "h": "694.4万", "tags": [], "rel": "—"}, {"p": "百度", "t": "造谣“天津突发8.8级地震”者被罚", "u": "https://www.baidu.com/s?wd=%E9%80%A0%E8%B0%A3%E2%80%9C%E5%A4%A9%E6%B4%A5%E7%AA%81%E5%8F%918.8%E7%BA%A7%E5%9C%B0%E9%9C%87%E2%80%9D%E8%80%85%E8%A2%AB%E7%BD%9A&sa=fyb_news&rsv_dl=fyb_news", "h": "685万", "tags": [], "rel": "—"}, {"p": "百度", "t": "1.5元收一张旧CT片？千万别卖", "u": "https://www.baidu.com/s?wd=1.5%E5%85%83%E6%94%B6%E4%B8%80%E5%BC%A0%E6%97%A7CT%E7%89%87%EF%BC%9F%E5%8D%83%E4%B8%87%E5%88%AB%E5%8D%96&sa=fyb_news&rsv_dl=fyb_news", "h": "675.7万", "tags": [], "rel": "—"}, {"p": "百度", "t": "黄仁勋：芯片不是浓缩铀卖中国咋了", "u": "https://www.baidu.com/s?wd=%E9%BB%84%E4%BB%81%E5%8B%8B%EF%BC%9A%E8%8A%AF%E7%89%87%E4%B8%8D%E6%98%AF%E6%B5%93%E7%BC%A9%E9%93%80+%E5%8D%96%E4%B8%AD%E5%9B%BD%E5%92%8B%E4%BA%86&sa=fyb_news&rsv_dl=fyb_news", "h": "665.9万", "tags": [], "rel": "—"}, {"p": "百度", "t": "15时4分还没人上班广西钦州通报", "u": "https://www.baidu.com/s?wd=15%E6%97%B64%E5%88%86%E8%BF%98%E6%B2%A1%E4%BA%BA%E4%B8%8A%E7%8F%AD+%E5%B9%BF%E8%A5%BF%E9%92%A6%E5%B7%9E%E9%80%9A%E6%8A%A5&sa=fyb_news&rsv_dl=fyb_news", "h": "656.7万", "tags": [], "rel": "—"}, {"p": "百度", "t": "贵州茅台上市以来首次业绩双下滑", "u": "https://www.baidu.com/s?wd=%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0%E4%B8%8A%E5%B8%82%E4%BB%A5%E6%9D%A5%E9%A6%96%E6%AC%A1%E4%B8%9A%E7%BB%A9%E5%8F%8C%E4%B8%8B%E6%BB%91&sa=fyb_news&rsv_dl=fyb_news", "h": "647.5万", "tags": [], "rel": "—"}, {"p": "百度", "t": "欧洲仅剩够用6周航空燃油", "u": "https://www.baidu.com/s?wd=%E6%AC%A7%E6%B4%B2%E4%BB%85%E5%89%A9%E5%A4%9F%E7%94%A86%E5%91%A8%E8%88%AA%E7%A9%BA%E7%87%83%E6%B2%B9&sa=fyb_news&rsv_dl=fyb_news", "h": "636.9万", "tags": [], "rel": "—"}, {"p": "百度", "t": "港股群核科技上市首日高开超170%", "u": "https://www.baidu.com/s?wd=%E6%B8%AF%E8%82%A1%E7%BE%A4%E6%A0%B8%E7%A7%91%E6%8A%80%E4%B8%8A%E5%B8%82%E9%A6%96%E6%97%A5%E9%AB%98%E5%BC%80%E8%B6%85170%25&sa=fyb_news&rsv_dl=fyb_news", "h": "617.6万", "tags": [], "rel": "—"}, {"p": "百度", "t": "中使馆提醒在日中国公民注意人身安全", "u": "https://www.baidu.com/s?wd=%E4%B8%AD%E4%BD%BF%E9%A6%86%E6%8F%90%E9%86%92%E5%9C%A8%E6%97%A5%E4%B8%AD%E5%9B%BD%E5%85%AC%E6%B0%91%E6%B3%A8%E6%84%8F%E4%BA%BA%E8%BA%AB%E5%AE%89%E5%85%A8&sa=fyb_news&rsv_dl=fyb_news", "h": "608.2万", "tags": [], "rel": "—"}];
 
 // === 页面2: AI生成的每日前贴文案（优先使用，为空时回退到硬编码兜底文案） ===
-var AI_COPIES={"法律": ["被堵在车里别急着发火，这可是侵犯人身自由！遇到商家侵权，千万别忍气吞声。这本书用真实案例教你如何运用法律武器，维护自己的合法权益，关键时刻能帮你省下大麻烦。", "以为买了股票就是老板？其实你可能连股东大会都进不去。持股不到七万也能成股东，这背后的股权结构你真的看懂了吗？这本书深入浅出地讲解股东权利，让你明白手里的每一张纸代表什么。", "新买的电子产品刚出保修期就坏了，找商家退货被拒？别急着妥协，法律有规定。结合现在的消费电子热点，这本书详细解读了买卖合同中的注意事项，帮你守住钱袋子，拒绝被坑。", "公司股价大跌，手里持有的股份突然变得一文不值？这时候千万别盲目割肉。了解背后的公司治理和法律条款至关重要。这本书能帮你透过现象看本质，在复杂的股权变动中做出更理性的判断。", "车被对方锁了，进不去家，这算不算侵犯权利？这不仅是家庭矛盾，更涉及人身安全。更别提那些没写在合同里的婚姻财产了。这本书用通俗的语言帮你理清婚姻中的法律红线，让感情归感情，利益归利益。", "听到“免费升级”就心动？小心这是商家的套路。在消费电子领域，陷阱往往披着诱人的外衣。这本书教你如何辨别虚假宣传，保护自己的知情权和选择权，别让贪小便宜吃了大亏。", "明明持股不多，为什么大股东说了算？这里面藏着复杂的股权设计。这本书帮你揭开公司治理的面纱，让你明白资本运作背后的逻辑，无论你是投资者还是创业者，都能从中获得启发。", "以前觉得法律离自己很远，直到身边发生纠纷才后悔没学过。其实法律就是保护伞。这本书涵盖了婚姻、财产、劳动等多个方面，用生活化的案例，帮你建立起坚实的法律认知，遇事不慌。"], "AI": ["赛道上的红旗让比赛暂停，AI系统却要在突发状况下继续运行。想了解计算机是如何处理中断和容错的吗？这本书用通俗的语言讲解算法逻辑，帮你理清混乱中的秩序。", "顶尖车队积分紧追，全靠硬实力。AI技术也是一样，越前沿越精彩。这本书汇聚了互联网与人工智能的前沿观点，梳理科技脉络，让你在阅读中感受科技浪潮的涌动。", "信号红灯一亮，比赛暂停。在AI的世界里，这也代表着逻辑判断的瞬间。翻开这本书，通过生动的案例带你走进"]};
+var AI_COPIES={"泛健康": ["想要交换镜头里的春天，不如先问问自己吃得对不对？春天饮食要讲究“生发”，但不是随便吃点草就行。这套书用最通俗的语言，把节气养生讲得明明白白，无论是做菜还是按摩穴位，都能给你提供实用的参考，助你轻松过春。", "镜头定格了花开瞬间，但身体却可能在透支？春天乍暖还寒，很多人这时候就容易感冒。与其事后补救，不如提前了解这本健康指南。它详细介绍了春季常见的养生误区和正确的穴位按摩法，帮你把健康隐患挡在门外。", "在朋友圈交换春天的照片，不如交换一份健康的生活方式。春天是养肝的好时机，但你知道具体该怎么做吗？这本书图文并茂，把深奥的中医理论变得接地气，让你在家就能学到实用的养生技巧，把日子过得更有质量。", "你的镜头记录了春天的色彩，这本健康书将记录你的活力。春天容易犯困？那是身体在提醒你该“补”了。通过这本书，你可以学到如何通过简单的饮食调整和穴位按压，迅速找回满满的精气神，让身体跟上春天的步伐。", "想把镜头里的春天分享给更多人，不如把健康的方法分享给家人。春天饮食忌生冷，也要注意防过敏。这本书里不仅有适合春季的食谱，还有针对不同体质的调理建议，全家老小都能用得上，是居家必备的养生好帮手。", "镜头里的春天是短暂的，但健康的身体却能常伴左右。很多人只知道春天要“踏青”，却不知道怎么“养身”。这本书帮你理清思路，告诉你春天该吃什么、睡什么、按什么穴位，让你在享受美景的同时，也能照顾好自己。", "别只顾着用镜头捕捉春天的光影，也要关注身体的冷暖变化。春天温差大，身体容易不适。这本健康科普读物，用科学的方式告诉你如何顺应天时，通过日常的小习惯改善体质，让你在这个季节里少生病、多健康。", "交换镜头里的春天，其实就是交换一种对生活的热爱。而这份热爱，从健康的身体开始。这本书将带你探索季节更替中的养生奥秘，用简单易行的方法，帮你提升身体的抵抗力，让你无论走到哪里，都能活力满满。", "镜头里的春天美不胜收，但健康的春天才最珍贵。想要拥有好气色，春季调理不能少。这本书汇集了多种实用的养生方法，从饮食到按摩，一步步教你如何科学养生，让你在欣赏美景的同时，也能拥有一个棒棒的身体。"], "AI": ["朱珠的配音火遍全网，其实背后藏着AI技术的影子。想不想知道机器是怎么模仿人类的？别只当看客，翻开这本书，带你走进计算机的世界，轻松get前沿科技的底层逻辑。", "神舟二十一号的航天员出舱了，看着真酷。但你知道支撑这一切的，除了钢铁，还有更硬核的算法吗？别只看热闹，这本书帮你理清科技圈的故事，涨知识！", "源杰科技股价大涨，成了A股的新王，为啥？因为它是芯片！想知道未来潜力巨大的行业在哪吗？这本书用大白话讲透了芯片和AI的关系，帮你建立科技认知体系，值得一看。", "黄仁勋说芯片不是浓缩铀？其实说的是算力的重要性。现在的AI时代，谁掌握了算力谁就掌握了未来。想不想像大佬一样思考？这套书从底层逻辑讲起，帮你看懂科技趋势。", "看着热搜上这些科技大事件，是不是觉得离自己很远？其实AI已经悄悄改变了你的生活。想知道手机里的AI是怎么思考的吗？这本书深入浅出，带你发现不一样的科技视角。", "芯片股王易主，说明市场风向变了，硬科技才是硬道理！想不想抓住这波趋势？这本书详细解读了芯片产业，图文并茂，非常适合对互联网和科技感兴趣的朋友阅读。", "黄仁勋的这番话刷屏了，其实说的是AI时代的算力焦虑。别慌，先搞懂技术再说。这本书系统地梳理了人工智能的发展史，从基础到前沿，帮你理清头绪，从容面对科技变革。", "航天员出舱安全归来，离不开精密的计算。这背后是无数工程师的努力。想不想了解这些高科技是怎么来的？这本书聚焦前沿科技，语言通俗易懂，帮你拓宽视野。", "朱珠的这段配音火了，其实背后是自然语言处理技术的支撑。想不想知道机器是怎么听懂人话的？这本书用通俗的语言拆解AI原理，帮你快速理解计算机技术，告别科技盲。"]};
 
 // === 页面2: 类目数据库 ===
 var DB=[
@@ -1263,6 +1382,226 @@ function doCopyText(btn,b64text){
     document.body.removeChild(ta);
     btn.textContent='已复制 ✓';setTimeout(function(){btn.textContent='复制';},1500);
   }
+}
+
+// ==================== 页面4: ISBN采集引擎 ====================
+var ISBN_API={baseUrl:'https://api.deepseek.com/v1',model:'deepseek-chat',apiKey:'sk-7e6a1c528b7448d4b15b76bf8ea15a32'};
+function isbnSysPrompt(){return '你是图书广告营销素材采集专家。你的任务是从你的知识库中系统性整理一本图书的所有可用于广告创意制作的原始信息。\n\n## 核心规则\n- 严格以用户提供的书名为准生成内容。ISBN仅做辅助参考，不要依赖ISBN来判断是哪本书。如果ISBN和书名不匹配，以书名为准\n- 所有内容必须严格围绕用户提供的这本书，不可混淆其他书籍\n- 没有信息的维度直接跳过，不写"未找到""暂无"等占位内容\n- 按以下维度顺序输出，能输出几个就输出几个\n\n## 输出维度\n\n### 0. 图书基础信息确认（必须输出）\n输出一个简洁的信息确认卡片，让用户确认生成的内容是正确的书。\n输出表格（单列表格）：\n| 项目 | 内容 |\n包含：书名、作者、出版社、出版时间、ISBN、页数、定价（能查到几项写几项）\n\n### 1. 目标用户人群\n先从前言/官方简介提取官方定义的读者群体，再基于人群画像向外扩展推测。\n输出表格：| 人群 | 年龄区间 | 痛点 | 购买动机 |\n- 官方定义的人群必须保留\n- 基于人群画像扩展推测至少3类额外人群（不限于书中内容）\n- 年龄区间：该人群的典型年龄段，如18-25岁、25-35岁、30-45岁等\n- 痛点：这类人在日常工作/生活中遇到的与本书主题相关的困难，用口语化的一句话描述内心独白\n- 购买动机用"触发情绪 → 需求表述"格式\n\n### 2. 投放人群 × 产品卖点（最核心维度）\n输出表格：| 目标人群 | 产品卖点 |\n\n产品卖点提炼规则：\n针对每个目标人群，从本书内容中提炼出最能打动该人群的卖点。卖点 = 这本书能给这个人群带来的具体价值/好处。\n\n要求：\n- 每个人群3-5条卖点\n- 每条卖点格式：卖点标签（4字短句）：一句话说清楚这本书能帮他解决什么问题\n- 卖点要具体，不要泛泛而谈。要结合书中的具体内容（案例名称、框架名称、章节内容等）\n- 不同人群的卖点可以有交叉，但表述角度要针对该人群调整\n\n### 3. 官方内容简介\n直接输出简介原文 + 来源标注。不做版本比较，不保留编辑推荐宣传语。至少2个版本。\n\n### 4. 完整目录\n章节+子节完整列出。\n\n### 5. 前言/序言原文\n全文或关键段落。\n\n### 6. 书中核心内容摘录\n从书中提取对广告创意最有价值的内容，包括但不限于：\n- 核心观点/论点（书中反复强调的关键主张）\n- 方法论/框架/模型（书中提出的独创或系统化的方法）\n- 关键数据/案例结论（书中引用的有说服力的数据或案例成果）\n- 金句/名言（适合直接引用的精炼表述）\n- 核心概念定义（书中对关键术语的定义）\n\n要求：\n- 至少10条\n- 每条标注出处（章节名称）\n- 如来自作者公开演讲而非书中逐字原文，需标注说明\n- 按"观点→方法论→数据/案例→金句"的顺序组织\n\n## 输出格式\n直接输出HTML片段（不含html/head/body标签），使用以下标签：\n- 每个维度用 <h2> 标题（第2维度加 class="pain-point"）\n- 内容用 <div class="card"> 包裹\n- 表格用 <table>\n- 引用用 <blockquote>\n- 来源用 <p class="source">\n- 不输出: 出版信息表、作者简介、全网传播数据、售价、竞品、IP衍生、封面图、负面排查、评价数据、汇总表';}
+function isbnCacheKey(a,b){return 'isbn_report_'+a+'_'+(b||'');}
+function isbnGetCache(a,b){try{var d=localStorage.getItem(isbnCacheKey(a,b));if(d)return JSON.parse(d);}catch(e){}return null;}
+function isbnSetCache(a,b,c){try{localStorage.setItem(isbnCacheKey(a,b),JSON.stringify({content:c,time:new Date().toLocaleString('zh-CN'),isbn:a,title:b}));}catch(e){}}
+var isbnController=null;
+var isbnBookInfo=null;
+async function autoLookupISBN(){
+  var isbn=document.getElementById('isbnInput').value.trim().replace(/[-\s]/g,'');
+  if(!isbn||!/^\d{10,13}$/.test(isbn))return;
+  var status=document.getElementById('isbnLookupStatus');
+  status.style.display='block';
+  status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
+  isbnBookInfo=null;
+  try{
+    var resp=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
+    var data=await resp.json();
+    if(data.totalItems>0){
+      var info=data.items[0].volumeInfo;
+      isbnBookInfo={title:info.title+(info.subtitle?' '+info.subtitle:''),authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:'Google Books'};
+      document.getElementById('bookTitleInput').value=isbnBookInfo.title;
+      status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+isbnBookInfo.title+'</strong></div>'+(isbnBookInfo.authors?'<span style="font-size:11px;color:#8b949e">作者：'+isbnBookInfo.authors+'</span>':'')+(isbnBookInfo.publisher?' <span style="font-size:11px;color:#8b949e">| 出版社：'+isbnBookInfo.publisher+'</span>':'')+'<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
+      return;
+    }
+  }catch(e){}
+  status.innerHTML='<div style="color:#f0883e">⚠️ 未能自动识别，请点击下方链接查询书名后手动填写</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://www.dangdang.com/search?keyword='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div><p style="font-size:10px;color:#484f58;margin-top:6px">点击查询 → 找到书名 → 手动填写到上方书名栏</p>';
+}
+async function callApi(msgs,onChunk){
+  var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
+  if(!resp.ok){var er=await resp.text();throw new Error('API错误 '+resp.status+': '+er.substring(0,200));}
+  var reader=resp.body.getReader(),decoder=new TextDecoder(),full='',buf='';
+  while(true){var r=await reader.read();if(r.done)break;buf+=decoder.decode(r.value,{stream:true});var lines=buf.split('\n');buf=lines.pop()||'';for(var i=0;i<lines.length;i++){var ln=lines[i].trim();if(!ln||ln==='data: [DONE]')continue;if(!ln.startsWith('data: '))continue;try{var j=JSON.parse(ln.slice(6));var d=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;if(d){full+=d;if(onChunk)onChunk(full,d);}}catch(e){}}}
+  return full;
+}
+
+async function runIsbnCollect(force){
+  var isbn=document.getElementById('isbnInput').value.trim().replace(/[-\s]/g,'');
+  var title=document.getElementById('bookTitleInput').value.trim();
+  if(!isbn){alert('请输入ISBN编号');return;}
+  if(!/^\d{10,13}$/.test(isbn)){alert('ISBN格式不正确');return;}
+  if(!title){alert('请输入书名（可先点击ISBN输入框外部触发自动识别，或手动输入）');document.getElementById('bookTitleInput').focus();return;}
+
+  // Check cache
+  if(!force){var c=isbnGetCache(isbn,title);if(c){document.getElementById('isbnOutput').style.display='block';document.getElementById('isbnOutputTitle').textContent='📊 '+(title||isbn)+' 采集报告';document.getElementById('isbnOutputBody').innerHTML=c.content;document.getElementById('isbnOutputBody').dataset.rawContent=c.content;document.getElementById('isbnOutputBody').dataset.isbn=isbn;document.getElementById('isbnOutputBody').dataset.title=title||'';document.getElementById('isbnProgress').style.display='block';document.getElementById('isbnProgressFill').style.width='100%';document.getElementById('isbnProgressText').textContent='✅ 缓存加载（'+c.time+'）';document.getElementById('isbnBtn').textContent='🔄 重新采集';document.getElementById('isbnBtn').onclick=function(){runIsbnCollect(true);};return;}}
+
+  document.getElementById('isbnBtn').onclick=function(){runIsbnCollect(false);};
+  var btn=document.getElementById('isbnBtn');btn.disabled=true;btn.textContent='⏳ 采集中...';btn.style.background='#666';
+  var fill=document.getElementById('isbnProgressFill'),ptxt=document.getElementById('isbnProgressText');
+  document.getElementById('isbnProgress').style.display='block';fill.style.width='3%';ptxt.textContent='第1步：正在验证ISBN对应的图书...';
+  var out=document.getElementById('isbnOutput'),body=document.getElementById('isbnOutputBody');
+  out.style.display='block';document.getElementById('isbnOutputTitle').textContent='📊 采集报告';
+  body.innerHTML='<p style="color:#8b949e">正在验证ISBN...</p>';
+
+  try{
+    isbnController=new AbortController();
+
+    // === 第1步：ISBN验证，获取真实书名 ===
+    var verifyMsg='请根据ISBN编号 '+isbn+' 告诉我这本书的完整书名、作者、出版社。';
+    if(title) verifyMsg+=' 用户提供的书名关键词是："'+title+'"，请核实是否匹配。';
+    verifyMsg+='\n\n请只用一行回复，格式：书名：《xxx》| 作者：xxx | 出版社：xxx\n如果你不确定这个ISBN对应哪本书，请回复：未知';
+
+    var verifyResult=await callApi([{role:'user',content:verifyMsg}],null);
+    fill.style.width='12%';
+
+    // 检查是否识别成功
+    var confirmedTitle=title;
+    if(verifyResult.indexOf('未知')>=0 && !title){
+      body.innerHTML='<div style="color:#f0883e;padding:16px"><h3>⚠️ 无法确认该ISBN对应的图书</h3><p>请在书名栏输入书名关键词后重试。</p></div>';
+      fill.style.width='0%';ptxt.textContent='需要补充书名';
+      btn.disabled=false;btn.style.background='#1a73e8';btn.textContent='🚀 开始采集';btn.onclick=function(){runIsbnCollect(false);};isbnController=null;return;
+    }
+
+    // 提取验证到的书名
+    var bookMatch=verifyResult.match(/《([^》]+)》/);
+    if(bookMatch) confirmedTitle=bookMatch[1];
+    body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#8b949e;margin-top:8px">正在生成完整报告...</p>';
+    document.getElementById('isbnOutputTitle').textContent='📊 '+(confirmedTitle||isbn)+' 采集报告';
+    ptxt.textContent='第2步：正在生成完整报告...';fill.style.width='15%';
+
+    // === 第2步：用确认后的书名生成完整报告 ===
+    var userMsg='请采集以下图书的广告营销素材：\n\nISBN = '+isbn+'\n书名 = '+confirmedTitle;
+    if(bookMatch) userMsg+='\n\n（ISBN已验证，确认为《'+confirmedTitle+'》，请严格基于这本书生成内容）';
+    userMsg+='\n\n请按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+
+    var cc=0;
+    var full=await callApi([{role:'system',content:isbnSysPrompt()},{role:'user',content:userMsg}],function(all,delta){
+      cc+=delta.length;
+      fill.style.width=Math.min(15+cc/80,95)+'%';
+      if(cc<500)ptxt.textContent='正在采集目标用户人群...';
+      else if(cc<2000)ptxt.textContent='正在分析产品卖点...';
+      else if(cc<4000)ptxt.textContent='正在整理内容简介与目录...';
+      else if(cc<6000)ptxt.textContent='正在提取核心内容...';
+      else ptxt.textContent='正在完善报告...';
+      body.innerHTML=all;
+    });
+
+    fill.style.width='100%';ptxt.textContent='✅ 采集完成！'+full.length+' 字（已缓存）';
+    body.innerHTML=full;body.dataset.rawContent=full;body.dataset.isbn=isbn;body.dataset.title=confirmedTitle||'';
+    isbnSetCache(isbn,title,full);
+
+  }catch(e){
+    if(e.name==='AbortError')ptxt.textContent='已取消';
+    else{body.innerHTML='<div style="color:#f85149;padding:16px"><h3>❌ 失败</h3><p>'+e.message+'</p></div>';fill.style.width='0%';ptxt.textContent='失败';}
+  }finally{
+    btn.disabled=false;btn.style.background='#1a73e8';btn.textContent='🔄 重新采集';btn.onclick=function(){runIsbnCollect(true);};isbnController=null;
+  }
+}
+function copyIsbnReport(){var t=document.getElementById('isbnOutputBody').innerText;navigator.clipboard.writeText(t).then(function(){isbnToast('已复制');}).catch(function(){var r=document.createRange();r.selectNodeContents(document.getElementById('isbnOutputBody'));var s=window.getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();isbnToast('已复制');});}
+function downloadIsbnReport(){var body=document.getElementById('isbnOutputBody'),isbn=body.dataset.isbn||'x',title=body.dataset.title||'',content=body.dataset.rawContent||body.innerHTML,now=new Date().toLocaleDateString('zh-CN');var html='<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>采集报告 | '+(title||isbn)+'</title><style>:root{--p:#1a73e8;--b:#e0e0e0}*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f8f9fa;color:#333;line-height:1.7;padding:20px;max-width:1200px;margin:0 auto}h1{color:var(--p);font-size:1.8em;border-bottom:3px solid var(--p);padding-bottom:10px;margin:20px 0}h2{font-size:1.4em;margin:30px 0 15px;padding:8px 15px;background:linear-gradient(90deg,var(--p),#4285f4);color:#fff;border-radius:5px}h2.pain-point{background:linear-gradient(90deg,#e65100,#ff9800)}h3{color:var(--p);font-size:1.15em;margin:20px 0 10px;padding-left:10px;border-left:4px solid var(--p)}.card{background:#fff;border-radius:8px;padding:20px;margin:15px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);border:1px solid var(--b)}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.92em}th,td{border:1px solid var(--b);padding:8px 12px;text-align:left}th{background:#e8f0fe;font-weight:600}tr:nth-child(even){background:#fafafa}blockquote{border-left:4px solid var(--p);padding:10px 15px;margin:10px 0;background:#e8f0fe;border-radius:0 5px 5px 0}.source{font-size:.82em;color:#666}.source a{color:var(--p)}ul,ol{margin:8px 0 8px 20px}li{margin:4px 0}</style></head><body><h1>📚 图书广告素材采集报告</h1><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0 20px;font-size:.9em;color:#666"><span style="background:#e8f0fe;padding:3px 10px;border-radius:15px">📖 '+(title||isbn)+'</span><span style="background:#e8f0fe;padding:3px 10px;border-radius:15px">ISBN: '+isbn+'</span><span style="background:#e8f0fe;padding:3px 10px;border-radius:15px">'+now+'</span></div>'+content+'<div style="text-align:center;margin:30px 0;color:#999;font-size:.85em">— 报告完 —</div></body></html>';var blob=new Blob([html],{type:'text/html;charset=utf-8'});var u=URL.createObjectURL(blob);var a=document.createElement('a');a.href=u;a.download='report-'+isbn+'.html';a.click();URL.revokeObjectURL(u);isbnToast('已下载');}
+function isbnToast(m){var t=document.createElement('div');t.textContent=m;t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#f0f6fc;color:#0d1117;padding:10px 24px;border-radius:8px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.3)';document.body.appendChild(t);setTimeout(function(){t.remove();},2000);}
+
+// ==================== 页面5: 口播脚本生成器 ====================
+var SCRIPT_TYPES=[
+{id:'info_gap',name:'信息差揭秘型',emoji:'🔓',desc:'制造信息差激发好奇心',tips:'拍摄：压低声音+凑近镜头',structure:'【揭秘钩子】→【信息差内容2-3个】→【价值锚定】→【行动号召】'},
+{id:'scarcity',name:'稀缺紧迫型',emoji:'⏰',desc:'制造紧迫感促转化',tips:'拍摄：语速由慢变快+后半段急促',structure:'【场景引入】→【解法呈现】→【内容价值展示】→【行动号召】'},
+{id:'knowledge',name:'知识干货型',emoji:'💎',desc:'直接抛知识点',tips:'拍摄：语气自信+手指点屏',structure:'【知识钩子】→【知识点1】→【知识点2】→【知识点3】→【行动号召】'},
+{id:'emotion',name:'情感共鸣型',emoji:'💗',desc:'情感句式引发共鸣',tips:'拍摄：真诚面对镜头+适当停顿',structure:'【情感钩子】→【痛点共鸣】→【书的温度】→【行动号召】'},
+{id:'mindblown',name:'颠覆认知型',emoji:'🤯',desc:'颠覆常识炸裂三观',tips:'拍摄：开场睁大眼睛+夸张但真诚',structure:'【颠覆开场】→【炸裂知识点】→【价值锚定】→【行动号召】'}
+];
+
+// 字数统计
+(function(){var ta=document.getElementById('scriptBookContent');if(ta)ta.addEventListener('input',function(){document.getElementById('scriptCharCount').textContent=ta.value.length;});})();
+
+// chip选择
+function scriptChipClick(el,containerId,isMulti){
+var container=document.getElementById(containerId);
+var chips=container.querySelectorAll('.scp');
+if(isMulti){
+  if(el.dataset.value==='全部'){for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');el.classList.add('on');}
+  else{container.querySelector('[data-value="全部"]').classList.remove('on');el.classList.toggle('on');if(!container.querySelector('.scp.on'))container.querySelector('[data-value="全部"]').classList.add('on');}
+}else{for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');el.classList.add('on');}
+}
+
+function scriptBuildPrompt(bookContent,audience,type){
+return '你是一位顶尖的图书类短视频口播脚本创作专家。你深谙爆款脚本的底层逻辑，擅长用口语化、有节奏感的表达吸引观众并促成购买。\n\n## 🔥 跑量素材实战话术（优先级最高）\n\n### 跑量脚本黄金结构\n1. 生活场景提问开场（3-5秒）\n2. 权威引述过渡\n3. 核心内容展开（占60-70%篇幅）\n4. 情感升华\n5. 紧迫收尾\n\n### 跑量开场句式\n- "XX更好，还是XX更好？大部分人都不知道这两种XX的区别"\n- "XX可以XX吗？天天XX和天天XX的人，身体会有哪些差别？"\n- "适合中老年的XX不是XX，也不是XX，而是家里不起眼的它"\n\n### 跑量内容展开句式\n- 食材绝配："为什么XX和XX是绝配？为什么XX要放XX？为什么XX要配XX？"\n- 四季买菜："春天应该买什么菜？夏天应该买什么菜？如果你不懂，那你就是稀里糊涂乱买"\n- 同类对比："同样买500块钱的菜，有些人买的都是补品，有些人买的都是糟粕"\n- 数字锚定："里面有一千多个食补技巧、200多个食物健康知识"\n- 图文搭配："每个XX都配了详细的图文，一看就会，一学就懂"\n\n### 跑量情感升华句式\n- "如果再让我回到40岁，什么车子、房子、票子我一个都不要，我就逼着自己把这本书看完"\n- "一家人我觉得至少要有三个人看过这本书"\n- "不论你长得多漂亮、学历有多高，相信我，你都不知道一个健康的身体有多重要"\n\n### 跑量收尾句式\n- "价格不贵，但很值。趁现在还能找到，赶紧带一本回去"\n- "这个东西不贵，就几十块钱。你差的不是钱，你差的是这个决心"\n- "简直就是你的私人XX顾问，让家人的每一天都充满XX"\n\n### 句式库（开场/过渡/价值锚定/收尾）\n- 开场："你知道XX吗？""你从来不XX，所以你总是XX""这就是大家苦苦寻找的XX"\n- 过渡："我跟你讲，这里面写的真的太好了""书里面写的清清楚楚"\n- 价值锚定："全书XX页，收录了XX种方法""图文搭配，一看就会"\n- 情感："有用的书才是好书""把它放在家里，关键时刻必将派上大用场"\n- 收尾："感兴趣的话可以看看""有需要的赶紧入手一本"\n\n## 去AI味规则\n禁用：首先/其次/最后、众所周知、值得一提、本书、此外、综上所述、在当今社会、让我们一起\n必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用"你"对话\n\n## 审核合规红线\n【绝对禁用】最好/最佳/第一/唯一/顶级/万能/国家级/权威认证\n【禁用医疗词】治疗/治愈/根治/疗效/预防生病/排毒养颜/降血糖/降血压\n【禁用承诺】保证有效/100%/立竿见影/XX天见效/看完就能XX\n【禁用恐慌】出大事了/紧急通知/震惊/50岁以上必看/不买后悔一辈子\n【禁用诱导】不知道你做了多大好事才刷到/能量低的人刷不到\n【禁用稀缺】仅剩XX本/只剩/马上下架/库存不多/限量\n【禁用迷信】转运/改命/占卜/风水\n【禁用背书】专家推荐/教育部推荐/新课改推荐（无授权）\n\n## 当前任务\n创作【'+type.name+'】风格的口播脚本。结构：'+type.structure+'\n\n## 目标受众\n'+audience+'\n\n## 图书内容\n'+bookContent+'\n\n## 硬性要求\n1. 字数450-550字（约2分钟）\n2. 优先套用跑量句式\n3. 60%篇幅讲书中具体内容\n4. 完全口语化\n5. 融入真实内容，禁止编造\n6. 通过广告法+腾讯审核\n7. 结尾自然行动号召\n8. 去AI味\n9. 语气词≥3个\n10. 长短句交替\n11. 【素材差异化】每篇脚本必须选取书中不同的内容片段、不同的案例、不同的人物/故事来展开。严禁多篇脚本引用相同的例子或段落。如果书中有多个章节/知识点/人物故事，每篇脚本聚焦不同的章节或知识点\n\n## 输出格式\n直接输出完整口播脚本，用空行分段。不加标签、不加标题、不加解释。一气呵成。';
+}
+
+async function scriptCallAI(prompt){
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
+if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
+var data=await response.json();return data.choices[0].message.content.trim();
+}
+
+async function scriptGenerate(){
+var ta=document.getElementById('scriptBookContent');
+var bookContent=ta.value.trim();
+if(!bookContent){isbnToast('请先粘贴图书内容');ta.focus();return;}
+if(bookContent.length<30){isbnToast('内容太少，至少30字');return;}
+var audienceEl=document.querySelector('#scriptAudienceChips .scp.on');
+var audience=audienceEl?audienceEl.dataset.value:'通用人群';
+var selectedStyles=[];
+var allChip=document.querySelector('#scriptStyleChips [data-value="全部"]');
+if(allChip&&allChip.classList.contains('on')){selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});}
+else{var activeChips=document.querySelectorAll('#scriptStyleChips .scp.on');activeChips.forEach(function(c){var name=c.dataset.value;var m=SCRIPT_TYPES.find(function(t){return t.name.indexOf(name.slice(0,2))>=0;});if(m)selectedStyles.push(m.id);});}
+if(selectedStyles.length===0)selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});
+
+document.getElementById('scriptLoading').style.display='block';
+document.getElementById('scriptOutput').style.display='none';
+document.getElementById('scriptGenBtn').disabled=true;
+var loadingText=document.getElementById('scriptLoadingText');
+var results=[];
+var usedExamples=[];
+
+for(var i=0;i<selectedStyles.length;i++){
+var sid=selectedStyles[i];var type=SCRIPT_TYPES.find(function(t){return t.id===sid;});
+loadingText.textContent='正在生成 '+type.emoji+' '+type.name+'（'+(i+1)+'/'+selectedStyles.length+'）...';
+try{var prompt=scriptBuildPrompt(bookContent,audience,type);
+if(usedExamples.length>0){prompt+='\n\n## ⚠️ 素材差异化要求\n前面的脚本已经使用了以下案例/人物/片段，本篇必须选取完全不同的内容展开：\n- '+usedExamples.join('\n- ')+'\n\n请从书中选取其他章节、其他知识点、其他人物故事来创作，确保和前面的脚本没有重复素材。';}
+var script=await scriptCallAI(prompt);results.push({typeId:sid,script:script});
+var examples=script.match(/[""「]([^""」]{4,20})[""」]/g);if(examples){usedExamples=usedExamples.concat(examples.slice(0,3).map(function(e){return e.replace(/[""「」]/g,'');}));}
+if(usedExamples.length>12)usedExamples=usedExamples.slice(-8);
+}
+catch(e){results.push({typeId:sid,script:'⚠️ 生成失败：'+e.message,error:true});}
+}
+document.getElementById('scriptLoading').style.display='none';
+document.getElementById('scriptGenBtn').disabled=false;
+scriptRenderResults(results);
+scriptAnalyzeAudit(bookContent);
+}
+
+function scriptRenderResults(results){
+var container=document.getElementById('scriptCards');container.innerHTML='';
+results.forEach(function(r,idx){
+var type=SCRIPT_TYPES.find(function(t){return t.id===r.typeId;});
+var wc=r.script.replace(/\s/g,'').length;var rt=Math.ceil(wc/4.5);
+var safe=r.script.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+var card=document.createElement('div');
+card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:12px;overflow:hidden';
+card.dataset.raw=r.script;
+card.innerHTML='<div onclick="this.parentElement.classList.toggle(\'expanded\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid #21262d"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">'+type.emoji+'</span><div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+type.name+'</div><div style="font-size:10px;color:#484f58">'+type.desc+'</div></div></div><div style="display:flex;align-items:center;gap:12px"><span style="padding:2px 6px;background:rgba(230,57,70,.15);border-radius:3px;color:#e63946;font-size:10px;font-weight:600">'+wc+'字</span><span style="font-size:10px;color:#484f58">≈'+rt+'s</span><span style="color:#484f58;font-size:10px">▼</span></div></div><div class="script-body" style="display:'+(idx===0?'block':'none')+';padding:16px;font-size:12px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safe+'</div><div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #21262d;background:#0d1117"><div style="font-size:10px;color:#484f58">💡 '+type.tips+'</div><button onclick="scriptCopyOne(this)" style="padding:4px 12px;border-radius:6px;border:none;background:#e63946;color:#fff;font-size:11px;cursor:pointer">复制</button></div>';
+card.querySelector('[onclick]').addEventListener('click',function(){var body=this.parentElement.querySelector('.script-body');body.style.display=body.style.display==='none'?'block':'none';});
+container.appendChild(card);
+});
+document.getElementById('scriptOutput').style.display='block';
+document.getElementById('scriptOutput').scrollIntoView({behavior:'smooth'});
+isbnToast('✅ 已生成 '+results.length+' 个版本');
+}
+
+function scriptCopyOne(btn){var raw=btn.closest('[data-raw]').dataset.raw;navigator.clipboard.writeText(raw).then(function(){btn.textContent='已复制 ✓';btn.style.background='#00cec9';setTimeout(function(){btn.textContent='复制';btn.style.background='#e63946';},1500);});}
+function scriptCopyAll(){var cards=document.getElementById('scriptCards').children;var all='';for(var i=0;i<cards.length;i++){var type=SCRIPT_TYPES.find(function(t){return t.id;});all+=cards[i].dataset.raw+'\n\n---\n\n';}navigator.clipboard.writeText(all).then(function(){isbnToast('✅ 已复制全部');});}
+function scriptExportMd(){var cards=document.getElementById('scriptCards').children;var md='# 图书口播脚本\n\n生成时间：'+new Date().toLocaleString('zh-CN')+'\n\n---\n\n';for(var i=0;i<cards.length;i++){md+='## '+SCRIPT_TYPES[i].emoji+' '+SCRIPT_TYPES[i].name+'\n\n'+cards[i].dataset.raw+'\n\n---\n\n';}var blob=new Blob([md],{type:'text/markdown;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='口播脚本_'+new Date().toISOString().slice(0,10)+'.md';a.click();isbnToast('📄 已导出');}
+
+async function scriptAnalyzeAudit(bookContent){
+var section=document.getElementById('scriptAuditSection');
+var content=document.getElementById('scriptAuditContent');
+section.style.display='block';
+content.innerHTML='<span style="color:#484f58">🔍 正在分析该书品类的审核注意事项...</span>';
+var prompt='你是腾讯广告平台教育图书行业审核专家。根据以下图书内容判断品类，列出该品类投放时需注意的审核规则（5-8条）。\n\n## 规则库\n养生类：食物不得使用保健功效描述、售价不低于19.9、书课并推需标注电子书/实物书\n教育类：不得承诺成绩/排名、不得使用新课改/教育部推荐\n亲子类：不得制造育儿焦虑\n通用：禁绝对化用语、禁虚假背书、禁饥饿营销、禁恐慌焦虑、禁诱导暗示、禁效果承诺\n\n## 图书内容\n'+bookContent+'\n\n## 输出格式\n先输出品类判断（一行），然后每条规则用简短格式：\n⚠️ **规则名称**：一句话说明+规避建议\n\n控制在5-8条，只列相关的，直接输出纯文本。';
+try{var result=await scriptCallAI(prompt);content.innerHTML=result.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong style="color:#fdcb6e">$1</strong>');}
+catch(e){content.innerHTML='<span style="color:#f85149">分析失败：'+e.message+'</span>';}
+}
+
+function scriptFillDemo(){
+var ta=document.getElementById('scriptBookContent');
+ta.value='《认知觉醒：开启自我改变的原动力》周岭 著\n\n这是一部可以穿透时间的个人成长方法论。通过"大脑构造、潜意识、元认知"等思维规律，你将真正看清自己；通过"深度学习、关联、反馈"等事物规律，你将洞悉如何真正成长。\n\n数据表明：95%的人正在依靠本能过一辈子，而不是依靠认知。人和人之间的根本差异是认知能力上的差异。\n\n书中精彩金句：\n- "所谓成长，就是不断打碎自己原有的认知，重新建构的过程。"\n- "焦虑的根源在于：想同时做很多事，又想立即看到效果。"\n- "你觉得为时已晚的时候，恰恰是最早的时候。"\n- "真正的改变都是逆人性的。"\n- "大脑的默认模式就是避难趋易、急于求成。"\n\n核心内容涵盖：\n1. 大脑的三重结构如何影响你的每一个决定\n2. 为什么你总是半途而废——即时满足 vs 延迟满足\n3. 元认知：跳出自己看自己的超级能力\n4. 深度学习的底层方法——不是努力就行\n5. 如何打败拖延：最小行动+正反馈循环\n\n适合人群：感到迷茫的年轻人、总觉得努力没用的职场人、想要系统性提升认知能力的读者。';
+document.getElementById('scriptCharCount').textContent=ta.value.length;
+isbnToast('📝 示例已填入');
 }
 
 </script>
