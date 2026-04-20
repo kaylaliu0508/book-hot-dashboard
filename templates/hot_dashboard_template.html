@@ -1311,6 +1311,52 @@ function doCopyText(btn,b64text){
 
 // ==================== 页面4: ISBN采集引擎 ====================
 var ISBN_API={baseUrl:'https://api.deepseek.com/v1',model:'deepseek-chat',apiKey:'sk-7e6a1c528b7448d4b15b76bf8ea15a32'};
+// 智谱联网搜索配置（用于实时获取图书信息）
+var ZHIPU_SEARCH={apiUrl:'https://open.bigmodel.cn/api/paas/v4/tools',apiKey:'7aec8ade98084288bc9f81875088cfde.2kGvUtqbhWOn6Z1p'};
+
+// 联网搜索图书信息
+async function webSearchBook(bookTitle,isbn){
+  var queries=[
+    bookTitle+' 豆瓣 内容简介 目录',
+    bookTitle+' 作者 出版社 书评 精彩书摘',
+    'ISBN '+isbn+' '+bookTitle+' 读后感 核心内容'
+  ];
+  var allResults=[];
+  for(var i=0;i<queries.length;i++){
+    try{
+      var resp=await fetch(ZHIPU_SEARCH.apiUrl,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_SEARCH.apiKey},
+        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'web-search-pro',stream:false,messages:[{role:'user',content:queries[i]}]})
+      });
+      if(!resp.ok) continue;
+      var data=await resp.json();
+      // 提取搜索结果
+      var choices=data.choices||[];
+      for(var j=0;j<choices.length;j++){
+        var msg=choices[j].message||{};
+        var toolCalls=msg.tool_calls||[];
+        for(var k=0;k<toolCalls.length;k++){
+          var sr=toolCalls[k].search_result||toolCalls[k].search_results||[];
+          if(!Array.isArray(sr)) continue;
+          for(var m=0;m<sr.length;m++){
+            var item=sr[m];
+            if(item.content && item.content.length>50){
+              allResults.push({title:item.title||'',content:item.content.substring(0,800),link:item.link||''});
+            }
+          }
+        }
+      }
+    }catch(e){console.log('搜索请求'+i+'失败:',e);}
+  }
+  // 去重并拼接
+  var seen={};var unique=[];
+  for(var i=0;i<allResults.length;i++){
+    var key=allResults[i].title;
+    if(!seen[key]){seen[key]=true;unique.push(allResults[i]);}
+  }
+  return unique.slice(0,10); // 最多取10条搜索结果
+}
 function isbnSysPrompt(){return '你是图书广告营销素材采集专家。你的任务是从你的知识库中系统性整理一本图书的所有可用于广告创意制作的原始信息。\n\n## 核心规则\n- 严格以用户提供的书名为准生成内容。ISBN仅做辅助参考，不要依赖ISBN来判断是哪本书。如果ISBN和书名不匹配，以书名为准\n- 所有内容必须严格围绕用户提供的这本书，不可混淆其他书籍\n- 没有信息的维度直接跳过，不写"未找到""暂无"等占位内容\n- 按以下维度顺序输出，能输出几个就输出几个\n\n## 输出维度\n\n### 0. 图书基础信息确认（必须输出）\n输出一个简洁的信息确认卡片，让用户确认生成的内容是正确的书。\n输出表格（单列表格）：\n| 项目 | 内容 |\n包含：书名、作者、出版社、出版时间、ISBN、页数、定价（能查到几项写几项）\n\n### 1. 目标用户人群\n先从前言/官方简介提取官方定义的读者群体，再基于人群画像向外扩展推测。\n输出表格：| 人群 | 年龄区间 | 痛点 | 购买动机 |\n- 官方定义的人群必须保留\n- 基于人群画像扩展推测至少3类额外人群（不限于书中内容）\n- 年龄区间：该人群的典型年龄段，如18-25岁、25-35岁、30-45岁等\n- 痛点：这类人在日常工作/生活中遇到的与本书主题相关的困难，用口语化的一句话描述内心独白\n- 购买动机用"触发情绪 → 需求表述"格式\n\n### 2. 投放人群 × 产品卖点（最核心维度）\n输出表格：| 目标人群 | 产品卖点 |\n\n产品卖点提炼规则：\n针对每个目标人群，从本书内容中提炼出最能打动该人群的卖点。卖点 = 这本书能给这个人群带来的具体价值/好处。\n\n要求：\n- 每个人群3-5条卖点\n- 每条卖点格式：卖点标签（4字短句）：一句话说清楚这本书能帮他解决什么问题\n- 卖点要具体，不要泛泛而谈。要结合书中的具体内容（案例名称、框架名称、章节内容等）\n- 不同人群的卖点可以有交叉，但表述角度要针对该人群调整\n\n### 3. 官方内容简介\n直接输出简介原文 + 来源标注。不做版本比较，不保留编辑推荐宣传语。至少2个版本。\n\n### 4. 完整目录\n章节+子节完整列出。\n\n### 5. 前言/序言原文\n全文或关键段落。\n\n### 6. 书中核心内容摘录\n从书中提取对广告创意最有价值的内容，包括但不限于：\n- 核心观点/论点（书中反复强调的关键主张）\n- 方法论/框架/模型（书中提出的独创或系统化的方法）\n- 关键数据/案例结论（书中引用的有说服力的数据或案例成果）\n- 金句/名言（适合直接引用的精炼表述）\n- 核心概念定义（书中对关键术语的定义）\n\n要求：\n- 至少10条\n- 每条标注出处（章节名称）\n- 如来自作者公开演讲而非书中逐字原文，需标注说明\n- 按"观点→方法论→数据/案例→金句"的顺序组织\n\n## 输出格式\n直接输出HTML片段（不含html/head/body标签），使用以下标签：\n- 每个维度用 <h2> 标题（第2维度加 class="pain-point"）\n- 内容用 <div class="card"> 包裹\n- 表格用 <table>\n- 引用用 <blockquote>\n- 来源用 <p class="source">\n- 不输出: 出版信息表、作者简介、全网传播数据、售价、竞品、IP衍生、封面图、负面排查、评价数据、汇总表';}
 function isbnCacheKey(a,b){return 'isbn_report_'+a+'_'+(b||'');}
 function isbnGetCache(a,b){try{var d=localStorage.getItem(isbnCacheKey(a,b));if(d)return JSON.parse(d);}catch(e){}return null;}
@@ -1385,19 +1431,45 @@ async function runIsbnCollect(force){
     // 提取验证到的书名
     var bookMatch=verifyResult.match(/《([^》]+)》/);
     if(bookMatch) confirmedTitle=bookMatch[1];
-    body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#8b949e;margin-top:8px">正在生成完整报告...</p>';
+    body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#8b949e;margin-top:8px">正在联网搜索图书信息...</p>';
     document.getElementById('isbnOutputTitle').textContent='📊 '+(confirmedTitle||isbn)+' 采集报告';
-    ptxt.textContent='第2步：正在生成完整报告...';fill.style.width='15%';
+    ptxt.textContent='第2步：正在联网搜索图书详情...';fill.style.width='15%';
 
-    // === 第2步：用确认后的书名生成完整报告 ===
+    // === 第2步：联网搜索图书信息 ===
+    var searchResults=[];
+    try{
+      searchResults=await webSearchBook(confirmedTitle,isbn);
+      if(searchResults.length>0){
+        body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>';
+        ptxt.textContent='第3步：基于联网数据生成报告...';
+      }else{
+        body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索无结果，将基于AI知识库生成</p>';
+        ptxt.textContent='第3步：基于AI知识库生成报告...';
+      }
+    }catch(e){
+      body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索失败，将基于AI知识库生成</p>';
+      ptxt.textContent='第3步：基于AI知识库生成报告...';
+    }
+    fill.style.width='30%';
+
+    // === 第3步：用确认后的书名 + 联网搜索结果生成完整报告 ===
     var userMsg='请采集以下图书的广告营销素材：\n\nISBN = '+isbn+'\n书名 = '+confirmedTitle;
     if(bookMatch) userMsg+='\n\n（ISBN已验证，确认为《'+confirmedTitle+'》，请严格基于这本书生成内容）';
-    userMsg+='\n\n请按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+    // 拼入联网搜索结果
+    if(searchResults.length>0){
+      userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（请优先参考这些真实数据）\n';
+      for(var si=0;si<searchResults.length;si++){
+        userMsg+='\n### 来源'+(si+1)+'：'+searchResults[si].title+'\n'+searchResults[si].content+'\n';
+      }
+      userMsg+='\n\n请结合以上联网搜索到的真实信息和你的知识库，按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+    }else{
+      userMsg+='\n\n请按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+    }
 
     var cc=0;
     var full=await callApi([{role:'system',content:isbnSysPrompt()},{role:'user',content:userMsg}],function(all,delta){
       cc+=delta.length;
-      fill.style.width=Math.min(15+cc/80,95)+'%';
+      fill.style.width=Math.min(30+cc/80,95)+'%';
       if(cc<500)ptxt.textContent='正在采集目标用户人群...';
       else if(cc<2000)ptxt.textContent='正在分析产品卖点...';
       else if(cc<4000)ptxt.textContent='正在整理内容简介与目录...';
