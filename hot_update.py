@@ -1286,7 +1286,7 @@ class DashboardRenderer:
         
         # 表头
         html = f"""<div class="col">
-<div class="col-h"><div class="ic" style="background:{bg_color}">{short_name}</div><h3>{platform_name}</h3><a href="{source_url}" target="_blank">查看来源 →</a></div>
+<div class="col-h"><h3>{platform_name}</h3><a href="{source_url}" target="_blank">查看来源 →</a></div>
 <table><thead><tr><th class="rk">#</th><th>热搜话题</th><th style="width:30px">相关</th></tr></thead>
 <tbody>
 """
