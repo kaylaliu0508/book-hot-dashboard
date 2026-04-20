@@ -604,22 +604,34 @@ def process_hot_items(items: List[Dict], platform: str) -> List[Dict]:
 # --- 敏感话题黑名单：匹配到的热点若包含以下关键词，直接跳过不用于文案生成 ---
 # 来源：V6规则文档 - 时政政治敏感 / 外交军事 / 负面社会事件 / 涉台涉政
 SENSITIVE_TOPIC_BLACKLIST = [
-    # === 时政政治 ===
-    "中央", "巡视", "纪委", "监察", "中纪委", "反腐", "落马",
+    # === 国家领导人（严禁出现在商业广告中） ===
+    "习近平", "总书记", "国家主席", "李强", "总理", "赵乐际", "王沪宁",
+    "蔡奇", "丁薛祥", "李希", "韩正",
+    # === 党政机关/政策 ===
+    "中央", "党中央", "中共", "共产党", "国务院", "政协", "全国人大", "人大常委",
+    "巡视", "纪委", "监察", "中纪委", "反腐", "落马", "纪检", "中组部",
+    "宣传部", "统战", "政法", "发改委", "司法部", "商务部",
+    "两会", "政府工作报告", "省委", "市委", "区委",
+    "书记", "省长", "市长", "县长", "部长",
+    "新政", "新规", "政策", "条例", "法案",
     # === 外交军事 ===
-    "访华", "访问朝鲜", "访朝", "访美", "外交", "国防部", "军事", "军队", "解放军",
+    "访华", "访问朝鲜", "访朝", "访美", "外交", "外交部", "国防部", "国防",
+    "军事", "军队", "解放军", "军委", "军舰", "舰艇", "编队", "航母",
+    "导弹", "核武", "武力", "炫耀武力",
     "霍尔木兹海峡", "伊朗", "黎巴嫩", "以色列", "联合国谴责",
+    "朝鲜", "俄乌", "乌克兰", "北约", "中东",
     # === 涉台涉港涉藏 ===
-    "台湾", "台海", "两岸", "一国两制", "港独", "台独",
+    "台湾", "台海", "两岸", "一国两制", "港独", "台独", "台媒",
+    # === 英雄/烈士/军人（不得商用） ===
+    "将军", "逝世", "烈士", "牺牲", "军人", "退役战神",
+    "追授", "英雄", "铁骑", "礼仪迎", "涉密",
     # === 负面社会事件 ===
     "造假", "诈骗", "骗局", "曝光黑", "被查", "判了", "死刑", "致死", "死亡",
-    "坠楼", "自杀", "他杀", "事故", "灾难", "伤亡",
-    # === 军人/英雄人物（不得商用） ===
-    "将军", "逝世", "烈士", "牺牲", "军人", "退役战神",
+    "坠楼", "自杀", "他杀", "事故", "灾难", "伤亡", "去世", "病危", "离世",
     # === 医疗负面 ===
     "黑中医", "医疗事故", "医闹", "假药",
     # === 教育政策敏感（禁止借势） ===
-    "教育部", "双减", "新课改", "升学政策", "新政", "新规",
+    "教育部", "双减", "新课改", "升学政策",
     # === 金融风险 ===
     "暴跌", "崩盘", "金融危机", "跑路", "非法集资",
     # === 仿新闻/官方样式 ===
@@ -1342,18 +1354,32 @@ class DashboardRenderer:
         douyin_data = process_hot_items(data.get("douyin", []), "douyin")
         baidu_data = process_hot_items(data.get("baidu", []), "baidu")
         
-        # 渲染三列
+        # ===== 页面1也做敏感话题过滤：不在话题监控中展示政治敏感内容 =====
+        def _filter_sensitive(items):
+            return [item for item in items if not _is_sensitive_topic(item["title"])]
+        
+        wechat_display = _filter_sensitive(wechat_data)
+        douyin_display = _filter_sensitive(douyin_data)
+        baidu_display = _filter_sensitive(baidu_data)
+        
+        page1_filtered = (len(wechat_data) - len(wechat_display)) + \
+                         (len(douyin_data) - len(douyin_display)) + \
+                         (len(baidu_data) - len(baidu_display))
+        if page1_filtered > 0:
+            log(f"🔒 页面1(话题监控)已过滤 {page1_filtered} 条敏感话题")
+        
+        # 渲染三列（使用过滤后的数据）
         columns_html = (
             self.render_column(
-                "微信生态", "wechat", wechat_data,
+                "微信生态", "wechat", wechat_display,
                 "https://ie.sogou.com/top/"
             ) +
             self.render_column(
-                "抖音热榜", "douyin", douyin_data,
+                "抖音热榜", "douyin", douyin_display,
                 "https://www.xpaihang.com/platform/douyin"
             ) +
             self.render_column(
-                "百度热搜", "baidu", baidu_data,
+                "百度热搜", "baidu", baidu_display,
                 "https://top.baidu.com/board?tab=realtime"
             )
         )
