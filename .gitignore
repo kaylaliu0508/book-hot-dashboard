@@ -49,3 +49,9 @@ backups/hot_dashboard_*.html
 #   ✅ vercel.json                — Vercel 部署配置
 # ============================================================
 .vercel
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
