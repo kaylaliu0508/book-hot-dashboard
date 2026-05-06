@@ -1098,7 +1098,7 @@ async function autoLookupISBN(){
       return;
     }
   }catch(e){}
-  status.innerHTML='<div style="color:#f0883e">⚠️ 未能自动识别，请点击下方链接查询书名后手动填写</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://www.dangdang.com/search?keyword='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div><p style="font-size:10px;color:#484f58;margin-top:6px">点击查询 → 找到书名 → 手动填写到上方书名栏</p>';
+  status.innerHTML='<div style="color:#f0883e">⚠️ 未能自动识别，请点击下方链接查询书名后手动填写</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div><p style="font-size:10px;color:#484f58;margin-top:6px">点击查询 → 找到书名 → 手动填写到上方书名栏</p>';
 }
 async function callApi(msgs,onChunk){
   var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
