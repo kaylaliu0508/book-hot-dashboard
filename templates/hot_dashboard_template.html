@@ -1149,7 +1149,8 @@ async function runIsbnCollect(force){
     var sourceUrl='';
     function cleanBookName(name){
       if(!name) return '';
-      var cleaned=name.replace(/^(书籍|图书|正版|包邮|现货|新华|官方)\s*/g,'').replace(/\s*(【[^】]*】|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩).*$/,'').replace(/可开发票.*$/,'').replace(/\s+/g,' ').trim();
+      var cleaned=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
+      cleaned=cleaned.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').trim();
       if(cleaned.length>40) cleaned=cleaned.substring(0,40);
       return cleaned;
     }
@@ -1190,9 +1191,32 @@ async function runIsbnCollect(force){
         }
       }catch(e){}
     }
+    // 第3数据源：当当网搜索（通过 CORS 代理）—— 覆盖国内冷门/新书
+    if(!lookedUp){
+      status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
+      try{
+        var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn;
+        var resp3=await fetch(ddUrl);
+        var html3=await resp3.text();
+        var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
+        if(ddMatch&&ddMatch[1]){
+          var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+          var cleanedDD=cleanBookName(rawTitle);
+          if(cleanedDD&&cleanedDD.length>=2){
+            title=cleanedDD;
+            sourceName='当当网搜索 (search.dangdang.com)';
+            sourceUrl='https://search.dangdang.com/?key='+isbn;
+            isbnBookInfo={title:title,authors:'',publisher:'',date:'',source:sourceName,sourceUrl:sourceUrl};
+            document.getElementById('bookTitleInput').value=title;
+            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ 当当网商家描述可能含促销词，建议人工核对书名</p>';
+            lookedUp=true;
+          }
+        }
+      }catch(e){}
+    }
     // ❌ 已移除 AI 兜底（LLM 无法可靠识别 ISBN，会编造高自信的错误答案，反而误导用户）
     if(!lookedUp){
-      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">已尝试以下 2 个权威数据源均未命中：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① 国内ISBN数据库 (data.isbn.work)</li><li>② Google Books</li></ul><div style="font-size:11px;color:#8b949e">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
+      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">已尝试以下 3 个权威数据源均未命中：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① 国内ISBN数据库 (data.isbn.work)</li><li>② Google Books</li><li>③ 当当网搜索</li></ul><div style="font-size:11px;color:#8b949e">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
       return;
     }
   }
