@@ -48,6 +48,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </style>
 </head>
 <body>
+<script>if(!location.hash)location.replace('/summer/');</script>
 
 <!-- Header -->
 <div class="bar"><div class="bar-in">
@@ -226,6 +227,15 @@ function go(id,el){
   if(el) el.classList.add('on');
   window.scrollTo(0,0);
 }
+// 根据 hash 自动切换 tab
+(function(){
+  var h=location.hash.replace('#','');
+  if(h){
+    var map={'p4':0,'p5':1,'p3':2};
+    var tbs=document.querySelectorAll('.bar-in .tb');
+    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+  }
+})();
 
 // ==================== 页面3: AI预审引擎 ====================
 
