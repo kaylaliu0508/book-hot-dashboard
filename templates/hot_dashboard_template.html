@@ -1098,32 +1098,61 @@ async function autoLookupISBN(){
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
+  function _cleanName(name){
+    if(!name) return '';
+    var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
+    c=c.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').trim();
+    if(c.length>40) c=c.substring(0,40);
+    return c;
+  }
+  function _renderHit(title,authors,publisher,date,sourceName,sourceUrl,extraNote){
+    isbnBookInfo={title:title,authors:authors,publisher:publisher,date:date,source:sourceName,sourceUrl:sourceUrl};
+    document.getElementById('bookTitleInput').value=title;
+    var meta='';
+    if(authors) meta+='作者：'+authors+' ';
+    if(publisher) meta+='| 出版社：'+publisher+' ';
+    if(date) meta+='| 出版年：'+date;
+    var html='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>';
+    if(meta) html+='<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>';
+    html+='<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
+    if(extraNote) html+='<p style="font-size:10px;color:#fdcb6e;margin-top:4px">'+extraNote+'</p>';
+    else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
+    status.innerHTML=html;
+  }
   try{
     var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
     var data=await resp.json();
     if(data.code===0&&data.data&&data.data.bookName){
       var d=data.data;
-      var cleaned=(d.bookName||'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方)\s*/g,'').replace(/\s*(【[^】]*】|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩).*$/,'').replace(/可开发票.*$/,'').replace(/\s+/g,' ').trim();
-      if(cleaned.length>40) cleaned=cleaned.substring(0,40);
-      isbnBookInfo={title:cleaned,authors:d.author||'',publisher:d.press||'',date:d.pressDate||'',source:'ISBN国内数据库'};
-      document.getElementById('bookTitleInput').value=isbnBookInfo.title;
-      status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+isbnBookInfo.title+'</strong></div>'+(isbnBookInfo.authors?'<span style="font-size:11px;color:#8b949e">作者：'+isbnBookInfo.authors+'</span>':'')+(isbnBookInfo.publisher?' <span style="font-size:11px;color:#8b949e">| 出版社：'+isbnBookInfo.publisher+'</span>':'')+'<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
+      _renderHit(_cleanName(d.bookName),d.author||'',d.press||'',d.pressDate||'','ISBN国内数据库 (data.isbn.work)','https://data.isbn.work/');
       return;
     }
   }catch(e){}
-  // 国内接口失败时 fallback 到 Google Books
   try{
     var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
     var data2=await resp2.json();
     if(data2.totalItems>0){
       var info=data2.items[0].volumeInfo;
-      isbnBookInfo={title:info.title+(info.subtitle?' '+info.subtitle:''),authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:'Google Books'};
-      document.getElementById('bookTitleInput').value=isbnBookInfo.title;
-      status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+isbnBookInfo.title+'</strong></div>'+(isbnBookInfo.authors?'<span style="font-size:11px;color:#8b949e">作者：'+isbnBookInfo.authors+'</span>':'')+(isbnBookInfo.publisher?' <span style="font-size:11px;color:#8b949e">| 出版社：'+isbnBookInfo.publisher+'</span>':'')+'<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
+      _renderHit(info.title+(info.subtitle?' '+info.subtitle:''),(info.authors||[]).join('/'),info.publisher||'',info.publishedDate||'','Google Books','https://books.google.com/books?isbn='+isbn);
       return;
     }
   }catch(e){}
-  status.innerHTML='<div style="color:#f0883e">⚠️ 未能自动识别，请点击下方链接查询书名后手动填写</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div><p style="font-size:10px;color:#484f58;margin-top:6px">点击查询 → 找到书名 → 手动填写到上方书名栏</p>';
+  try{
+    var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn;
+    status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
+    var resp3=await fetch(ddUrl);
+    var html3=await resp3.text();
+    var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
+    if(ddMatch&&ddMatch[1]){
+      var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+      var cleaned=_cleanName(rawTitle);
+      if(cleaned&&cleaned.length>=2){
+        _renderHit(cleaned,'','','','当当网搜索 (search.dangdang.com)','https://search.dangdang.com/?key='+isbn,'⚠️ 当当商家描述可能含促销词，建议人工核对书名');
+        return;
+      }
+    }
+  }catch(e){}
+  status.innerHTML='<div style="color:#f0883e">⚠️ 未能自动识别（已查询：data.isbn.work / Google Books / 当当网）</div><div style="font-size:10px;color:#8b949e;margin-top:4px">请确认 ISBN 是否正确，或点击下方链接手动查询后填入书名栏</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div>';
 }
 async function callApi(msgs,onChunk){
   var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
