@@ -1143,14 +1143,22 @@ async function runIsbnCollect(force){
     status.style.display='block';
     status.innerHTML='<span style="color:#8b949e">🔍 正在通过ISBN查询书名...</span>';
     var lookedUp=false;
+    var sourceName='';
+    var sourceUrl='';
     try{
       var resp=await fetch('http://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
       var data=await resp.json();
       if(data.code===0&&data.data&&data.data.bookName){
         title=data.data.bookName;
-        isbnBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:'ISBN国内数据库'};
+        sourceName='ISBN国内数据库 (data.isbn.work)';
+        sourceUrl='https://data.isbn.work/';
+        isbnBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:sourceName,sourceUrl:sourceUrl};
         document.getElementById('bookTitleInput').value=title;
-        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>';
+        var meta='';
+        if(data.data.author) meta+='作者：'+data.data.author+' ';
+        if(data.data.press) meta+='| 出版社：'+data.data.press+' ';
+        if(data.data.pressDate) meta+='| 出版年：'+data.data.pressDate;
+        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
         lookedUp=true;
       }
     }catch(e){}
@@ -1161,16 +1169,22 @@ async function runIsbnCollect(force){
         if(data2.totalItems>0){
           var info=data2.items[0].volumeInfo;
           title=info.title+(info.subtitle?' '+info.subtitle:'');
-          isbnBookInfo={title:title,authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:'Google Books'};
+          sourceName='Google Books';
+          sourceUrl='https://books.google.com/books?isbn='+isbn;
+          isbnBookInfo={title:title,authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:sourceName,sourceUrl:sourceUrl};
           document.getElementById('bookTitleInput').value=title;
-          status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>';
+          var meta2='';
+          if(info.authors&&info.authors.length) meta2+='作者：'+info.authors.join('/')+' ';
+          if(info.publisher) meta2+='| 出版社：'+info.publisher+' ';
+          if(info.publishedDate) meta2+='| 出版年：'+info.publishedDate;
+          status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta2?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta2+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
           lookedUp=true;
         }
       }catch(e){}
     }
     // AI 兜底：用 DeepSeek 联网查询（覆盖冷门/新书）
     if(!lookedUp){
-      status.innerHTML='<span style="color:#8b949e">🤖 常规数据库未命中，正在调用 AI 联网查询...</span>';
+      status.innerHTML='<span style="color:#8b949e">🤖 常规数据库未命中，正在调用 AI 查询...</span>';
       try{
         var aiResp=await fetch(ISBN_API.baseUrl+'/chat/completions',{
           method:'POST',
@@ -1178,8 +1192,8 @@ async function runIsbnCollect(force){
           body:JSON.stringify({
             model:ISBN_API.model,
             messages:[
-              {role:'system',content:'你是图书信息查询助手。用户会给你一个 ISBN 号码，你需要返回该 ISBN 对应的中文书名。请只返回 JSON 格式：{"title":"书名","author":"作者","publisher":"出版社"}。如果确实无法识别该 ISBN，返回 {"title":"","notfound":true}。不要返回任何其他内容。'},
-              {role:'user',content:'ISBN: '+isbn+' 对应的图书是什么？'}
+              {role:'system',content:'你是图书信息查询助手。用户给你一个 ISBN 号码，你需要返回该 ISBN 对应的中文书名信息。\n\n严格要求：\n1. 只返回 JSON 格式：{"title":"书名","author":"作者","publisher":"出版社","confidence":"high|medium|low"}\n2. 如果不确定该 ISBN 对应哪本书，必须返回 {"title":"","notfound":true}，不要编造\n3. 不要返回任何 JSON 之外的内容\n4. confidence 字段：完全确定填 "high"，较确定填 "medium"，不太确定填 "low"，不确定的直接 notfound\n5. 严禁猜测或编造书名'},
+              {role:'user',content:'ISBN: '+isbn}
             ],
             temperature:0,
             max_tokens:200
@@ -1190,18 +1204,23 @@ async function runIsbnCollect(force){
         var jsonMatch=aiContent.match(/\{[\s\S]*?\}/);
         if(jsonMatch){
           var parsed=JSON.parse(jsonMatch[0]);
-          if(parsed.title&&!parsed.notfound&&parsed.title.length>0){
+          if(parsed.title&&!parsed.notfound&&parsed.title.length>0&&parsed.confidence!=='low'){
             title=parsed.title;
-            isbnBookInfo={title:title,authors:parsed.author||'',publisher:parsed.publisher||'',date:'',source:'AI 联网查询'};
+            sourceName='DeepSeek AI ('+ISBN_API.model+', 置信度: '+(parsed.confidence||'medium')+')';
+            sourceUrl='https://platform.deepseek.com/';
+            isbnBookInfo={title:title,authors:parsed.author||'',publisher:parsed.publisher||'',date:'',source:sourceName,sourceUrl:sourceUrl};
             document.getElementById('bookTitleInput').value=title;
-            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong> <span style="font-size:10px;color:#8b949e">(AI联网识别)</span></div><p style="font-size:10px;color:#484f58;margin-top:4px">AI识别结果供参考，如书名不准请手动修正</p>';
+            var meta3='';
+            if(parsed.author) meta3+='作者：'+parsed.author+' ';
+            if(parsed.publisher) meta3+='| 出版社：'+parsed.publisher;
+            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta3?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta3+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ AI识别结果供参考，建议人工核对书名是否准确</p>';
             lookedUp=true;
           }
         }
       }catch(e){}
     }
     if(!lookedUp){
-      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">该 ISBN 在国内数据库、Google Books 和 AI 联网查询均未找到对应图书信息。请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
+      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">已尝试以下 3 个数据源均未命中：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① 国内ISBN数据库 (data.isbn.work)</li><li>② Google Books</li><li>③ DeepSeek AI 联网识别</li></ul><div style="font-size:11px;color:#8b949e">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
       return;
     }
   }
