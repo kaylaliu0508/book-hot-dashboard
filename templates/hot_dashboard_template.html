@@ -1119,20 +1119,38 @@ async function autoLookupISBN(){
     else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
     status.innerHTML=html;
   }
+  // 公共 CORS 代理列表，按可用性顺序尝试
+  var CORS_PROXIES=['https://api.codetabs.com/v1/proxy?quest=','https://cors.eu.org/','https://api.allorigins.win/raw?url='];
+  async function _fetchDDByProxy(isbn){
+    var target='https://search.dangdang.com/?key='+isbn+'&act=input';
+    for(var i=0;i<CORS_PROXIES.length;i++){
+      try{
+        var p=CORS_PROXIES[i];
+        var url=(p.indexOf('?')>-1?p+encodeURIComponent(target):p+target);
+        var r=await fetch(url);
+        if(!r.ok) continue;
+        var t=await r.text();
+        if(t.length>1000) return t;
+      }catch(e){}
+    }
+    return null;
+  }
   try{
     status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
-    var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
-    var resp3=await fetch(ddUrl);
-    var html3=await resp3.text();
-    var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(html3);
-    if(!noResult){
-      var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
-      if(ddMatch&&ddMatch[1]){
-        var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
-        var cleaned=_cleanName(rawTitle);
-        if(cleaned&&cleaned.length>=2){
-          _renderHit(cleaned,'','','','当当网搜索 (search.dangdang.com)','https://search.dangdang.com/?key='+isbn,'⚠️ 当当商家描述可能含促销词，建议人工核对书名');
-          return;
+    var ddHtml=await _fetchDDByProxy(isbn);
+    if(ddHtml){
+      var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(ddHtml);
+      var itemBlock=ddHtml.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?<\/ul>/);
+      var validMatch=itemBlock&&itemBlock[0].indexOf(isbn)!==-1;
+      if(!noResult&&validMatch){
+        var ddMatch=itemBlock[0].match(/title="([^"]{5,200})"\s+ddclick/);
+        if(ddMatch&&ddMatch[1]){
+          var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+          var cleaned=_cleanName(rawTitle);
+          if(cleaned&&cleaned.length>=2){
+            _renderHit(cleaned,'','','','当当网搜索 (search.dangdang.com)','https://search.dangdang.com/?key='+isbn,'⚠️ 当当商家描述可能含促销词，建议人工核对书名');
+            return;
+          }
         }
       }
     }
@@ -1189,25 +1207,42 @@ async function runIsbnCollect(force){
       return cleaned;
     }
     // ① 当当网搜索（优先：实时商品库，覆盖国内主流和冷门图书）
+    var _CORS_PROXIES2=['https://api.codetabs.com/v1/proxy?quest=','https://cors.eu.org/','https://api.allorigins.win/raw?url='];
+    async function _fetchDD(isbn){
+      var target='https://search.dangdang.com/?key='+isbn+'&act=input';
+      for(var i=0;i<_CORS_PROXIES2.length;i++){
+        try{
+          var p=_CORS_PROXIES2[i];
+          var url=(p.indexOf('?')>-1?p+encodeURIComponent(target):p+target);
+          var r=await fetch(url);
+          if(!r.ok) continue;
+          var t=await r.text();
+          if(t.length>1000) return t;
+        }catch(e){}
+      }
+      return null;
+    }
     try{
       status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
-      var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
-      var resp3=await fetch(ddUrl);
-      var html3=await resp3.text();
-      var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(html3);
-      if(!noResult){
-        var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
-        if(ddMatch&&ddMatch[1]){
-          var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
-          var cleanedDD=cleanBookName(rawTitle);
-          if(cleanedDD&&cleanedDD.length>=2){
-            title=cleanedDD;
-            sourceName='当当网搜索 (search.dangdang.com)';
-            sourceUrl='https://search.dangdang.com/?key='+isbn;
-            isbnBookInfo={title:title,authors:'',publisher:'',date:'',source:sourceName,sourceUrl:sourceUrl};
-            document.getElementById('bookTitleInput').value=title;
-            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ 当当网商家描述可能含促销词，建议人工核对书名</p>';
-            lookedUp=true;
+      var ddHtml=await _fetchDD(isbn);
+      if(ddHtml){
+        var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(ddHtml);
+        var itemBlock=ddHtml.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?<\/ul>/);
+        var validMatch=itemBlock&&itemBlock[0].indexOf(isbn)!==-1;
+        if(!noResult&&validMatch){
+          var ddMatch=itemBlock[0].match(/title="([^"]{5,200})"\s+ddclick/);
+          if(ddMatch&&ddMatch[1]){
+            var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+            var cleanedDD=cleanBookName(rawTitle);
+            if(cleanedDD&&cleanedDD.length>=2){
+              title=cleanedDD;
+              sourceName='当当网搜索 (search.dangdang.com)';
+              sourceUrl='https://search.dangdang.com/?key='+isbn;
+              isbnBookInfo={title:title,authors:'',publisher:'',date:'',source:sourceName,sourceUrl:sourceUrl};
+              document.getElementById('bookTitleInput').value=title;
+              status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ 当当网商家描述可能含促销词，建议人工核对书名</p>';
+              lookedUp=true;
+            }
           }
         }
       }
