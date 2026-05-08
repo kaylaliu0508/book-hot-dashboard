@@ -1453,6 +1453,16 @@
     color: var(--text-secondary);
     line-height: 1.6;
   }
+  .tag-warning {
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(255,193,7,0.1);
+    border: 1px solid rgba(255,193,7,0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    color: #f0c040;
+    line-height: 1.5;
+  }
   .tag-detail .examples {
     margin-top: 4px;
     display: flex; flex-wrap: wrap; gap: 4px;
@@ -2212,6 +2222,7 @@ function renderDimSections(){
           </div>
           <div class="tag-detail">
             ${t.explain}
+            ${t.warning ? '<div class="tag-warning">'+t.warning+'</div>' : ''}
             <div class="examples">${examples}</div>
           </div>
           <div class="tag-cats">

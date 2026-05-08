@@ -1217,6 +1217,33 @@
     ],
     "marketing": [
       {
+        "tag": "权威背书",
+        "freq": 8,
+        "videos": [
+          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
+          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
+          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
+          "0b53vmaegaaahyah",
+          "0b53wmcacaaecqaj",
+          "0bc354an4aaajmak",
+          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
+          "0bc3raac6aaa2ean"
+        ],
+        "summer_link": "★★★★",
+        "explain": "视频把图书和出版社、电视台、行业协会等公信力机构挂钩，让家长觉得选品靠谱。",
+        "warning": "⚠️ 使用前提：必须已获得相关机构的正式授权或合作协议，未经授权不得使用机构名称/logo。",
+        "examples": [
+          "出版社联合出品",
+          "协会推荐书目",
+          "媒体合作图书"
+        ],
+        "applicable_categories": [
+          "权威机构出版教辅",
+          "媒体推荐童书",
+          "电视台合作图书"
+        ]
+      },
+      {
         "tag": "情景剧",
         "freq": 4,
         "videos": [
