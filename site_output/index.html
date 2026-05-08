@@ -1121,36 +1121,15 @@ async function autoLookupISBN(){
     else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
     status.innerHTML=html;
   }
-  // ① data.isbn.work
+  // ① 当当网搜索（优先：实时商品库，覆盖国内主流和冷门图书）
   try{
-    var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
-    var data=await resp.json();
-    if(data.code===0&&data.data&&data.data.bookName){
-      var d=data.data;
-      _renderHit(_cleanName(d.bookName),d.author||'',d.press||'',d.pressDate||'','ISBN国内数据库 (data.isbn.work)','https://data.isbn.work/');
-      return;
-    }
-  }catch(e){}
-  // ② Google Books
-  try{
-    var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
-    var data2=await resp2.json();
-    if(data2.totalItems>0){
-      var info=data2.items[0].volumeInfo;
-      _renderHit(info.title+(info.subtitle?' '+info.subtitle:''),(info.authors||[]).join('/'),info.publisher||'',info.publishedDate||'','Google Books','https://books.google.com/books?isbn='+isbn);
-      return;
-    }
-  }catch(e){}
-  // ③ 当当网搜索（CORS 代理，覆盖国内冷门/新书）
-  try{
-    var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
     status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
-    var resp3=await fetch(ddUrl);
-    var html3=await resp3.text();
-    // 关键：当当无结果时会显示"没有找到"+推荐位，避免误识别
-    var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(html3);
-    if(!noResult){
-      var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
+    var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
+    var ddResp=await fetch(ddUrl);
+    var ddHtml=await ddResp.text();
+    var ddNoResult=/没有找到|无搜索结果|请检查您的关键字/.test(ddHtml);
+    if(!ddNoResult){
+      var ddMatch=ddHtml.match(/title="([^"]{5,120})"\s+ddclick/);
       if(ddMatch&&ddMatch[1]){
         var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
         var cleaned=_cleanName(rawTitle);
@@ -1159,6 +1138,29 @@ async function autoLookupISBN(){
           return;
         }
       }
+    }
+  }catch(e){}
+  // ② data.isbn.work（备用：注意免费配额有限）
+  try{
+    status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
+    var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
+    var data=await resp.json();
+    // 严格判断：只有 code=0 且有 bookName 才算命中（避免把"次数不足"等错误信息误判为成功）
+    if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
+      var d=data.data;
+      _renderHit(_cleanName(d.bookName),d.author||'',d.press||'',d.pressDate||'','ISBN国内数据库 (data.isbn.work)','https://data.isbn.work/');
+      return;
+    }
+  }catch(e){}
+  // ③ Google Books（海外备用）
+  try{
+    status.innerHTML='<span style="color:#8b949e">🔍 正在查询 Google Books...</span>';
+    var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
+    var data2=await resp2.json();
+    if(data2.totalItems>0){
+      var info=data2.items[0].volumeInfo;
+      _renderHit(info.title+(info.subtitle?' '+info.subtitle:''),(info.authors||[]).join('/'),info.publisher||'',info.publishedDate||'','Google Books','https://books.google.com/books?isbn='+isbn);
+      return;
     }
   }catch(e){}
   // 全部失败
@@ -1203,25 +1205,54 @@ async function runIsbnCollect(force){
       if(cleaned.length>40) cleaned=cleaned.substring(0,40);
       return cleaned;
     }
+    // ① 当当网搜索（优先：实时商品库，覆盖国内主流和冷门图书）
     try{
-      var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
-      var data=await resp.json();
-      if(data.code===0&&data.data&&data.data.bookName){
-        title=cleanBookName(data.data.bookName);
-        sourceName='ISBN国内数据库 (data.isbn.work)';
-        sourceUrl='https://data.isbn.work/';
-        isbnBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:sourceName,sourceUrl:sourceUrl};
-        document.getElementById('bookTitleInput').value=title;
-        var meta='';
-        if(data.data.author) meta+='作者：'+data.data.author+' ';
-        if(data.data.press) meta+='| 出版社：'+data.data.press+' ';
-        if(data.data.pressDate) meta+='| 出版年：'+data.data.pressDate;
-        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
-        lookedUp=true;
+      status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
+      var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
+      var resp3=await fetch(ddUrl);
+      var html3=await resp3.text();
+      var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(html3);
+      if(!noResult){
+        var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
+        if(ddMatch&&ddMatch[1]){
+          var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+          var cleanedDD=cleanBookName(rawTitle);
+          if(cleanedDD&&cleanedDD.length>=2){
+            title=cleanedDD;
+            sourceName='当当网搜索 (search.dangdang.com)';
+            sourceUrl='https://search.dangdang.com/?key='+isbn;
+            isbnBookInfo={title:title,authors:'',publisher:'',date:'',source:sourceName,sourceUrl:sourceUrl};
+            document.getElementById('bookTitleInput').value=title;
+            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ 当当网商家描述可能含促销词，建议人工核对书名</p>';
+            lookedUp=true;
+          }
+        }
       }
     }catch(e){}
-    // fallback：Google Books
+    // ② data.isbn.work（备用）
     if(!lookedUp){
+      status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
+      try{
+        var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
+        var data=await resp.json();
+        if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
+          title=cleanBookName(data.data.bookName);
+          sourceName='ISBN国内数据库 (data.isbn.work)';
+          sourceUrl='https://data.isbn.work/';
+          isbnBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:sourceName,sourceUrl:sourceUrl};
+          document.getElementById('bookTitleInput').value=title;
+          var meta='';
+          if(data.data.author) meta+='作者：'+data.data.author+' ';
+          if(data.data.press) meta+='| 出版社：'+data.data.press+' ';
+          if(data.data.pressDate) meta+='| 出版年：'+data.data.pressDate;
+          status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
+          lookedUp=true;
+        }
+      }catch(e){}
+    }
+    // ③ Google Books（海外备用）
+    if(!lookedUp){
+      status.innerHTML='<span style="color:#8b949e">🔍 正在查询 Google Books...</span>';
       try{
         var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
         var data2=await resp2.json();
@@ -1238,33 +1269,6 @@ async function runIsbnCollect(force){
           if(info.publishedDate) meta2+='| 出版年：'+info.publishedDate;
           status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta2?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta2+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
           lookedUp=true;
-        }
-      }catch(e){}
-    }
-    // 第3数据源：当当搜索（通过 CORS 代理）—— 覆盖国内冷门/新书
-    if(!lookedUp){
-      status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
-      try{
-        var ddUrl='https://cors.eu.org/https://search.dangdang.com/?key='+isbn+'&act=input';
-        var resp3=await fetch(ddUrl);
-        var html3=await resp3.text();
-        // 关键：当当无结果时会显示"没有找到"+推荐位，避免把推荐位误识别为搜索结果
-        var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(html3);
-        if(!noResult){
-          var ddMatch=html3.match(/title="([^"]{5,120})"\s+ddclick/);
-          if(ddMatch&&ddMatch[1]){
-            var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
-            var cleanedDD=cleanBookName(rawTitle);
-            if(cleanedDD&&cleanedDD.length>=2){
-              title=cleanedDD;
-              sourceName='当当网搜索 (search.dangdang.com)';
-              sourceUrl='https://search.dangdang.com/?key='+isbn;
-              isbnBookInfo={title:title,authors:'',publisher:'',date:'',source:sourceName,sourceUrl:sourceUrl};
-              document.getElementById('bookTitleInput').value=title;
-              status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div><p style="font-size:10px;color:#fdcb6e;margin-top:4px">⚠️ 当当网商家描述可能含促销词，建议人工核对书名</p>';
-              lookedUp=true;
-            }
-          }
         }
       }catch(e){}
     }
