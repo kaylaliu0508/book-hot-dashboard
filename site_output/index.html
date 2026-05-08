@@ -1340,26 +1340,38 @@ async function runIsbnCollect(force){
   try{
     isbnController=new AbortController();
 
-    // === 第1步：ISBN验证，获取真实书名 ===
-    var verifyMsg='严格规则：你只能回复你 100% 确定的信息，绝对禁止猜测和编造。如果某个字段你不能精确记起，必须填"未知"。\n\n请基于 ISBN '+isbn+' 告诉我这本书的：完整书名 / 作者 / 出版社。';
-    if(title) verifyMsg+=' 用户提供的书名关键词是："'+title+'"，请核实。';
-    verifyMsg+='\n\n格式（只回复一行）：书名：《xxx》| 作者：xxx | 出版社：xxx\n\n如果整本书你都不熟悉，回复：未知\n如果某个字段不确定（如不知道作者是谁），该字段填"未知"，例如：书名：《xxx》| 作者：未知 | 出版社：xxx\n\n再次强调：宁可填"未知"也不许编造。';
-
-    var verifyResult=await callApi([{role:'user',content:verifyMsg}],null);
-    fill.style.width='12%';
-
-    // 检查是否识别成功
+    // === 第1步：ISBN 验证 ===
+    // 修复（2026-05-08）：优先采用前面真实数据源（isbn.work / 当当 / Google Books / 聚美智数）
+    // 已识别到的书名+作者，**绝不再让 LLM 重新"核实"或"补全"作者**——LLM 会高自信幻觉。
+    // 只有所有真实数据源都失败 + 用户也没填书名时，才显示"无法识别"。
     var confirmedTitle=title;
-    if(verifyResult.indexOf('未知')>=0 && !title){
-      body.innerHTML='<div style="color:#f0883e;padding:16px"><h3>⚠️ 无法确认该ISBN对应的图书</h3><p>请在书名栏输入书名关键词后重试。</p></div>';
+    var confirmedAuthor='';
+    var confirmedPublisher='';
+    var verifyResult='';
+    var bookMatch=null;
+
+    if(isbnBookInfo && isbnBookInfo.title){
+      // ✅ 真实数据源已命中，直接使用，跳过 LLM
+      confirmedTitle=isbnBookInfo.title;
+      confirmedAuthor=isbnBookInfo.authors||'';
+      confirmedPublisher=isbnBookInfo.publisher||'';
+      bookMatch=[null,confirmedTitle];
+      verifyResult='书名：《'+confirmedTitle+'》'
+        +(confirmedAuthor?' | 作者：'+confirmedAuthor:'')
+        +(confirmedPublisher?' | 出版社：'+confirmedPublisher:'')
+        +'<br><span style="font-size:11px;color:#8b949e">📡 '+(isbnBookInfo.source||'真实数据源')+'（已跳过 AI 二次核验，避免幻觉）</span>';
+    } else if(title){
+      // ⚠️ 真实数据源都失败，但用户手动填了书名 → 用用户输入，不让 LLM 编作者
+      confirmedTitle=title;
+      verifyResult='书名：《'+title+'》（用户提供）<br><span style="font-size:11px;color:#f0883e">⚠️ 真实数据源未命中，作者/出版社未知，AI 不会编造这些字段</span>';
+    } else {
+      // ❌ 真实数据源失败 + 用户也没填 → 终止流程，明确提示
+      body.innerHTML='<div style="color:#f0883e;padding:16px"><h3>⚠️ 无法确认该 ISBN 对应的图书</h3><p>真实数据源（当当/ISBN国内库/Google Books）均未命中，请在书名栏手动输入书名关键词后重试。</p></div>';
       fill.style.width='0%';ptxt.textContent='需要补充书名';
       btn.disabled=false;btn.style.background='#1a73e8';btn.textContent='🚀 开始采集';btn.onclick=function(){runIsbnCollect(false);};isbnController=null;return;
     }
-
-    // 提取验证到的书名
-    var bookMatch=verifyResult.match(/《([^》]+)》/);
-    if(bookMatch) confirmedTitle=bookMatch[1];
-    body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#8b949e;margin-top:8px">正在联网搜索图书信息...</p>';
+    fill.style.width='12%';
+    body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p><p style="color:#8b949e;margin-top:8px">正在联网搜索图书信息...</p>';
     document.getElementById('isbnOutputTitle').textContent='📊 '+(confirmedTitle||isbn)+' 采集报告';
     ptxt.textContent='第2步：正在联网搜索图书详情...';fill.style.width='15%';
 
@@ -1368,7 +1380,7 @@ async function runIsbnCollect(force){
     try{
       searchResults=await webSearchBook(confirmedTitle,isbn);
       if(searchResults.length>0){
-        body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult.replace(/\n/g,'<br>')+'</p><p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>';
+        body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p><p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>';
         ptxt.textContent='第3步：基于联网数据生成报告...';
       }else{
         body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索无结果，将基于AI知识库生成</p>';
@@ -1382,7 +1394,9 @@ async function runIsbnCollect(force){
 
     // === 第3步：用确认后的书名 + 联网搜索结果生成完整报告 ===
     var userMsg='请采集以下图书的广告营销素材：\n\nISBN = '+isbn+'\n书名 = '+confirmedTitle;
-    if(bookMatch) userMsg+='\n\n（ISBN已验证，确认为《'+confirmedTitle+'》，请严格基于这本书生成内容）';
+    if(confirmedAuthor) userMsg+='\n作者 = '+confirmedAuthor+'（来自真实数据源 '+(isbnBookInfo&&isbnBookInfo.source||'')+'，已经确认无误，请直接使用，绝对不要修改或替换为其他作者）';
+    if(confirmedPublisher) userMsg+='\n出版社 = '+confirmedPublisher+'（已经确认无误，请直接使用）';
+    if(bookMatch) userMsg+='\n\n（ISBN已验证，确认为《'+confirmedTitle+'》，请严格基于这本书生成内容。如果你对这本书的具体内容、目录、简介不熟悉，请直接跳过这些维度——绝对不许编造作者名、目录、简介。）';
     // 拼入联网搜索结果
     if(searchResults.length>0){
       userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（请优先参考这些真实数据）\n';
