@@ -1,0 +1,337 @@
+{
+  "version": "2026-summer-v1-p1-clean",
+  "captured_at": "2026-04-27",
+  "data_note": "全国通用事件 + 北京/上海/广州/深圳重点城市补充。地方暑假/中考时间为往年规律推测，5月底以各地教育局正式发布为准。",
+  "regions": [
+    {
+      "id": "all",
+      "name": "全国通用",
+      "icon": "🇨🇳"
+    },
+    {
+      "id": "bj",
+      "name": "北京",
+      "icon": "🏛"
+    },
+    {
+      "id": "sh",
+      "name": "上海",
+      "icon": "🌃"
+    },
+    {
+      "id": "gz",
+      "name": "广州",
+      "icon": "🌴"
+    },
+    {
+      "id": "sz",
+      "name": "深圳",
+      "icon": "🌆"
+    }
+  ],
+  "categories": [
+    {
+      "id": "holiday",
+      "name": "法定假日",
+      "color": "#fe2c55",
+      "icon": "🎉"
+    },
+    {
+      "id": "exam",
+      "name": "考试节点",
+      "color": "#ff8c42",
+      "icon": "📝"
+    },
+    {
+      "id": "vacation",
+      "name": "暑假节点",
+      "color": "#4ade80",
+      "icon": "🏖"
+    },
+    {
+      "id": "policy",
+      "name": "政策窗口",
+      "color": "#fdcb6e",
+      "icon": "📋"
+    },
+    {
+      "id": "memorial",
+      "name": "节日节点",
+      "color": "#a78bfa",
+      "icon": "🎗"
+    },
+    {
+      "id": "industry",
+      "name": "行业节点",
+      "color": "#5b9eff",
+      "icon": "📚"
+    }
+  ],
+  "events": [
+    {
+      "date": "2026-05-01",
+      "end_date": "2026-05-03",
+      "region": "all",
+      "category": "holiday",
+      "title": "劳动节假期",
+      "scene": "亲子绘本/旅行读物",
+      "note": "3天小长假，亲子出行类绘本/旅行手账"
+    },
+    {
+      "date": "2026-05-04",
+      "region": "all",
+      "category": "memorial",
+      "title": "青年节",
+      "scene": "青年励志/职业规划书",
+      "note": "青年人群书单"
+    },
+    {
+      "date": "2026-05-11",
+      "region": "all",
+      "category": "memorial",
+      "title": "母亲节",
+      "scene": "母亲节绘本/家庭教育书",
+      "note": "周日，母亲节书单与情感类绘本爆量"
+    },
+    {
+      "date": "2026-05-15",
+      "region": "all",
+      "category": "policy",
+      "title": "全国学生营养日",
+      "scene": "饮食营养绘本/健康育儿书",
+      "note": "可关联家庭教育书"
+    },
+    {
+      "date": "2026-05-18",
+      "region": "all",
+      "category": "memorial",
+      "title": "国际博物馆日",
+      "scene": "博物馆/历史/文物绘本",
+      "note": "博物馆主题童书自带流量"
+    },
+    {
+      "date": "2026-05-20",
+      "region": "all",
+      "category": "policy",
+      "title": "全国学前教育宣传月开始",
+      "scene": "幼小衔接/学前认知卡",
+      "note": "教育部年度宣传月，幼小衔接品类高峰"
+    },
+    {
+      "date": "2026-05-25",
+      "region": "all",
+      "category": "policy",
+      "title": "全国中小学心理健康日",
+      "scene": "情绪管理绘本/儿童心理书",
+      "note": "情绪管理绘本+心理类工具书"
+    },
+    {
+      "date": "2026-06-01",
+      "region": "all",
+      "category": "memorial",
+      "title": "国际儿童节",
+      "scene": "玩具书/翻翻书/低龄童书",
+      "note": "全年童书核心流量节点"
+    },
+    {
+      "date": "2026-06-05",
+      "region": "all",
+      "category": "memorial",
+      "title": "世界环境日",
+      "scene": "环保童书/自然百科",
+      "note": "环保主题童书"
+    },
+    {
+      "date": "2026-06-07",
+      "end_date": "2026-06-08",
+      "region": "all",
+      "category": "exam",
+      "title": "全国高考",
+      "scene": "高考志愿填报/大学预习",
+      "note": "全民关注，志愿填报书爆量；查分日通常6/24-25起陆续公布"
+    },
+    {
+      "date": "2026-06-09",
+      "end_date": "2026-06-11",
+      "region": "all",
+      "category": "holiday",
+      "title": "端午节假期",
+      "scene": "国学经典/传统文化绘本",
+      "note": "国学启蒙、传统文化绘本"
+    },
+    {
+      "date": "2026-06-14",
+      "end_date": "2026-06-15",
+      "region": "sh",
+      "category": "exam",
+      "title": "上海中考",
+      "scene": "中考真题集/作文素材/初升高教辅",
+      "note": "上海中考通常6月中旬"
+    },
+    {
+      "date": "2026-06-20",
+      "end_date": "2026-06-22",
+      "region": "gz",
+      "category": "exam",
+      "title": "广州中考",
+      "scene": "中考真题集/作文素材/初升高教辅",
+      "note": "广州中考通常6月下旬"
+    },
+    {
+      "date": "2026-06-24",
+      "end_date": "2026-06-26",
+      "region": "bj",
+      "category": "exam",
+      "title": "北京中考",
+      "scene": "中考真题集/作文素材/初升高教辅",
+      "note": "北京中考时间（参考往年）"
+    },
+    {
+      "date": "2026-06-25",
+      "region": "sh",
+      "category": "exam",
+      "title": "上海中考成绩公布",
+      "scene": "高一预习教辅/学法养成书",
+      "note": "查分日参考往年"
+    },
+    {
+      "date": "2026-06-25",
+      "region": "all",
+      "category": "policy",
+      "title": "全国高考查分启动周（陆续）",
+      "scene": "高考志愿填报/复读咨询书",
+      "note": "各省查分时间6/22-6/28陆续公布"
+    },
+    {
+      "date": "2026-06-26",
+      "end_date": "2026-06-28",
+      "region": "sz",
+      "category": "exam",
+      "title": "深圳中考",
+      "scene": "中考真题集/作文素材/初升高教辅",
+      "note": "深圳中考通常6月底"
+    },
+    {
+      "date": "2026-06-26",
+      "end_date": "2026-07-02",
+      "region": "all",
+      "category": "policy",
+      "title": "全国高考志愿填报集中期",
+      "scene": "高考志愿填报/大学规划书",
+      "note": "搜索量峰值，志愿填报书疯狂跑量"
+    },
+    {
+      "date": "2026-07-01",
+      "region": "all",
+      "category": "memorial",
+      "title": "建党节",
+      "scene": "红色经典/党史绘本",
+      "note": "红色主题童书"
+    },
+    {
+      "date": "2026-07-01",
+      "region": "sh",
+      "category": "vacation",
+      "title": "上海中小学放暑假",
+      "scene": "暑假阅读/同步教辅/工具书",
+      "note": "上海是全国放假最早的城市之一，约2个月"
+    },
+    {
+      "date": "2026-07-04",
+      "region": "all",
+      "category": "industry",
+      "title": "全国大中小学陆续放暑假",
+      "scene": "暑假阅读/同步教辅/工具书",
+      "note": "暑期档全面启动"
+    },
+    {
+      "date": "2026-07-05",
+      "region": "bj",
+      "category": "exam",
+      "title": "北京中考成绩公布",
+      "scene": "高一预习教辅/学法养成书",
+      "note": "结合分数线搜索高峰"
+    },
+    {
+      "date": "2026-07-09",
+      "region": "gz",
+      "category": "exam",
+      "title": "广州中考成绩公布",
+      "scene": "高一预习教辅/学法养成书",
+      "note": "查分日参考往年"
+    },
+    {
+      "date": "2026-07-09",
+      "region": "gz",
+      "category": "vacation",
+      "title": "广州中小学放暑假",
+      "scene": "暑假阅读/同步教辅/工具书",
+      "note": "广州暑假约8周"
+    },
+    {
+      "date": "2026-07-13",
+      "region": "sz",
+      "category": "exam",
+      "title": "深圳中考成绩公布",
+      "scene": "高一预习教辅/学法养成书",
+      "note": "查分日参考往年"
+    },
+    {
+      "date": "2026-07-13",
+      "region": "bj",
+      "category": "vacation",
+      "title": "北京中小学放暑假",
+      "scene": "暑假阅读/同步教辅/工具书",
+      "note": "北京暑假约45天，参考往年规律"
+    },
+    {
+      "date": "2026-07-13",
+      "region": "sz",
+      "category": "vacation",
+      "title": "深圳中小学放暑假",
+      "scene": "暑假阅读/同步教辅/工具书",
+      "note": "深圳暑假约7-8周"
+    },
+    {
+      "date": "2026-07-20",
+      "region": "all",
+      "category": "industry",
+      "title": "高考一本录取陆续开始",
+      "scene": "准大学生入学指南/英语四六级",
+      "note": "录取通知书发放，准大学生品类爆量"
+    },
+    {
+      "date": "2026-08-01",
+      "region": "all",
+      "category": "memorial",
+      "title": "建军节",
+      "scene": "军事题材/英雄人物绘本",
+      "note": "军事主题童书"
+    },
+    {
+      "date": "2026-08-15",
+      "region": "all",
+      "category": "industry",
+      "title": "开学采购季启动",
+      "scene": "新学年同步教辅/字帖/口算题卡",
+      "note": "全年教辅第二爆量节点"
+    },
+    {
+      "date": "2026-08-25",
+      "end_date": "2026-08-31",
+      "region": "all",
+      "category": "vacation",
+      "title": "中小学开学时间节点",
+      "scene": "开学衔接书/学法养成/作业辅导",
+      "note": "幼小/小升初/初升高衔接书最后窗口"
+    },
+    {
+      "date": "2026-09-01",
+      "region": "all",
+      "category": "industry",
+      "title": "全国统一开学日",
+      "scene": "新学期同步教辅/课外阅读",
+      "note": "暑期话题专栏可考虑下线/转型秋季"
+    }
+  ]
+}
