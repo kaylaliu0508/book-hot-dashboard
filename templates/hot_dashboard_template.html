@@ -1312,9 +1312,9 @@ async function runIsbnCollect(force){
     isbnController=new AbortController();
 
     // === 第1步：ISBN验证，获取真实书名 ===
-    var verifyMsg='请根据ISBN编号 '+isbn+' 告诉我这本书的完整书名、作者、出版社。';
-    if(title) verifyMsg+=' 用户提供的书名关键词是："'+title+'"，请核实是否匹配。';
-    verifyMsg+='\n\n请只用一行回复，格式：书名：《xxx》| 作者：xxx | 出版社：xxx\n如果你不确定这个ISBN对应哪本书，请回复：未知';
+    var verifyMsg='严格规则：你只能回复你 100% 确定的信息，绝对禁止猜测和编造。如果某个字段你不能精确记起，必须填"未知"。\n\n请基于 ISBN '+isbn+' 告诉我这本书的：完整书名 / 作者 / 出版社。';
+    if(title) verifyMsg+=' 用户提供的书名关键词是："'+title+'"，请核实。';
+    verifyMsg+='\n\n格式（只回复一行）：书名：《xxx》| 作者：xxx | 出版社：xxx\n\n如果整本书你都不熟悉，回复：未知\n如果某个字段不确定（如不知道作者是谁），该字段填"未知"，例如：书名：《xxx》| 作者：未知 | 出版社：xxx\n\n再次强调：宁可填"未知"也不许编造。';
 
     var verifyResult=await callApi([{role:'user',content:verifyMsg}],null);
     fill.style.width='12%';
