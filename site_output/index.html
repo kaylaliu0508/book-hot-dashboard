@@ -1169,9 +1169,42 @@ async function runIsbnCollect(force){
         }
       }catch(e){}
     }
-    // ISBN 和书名都查不到 → 显示"查询不到结果"
+    // AI 兜底：用 DeepSeek + 智谱搜索联网查询（覆盖冷门/新书）
     if(!lookedUp){
-      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">该 ISBN 在国内数据库和 Google Books 均未找到对应图书信息。请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
+      status.innerHTML='<span style="color:#8b949e">🤖 常规数据库未命中，正在调用 AI 联网查询...</span>';
+      try{
+        var aiResp=await fetch(ISBN_API.baseUrl+'/chat/completions',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},
+          body:JSON.stringify({
+            model:ISBN_API.model,
+            messages:[
+              {role:'system',content:'你是图书信息查询助手。用户会给你一个 ISBN 号码，你需要返回该 ISBN 对应的中文书名。请只返回 JSON 格式：{"title":"书名","author":"作者","publisher":"出版社"}。如果确实无法识别该 ISBN，返回 {"title":"","notfound":true}。不要返回任何其他内容。'},
+              {role:'user',content:'ISBN: '+isbn+' 对应的图书是什么？'}
+            ],
+            temperature:0,
+            max_tokens:200
+          })
+        });
+        var aiData=await aiResp.json();
+        var aiContent=aiData.choices&&aiData.choices[0]&&aiData.choices[0].message&&aiData.choices[0].message.content||'';
+        // 提取 JSON
+        var jsonMatch=aiContent.match(/\{[\s\S]*?\}/);
+        if(jsonMatch){
+          var parsed=JSON.parse(jsonMatch[0]);
+          if(parsed.title&&!parsed.notfound&&parsed.title.length>0){
+            title=parsed.title;
+            isbnBookInfo={title:title,authors:parsed.author||'',publisher:parsed.publisher||'',date:'',source:'AI 联网查询'};
+            document.getElementById('bookTitleInput').value=title;
+            status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong> <span style="font-size:10px;color:#8b949e">(AI联网识别)</span></div><p style="font-size:10px;color:#484f58;margin-top:4px">AI识别结果供参考，如书名不准请手动修正</p>';
+            lookedUp=true;
+          }
+        }
+      }catch(e){}
+    }
+    // 所有数据源都查不到 → 显示"查询不到结果"
+    if(!lookedUp){
+      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">该 ISBN 在国内数据库、Google Books 和 AI 联网查询均未找到对应图书信息。请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
       return;
     }
   }
