@@ -826,16 +826,16 @@
           "0bc3z4dd4aagsmabk47b7rurztyeh3hqmpsa"
         ],
         "summer_link": "★★★★",
-        "explain": "全年龄段都在关注教育的妈妈群体，对专家推荐和家长共鸣类内容反应好。",
+        "explain": "全年龄段都在关注教育的妈妈群体，对家长共鸣类和实用方法类内容反应好。",
         "examples": [
-          "专家推荐的家庭教育书",
+          "暑假带娃必读书单",
           "我家暑假在读的书",
-          "名师方法书参考"
+          "适合亲子共读的好书"
         ],
         "applicable_categories": [
-          "名人IP家教课",
           "家庭教育方法书",
-          "亲子共读书单"
+          "亲子共读书单",
+          "暑假阅读推荐"
         ]
       },
       {
@@ -864,9 +864,9 @@
           "0b53qqbcuaacrqai"
         ],
         "summer_link": "★★★★",
-        "explain": "更看重孩子性格和心理健康的家长，对心理专家推荐的书、育儿方法课信任度高。",
+        "explain": "更看重孩子性格和心理健康的家长，对科学育儿方法和情绪管理类内容信任度高。",
         "examples": [
-          "专家分享的育儿方法",
+          "科学育儿方法分享",
           "帮孩子建立自信表达",
           "引导孩子识别情绪"
         ],
@@ -1216,49 +1216,6 @@
       }
     ],
     "marketing": [
-      {
-        "tag": "权威背书",
-        "freq": 8,
-        "videos": [
-          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
-          "0b53vmaegaaahyah",
-          "0b53wmcacaaecqaj",
-          "0bc354an4aaajmak",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3raac6aaa2ean"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频把图书和出版社、电视台、行业协会等公信力机构挂钩，让家长觉得选品靠谱。",
-        "examples": [
-          "出版社联合出品",
-          "协会推荐书目",
-          "媒体合作图书"
-        ],
-        "applicable_categories": [
-          "权威机构出版教辅",
-          "媒体推荐童书",
-          "电视台合作图书"
-        ]
-      },
-      {
-        "tag": "名人代言",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★★",
-        "explain": "视频请专家、演员、名师出镜或引用。适合信任名人推荐的教育型妈妈群体。",
-        "examples": [
-          "名师推荐书单",
-          "专家分享的育儿方法",
-          "名师方法课程"
-        ],
-        "applicable_categories": [
-          "名人IP家教课",
-          "专家育儿书",
-          "名师方法课程"
-        ]
-      },
       {
         "tag": "情景剧",
         "freq": 4,
