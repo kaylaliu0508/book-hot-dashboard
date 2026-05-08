@@ -222,14 +222,6 @@
     },
     {
       "date": "2026-07-01",
-      "region": "all",
-      "category": "memorial",
-      "title": "建党节",
-      "scene": "红色经典/党史绘本",
-      "note": "红色主题童书"
-    },
-    {
-      "date": "2026-07-01",
       "region": "sh",
       "category": "vacation",
       "title": "上海中小学放暑假",
@@ -299,14 +291,6 @@
       "title": "高考一本录取陆续开始",
       "scene": "准大学生入学指南/英语四六级",
       "note": "录取通知书发放，准大学生品类爆量"
-    },
-    {
-      "date": "2026-08-01",
-      "region": "all",
-      "category": "memorial",
-      "title": "建军节",
-      "scene": "军事题材/英雄人物绘本",
-      "note": "军事主题童书"
     },
     {
       "date": "2026-08-15",
