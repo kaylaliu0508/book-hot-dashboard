@@ -1099,10 +1099,22 @@ async function autoLookupISBN(){
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
   try{
-    var resp=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
+    var resp=await fetch('http://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
     var data=await resp.json();
-    if(data.totalItems>0){
-      var info=data.items[0].volumeInfo;
+    if(data.code===0&&data.data){
+      var d=data.data;
+      isbnBookInfo={title:d.bookName,authors:d.author||'',publisher:d.press||'',date:d.pressDate||'',source:'ISBN国内数据库'};
+      document.getElementById('bookTitleInput').value=isbnBookInfo.title;
+      status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+isbnBookInfo.title+'</strong></div>'+(isbnBookInfo.authors?'<span style="font-size:11px;color:#8b949e">作者：'+isbnBookInfo.authors+'</span>':'')+(isbnBookInfo.publisher?' <span style="font-size:11px;color:#8b949e">| 出版社：'+isbnBookInfo.publisher+'</span>':'')+'<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
+      return;
+    }
+  }catch(e){}
+  // 国内接口失败时 fallback 到 Google Books
+  try{
+    var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
+    var data2=await resp2.json();
+    if(data2.totalItems>0){
+      var info=data2.items[0].volumeInfo;
       isbnBookInfo={title:info.title+(info.subtitle?' '+info.subtitle:''),authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:'Google Books'};
       document.getElementById('bookTitleInput').value=isbnBookInfo.title;
       status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+isbnBookInfo.title+'</strong></div>'+(isbnBookInfo.authors?'<span style="font-size:11px;color:#8b949e">作者：'+isbnBookInfo.authors+'</span>':'')+(isbnBookInfo.publisher?' <span style="font-size:11px;color:#8b949e">| 出版社：'+isbnBookInfo.publisher+'</span>':'')+'<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
