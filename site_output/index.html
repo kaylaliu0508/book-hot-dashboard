@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图书创意灵感中心 - 2026.05.08</title>
+<title>图书创意灵感中心 - 2026.05.09</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -69,7 +69,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="ct pg" id="pg-p3">
 <div style="background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2);border-radius:8px;padding:8px 12px;margin:0 0 12px;display:flex;align-items:flex-start;gap:6px">
 <span style="flex-shrink:0;font-size:13px">⚠️</span>
-<p style="font-size:10.5px;color:#b8a24e;line-height:1.6;margin:0"><strong>免责声明</strong>：以下修复建议仅供参考，不构成投放指导。实际素材合规性请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯营销</a>平台审核规范为准。</p>
+<p style="font-size:10.5px;color:#b8a24e;line-height:1.6;margin:0"><strong>免责声明</strong>：以下修复建议仅供参考，不构成投放指导。实际素材合规性请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯广告</a>平台审核规范为准。</p>
 </div>
 <p class="subtitle">粘贴/上传脚本文案 → AI 风控审核 → 逐条给出修改建议 → 生成合规文案 → 一键复制</p>
 
@@ -152,7 +152,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
 <p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（约2分钟/篇）</p>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
-⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯营销平台审核规范为准。
+⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
 </div>
 
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
@@ -239,7 +239,7 @@ function go(id,el){
 
 // ==================== 页面3: AI预审引擎 ====================
 
-// --- 审核规则库：基于广告法 + 腾讯营销V6规则 + 教育图书专项 + xlsx审核规则 ---
+// --- 审核规则库：基于广告法 + 腾讯广告V6规则 + 教育图书专项 + xlsx审核规则 ---
 var AUDIT_RULES=[
 // ====== 一、绝对化用语（广告法第9条 + V6规则）======
 {id:"ABS_1",cat:"绝对化用语",level:"reject",
@@ -675,7 +675,7 @@ var AUDIT_RULES=[
  desc:"涉嫌未授权使用抖音平台UI元素",
  fix:"删除第三方平台UI元素"},
 
-// ====== 负向价值观（腾讯营销cid=4786 - 12个维度）======
+// ====== 负向价值观（腾讯广告cid=4786 - 12个维度）======
 {id:"NEG_1",cat:"负向价值观-婚恋",level:"reject",
  re:/(出轨|小三|婚外情|忘年恋|包养|情人|二奶)/,
  desc:"禁止违背正向婚恋观（出轨/小三/包养等）",
@@ -729,7 +729,7 @@ var AUDIT_RULES=[
  desc:"禁止使用已故名人形象推广（无论是否有授权）",
  fix:"删除已故名人引用"},
 
-// ====== 诱导点击（腾讯营销cid=4787）======
+// ====== 诱导点击（腾讯广告cid=4787）======
 {id:"IND_1",cat:"诱导点击-指向性",level:"reject",
  re:/(点击|戳).{0,3}(下方|左下|右下|上方|左上角|这里|链接).{0,3}(购买|领取|查看|了解|下载|进入)/,
  desc:"禁止指向性点击引导「点击下方购买」",
@@ -751,7 +751,7 @@ var AUDIT_RULES=[
  desc:"禁止文案中模拟虚假交互按钮",
  fix:"删除虚假按钮文案"},
 
-// ====== 承诺性质及无法核实的效果描述（腾讯营销cid=4502）======
+// ====== 承诺性质及无法核实的效果描述（腾讯广告cid=4502）======
 {id:"UNV_1",cat:"无法核实效果",level:"reject",
  re:/(亲测有效|试过都说好|用过的都知道)/,
  desc:"禁止「亲测有效/试过都说好」等无法核实的效果描述",
@@ -1098,7 +1098,6 @@ async function autoLookupISBN(){
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
-  // 净化书名（共享）
   function _cleanName(name){
     if(!name) return '';
     var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
@@ -1106,7 +1105,6 @@ async function autoLookupISBN(){
     if(c.length>40) c=c.substring(0,40);
     return c;
   }
-  // 渲染识别结果（含数据来源）
   function _renderHit(title,authors,publisher,date,sourceName,sourceUrl,extraNote){
     isbnBookInfo={title:title,authors:authors,publisher:publisher,date:date,source:sourceName,sourceUrl:sourceUrl};
     document.getElementById('bookTitleInput').value=title;
@@ -1121,13 +1119,8 @@ async function autoLookupISBN(){
     else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
     status.innerHTML=html;
   }
-  // ① 当当网搜索（优先：实时商品库，覆盖国内主流和冷门图书）
   // 公共 CORS 代理列表，按可用性顺序尝试
-  var CORS_PROXIES=[
-    'https://api.codetabs.com/v1/proxy?quest=',
-    'https://cors.eu.org/',
-    'https://api.allorigins.win/raw?url='
-  ];
+  var CORS_PROXIES=['https://api.codetabs.com/v1/proxy?quest=','https://cors.eu.org/','https://api.allorigins.win/raw?url='];
   async function _fetchDDByProxy(isbn){
     var target='https://search.dangdang.com/?key='+isbn+'&act=input';
     for(var i=0;i<CORS_PROXIES.length;i++){
@@ -1142,34 +1135,26 @@ async function autoLookupISBN(){
     }
     return null;
   }
-  // 校验当当 HTML 是否真有该 ISBN 的精确商品（避免推荐位误识别）
-  function _isDDValidMatch(html,isbn){
-    if(!html) return false;
-    if(/没有找到|无搜索结果|请检查您的关键字/.test(html)) return false;
-    // 找第一个商品块，判断块内是否含目标 ISBN 或 商品名标签
-    // 当当商品 HTML 结构里搜索结果会有 product_id / sku 信息含 ISBN
-    // 简化：找 itemlist 容器内的 ddclick 标题
-    var itemBlock=html.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?<\/ul>/);
-    if(!itemBlock) return false;
-    // 商品块内必须含目标 ISBN
-    return itemBlock[0].indexOf(isbn)!==-1;
-  }
   try{
     status.innerHTML='<span style="color:#8b949e">🔍 正在通过当当网搜索...</span>';
     var ddHtml=await _fetchDDByProxy(isbn);
-    if(ddHtml&&_isDDValidMatch(ddHtml,isbn)){
-      var ddMatch=ddHtml.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?title="([^"]{5,200})"\s+ddclick/);
-      if(ddMatch&&ddMatch[1]){
-        var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
-        var cleaned=_cleanName(rawTitle);
-        if(cleaned&&cleaned.length>=2){
-          _renderHit(cleaned,'','','','当当网搜索 (search.dangdang.com)','https://search.dangdang.com/?key='+isbn,'⚠️ 当当商家描述可能含促销词，建议人工核对书名');
-          return;
+    if(ddHtml){
+      var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(ddHtml);
+      var itemBlock=ddHtml.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?<\/ul>/);
+      var validMatch=itemBlock&&itemBlock[0].indexOf(isbn)!==-1;
+      if(!noResult&&validMatch){
+        var ddMatch=itemBlock[0].match(/title="([^"]{5,200})"\s+ddclick/);
+        if(ddMatch&&ddMatch[1]){
+          var rawTitle=ddMatch[1].replace(/&[a-z#0-9]+;/g,'').trim();
+          var cleaned=_cleanName(rawTitle);
+          if(cleaned&&cleaned.length>=2){
+            _renderHit(cleaned,'','','','当当网搜索 (search.dangdang.com)','https://search.dangdang.com/?key='+isbn,'⚠️ 当当商家描述可能含促销词，建议人工核对书名');
+            return;
+          }
         }
       }
     }
   }catch(e){}
-  // ② data.isbn.work（备用：注意免费配额有限，且部分数据可能存在错误）
   try{
     status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
     var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
@@ -1180,7 +1165,6 @@ async function autoLookupISBN(){
       return;
     }
   }catch(e){}
-  // ③ Google Books（海外备用）
   try{
     status.innerHTML='<span style="color:#8b949e">🔍 正在查询 Google Books...</span>';
     var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
@@ -1191,7 +1175,6 @@ async function autoLookupISBN(){
       return;
     }
   }catch(e){}
-  // 全部失败
   status.innerHTML='<div style="color:#f0883e"><strong>⚠️ 未能自动识别书名</strong></div><div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的数据源（均未命中）：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① <a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></li><li>② <a href="https://books.google.com/books?isbn='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">Google Books</a></li><li>③ <a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">当当网搜索</a></li></ul><div style="font-size:10px;color:#8b949e;margin-top:4px">建议确认 ISBN 是否正确，或点击下方链接手动查询后填入书名栏</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div>';
 }
 async function callApi(msgs,onChunk){
@@ -1216,19 +1199,9 @@ async function runIsbnCollect(force){
     var lookedUp=false;
     var sourceName='';
     var sourceUrl='';
-    // 净化书名（去掉商家堆砌的SEO词、店名、促销语）
     function cleanBookName(name){
       if(!name) return '';
-      var cleaned=name
-        .replace(/^[\s\u3000]+|[\s\u3000]+$/g,'')
-        .replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'')
-        .replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ')
-        .replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'')
-        .replace(/可开发票.*$/,'')
-        .replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'')
-        .replace(/\s+/g,' ')
-        .trim();
-      // 兜底再清一次（处理嵌套的【】）
+      var cleaned=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
       cleaned=cleaned.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').trim();
       if(cleaned.length>40) cleaned=cleaned.substring(0,40);
       return cleaned;
@@ -1254,7 +1227,6 @@ async function runIsbnCollect(force){
       var ddHtml=await _fetchDD(isbn);
       if(ddHtml){
         var noResult=/没有找到|无搜索结果|请检查您的关键字/.test(ddHtml);
-        // 校验：商品列表块内必须含 ISBN，否则是无关推荐
         var itemBlock=ddHtml.match(/<ul[^>]*class="bigimg[^"]*"[\s\S]*?<\/ul>/);
         var validMatch=itemBlock&&itemBlock[0].indexOf(isbn)!==-1;
         if(!noResult&&validMatch){
@@ -1275,7 +1247,7 @@ async function runIsbnCollect(force){
         }
       }
     }catch(e){}
-    // ② data.isbn.work（备用）
+    // ② data.isbn.work（备用，注意免费配额可能不足）
     if(!lookedUp){
       status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
       try{
@@ -1318,8 +1290,7 @@ async function runIsbnCollect(force){
         }
       }catch(e){}
     }
-    // ❌ 已移除 AI 兜底（DeepSeek 等 LLM 无法可靠识别 ISBN，会基于训练数据编造高自信的错误答案，反而误导用户）
-    // 真实数据源都查不到 → 显示"查询不到结果"
+    // ❌ 已移除 AI 兜底（LLM 无法可靠识别 ISBN，会编造高自信的错误答案，反而误导用户）
     if(!lookedUp){
       status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的数据源（均未命中）：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① <a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></li><li>② <a href="https://books.google.com/books?isbn='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">Google Books</a></li><li>③ <a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">当当网搜索</a></li></ul><div style="font-size:11px;color:#8b949e">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 去当当查询</a></div></div>';
       return;
@@ -1465,7 +1436,7 @@ return '你是一位顶尖的图书类短视频口播脚本创作专家。你深
 }
 
 async function scriptCallAI(prompt){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯营销审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
 var data=await response.json();return data.choices[0].message.content.trim();
 }
@@ -1541,7 +1512,7 @@ var section=document.getElementById('scriptAuditSection');
 var content=document.getElementById('scriptAuditContent');
 section.style.display='block';
 content.innerHTML='<span style="color:#484f58">🔍 正在分析该书品类的审核注意事项...</span>';
-var prompt='你是腾讯营销平台教育图书行业审核专家。根据以下图书内容判断品类，列出该品类投放时需注意的审核规则（5-8条）。\n\n## 规则库\n养生类：食物不得使用保健功效描述、售价不低于19.9、书课并推需标注电子书/实物书\n教育类：不得承诺成绩/排名、不得使用新课改/教育部推荐\n亲子类：不得制造育儿焦虑\n通用：禁绝对化用语、禁虚假背书、禁饥饿营销、禁恐慌焦虑、禁诱导暗示、禁效果承诺\n\n## 图书内容\n'+bookContent+'\n\n## 输出格式\n先输出品类判断（一行），然后每条规则用简短格式：\n⚠️ **规则名称**：一句话说明+规避建议\n\n控制在5-8条，只列相关的，直接输出纯文本。';
+var prompt='你是腾讯广告平台教育图书行业审核专家。根据以下图书内容判断品类，列出该品类投放时需注意的审核规则（5-8条）。\n\n## 规则库\n养生类：食物不得使用保健功效描述、售价不低于19.9、书课并推需标注电子书/实物书\n教育类：不得承诺成绩/排名、不得使用新课改/教育部推荐\n亲子类：不得制造育儿焦虑\n通用：禁绝对化用语、禁虚假背书、禁饥饿营销、禁恐慌焦虑、禁诱导暗示、禁效果承诺\n\n## 图书内容\n'+bookContent+'\n\n## 输出格式\n先输出品类判断（一行），然后每条规则用简短格式：\n⚠️ **规则名称**：一句话说明+规避建议\n\n控制在5-8条，只列相关的，直接输出纯文本。';
 try{var result=await scriptCallAI(prompt);content.innerHTML=result.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong style="color:#fdcb6e">$1</strong>');}
 catch(e){content.innerHTML='<span style="color:#f85149">分析失败：'+e.message+'</span>';}
 }
