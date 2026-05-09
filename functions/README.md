@@ -24,8 +24,8 @@
 ## 🚨 重要：上线前必须做的事
 
 1. **作废旧 Key**
-   - DeepSeek 平台：登录 https://platform.deepseek.com → API Keys → 删除 `sk-98d29632e5324d81be5b47ebf422f6ab`
-   - 智谱 BigModel：登录 https://bigmodel.cn → API Keys → 删除 `7aec8ade98084288bc9f81875088cfde.2kGvUtqbhWOn6Z1p`
+   - DeepSeek 平台：登录 https://platform.deepseek.com → API Keys → 删除曾经出现在本仓库历史中的旧 key（前缀 `sk-98d2...`）
+   - 智谱 BigModel：登录 https://bigmodel.cn → API Keys → 删除曾经出现在本仓库历史中的旧 key（前缀 `7aec8ade...`）
    - **这两个旧 Key 已在公网暴露超过几个月，即使已经下线也必须撤销，避免被人继续薅羊毛**
 
 2. **新建 Key 并仅写到 Pages 环境变量**
