@@ -1055,7 +1055,7 @@ async function webSearchBook(bookTitle,isbn){
       var resp=await fetch(ZHIPU_SEARCH.apiUrl,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_SEARCH.apiKey},
-        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'web-search-pro',stream:false,messages:[{role:'user',content:queries[i]}]})
+        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'search_std',stream:false,messages:[{role:'user',content:queries[i]}]})
       });
       if(!resp.ok) continue;
       var data=await resp.json();
@@ -1348,18 +1348,21 @@ async function runIsbnCollect(force){
 
     // === 第2步：联网搜索图书信息 ===
     var searchResults=[];
+    var searchFailReason='';
     try{
       searchResults=await webSearchBook(confirmedTitle,isbn);
       if(searchResults.length>0){
         body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p><p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>';
         ptxt.textContent='第3步：基于联网数据生成报告...';
       }else{
-        body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索无结果，将基于AI知识库生成</p>';
-        ptxt.textContent='第3步：基于AI知识库生成报告...';
+        searchFailReason='无结果';
+        body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索无结果（可能原因：搜索额度不足/冷门书/新书未收录），简介目录等维度将保守跳过</p>';
+        ptxt.textContent='第3步：基于已知信息生成报告...';
       }
     }catch(e){
-      body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索失败，将基于AI知识库生成</p>';
-      ptxt.textContent='第3步：基于AI知识库生成报告...';
+      searchFailReason=String(e.message||e);
+      body.innerHTML+='<p style="color:#f0883e;margin-top:4px">⚠️ 联网搜索失败，简介目录等维度将保守跳过</p>';
+      ptxt.textContent='第3步：基于已知信息生成报告...';
     }
     fill.style.width='30%';
 
@@ -1376,7 +1379,7 @@ async function runIsbnCollect(force){
       }
       userMsg+='\n\n请结合以上联网搜索到的真实信息和你的知识库，按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
     }else{
-      userMsg+='\n\n请按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+      userMsg+='\n\n## 重要：本次联网搜索未拿到结果（'+(searchFailReason||'无结果')+'）\n这意味着你**没有这本书的实时网页信息可参考**。请遵守以下铁律：\n1. 「内容简介」「目录」「编辑推荐」「作者简介」「精彩书摘」这五个维度——除非你**确切知道**这本书的具体内容（注意是**这本**，不是同名书），否则**整个维度跳过**，不要输出该 h2 标题。\n2. 绝对禁止用"本书介绍了..."、"本书作者..."这种空话占位。\n3. 你可以输出的安全维度：基于书名/作者/出版社推断的「目标人群画像」「投放卖点假设」「相关图书品类」「话题切入角度」——但必须明确标注"基于品类经验推断"。\n4. 宁可整份报告只有 3 个维度，也不要 6 个维度里塞 4 个编造的。\n\n请按维度顺序输出HTML片段，不确定的维度全部跳过。';
     }
 
     var cc=0;
