@@ -69,7 +69,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="ct pg" id="pg-p3">
 <div style="background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2);border-radius:8px;padding:8px 12px;margin:0 0 12px;display:flex;align-items:flex-start;gap:6px">
 <span style="flex-shrink:0;font-size:13px">⚠️</span>
-<p style="font-size:10.5px;color:#b8a24e;line-height:1.6;margin:0"><strong>免责声明</strong>：以下修复建议仅供参考，不构成投放指导。实际素材合规性请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯广告</a>平台审核规范为准。</p>
+<p style="font-size:10.5px;color:#b8a24e;line-height:1.6;margin:0"><strong>免责声明</strong>：以下修复建议仅供参考，不构成投放指导。实际素材合规性请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯营销</a>平台审核规范为准。</p>
 </div>
 <p class="subtitle">粘贴/上传脚本文案 → AI 风控审核 → 逐条给出修改建议 → 生成合规文案 → 一键复制</p>
 
@@ -152,7 +152,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
 <p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（约2分钟/篇）</p>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
-⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
+⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯营销平台审核规范为准。
 </div>
 
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
@@ -239,7 +239,7 @@ function go(id,el){
 
 // ==================== 页面3: AI预审引擎 ====================
 
-// --- 审核规则库：基于广告法 + 腾讯广告V6规则 + 教育图书专项 + xlsx审核规则 ---
+// --- 审核规则库：基于广告法 + 腾讯营销V6规则 + 教育图书专项 + xlsx审核规则 ---
 var AUDIT_RULES=[
 // ====== 一、绝对化用语（广告法第9条 + V6规则）======
 {id:"ABS_1",cat:"绝对化用语",level:"reject",
@@ -675,7 +675,7 @@ var AUDIT_RULES=[
  desc:"涉嫌未授权使用抖音平台UI元素",
  fix:"删除第三方平台UI元素"},
 
-// ====== 负向价值观（腾讯广告cid=4786 - 12个维度）======
+// ====== 负向价值观（腾讯营销cid=4786 - 12个维度）======
 {id:"NEG_1",cat:"负向价值观-婚恋",level:"reject",
  re:/(出轨|小三|婚外情|忘年恋|包养|情人|二奶)/,
  desc:"禁止违背正向婚恋观（出轨/小三/包养等）",
@@ -729,7 +729,7 @@ var AUDIT_RULES=[
  desc:"禁止使用已故名人形象推广（无论是否有授权）",
  fix:"删除已故名人引用"},
 
-// ====== 诱导点击（腾讯广告cid=4787）======
+// ====== 诱导点击（腾讯营销cid=4787）======
 {id:"IND_1",cat:"诱导点击-指向性",level:"reject",
  re:/(点击|戳).{0,3}(下方|左下|右下|上方|左上角|这里|链接).{0,3}(购买|领取|查看|了解|下载|进入)/,
  desc:"禁止指向性点击引导「点击下方购买」",
@@ -751,7 +751,7 @@ var AUDIT_RULES=[
  desc:"禁止文案中模拟虚假交互按钮",
  fix:"删除虚假按钮文案"},
 
-// ====== 承诺性质及无法核实的效果描述（腾讯广告cid=4502）======
+// ====== 承诺性质及无法核实的效果描述（腾讯营销cid=4502）======
 {id:"UNV_1",cat:"无法核实效果",level:"reject",
  re:/(亲测有效|试过都说好|用过的都知道)/,
  desc:"禁止「亲测有效/试过都说好」等无法核实的效果描述",
@@ -1465,7 +1465,7 @@ return '你是一位顶尖的图书类短视频口播脚本创作专家。你深
 }
 
 async function scriptCallAI(prompt){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯营销审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
 var data=await response.json();return data.choices[0].message.content.trim();
 }
@@ -1541,7 +1541,7 @@ var section=document.getElementById('scriptAuditSection');
 var content=document.getElementById('scriptAuditContent');
 section.style.display='block';
 content.innerHTML='<span style="color:#484f58">🔍 正在分析该书品类的审核注意事项...</span>';
-var prompt='你是腾讯广告平台教育图书行业审核专家。根据以下图书内容判断品类，列出该品类投放时需注意的审核规则（5-8条）。\n\n## 规则库\n养生类：食物不得使用保健功效描述、售价不低于19.9、书课并推需标注电子书/实物书\n教育类：不得承诺成绩/排名、不得使用新课改/教育部推荐\n亲子类：不得制造育儿焦虑\n通用：禁绝对化用语、禁虚假背书、禁饥饿营销、禁恐慌焦虑、禁诱导暗示、禁效果承诺\n\n## 图书内容\n'+bookContent+'\n\n## 输出格式\n先输出品类判断（一行），然后每条规则用简短格式：\n⚠️ **规则名称**：一句话说明+规避建议\n\n控制在5-8条，只列相关的，直接输出纯文本。';
+var prompt='你是腾讯营销平台教育图书行业审核专家。根据以下图书内容判断品类，列出该品类投放时需注意的审核规则（5-8条）。\n\n## 规则库\n养生类：食物不得使用保健功效描述、售价不低于19.9、书课并推需标注电子书/实物书\n教育类：不得承诺成绩/排名、不得使用新课改/教育部推荐\n亲子类：不得制造育儿焦虑\n通用：禁绝对化用语、禁虚假背书、禁饥饿营销、禁恐慌焦虑、禁诱导暗示、禁效果承诺\n\n## 图书内容\n'+bookContent+'\n\n## 输出格式\n先输出品类判断（一行），然后每条规则用简短格式：\n⚠️ **规则名称**：一句话说明+规避建议\n\n控制在5-8条，只列相关的，直接输出纯文本。';
 try{var result=await scriptCallAI(prompt);content.innerHTML=result.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong style="color:#fdcb6e">$1</strong>');}
 catch(e){content.innerHTML='<span style="color:#f85149">分析失败：'+e.message+'</span>';}
 }
