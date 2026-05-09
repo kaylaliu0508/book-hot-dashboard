@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 站点数据看板 - 图书创意灵感中心</title>
+<script>window.__STATS_ENDPOINT__='https://tracker-api.1012513527.workers.dev/api/stats';</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:13px;padding:24px;min-height:100vh}
+h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
+.sub{color:#8b949e;font-size:12px;margin-bottom:24px}
+.toolbar{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.btn{padding:6px 14px;border-radius:6px;border:1px solid #30363d;background:#161b22;color:#c9d1d9;cursor:pointer;font-size:12px}
+.btn.on{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px}
+.card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:16px}
+.card h3{font-size:13px;color:#8b949e;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.card h3 .tag{font-size:10px;color:#58a6ff;background:rgba(88,166,255,.1);padding:2px 6px;border-radius:4px}
+.metric{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.metric-num{font-size:22px;font-weight:700;color:#f0f6fc}
+.metric-unit{font-size:11px;color:#8b949e}
+.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;font-size:11px;color:#8b949e}
+.subgrid div{background:#0d1117;padding:6px 8px;border-radius:5px}
+.subgrid b{color:#c9d1d9;font-weight:600}
+.section{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:18px;margin-bottom:18px}
+.section h2{font-size:15px;color:#f0f6fc;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.chart-box{position:relative;height:280px}
+.evt-table{width:100%;border-collapse:collapse;font-size:12px}
+.evt-table th,.evt-table td{padding:8px 12px;border-bottom:1px solid #21262d;text-align:left}
+.evt-table th{background:#0d1117;color:#8b949e;font-weight:500;font-size:11px}
+.evt-table tbody tr:hover{background:rgba(88,166,255,.04)}
+.evt-bar{display:inline-block;height:6px;background:#1f6feb;border-radius:3px;vertical-align:middle;margin-right:6px}
+.tabs-row{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.tab-pill{padding:6px 12px;border-radius:14px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent}
+.tab-pill.on{background:#e63946;color:#fff;border-color:#e63946}
+.loading{text-align:center;padding:80px 0;color:#484f58}
+.empty{color:#484f58;font-size:11px;text-align:center;padding:30px 0}
+.tab-color-book_extract{color:#1a73e8}
+.tab-color-script_gen{color:#e63946}
+.tab-color-ai_audit{color:#fdcb6e}
+.tab-color-summer{color:#10b981}
+.error-box{background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);color:#f85149;padding:12px;border-radius:8px;margin-bottom:18px;display:none}
+.foot{text-align:center;color:#484f58;font-size:11px;padding:20px 0}
+@media(max-width:760px){body{padding:14px}.metric-num{font-size:18px}h1{font-size:18px}}
+</style>
+</head>
+<body>
+
+<h1>📊 站点数据看板</h1>
+<div class="sub">PV/UV · 按钮点击 · 功能使用 · 停留时长（保留 90 天）</div>
+
+<div class="toolbar">
+  <button class="btn on" data-range="1d">今日</button>
+  <button class="btn" data-range="7d">最近 7 天</button>
+  <button class="btn" data-range="30d">最近 30 天</button>
+  <button class="btn" data-range="90d">最近 90 天</button>
+  <span style="flex:1"></span>
+  <button class="btn" id="refreshBtn">🔄 刷新</button>
+</div>
+
+<div class="error-box" id="errorBox"></div>
+
+<div id="loading" class="loading">加载中…</div>
+
+<div id="content" style="display:none">
+
+  <!-- 4 个 tab 卡片 -->
+  <div class="cards" id="tabCards"></div>
+
+  <!-- 趋势图 -->
+  <div class="section">
+    <h2>📈 PV / UV 趋势（按 tab）</h2>
+    <div class="chart-box"><canvas id="trendChart"></canvas></div>
+  </div>
+
+  <!-- 按 tab 的事件 Top -->
+  <div class="section">
+    <h2>🎯 按钮点击 / 功能使用 Top（按 tab）</h2>
+    <div class="tabs-row" id="evtTabsRow"></div>
+    <div id="evtTableBox"></div>
+  </div>
+
+  <!-- 设备与来源 -->
+  <div class="cards">
+    <div class="card">
+      <h3>📱 设备分布（合计）</h3>
+      <div class="chart-box" style="height:200px"><canvas id="deviceChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>🔗 流量来源 Top（合计）</h3>
+      <div id="refTable"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">数据每次访问实时聚合 · 仅记录匿名访问指标 · 不收集任何用户身份信息</div>
+
+<script>
+var API = (window.__STATS_ENDPOINT__) || '/api/stats';
+var TAB_LABELS = {
+  book_extract:'图书内容提取',
+  script_gen:'一键生成口播脚本',
+  ai_audit:'AI预审',
+  summer:'暑期专栏'
+};
+var TAB_COLORS = {
+  book_extract:'#1a73e8',
+  script_gen:'#e63946',
+  ai_audit:'#fdcb6e',
+  summer:'#10b981'
+};
+var EVT_NICE = {
+  // book_extract
+  isbn_collect_run:'🚀 开始采集',
+  isbn_copy:'📋 复制报告',
+  isbn_download:'💾 下载报告',
+  // script_gen
+  script_generate_run:'✨ 生成口播脚本',
+  script_copy_all:'📋 复制全部',
+  script_export_md:'📄 导出 MD',
+  script_demo:'📝 加载示例',
+  // ai_audit
+  audit_run:'🔍 开始预审',
+  audit_load_sample:'📝 加载示例',
+  audit_upload_file:'📁 上传文件',
+  audit_clear:'🗑️ 清空',
+  // summer
+  summer_nav_calendar:'① 暑期日历导航',
+  summer_nav_scripts:'② 脚本总结导航',
+  summer_nav_tags:'③ 标签总结导航',
+  script_group_expand:'展开脚本分组',
+  keyframe_view:'查看关键帧',
+  dim_card_jump:'点击维度卡片',
+  // tab buttons
+  tab_btn_book_extract:'切到 图书内容提取',
+  tab_btn_script_gen:'切到 口播脚本',
+  tab_btn_ai_audit:'切到 AI预审',
+  tab_btn_summer:'切到 暑期专栏'
+};
+
+var state = { range:'1d', data:null, currentEvtTab:'book_extract', trendChart:null, deviceChart:null };
+
+document.querySelectorAll('.toolbar .btn[data-range]').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.toolbar .btn[data-range]').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    state.range = b.dataset.range;
+    load();
+  });
+});
+document.getElementById('refreshBtn').addEventListener('click', load);
+
+function fmtSec(s){ if(!s) return '0s'; if(s<60) return Math.round(s)+'s'; var m=Math.floor(s/60), r=Math.round(s-m*60); return m+'m '+r+'s'; }
+function fmtPct(p){ return (Math.round(p*1000)/10)+'%'; }
+function pctBar(v, max, color){ var pct = max? (v/max*100):0; return '<span class="evt-bar" style="width:'+Math.max(2,pct)+'px;background:'+color+'"></span>'+v; }
+
+function load(){
+  document.getElementById('loading').style.display='block';
+  document.getElementById('content').style.display='none';
+  document.getElementById('errorBox').style.display='none';
+  fetch(API + '?range=' + encodeURIComponent(state.range) + '&tab=all', { credentials:'omit' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(data){
+      state.data = data;
+      render();
+    })
+    .catch(function(e){
+      var box = document.getElementById('errorBox');
+      box.textContent = '加载失败：' + e.message + '。请确认 /api/stats 已部署可访问。';
+      box.style.display='block';
+      document.getElementById('loading').style.display='none';
+    });
+}
+
+function render(){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('content').style.display='block';
+  renderCards();
+  renderTrend();
+  renderEvtTabs();
+  renderEvtTable();
+  renderDevice();
+  renderReferrers();
+}
+
+function renderCards(){
+  var t = state.data.tabs || {};
+  var html = Object.keys(TAB_LABELS).map(function(tab){
+    var d = t[tab] || { pv:0, uv:0, stayAvgSec:0, bounceRate:0, events:{} };
+    var topEvt = '';
+    if (d.events) {
+      var arr = Object.keys(d.events).map(function(k){ return [k, d.events[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,1)[0];
+      if (arr) topEvt = (EVT_NICE[arr[0]]||arr[0]) + ' × ' + arr[1];
+    }
+    return '<div class="card">'+
+      '<h3><span class="tab-color-'+tab+'">●</span> '+TAB_LABELS[tab]+' <span class="tag">'+tab+'</span></h3>'+
+      '<div class="metric"><span class="metric-num">'+(d.pv||0)+'</span><span class="metric-unit">PV</span></div>'+
+      '<div class="subgrid">'+
+        '<div>UV / 使用人数 <b>'+(d.uv||0)+'</b></div>'+
+        '<div>平均停留 <b>'+fmtSec(d.stayAvgSec||0)+'</b></div>'+
+        '<div>跳出率 <b>'+fmtPct(d.bounceRate||0)+'</b></div>'+
+        '<div>Top 行为 <b style="font-size:10px">'+(topEvt||'—')+'</b></div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  document.getElementById('tabCards').innerHTML = html;
+}
+
+function renderTrend(){
+  var t = state.data.tabs || {};
+  var firstTab = Object.keys(t)[0];
+  var dates = (t[firstTab] && t[firstTab].trend ? t[firstTab].trend : []).map(function(p){return p.date.slice(4,6)+'-'+p.date.slice(6,8);});
+
+  var datasets = [];
+  Object.keys(TAB_LABELS).forEach(function(tab){
+    var d = t[tab];
+    if(!d) return;
+    datasets.push({
+      label: TAB_LABELS[tab] + ' PV',
+      data: (d.trend||[]).map(function(p){return p.pv;}),
+      borderColor: TAB_COLORS[tab],
+      backgroundColor: TAB_COLORS[tab]+'22',
+      tension:0.3, borderWidth:2, pointRadius:2
+    });
+  });
+
+  if (state.trendChart) state.trendChart.destroy();
+  state.trendChart = new Chart(document.getElementById('trendChart'), {
+    type:'line',
+    data:{ labels: dates, datasets: datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:'#c9d1d9', font:{size:11} } } },
+      scales:{
+        x:{ ticks:{color:'#8b949e', font:{size:10}}, grid:{color:'#21262d'} },
+        y:{ ticks:{color:'#8b949e', font:{size:10}}, grid:{color:'#21262d'}, beginAtZero:true }
+      }
+    }
+  });
+}
+
+function renderEvtTabs(){
+  var html = Object.keys(TAB_LABELS).map(function(tab){
+    return '<span class="tab-pill '+(state.currentEvtTab===tab?'on':'')+'" data-evt-tab="'+tab+'">'+TAB_LABELS[tab]+'</span>';
+  }).join('');
+  var box = document.getElementById('evtTabsRow');
+  box.innerHTML = html;
+  box.querySelectorAll('.tab-pill').forEach(function(p){
+    p.addEventListener('click', function(){
+      state.currentEvtTab = p.dataset.evtTab;
+      renderEvtTabs(); renderEvtTable();
+    });
+  });
+}
+
+function renderEvtTable(){
+  var d = (state.data.tabs||{})[state.currentEvtTab];
+  var box = document.getElementById('evtTableBox');
+  if (!d || !d.events || !Object.keys(d.events).length) {
+    box.innerHTML = '<div class="empty">该 tab 暂无事件数据</div>';
+    return;
+  }
+  var arr = Object.keys(d.events).map(function(k){return [k, d.events[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var max = arr[0][1] || 1;
+  var color = TAB_COLORS[state.currentEvtTab];
+  var rows = arr.map(function(it){
+    var name = EVT_NICE[it[0]] || it[0];
+    var pct = (it[1]/max*100).toFixed(0)+'%';
+    return '<tr><td>'+name+'</td><td><code style="color:#8b949e;font-size:11px">'+it[0]+'</code></td><td style="text-align:right">'+pctBar(it[1], max, color)+'</td><td style="color:#8b949e;text-align:right">'+pct+'</td></tr>';
+  }).join('');
+  box.innerHTML = '<table class="evt-table"><thead><tr><th>事件</th><th>事件名</th><th style="text-align:right">次数</th><th style="text-align:right">占比</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function renderDevice(){
+  var t = state.data.tabs || {};
+  var agg = { mobile:0, desktop:0, tablet:0 };
+  Object.keys(t).forEach(function(tab){
+    var dv = t[tab].devices || {};
+    Object.keys(dv).forEach(function(k){ agg[k] = (agg[k]||0) + dv[k]; });
+  });
+  if (state.deviceChart) state.deviceChart.destroy();
+  state.deviceChart = new Chart(document.getElementById('deviceChart'), {
+    type:'doughnut',
+    data:{
+      labels: Object.keys(agg),
+      datasets:[{
+        data: Object.values(agg),
+        backgroundColor: ['#1f6feb','#10b981','#fdcb6e','#e63946']
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{color:'#c9d1d9', font:{size:11}} } }
+    }
+  });
+}
+
+function renderReferrers(){
+  var t = state.data.tabs || {};
+  var agg = {};
+  Object.keys(t).forEach(function(tab){
+    var rf = t[tab].referrers || {};
+    Object.keys(rf).forEach(function(k){ agg[k] = (agg[k]||0) + rf[k]; });
+  });
+  var arr = Object.keys(agg).map(function(k){return [k, agg[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+  if(!arr.length){ document.getElementById('refTable').innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  var max = arr[0][1] || 1;
+  var rows = arr.map(function(it){
+    return '<tr><td>'+(it[0]||'direct')+'</td><td style="text-align:right">'+pctBar(it[1], max, '#10b981')+'</td></tr>';
+  }).join('');
+  document.getElementById('refTable').innerHTML = '<table class="evt-table"><tbody>'+rows+'</tbody></table>';
+}
+
+load();
+</script>
+</body>
+</html>

@@ -46,6 +46,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 .ft{text-align:center;padding:20px 0;color:#484f58;font-size:10px}
 .ft a{color:#484f58}
 </style>
+<script>window.__TRACKER_ENDPOINT__='https://tracker-api.1012513527.workers.dev/api/track';</script>
+<script src="/assets/tracker.js" defer></script>
 </head>
 <body>
 <script>if(!location.hash)location.replace('/summer/');</script>
@@ -53,10 +55,10 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书创意灵感中心</div>
-<button class="tb on" onclick="go('p4',this)">图书内容提取</button>
-<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
-<button class="tb" onclick="go('p3',this)">AI预审</button>
-<a href="/summer/" class="tb">📅 暑期专栏</a>
+<button class="tb on" onclick="go('p4',this)" data-track="tab_btn_book_extract">图书内容提取</button>
+<button class="tb" onclick="go('p5',this)" data-track="tab_btn_script_gen">一键生成口播脚本</button>
+<button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit">AI预审</button>
+<a href="/summer/" class="tb" data-track="tab_btn_summer">📅 暑期专栏</a>
 </div></div>
 
 <div class="wrap">
@@ -78,16 +80,16 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
 <h3 style="font-size:13px;color:#f0f6fc">📋 输入脚本文案</h3>
 <div style="display:flex;gap:6px">
-<label for="fileUpload" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">📁 上传文件</label>
+<label for="fileUpload" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s" data-track="audit_upload_file" data-track-tab="ai_audit">📁 上传文件</label>
 <input type="file" id="fileUpload" accept=".txt,.doc,.docx,.md" style="display:none" onchange="handleFileUpload(event)">
-<button onclick="loadSampleScript()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">📝 示例文案</button>
-<button onclick="clearAudit()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s">🗑️ 清空</button>
+<button onclick="loadSampleScript()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s" data-track="audit_load_sample" data-track-tab="ai_audit">📝 示例文案</button>
+<button onclick="clearAudit()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;transition:.15s" data-track="audit_clear" data-track-tab="ai_audit">🗑️ 清空</button>
 </div>
 </div>
 <textarea id="scriptInput" rows="8" placeholder="在此粘贴脚本文案，支持多条（每条一段或一行），系统将逐条进行风控审核并给出修改建议…&#10;&#10;示例：&#10;大家苦苦寻找的按摩大全，有些按摩店不想让你知道这本书，因为这本书里的按摩技法完全是0成本……" style="width:100%;padding:12px;border:2px solid #30363d;border-radius:8px;font-size:12px;line-height:1.7;outline:none;background:#0d1117;color:#c9d1d9;resize:vertical;font-family:inherit;transition:.2s"></textarea>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
 <span id="charCount" style="font-size:10px;color:#484f58">0 字 / 0 条</span>
-<button onclick="runAudit()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'">🔍 开始预审</button>
+<button onclick="runAudit()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'" data-track="audit_run" data-track-tab="ai_audit">🔍 开始预审</button>
 </div>
 </div>
 
@@ -113,7 +115,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div>
 <div id="isbnLookupStatus" style="display:none;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;color:#c9d1d9"></div>
 <div style="display:flex;justify-content:flex-end">
-<button id="isbnBtn" onclick="runIsbnCollect()" style="padding:8px 24px;border-radius:8px;border:none;background:#1a73e8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#1557b0'" onmouseout="this.style.background='#1a73e8'">🚀 开始采集</button>
+<button id="isbnBtn" onclick="runIsbnCollect()" style="padding:8px 24px;border-radius:8px;border:none;background:#1a73e8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#1557b0'" onmouseout="this.style.background='#1a73e8'" data-track="isbn_collect_run" data-track-tab="book_extract">🚀 开始采集</button>
 </div>
 </div>
 <div id="isbnProgress" style="display:none;margin-bottom:14px">
@@ -124,8 +126,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div style="background:#161b22;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #21262d">
 <h3 id="isbnOutputTitle" style="font-size:14px;color:#f0f6fc">📊 采集报告</h3>
 <div style="display:flex;gap:6px">
-<button onclick="copyIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制</button>
-<button onclick="downloadIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">💾 下载</button>
+<button onclick="copyIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer" data-track="isbn_copy" data-track-tab="book_extract">📋 复制</button>
+<button onclick="downloadIsbnReport()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer" data-track="isbn_download" data-track-tab="book_extract">💾 下载</button>
 </div>
 </div>
 <div id="isbnOutputBody" style="padding:16px;color:#c9d1d9;font-size:13px;line-height:1.7"></div>
@@ -184,8 +186,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div>
 
 <div style="display:flex;justify-content:center;gap:10px">
-<button onclick="scriptFillDemo()" style="padding:6px 18px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:12px;cursor:pointer">📝 示例</button>
-<button id="scriptGenBtn" onclick="scriptGenerate()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer">✨ 生成口播脚本</button>
+<button onclick="scriptFillDemo()" style="padding:6px 18px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:12px;cursor:pointer" data-track="script_demo" data-track-tab="script_gen">📝 示例</button>
+<button id="scriptGenBtn" onclick="scriptGenerate()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer" data-track="script_generate_run" data-track-tab="script_gen">✨ 生成口播脚本</button>
 </div>
 </div>
 
@@ -193,8 +195,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
 <h3 style="font-size:15px;color:#f0f6fc">🎬 生成结果</h3>
 <div style="display:flex;gap:6px">
-<button onclick="scriptCopyAll()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制全部</button>
-<button onclick="scriptExportMd()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📄 导出MD</button>
+<button onclick="scriptCopyAll()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer" data-track="script_copy_all" data-track-tab="script_gen">📋 复制全部</button>
+<button onclick="scriptExportMd()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer" data-track="script_export_md" data-track-tab="script_gen">📄 导出MD</button>
 </div>
 </div>
 <div id="scriptCards"></div>
@@ -226,14 +228,22 @@ function go(id,el){
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
   window.scrollTo(0,0);
+  // 埋点：切 tab
+  try{
+    var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit'};
+    var t=TAB_MAP[id];
+    if(t&&window.tracker)window.tracker.setTab(t);
+  }catch(e){}
 }
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
-  if(h){
-    var map={'p4':0,'p5':1,'p3':2};
-    var tbs=document.querySelectorAll('.bar-in .tb');
-    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+  var map={'p4':0,'p5':1,'p3':2};
+  var tbs=document.querySelectorAll('.bar-in .tb');
+  if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
+  else{
+    // 默认 tab 也要打首屏 PV
+    try{ if(window.tracker) window.tracker.pv('book_extract'); }catch(e){}
   }
 })();
 
@@ -893,6 +903,7 @@ function clearAudit(){
 function runAudit(){
   var text=document.getElementById('scriptInput').value.trim();
   if(!text){alert('请先输入或粘贴脚本文案');return;}
+  try{ if(window.tracker) window.tracker.feature('audit_run', {chars:text.length}, text.length, 'ai_audit'); }catch(e){}
   
   var copies=splitCopies(text);
   var totalReject=0,totalWarn=0,totalPass=0;
@@ -1038,9 +1049,9 @@ function doCopyText(btn,b64text){
 
 
 // ==================== 页面4: ISBN采集引擎 ====================
-var ISBN_API={baseUrl:'https://api.deepseek.com/v1',model:'deepseek-chat',apiKey:'sk-98d29632e5324d81be5b47ebf422f6ab'};
-// 智谱联网搜索配置（用于实时获取图书信息）
-var ZHIPU_SEARCH={apiUrl:'https://open.bigmodel.cn/api/paas/v4/tools',apiKey:'7aec8ade98084288bc9f81875088cfde.2kGvUtqbhWOn6Z1p'};
+// 通过 Pages Functions 反向代理调用，Key 不出现在前端
+var ISBN_API={baseUrl:'/api/deepseek',model:'deepseek-chat'};
+var ZHIPU_SEARCH={apiUrl:'/api/zhipu/search'};
 
 // 联网搜索图书信息
 async function webSearchBook(bookTitle,isbn){
@@ -1054,7 +1065,7 @@ async function webSearchBook(bookTitle,isbn){
     try{
       var resp=await fetch(ZHIPU_SEARCH.apiUrl,{
         method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_SEARCH.apiKey},
+        headers:{'Content-Type':'application/json'},
         body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'search_std',stream:false,messages:[{role:'user',content:queries[i]}]})
       });
       if(!resp.ok) continue;
@@ -1178,7 +1189,7 @@ async function autoLookupISBN(){
   status.innerHTML='<div style="color:#f0883e"><strong>⚠️ 未能自动识别书名</strong></div><div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的数据源（均未命中）：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① <a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></li><li>② <a href="https://books.google.com/books?isbn='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">Google Books</a></li><li>③ <a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">当当网搜索</a></li></ul><div style="font-size:10px;color:#8b949e;margin-top:4px">建议确认 ISBN 是否正确，或点击下方链接手动查询后填入书名栏</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a><a href="https://search.dangdang.com/?key='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📚 当当查询</a></div>';
 }
 async function callApi(msgs,onChunk){
-  var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
+  var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
   if(!resp.ok){var er=await resp.text();throw new Error('API错误 '+resp.status+': '+er.substring(0,200));}
   var reader=resp.body.getReader(),decoder=new TextDecoder(),full='',buf='';
   while(true){var r=await reader.read();if(r.done)break;buf+=decoder.decode(r.value,{stream:true});var lines=buf.split('\n');buf=lines.pop()||'';for(var i=0;i<lines.length;i++){var ln=lines[i].trim();if(!ln||ln==='data: [DONE]')continue;if(!ln.startsWith('data: '))continue;try{var j=JSON.parse(ln.slice(6));var d=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;if(d){full+=d;if(onChunk)onChunk(full,d);}}catch(e){}}}
@@ -1190,6 +1201,7 @@ async function runIsbnCollect(force){
   var title=document.getElementById('bookTitleInput').value.trim();
   if(!isbn){alert('请输入ISBN编号（必填）');document.getElementById('isbnInput').focus();return;}
   if(!/^\d{10,13}$/.test(isbn)){alert('ISBN格式不正确，应为10或13位数字');return;}
+  try{ if(window.tracker) window.tracker.feature('isbn_collect_run', {isbn_len:isbn.length, has_title: !!title}, null, 'book_extract'); }catch(e){}
 
   // 如果没有书名，先尝试通过 ISBN 查询自动补全
   if(!title){
@@ -1448,6 +1460,7 @@ if(!bookContent){isbnToast('请先粘贴图书内容');ta.focus();return;}
 if(bookContent.length<30){isbnToast('内容太少，至少30字');return;}
 var audienceEl=document.querySelector('#scriptAudienceChips .scp.on');
 var audience=audienceEl?audienceEl.dataset.value:'通用人群';
+try{ if(window.tracker) window.tracker.feature('script_generate_run', {chars:bookContent.length, audience:audience}, bookContent.length, 'script_gen'); }catch(e){}
 var selectedStyles=[];
 var allChip=document.querySelector('#scriptStyleChips [data-value="全部"]');
 if(allChip&&allChip.classList.contains('on')){selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});}

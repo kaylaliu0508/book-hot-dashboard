@@ -49,3 +49,5 @@ backups/hot_dashboard_*.html
 #   ✅ vercel.json                — Vercel 部署配置
 # ============================================================
 .vercel
+workers/tracker-api/.wrangler/
+**/.wrangler/

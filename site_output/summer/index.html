@@ -1647,29 +1647,31 @@
     .frames-row { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
+<script>window.__TRACKER_ENDPOINT__='https://tracker-api.1012513527.workers.dev/api/track';</script>
+<script src="/assets/tracker.js" defer></script>
 </head>
 <body>
 
 <!-- ============ 顶部导航（与主站统一） ============ -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书创意灵感中心</div>
-<a href="/#p4" class="tb">图书内容提取</a>
-<a href="/#p5" class="tb">一键生成口播脚本</a>
-<a href="/#p3" class="tb">AI预审</a>
-<a href="/summer/" class="tb on">📅 暑期专栏</a>
+<a href="/#p4" class="tb" data-track="tab_btn_book_extract">图书内容提取</a>
+<a href="/#p5" class="tb" data-track="tab_btn_script_gen">一键生成口播脚本</a>
+<a href="/#p3" class="tb" data-track="tab_btn_ai_audit">AI预审</a>
+<a href="/summer/" class="tb on" data-track="tab_btn_summer">📅 暑期专栏</a>
 </div></div>
 
 <!-- ============ 左侧锚点导览 ============ -->
 <aside class="side-nav" id="sideNav">
-  <a class="side-nav-item active" href="#calendar" data-target="calendar">
+  <a class="side-nav-item active" href="#calendar" data-target="calendar" data-track="summer_nav_calendar" data-track-tab="summer">
     <span class="nav-num">①</span>
     <span class="nav-label">暑期日历</span>
   </a>
-  <a class="side-nav-item" href="#scripts" data-target="scripts">
+  <a class="side-nav-item" href="#scripts" data-target="scripts" data-track="summer_nav_scripts" data-track-tab="summer">
     <span class="nav-num">②</span>
     <span class="nav-label">脚本总结</span>
   </a>
-  <a class="side-nav-item" href="#tags" data-target="tags">
+  <a class="side-nav-item" href="#tags" data-target="tags" data-track="summer_nav_tags" data-track-tab="summer">
     <span class="nav-num">③</span>
     <span class="nav-label">标签总结</span>
   </a>
@@ -1753,6 +1755,8 @@
 </footer>
 
 <script>
+// 埋点：暑期专栏 PV
+try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('summer'); }); }catch(e){}
 // ============ 数据源路径 ============
 // cache-bust: 加版本号确保每次更新数据后浏览器拉取最新版
 const VER = '20260507-v56-scene-refined';
@@ -2062,6 +2066,7 @@ function toggleGroup(catId){
   const el = document.getElementById('group-' + catId);
   if(!el) return;
   const wasOpen = el.classList.contains('is-open');
+  try{ if(window.tracker) window.tracker.feature('script_group_expand', {cat:catId, action: wasOpen?'close':'open'}, null, 'summer'); }catch(e){}
   // 先收起所有分组
   document.querySelectorAll('.script-group.is-open').forEach(g => g.classList.remove('is-open'));
   // 如果原本不是打开的，则打开它
@@ -2172,7 +2177,7 @@ fetch(TAGS_JSON).then(r=>r.json()).then(data=>{
 function renderDimOverview(){
   const html = tagsData.dimensions.map(d=>{
     return `
-      <div class="dim-card" style="border-top-color:${d.color};" onclick="document.getElementById('dim-${d.id}').scrollIntoView({behavior:'smooth',block:'start'});">
+      <div class="dim-card" style="border-top-color:${d.color};" onclick="window.tracker&&window.tracker.feature('dim_card_jump',{dim:'${d.id}'},null,'summer');document.getElementById('dim-${d.id}').scrollIntoView({behavior:'smooth',block:'start'});">
         <div class="dim-icon">${d.icon}</div>
         <div class="dim-name">${d.name}</div>
         <div class="dim-q">${d.question}</div>
@@ -2347,6 +2352,7 @@ function renderCombos(){
 
 // ============ 关键帧 Lightbox ============
 function showLightbox(src){
+  try{ if(window.tracker) window.tracker.feature('keyframe_view', {src:String(src||'').slice(-60)}, null, 'summer'); }catch(e){}
   let lb = document.getElementById('lightbox');
   if(!lb){
     lb = document.createElement('div');
