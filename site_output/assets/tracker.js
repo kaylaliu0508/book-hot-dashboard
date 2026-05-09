@@ -75,21 +75,15 @@
   }
 
   // ============ 上报 ============
+  // 不使用 sendBeacon：某些浏览器会把它伪装成 ping 请求发出，导致 405；
+  // 直接 fetch + keepalive，在页面卸载时也可靠。
+  // Content-Type 用 text/plain 避开 CORS preflight。
   function send(payload) {
     if (Math.random() > SAMPLE_RATE) return;
     var body = JSON.stringify(payload);
     try {
-      // sendBeacon 在卸载场景下最稳
-      // 用 text/plain 避免触发 CORS preflight（application/json 是非简单请求会触发 OPTIONS，sendBeacon 不支持 preflight）
-      if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
-        if (navigator.sendBeacon(ENDPOINT, blob)) return;
-      }
-    } catch (e) {}
-    try {
       fetch(ENDPOINT, {
         method: 'POST',
-        // text/plain 同样避免 preflight；Worker 端按文本解析 JSON
         headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
         body: body,
         keepalive: true,
