@@ -1100,10 +1100,18 @@ async function autoLookupISBN(){
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
-  function _cleanName(name){
+  function _cleanName(name,author,publisher){
     if(!name) return '';
-    var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
-    c=c.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').trim();
+    var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
+    // 用真实 author/publisher 字段把它们从书名里剥离（最精准的方式，避免电商把作者/出版社粘贴在书名后面）
+    if(publisher){var pp=publisher.trim();if(pp)c=c.split(pp).join('').trim();}
+    if(author){var aa=author.trim();if(aa){c=c.split(aa).join('').trim();var m=aa.match(/^(.+?)(帆书|读书|团队|工作室|编著|著|编|主编|主审|译)+$/);if(m&&m[1])c=c.split(m[1]).join('').trim();}}
+    // 兜底：后缀形式的"XX出版社/出版公司/文化传媒/有限公司"再加"图书"等残留
+    c=c.replace(/[\u4e00-\u9fa5]{0,12}(出版社|出版公司|出版集团|出版传媒|文化传媒|文化公司|有限公司)([\u4e00-\u9fa5]{0,6}图书|[\u4e00-\u9fa5]{0,6}书)?\s*$/,'').trim();
+    c=c.replace(/(图书|套装|精装|平装|全集|全套|选集)+\s*$/,'').trim();
+    c=c.replace(/\s+(著|编|主编|主审|译)\s*$/,'').trim();
+    c=c.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').trim();
+    c=c.replace(/\s+/g,' ').replace(/^[\-—:：·\s]+|[\-—:：·\s]+$/g,'').trim();
     if(c.length>40) c=c.substring(0,40);
     return c;
   }
@@ -1127,7 +1135,7 @@ async function autoLookupISBN(){
     var data=await resp.json();
     if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
       var d=data.data;
-      _renderHit(_cleanName(d.bookName),d.author||'',d.press||'',d.pressDate||'','ISBN国内数据库 (data.isbn.work)','https://data.isbn.work/');
+      _renderHit(_cleanName(d.bookName,d.author||'',d.press||''),d.author||'',d.press||'',d.pressDate||'','ISBN国内数据库 (data.isbn.work)','https://data.isbn.work/');
       return;
     }
   }catch(e){}
@@ -1165,10 +1173,16 @@ async function runIsbnCollect(force){
     var lookedUp=false;
     var sourceName='';
     var sourceUrl='';
-    function cleanBookName(name){
+    function cleanBookName(name,author,publisher){
       if(!name) return '';
-      var cleaned=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
-      cleaned=cleaned.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)\s*/g,'').trim();
+      var cleaned=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
+      if(publisher){var pp=publisher.trim();if(pp)cleaned=cleaned.split(pp).join('').trim();}
+      if(author){var aa=author.trim();if(aa){cleaned=cleaned.split(aa).join('').trim();var m=aa.match(/^(.+?)(帆书|读书|团队|工作室|编著|著|编|主编|主审|译)+$/);if(m&&m[1])cleaned=cleaned.split(m[1]).join('').trim();}}
+      cleaned=cleaned.replace(/[\u4e00-\u9fa5]{0,12}(出版社|出版公司|出版集团|出版传媒|文化传媒|文化公司|有限公司)([\u4e00-\u9fa5]{0,6}图书|[\u4e00-\u9fa5]{0,6}书)?\s*$/,'').trim();
+      cleaned=cleaned.replace(/(图书|套装|精装|平装|全集|全套|选集)+\s*$/,'').trim();
+      cleaned=cleaned.replace(/\s+(著|编|主编|主审|译)\s*$/,'').trim();
+      cleaned=cleaned.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').trim();
+      cleaned=cleaned.replace(/\s+/g,' ').replace(/^[\-—:：·\s]+|[\-—:：·\s]+$/g,'').trim();
       if(cleaned.length>40) cleaned=cleaned.substring(0,40);
       return cleaned;
     }
@@ -1179,7 +1193,7 @@ async function runIsbnCollect(force){
         var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
         var data=await resp.json();
         if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
-          title=cleanBookName(data.data.bookName);
+          title=cleanBookName(data.data.bookName,data.data.author||'',data.data.press||'');
           sourceName='ISBN国内数据库 (data.isbn.work)';
           sourceUrl='https://data.isbn.work/';
           isbnBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:sourceName,sourceUrl:sourceUrl};
@@ -1292,19 +1306,25 @@ async function runIsbnCollect(force){
     fill.style.width='30%';
 
     // === 第3步：用确认后的书名 + 联网搜索结果生成完整报告 ===
-    var userMsg='请采集以下图书的广告营销素材：\n\nISBN = '+isbn+'\n书名 = '+confirmedTitle;
+    var userMsg='请采集以下图书的广告营销素材：\n\nISBN = '+isbn+'\n书名 = 《'+confirmedTitle+'》';
     if(confirmedAuthor) userMsg+='\n作者 = '+confirmedAuthor+'（来自真实数据源 '+(isbnBookInfo&&isbnBookInfo.source||'')+'，已经确认无误，请直接使用，绝对不要修改或替换为其他作者）';
     if(confirmedPublisher) userMsg+='\n出版社 = '+confirmedPublisher+'（已经确认无误，请直接使用）';
-    if(bookMatch) userMsg+='\n\n（ISBN已验证，确认为《'+confirmedTitle+'》，请严格基于这本书生成内容。如果你对这本书的具体内容、目录、简介不熟悉，请直接跳过这些维度——绝对不许编造作者名、目录、简介。）';
+    // 🔒 关键约束：锚定目标书目，防止 LLM 幻觉到同类/同作者/同系列的其它书
+    userMsg+='\n\n## 🔒 目标书目锚定（最高优先级）\n'
+      +'本次采集对象**有且只有**《'+confirmedTitle+'》这一本书（ISBN: '+isbn+'）。\n'
+      +'- 绝对禁止**混淆、替换、扩展**到任何其它书目，包括但不限于：同作者的其它书、同系列其它分册、同出版社其它童书/漫画、同主题（如"历史""童书""心理""漫画"）的其它热销书。\n'
+      +'- 绝对禁止使用你记忆中类似品类（例如"让孩子爱上历史""宝藏级童书""樊登推荐书单"之类）的营销文案/推广软文来填充本书内容。\n'
+      +'- 如果你对《'+confirmedTitle+'》的**具体内容、目录、金句**没有精确把握，直接跳过相关维度，**绝不能用同类书的通用文案冒充**。\n'
+      +'- 下方如果提供了联网搜索结果，**你的所有具体内容必须严格来自搜索结果**，你的知识库仅用于补充你**100%确信**属于这本书的信息。';
     // 拼入联网搜索结果
     if(searchResults.length>0){
-      userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（请优先参考这些真实数据）\n';
+      userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（请优先参考这些真实数据，这是最可靠的来源）\n';
       for(var si=0;si<searchResults.length;si++){
         userMsg+='\n### 来源'+(si+1)+'：'+searchResults[si].title+'\n'+searchResults[si].content+'\n';
       }
-      userMsg+='\n\n请结合以上联网搜索到的真实信息和你的知识库，按维度顺序输出HTML片段，搜索不到的维度直接跳过。';
+      userMsg+='\n\n请**以上述联网搜索结果为主要依据**，按维度顺序输出HTML片段。搜索结果中未提及的维度直接跳过，不要用你的知识库臆补。';
     }else{
-      userMsg+='\n\n## 重要：本次联网搜索未拿到结果（'+(searchFailReason||'无结果')+'）\n这意味着你**没有这本书的实时网页信息可参考**。请遵守以下铁律：\n1. 「内容简介」「目录」「编辑推荐」「作者简介」「精彩书摘」这五个维度——除非你**确切知道**这本书的具体内容（注意是**这本**，不是同名书），否则**整个维度跳过**，不要输出该 h2 标题。\n2. 绝对禁止用"本书介绍了..."、"本书作者..."这种空话占位。\n3. 你可以输出的安全维度：基于书名/作者/出版社推断的「目标人群画像」「投放卖点假设」「相关图书品类」「话题切入角度」——但必须明确标注"基于品类经验推断"。\n4. 宁可整份报告只有 3 个维度，也不要 6 个维度里塞 4 个编造的。\n\n请按维度顺序输出HTML片段，不确定的维度全部跳过。';
+      userMsg+='\n\n## ⚠️ 重要：本次联网搜索未拿到结果（'+(searchFailReason||'无结果')+'）\n这意味着你**没有这本书的实时网页信息可参考**。请遵守以下铁律：\n1. 「内容简介」「目录」「编辑推荐」「作者简介」「精彩书摘」这五个维度——除非你**确切知道**《'+confirmedTitle+'》这本书的具体内容（注意：是**这本**，不是同名、同主题、同作者的其它书），否则**整个维度跳过**，不要输出该 h2 标题。\n2. 绝对禁止用"本书介绍了..."、"本书作者..."这种空话占位。\n3. 你可以输出的安全维度：基于书名/作者/出版社推断的「目标人群画像」「投放卖点假设」「相关图书品类」「话题切入角度」——但必须明确标注"基于品类经验推断"。\n4. 宁可整份报告只有 3 个维度，也不要 6 个维度里塞 4 个编造的。\n\n请按维度顺序输出HTML片段，不确定的维度全部跳过。';
     }
 
     var cc=0;
