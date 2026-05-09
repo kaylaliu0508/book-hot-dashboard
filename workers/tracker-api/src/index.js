@@ -36,19 +36,12 @@ export default {
 
 // =================== CORS ===================
 function corsHeaders(request, env) {
-  const origin = request.headers.get('origin') || '';
-  const allowed = (env.ALLOWED_ORIGINS || '*')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  let allowOrigin = '*';
-  if (allowed.length && allowed[0] !== '*') {
-    allowOrigin = allowed.includes(origin) ? origin : allowed[0];
-  }
+  const origin = request.headers.get('origin') || '*';
+  // 埋点接口不涉及 cookie/凭证，直接回显请求方的 Origin（等效 *，但避免某些严格浏览器拒绝 *）
   return {
-    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Origin': origin === '*' ? '*' : origin,
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept, Origin, X-Requested-With',
     'Access-Control-Max-Age': '86400',
     'Vary': 'Origin',
   };
@@ -72,7 +65,10 @@ async function handleTrack(request, env, ctx, cors) {
   const ttl = (parseInt(env.RETENTION_DAYS || '90', 10) || 90) * 86400;
   let body;
   try {
-    body = await request.json();
+    // sendBeacon(blob(type:application/json)) 或 fetch(application/json)
+    // 也兼容 text/plain（有些浏览器 sendBeacon 会转为此类型）
+    const raw = await request.text();
+    body = JSON.parse(raw);
   } catch (e) {
     return json({ error: 'bad_json' }, 400, cors);
   }

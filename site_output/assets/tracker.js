@@ -80,18 +80,21 @@
     var body = JSON.stringify(payload);
     try {
       // sendBeacon 在卸载场景下最稳
+      // 用 text/plain 避免触发 CORS preflight（application/json 是非简单请求会触发 OPTIONS，sendBeacon 不支持 preflight）
       if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'application/json' });
+        var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
         if (navigator.sendBeacon(ENDPOINT, blob)) return;
       }
     } catch (e) {}
     try {
       fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // text/plain 同样避免 preflight；Worker 端按文本解析 JSON
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
         body: body,
         keepalive: true,
         credentials: 'omit',
+        mode: 'cors',
       }).catch(function () {});
     } catch (e) {}
   }
