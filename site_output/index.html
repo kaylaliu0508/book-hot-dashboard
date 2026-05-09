@@ -1066,7 +1066,7 @@ async function webSearchBook(bookTitle,isbn){
       var resp=await fetch(ZHIPU_SEARCH.apiUrl,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'search_std',stream:false,messages:[{role:'user',content:queries[i]}]})
+        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'web-search-pro',stream:false,messages:[{role:'user',content:queries[i]}]})
       });
       if(!resp.ok) continue;
       var data=await resp.json();
@@ -1448,7 +1448,7 @@ return '你是一位顶尖的图书类短视频口播脚本创作专家。你深
 }
 
 async function scriptCallAI(prompt){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ISBN_API.apiKey},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
 var data=await response.json();return data.choices[0].message.content.trim();
 }

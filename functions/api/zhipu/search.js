@@ -92,8 +92,8 @@ export async function onRequest(context) {
     return jsonError(400, 'Invalid JSON body', cors);
   }
 
-  // 仅允许 search_std/search_pro 等搜索类工具
-  const allowedTools = ['search_std', 'search_pro', 'web_search'];
+  // 仅允许 search_std/search_pro/web-search-pro 等搜索类工具
+  const allowedTools = ['search_std', 'search_pro', 'web_search', 'web-search-pro', 'web-search-prime'];
   if (payload.tool && !allowedTools.includes(payload.tool)) {
     return jsonError(400, 'Tool not allowed', cors);
   }
