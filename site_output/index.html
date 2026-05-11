@@ -46,6 +46,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 .ft{text-align:center;padding:20px 0;color:#484f58;font-size:10px}
 .ft a{color:#484f58}
 </style>
+<script>window.__TRACKER_ENDPOINT__='/api/track';</script>
+<script src="/assets/tracker.js?v=20260511a" defer></script>
 </head>
 <body>
 <script>if(!location.hash)location.replace('/summer/');</script>
@@ -53,10 +55,10 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书创意灵感中心</div>
-<button class="tb on" onclick="go('p4',this)">图书内容提取</button>
-<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
-<button class="tb" onclick="go('p3',this)">AI预审</button>
-<a href="/summer/" class="tb">📅 暑期专栏</a>
+<button class="tb on" onclick="go('p4',this)" data-track="tab_btn_book_extract">图书内容提取</button>
+<button class="tb" onclick="go('p5',this)" data-track="tab_btn_script_gen">一键生成口播脚本</button>
+<button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit">AI预审</button>
+<a href="/summer/" class="tb" data-track="tab_btn_summer">📅 暑期专栏</a>
 </div></div>
 
 <div class="wrap">
@@ -226,14 +228,22 @@ function go(id,el){
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
   window.scrollTo(0,0);
+  // 埋点：切 tab
+  try{
+    var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit'};
+    var t=TAB_MAP[id];
+    if(t&&window.tracker)window.tracker.setTab(t);
+  }catch(e){}
 }
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
-  if(h){
-    var map={'p4':0,'p5':1,'p3':2};
-    var tbs=document.querySelectorAll('.bar-in .tb');
-    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+  var map={'p4':0,'p5':1,'p3':2};
+  var tbs=document.querySelectorAll('.bar-in .tb');
+  if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
+  else{
+    // 默认 tab 也要打首屏 PV
+    try{ if(window.tracker) window.tracker.pv('book_extract'); }catch(e){}
   }
 })();
 
@@ -893,6 +903,7 @@ function clearAudit(){
 function runAudit(){
   var text=document.getElementById('scriptInput').value.trim();
   if(!text){alert('请先输入或粘贴脚本文案');return;}
+  try{ if(window.tracker) window.tracker.feature('audit_run', {chars:text.length}, text.length, 'ai_audit'); }catch(e){}
   
   var copies=splitCopies(text);
   var totalReject=0,totalWarn=0,totalPass=0;
@@ -1164,6 +1175,8 @@ async function runIsbnCollect(force){
   var title=document.getElementById('bookTitleInput').value.trim();
   if(!isbn){alert('请输入ISBN编号（必填）');document.getElementById('isbnInput').focus();return;}
   if(!/^\d{10,13}$/.test(isbn)){alert('ISBN格式不正确，应为10或13位数字');return;}
+  // 埋点：ISBN 查询专项统计
+  try{ if(window.tracker) window.tracker.feature('isbn_query', {isbn: isbn, title: title||''}, null, 'book_extract'); }catch(e){}
 
   // 如果没有书名，先尝试通过 ISBN 查询自动补全
   if(!title){
@@ -1393,6 +1406,7 @@ if(!bookContent){isbnToast('请先粘贴图书内容');ta.focus();return;}
 if(bookContent.length<30){isbnToast('内容太少，至少30字');return;}
 var audienceEl=document.querySelector('#scriptAudienceChips .scp.on');
 var audience=audienceEl?audienceEl.dataset.value:'通用人群';
+try{ if(window.tracker) window.tracker.feature('script_generate_run', {chars:bookContent.length, audience:audience}, bookContent.length, 'script_gen'); }catch(e){}
 var selectedStyles=[];
 var allChip=document.querySelector('#scriptStyleChips [data-value="全部"]');
 if(allChip&&allChip.classList.contains('on')){selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});}

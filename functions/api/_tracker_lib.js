@@ -85,6 +85,22 @@ export async function persistEvent(env, body) {
         await KV.put(bk, JSON.stringify(cur), opt);
       }
     }
+
+    // 📚 ISBN 查询专项统计（book_extract tab 的 isbn_query 事件）
+    if (tab === 'book_extract' && name === 'isbn_query' && body.meta && body.meta.isbn) {
+      const isbn = String(body.meta.isbn).slice(0, 20).replace(/[^0-9xX]/g, '');
+      if (isbn.length >= 10) {
+        const title = body.meta.title ? String(body.meta.title).slice(0, 80) : '';
+        // 当日 map
+        const dayKeyName = `isbn:${date}`;
+        const dayMap = (await KV.get(dayKeyName, 'json')) || {};
+        if (!dayMap[isbn]) dayMap[isbn] = { count: 0, title: '', lastTs: 0 };
+        dayMap[isbn].count += 1;
+        dayMap[isbn].lastTs = ts;
+        if (title) dayMap[isbn].title = title;
+        await KV.put(dayKeyName, JSON.stringify(dayMap), opt);
+      }
+    }
   }
 
   if (type === 'stay') {
@@ -200,5 +216,24 @@ export async function aggregateStats(env, range, tabFilter) {
 
     result.tabs[tab] = tabAgg;
   }
+
+  // 📚 ISBN 查询 Top 聚合（只读所选日期范围的 isbn:{date} map）
+  const isbnAgg = {};
+  for (const date of dateList) {
+    const dayMap = (await KV.get(`isbn:${date}`, 'json')) || {};
+    for (const isbn of Object.keys(dayMap)) {
+      const entry = dayMap[isbn];
+      if (!isbnAgg[isbn]) isbnAgg[isbn] = { count: 0, title: '', lastTs: 0 };
+      isbnAgg[isbn].count += entry.count || 0;
+      if (entry.title && !isbnAgg[isbn].title) isbnAgg[isbn].title = entry.title;
+      if (entry.lastTs > isbnAgg[isbn].lastTs) isbnAgg[isbn].lastTs = entry.lastTs;
+    }
+  }
+  const isbnTop = Object.keys(isbnAgg)
+    .map((isbn) => ({ isbn, ...isbnAgg[isbn] }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 50);
+  result.isbnTop = isbnTop;
+
   return result;
 }
