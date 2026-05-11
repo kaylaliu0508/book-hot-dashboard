@@ -51,3 +51,8 @@ backups/hot_dashboard_*.html
 .vercel
 workers/tracker-api/.wrangler/
 **/.wrangler/
+
+# coscli 临时文件
+coscli
+coscli.log
+*.cos.yaml
