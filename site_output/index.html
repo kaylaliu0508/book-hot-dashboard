@@ -986,10 +986,13 @@ function auditOneCopy(text){
     var rule=AUDIT_RULES[i];
     var matches=text.match(rule.re);
     if(matches){
+      // 计算命中位置，便于后续去重
+      var idx=text.indexOf(matches[0]);
       violations.push({
         id:rule.id,cat:rule.cat,level:rule.level,
         desc:rule.desc,fix:rule.fix,
-        matched:matches[0]
+        matched:matches[0],
+        start:idx,end:idx+matches[0].length
       });
     }
   }
@@ -1003,16 +1006,54 @@ function auditOneCopy(text){
         if(violations[j].matched && violations[j].matched.indexOf(w)!==-1){dup=true;break;}
       }
       if(!dup){
+        var aIdx=text.indexOf(w);
         violations.push({
           id:"ADQ_BAN",cat:"ADQ违规词",level:"reject",
           desc:"命中ADQ违规词库禁用词",
           fix:"删除或替换该违规词",
-          matched:w
+          matched:w,start:aIdx,end:aIdx+w.length
         });
       }
     }
   }
+  // === 同类别区间重叠去重：保留更长/更具体的匹配 ===
+  violations=dedupViolations(violations);
   return violations;
+}
+
+// --- 同类别（cat）区间重叠去重：保留覆盖范围更长的那条 ---
+function dedupViolations(list){
+  // 按 cat 分组
+  var groups={};
+  for(var i=0;i<list.length;i++){
+    var v=list[i];
+    var k=v.cat||'_';
+    (groups[k]=groups[k]||[]).push(v);
+  }
+  var keep=[];
+  for(var k in groups){
+    var arr=groups[k];
+    // 优先级：reject > warn；同级按长度降序
+    arr.sort(function(a,b){
+      if(a.level!==b.level) return a.level==='reject'?-1:1;
+      return (b.end-b.start)-(a.end-a.start);
+    });
+    var picked=[];
+    for(var i=0;i<arr.length;i++){
+      var cur=arr[i];
+      var overlap=false;
+      for(var j=0;j<picked.length;j++){
+        var p=picked[j];
+        // 区间相交判定
+        if(cur.start<p.end && cur.end>p.start){overlap=true;break;}
+      }
+      if(!overlap) picked.push(cur);
+    }
+    keep=keep.concat(picked);
+  }
+  // 按原始命中位置排序，保证展示顺序自然
+  keep.sort(function(a,b){return a.start-b.start;});
+  return keep;
 }
 
 // --- 生成合规化建议文案 ---
