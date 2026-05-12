@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图书创意灵感中心 - 2026.05.11</title>
+<title>图书创意灵感中心 - 2026.05.12</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -830,6 +830,7 @@ var AUDIT_RULES=[
  fix:"改为客观推荐"},
 
 // ====== 二十二、开头与业务无关（实际拒审点③：请勿开头使用与广告业务无关的素材内容）======
+// 检测开头出现"钓鱼问题/无关话题"，但全文又是卖书的"破题不一致"模式
 {id:"OFFTOPIC_1",cat:"开头业务无关",level:"reject",
  re:/^[^。！？\n]{0,60}(豆腐|鸡蛋|牛奶|酱油|食用油|大米|白菜|苹果|香蕉).{0,40}(吃|喝|多|少|好不好|该不该)[^。！？\n]{0,40}[？?]/,
  desc:"开头使用「该不该吃XX」类与图书无关的钓鱼式话题，属于开头业务无关素材",
@@ -1159,7 +1160,8 @@ var AUDIT_RULES=[
 {id:"ABS_6",cat:"绝对化用语",level:"reject",
  re:/(解决|搞定|消灭|攻克).{0,3}(全部|所有|一切|任何)/,
  desc:"禁止「解决所有/全部XX」类绝对化承诺",
- fix:"删除全包承诺，改为「覆盖主要部分」"},];
+ fix:"删除全包承诺，改为「覆盖主要部分」"},
+];
 
 // --- ADQ违规词精确匹配列表（非正则，用于逐词检测）---
 var ADQ_BANNED_WORDS=["送分题","永远考不过","盈利","长脑子最快","洞察天地","领悟天地","天地自然","天地规律","财富风口","最后一批","最神秘","最美","最管用","天罡","地煞","算卦","道冠","裸体","注射","解剖","解剖学","司法考试","中考真题讲解","繁体字","被迫结婚","郭继承"];
@@ -1192,7 +1194,6 @@ function auditOneCopy(text){
     var rule=AUDIT_RULES[i];
     var matches=text.match(rule.re);
     if(matches){
-      // 计算命中位置，便于后续去重
       var idx=text.indexOf(matches[0]);
       violations.push({
         id:rule.id,cat:rule.cat,level:rule.level,
@@ -1229,7 +1230,6 @@ function auditOneCopy(text){
 
 // --- 同类别（cat）区间重叠去重：保留覆盖范围更长的那条 ---
 function dedupViolations(list){
-  // 按 cat 分组
   var groups={};
   for(var i=0;i<list.length;i++){
     var v=list[i];
@@ -1239,7 +1239,6 @@ function dedupViolations(list){
   var keep=[];
   for(var k in groups){
     var arr=groups[k];
-    // 优先级：reject > warn；同级按长度降序
     arr.sort(function(a,b){
       if(a.level!==b.level) return a.level==='reject'?-1:1;
       return (b.end-b.start)-(a.end-a.start);
@@ -1250,14 +1249,12 @@ function dedupViolations(list){
       var overlap=false;
       for(var j=0;j<picked.length;j++){
         var p=picked[j];
-        // 区间相交判定
         if(cur.start<p.end && cur.end>p.start){overlap=true;break;}
       }
       if(!overlap) picked.push(cur);
     }
     keep=keep.concat(picked);
   }
-  // 按原始命中位置排序，保证展示顺序自然
   keep.sort(function(a,b){return a.start-b.start;});
   return keep;
 }
