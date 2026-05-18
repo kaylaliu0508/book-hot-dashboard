@@ -100,6 +100,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <script>
 (function(){
   var KEY='bhd_invite_pass_v1', CODE='6688';
+  // 已通过则立即移除遮罩
   try{ if(sessionStorage.getItem(KEY)==='1'){ var g=document.getElementById('invite-gate'); if(g) g.parentNode.removeChild(g); return; } }catch(e){}
   document.body.classList.add('invite-locked');
   var gate=document.getElementById('invite-gate'),
@@ -1677,7 +1678,9 @@ function parseCustomRules(raw){
   for(var i=0;i<parts.length;i++){
     var p=parts[i].trim();
     if(!p) continue;
+    // 去掉首尾标点
     p=p.replace(/^[\s\-\*•·。.:：>›\]\[【】「」『』"'"'`]+|[\s。.:："'"'`]+$/g,'');
+    // 移除常见自然语言停用短语（按长度从长到短，避免短词先吃掉长词的子串）
     for(var s=0;s<STOP_PHRASES.length;s++){
       while(p.indexOf(STOP_PHRASES[s])!==-1){
         p=p.split(STOP_PHRASES[s]).join('');
@@ -1686,6 +1689,7 @@ function parseCustomRules(raw){
     // 再做一次"出现"裸字清理（防 "严禁出现:" 这类残留）
     p=p.replace(/^出现[：:、]?/,'').trim();
     if(!p) continue;
+    // 长句继续按"和/与/及/或/或者/还有"再切一层
     var subs=p.split(/(?:和|与|及|或者|或|还有|以及)/);
     for(var k=0;k<subs.length && words.length<200;k++){
       var s2=subs[k].trim().replace(/^[\s\-\*•·。.:：]+|[\s。.:：]+$/g,'');
