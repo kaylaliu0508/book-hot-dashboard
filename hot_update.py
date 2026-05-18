@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-图书创意灵感中心 - 定时数据更新脚本
+图书灵感中心 - 定时数据更新脚本
 
 功能：
   - 从数据源获取最新热搜数据（微信生态 / 抖音 / 百度）
@@ -1527,7 +1527,7 @@ def main():
     """主函数"""
     mode_label = "☁️ 云端模式 (Vercel)" if OUTPUT_MODE == "cloud" else "🏠 本地模式 (微信临时文件)"
     print("=" * 65)
-    print(f"🔄 图书创意灵感中心 - 数据更新开始")
+    print(f"🔄 图书灵感中心 - 数据更新开始")
     print(f"   时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"   模式: {mode_label}")
     print("=" * 65)

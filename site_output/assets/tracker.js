@@ -1,5 +1,5 @@
 /*!
- * tracker.js — 图书创意灵感中心 埋点 SDK
+ * tracker.js — 图书灵感中心 埋点 SDK
  * 上报 4 个 tab 的 PV/UV/停留/按钮点击/功能使用
  * 上报路径默认 /api/track（同源），可通过 window.__TRACKER_ENDPOINT 覆盖
  */
