@@ -49,6 +49,58 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </head>
 <body>
 
+<!-- ===== 邀请码登录拦截层（不依赖任何外部库；通过校验后自动隐藏，sessionStorage 记忆本会话）===== -->
+<div id="invite-gate" style="position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at top,#1a2332 0%,#0d1117 60%);display:flex;align-items:center;justify-content:center;font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;color:#c9d1d9">
+  <div style="width:min(420px,92vw);background:#161b22;border:1px solid #30363d;border-radius:12px;padding:36px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:34px;margin-bottom:8px">📊</div>
+      <div style="font-size:20px;font-weight:600;color:#fff;margin-bottom:6px">图书灵感中心</div>
+      <div style="font-size:13px;color:#8b949e">请输入邀请码以继续访问</div>
+    </div>
+    <input id="invite-input" type="password" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="邀请码" style="width:100%;padding:12px 14px;border:2px solid #30363d;border-radius:8px;background:#0d1117;color:#c9d1d9;font-size:15px;letter-spacing:4px;outline:none;text-align:center;transition:.2s;box-sizing:border-box" />
+    <div id="invite-err" style="min-height:20px;margin-top:10px;font-size:12px;color:#f85149;text-align:center"></div>
+    <button id="invite-btn" style="width:100%;margin-top:6px;padding:12px;border:0;border-radius:8px;background:linear-gradient(90deg,#1a73e8,#4285f4);color:#fff;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:2px;transition:.2s">进入</button>
+    <div style="margin-top:20px;font-size:11px;color:#6e7681;text-align:center;line-height:1.6">仅限内部受邀使用 · 请勿外传<br/>如需邀请码请联系管理员</div>
+  </div>
+</div>
+<style>
+  #invite-input:focus{border-color:#1a73e8;box-shadow:0 0 0 3px rgba(26,115,232,.18)}
+  #invite-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  #invite-btn:active{transform:translateY(0)}
+  #invite-gate.shake{animation:igShake .35s}
+  @keyframes igShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+  body.invite-locked{overflow:hidden!important}
+</style>
+<script>
+(function(){
+  var KEY='bhd_invite_pass_v1', CODE='6688';
+  // 已通过则立即移除遮罩
+  try{ if(sessionStorage.getItem(KEY)==='1'){ var g=document.getElementById('invite-gate'); if(g) g.parentNode.removeChild(g); return; } }catch(e){}
+  document.body.classList.add('invite-locked');
+  var gate=document.getElementById('invite-gate'),
+      inp=document.getElementById('invite-input'),
+      btn=document.getElementById('invite-btn'),
+      err=document.getElementById('invite-err');
+  setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
+  function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
+  function pass(){
+    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+    document.body.classList.remove('invite-locked');
+    gate.style.transition='opacity .3s'; gate.style.opacity='0';
+    setTimeout(function(){ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },320);
+  }
+  function submit(){
+    var v=(inp.value||'').trim();
+    if(!v){ fail('请输入邀请码'); return; }
+    if(v===CODE){ pass(); } else { fail(); }
+  }
+  btn.addEventListener('click',submit);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+  inp.addEventListener('input',function(){ err.textContent=''; });
+})();
+</script>
+<!-- ===== /邀请码登录拦截层 ===== -->
+
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书灵感中心</div>
