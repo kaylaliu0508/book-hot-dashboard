@@ -176,6 +176,15 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div>
 </details>
 
+<!-- AI 语义复审开关（命中正则规则之外的语义违规） -->
+<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:6px 10px;background:rgba(88,166,255,.05);border:1px solid rgba(88,166,255,.15);border-radius:6px">
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:11px;color:#8b949e">
+<input type="checkbox" id="aiAuditEnabled" checked style="cursor:pointer;accent-color:#1a73e8">
+<span>🤖 启用 AI 语义复审</span>
+</label>
+<span style="font-size:10px;color:#484f58;flex:1">在正则规则之外，由 AI 从语义层面判断负向行为/虚假承诺/迷信噱头等违规话术（每次最多复审 5 条文案，限频 30 次/分钟）</span>
+</div>
+
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
 <span id="charCount" style="font-size:10px;color:#484f58">0 字 / 0 条</span>
 <button onclick="runAudit()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'">🔍 开始预审</button>
@@ -1938,8 +1947,215 @@ function runAudit(){
   }
   
   summaryHtml+='</div>';
-  
+
   document.getElementById('auditResult').innerHTML=summaryHtml+html;
+
+  // === AI 语义复审（异步，仅对未被快路径 reject 的文案）===
+  var aiToggle=document.getElementById('aiAuditEnabled');
+  if(aiToggle && aiToggle.checked){
+    runAIAuditBatch(copies, allViolations, totalReject, totalWarn, totalPass);
+  }
+}
+
+// --- AI 语义复审：调用 /api/deepseek/chat/completions 做语义判断，结果合并到 UI ---
+// 仅对"快路径未 reject 的文案"做二审，避免重复消耗
+function runAIAuditBatch(copies, prevViolations, prevReject, prevWarn, prevPass){
+  // 收集需要 AI 复审的文案：跳过已经被快路径 reject 掉的（不再浪费 AI 调用）
+  var rejectedIdx={};
+  for(var i=0;i<prevViolations.length;i++){
+    if(prevViolations[i].level==='reject' && prevViolations[i]._copyIdx!=null){
+      rejectedIdx[prevViolations[i]._copyIdx]=true;
+    }
+  }
+  // 简化：只要本条命中 reject 级（不区分 _copyIdx），就跳过——遍历 copies 时分别检测
+  var batch=[];
+  for(var i=0;i<copies.length;i++){
+    var v=auditOneCopy(copies[i]);
+    var hasReject=false;
+    for(var j=0;j<v.length;j++){if(v[j].level==='reject'){hasReject=true;break;}}
+    if(!hasReject){
+      batch.push({idx:i, text:copies[i]});
+    }
+    if(batch.length>=5) break; // 单次最多 5 条
+  }
+  if(batch.length===0) return;
+
+  // 注入"AI 复审中"加载条
+  insertAIAuditLoadingBanner(batch.length);
+
+  // 调用 AI
+  callAIAudit(batch).then(function(aiResults){
+    applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prevWarn, prevPass);
+  }).catch(function(err){
+    console.warn('AI 复审失败:',err);
+    var banner=document.getElementById('aiAuditBanner');
+    if(banner){
+      banner.style.background='rgba(248,81,73,.08)';
+      banner.style.borderColor='rgba(248,81,73,.2)';
+      banner.innerHTML='<span style="color:#f85149;font-size:11px">⚠️ AI 复审调用失败：'+(err && err.message ? String(err.message).replace(/</g,'&lt;') : '网络错误')+'。已回退到正则结果，可重试。</span>';
+    }
+  });
+}
+
+function insertAIAuditLoadingBanner(n){
+  var result=document.getElementById('auditResult');
+  if(!result) return;
+  var b=document.createElement('div');
+  b.id='aiAuditBanner';
+  b.style.cssText='background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.18);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:11.5px;color:#8b949e';
+  b.innerHTML='<span style="display:inline-block;width:14px;height:14px;border:2px solid #58a6ff;border-top-color:transparent;border-radius:50%;animation:aiSpin 0.8s linear infinite"></span>'+
+    '<span>🤖 AI 语义复审进行中（'+n+' 条文案）...</span>';
+  // 注入 keyframes
+  if(!document.getElementById('aiAuditSpinStyle')){
+    var st=document.createElement('style');
+    st.id='aiAuditSpinStyle';
+    st.textContent='@keyframes aiSpin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(st);
+  }
+  result.insertBefore(b, result.firstChild);
+}
+
+function callAIAudit(batch){
+  // 构造 prompt：把每条文案编号，让模型对每条返回 verdict
+  var listText=batch.map(function(b,i){return '第'+(i+1)+'条：'+b.text;}).join('\n');
+  var sysPrompt='你是腾讯广告平台教育/图书行业的资深审核专家，熟悉广告法、腾讯广告 V6 规则、腾讯广告教育图书行业审核规范。请从语义层面判断给定的广告/口播文案是否违规。\n\n'+
+    '## 重点关注的违规类别（命中任一即 reject）\n'+
+    '1. **负向行为宣传**：抄答案、考试作弊、翻书抄、偷看答案、找枪手代考；未成年人不良行为；贬损同行\n'+
+    '2. **虚假承诺/无法核实的效果描述**：保过/稳过、X天学会、看完就懂、永远赶不上、只要每天X就一定Y\n'+
+    '3. **绝对化用语/夸大宣传**：最/第一/唯一/顶级/万能/国家级/权威认证（无授权）\n'+
+    '4. **虚构噱头**：N岁的营养师/老中医说、国外见闻型故事（在日本几乎看不到）、有一个奇怪的现象、震惊医学界、祖传秘方\n'+
+    '5. **封建迷信**：算命/八字/命理/大运流年/风水玄学/生肖星座运势/命中注定\n'+
+    '6. **焦虑/恐慌营销**：不买就晚了、再不读就来不及、别人家孩子都在用\n'+
+    '7. **饥饿营销**：仅剩X本、马上下架、限量\n'+
+    '8. **诱导/迷信玄学话术**：能量低的人刷不到、刷到就是缘分\n'+
+    '9. **教育图书行业专项**：K12 学科辅导承诺、新课改/教育部推荐（无授权）、保升学、押题保过\n'+
+    '10. **虚假新闻/伪科学**：仿央视新闻报道口吻、必须吃X不能吃Y、X天X不吃饮食指令\n\n'+
+    '## 输出格式（严格 JSON，禁止任何额外文字）\n'+
+    '```\n'+
+    '{"results":[{"idx":1,"verdict":"reject"或"pass","cat":"违规类别（仅 reject 时必填，如「负向行为-学习作弊」「虚假效果承诺」「封建迷信」等）","desc":"违规描述（仅 reject 时必填，简洁一句话）","matched":"原文中违规的关键短语","fix":"修改建议（一句话）"},...]}\n'+
+    '```\n\n'+
+    '## 判定原则\n'+
+    '- 客观/中性表达不要误判（例如「考试很简单」「正在备考」「本书答案详尽」「他是营养师」「日本饮食文化」）\n'+
+    '- 只要文案出现把违规行为作为卖点/比喻/诱导，就 reject\n'+
+    '- 若整体是合规的图书内容介绍/客观描述，就 pass\n'+
+    '- matched 必须是原文中出现的连续短语（用于前端高亮），不要改写';
+
+  var userPrompt='请审核以下 '+batch.length+' 条文案：\n\n'+listText+'\n\n按上述 JSON 格式输出每条的判定结果。';
+
+  return fetch('/api/deepseek/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'deepseek-chat',
+      messages:[
+        {role:'system',content:sysPrompt},
+        {role:'user',content:userPrompt}
+      ],
+      temperature:0.1,
+      response_format:{type:'json_object'},
+      max_tokens:1200
+    })
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(data){
+    var content=data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if(!content) throw new Error('AI 返回为空');
+    var parsed;
+    try{parsed=JSON.parse(content);}catch(e){
+      // 尝试从 markdown code block 提取
+      var m=content.match(/\{[\s\S]*\}/);
+      if(m){parsed=JSON.parse(m[0]);}else{throw new Error('解析 AI 输出失败');}
+    }
+    if(!parsed || !Array.isArray(parsed.results)) throw new Error('AI 输出缺少 results 字段');
+    // 补回原 idx（batch 里的真实 copy 索引）
+    return parsed.results.map(function(r){
+      var b=batch[r.idx-1];
+      return {
+        copyIdx: b ? b.idx : null,
+        text: b ? b.text : '',
+        verdict: r.verdict,
+        cat: r.cat || 'AI-语义违规',
+        desc: r.desc || '',
+        matched: r.matched || '',
+        fix: r.fix || '建议人工复核'
+      };
+    }).filter(function(r){return r.copyIdx!=null;});
+  });
+}
+
+function applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prevWarn, prevPass){
+  var banner=document.getElementById('aiAuditBanner');
+  // 收集 reject 项
+  var newReject=[];
+  for(var i=0;i<aiResults.length;i++){
+    if(aiResults[i].verdict==='reject') newReject.push(aiResults[i]);
+  }
+  if(newReject.length===0){
+    if(banner){
+      banner.style.background='rgba(63,185,80,.06)';
+      banner.style.borderColor='rgba(63,185,80,.18)';
+      banner.innerHTML='<span style="color:#3fb950;font-size:11.5px;font-weight:600">✅ AI 语义复审完成：未发现额外违规</span>'+
+        '<span style="margin-left:auto;font-size:10px;color:#484f58">已复审 '+aiResults.length+' 条</span>';
+    }
+    return;
+  }
+  // 把 AI 命中追加到对应文案的卡片里，并重新计算汇总
+  // 直接在 DOM 上找第 N 条卡片插入面板（按原始顺序，rejected 由本次新增）
+  var resultRoot=document.getElementById('auditResult');
+  if(!resultRoot){return;}
+  // 卡片选择：每条文案对应一个外层 div（border-left 颜色 + "第 N 条"）
+  var cards=resultRoot.querySelectorAll('div[style*="border-left:3px solid"]');
+  for(var i=0;i<newReject.length;i++){
+    var r=newReject[i];
+    var card=cards[r.copyIdx];
+    if(!card) continue;
+    // 升级状态条颜色为 reject 红
+    card.style.borderLeftColor='#ff6b6b';
+    var statusBadge=card.querySelector('span[style*="border-radius:10px"]');
+    if(statusBadge){
+      statusBadge.style.background='rgba(230,57,70,.1)';
+      statusBadge.style.color='#ff6b6b';
+      var txt=statusBadge.textContent.replace(/^.*?[（\(]?\d*项?拒审\)?/,'').trim();
+      statusBadge.textContent='不通过 (AI判定)';
+    }
+    // 标题图标
+    var titleSpan=card.querySelector('span[style*="font-weight:600"]');
+    if(titleSpan && /第\d+条/.test(titleSpan.textContent)){
+      titleSpan.textContent='❌ 第'+(r.copyIdx+1)+'条';
+    }
+    // 在卡片末尾插入 AI 命中详情
+    var aiBlock=document.createElement('div');
+    aiBlock.style.cssText='margin-top:8px;padding:8px 10px;background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.18);border-radius:6px';
+    var matchedHtml = r.matched ? '<br><span style="color:#ff8a94;font-size:10px">命中：「'+escapeHtml(r.matched)+'」</span>' : '';
+    aiBlock.innerHTML=
+      '<div style="font-size:10px;color:#58a6ff;font-weight:600;margin-bottom:4px">🤖 AI 语义复审 - 命中违规</div>'+
+      '<div style="display:flex;align-items:flex-start;gap:6px;font-size:11px">'+
+      '<span style="background:#e63946;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;flex-shrink:0">拒审</span>'+
+      '<div style="flex:1"><span style="color:#c9d1d9">['+escapeHtml(r.cat)+']</span> <span style="color:#8b949e">'+escapeHtml(r.desc)+'</span>'+
+      matchedHtml+
+      '<br><span style="color:#3fb950;font-size:10px">💡 '+escapeHtml(r.fix)+'</span></div></div>';
+    card.appendChild(aiBlock);
+  }
+  if(banner){
+    banner.style.background='rgba(230,57,70,.06)';
+    banner.style.borderColor='rgba(230,57,70,.18)';
+    banner.innerHTML='<span style="color:#ff6b6b;font-size:11.5px;font-weight:600">🤖 AI 语义复审完成：新增发现 '+newReject.length+' 条违规</span>'+
+      '<span style="margin-left:auto;font-size:10px;color:#484f58">已复审 '+aiResults.length+' 条</span>';
+  }
+  // 更新汇总数字（通过 → 不通过）
+  var summaryNums=resultRoot.querySelectorAll('div[style*="grid-template-columns:repeat(4,1fr)"] > div > div:first-child');
+  if(summaryNums && summaryNums.length===4){
+    var newPass=Math.max(0, parseInt(summaryNums[1].textContent,10)-newReject.length);
+    var newRej=parseInt(summaryNums[3].textContent,10)+newReject.length;
+    summaryNums[1].textContent=newPass;
+    summaryNums[3].textContent=newRej;
+  }
+}
+
+function escapeHtml(s){
+  if(s==null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // 一键复制工具
