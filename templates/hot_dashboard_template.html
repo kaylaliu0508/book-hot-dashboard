@@ -2183,7 +2183,7 @@ function callAIAudit(batch){
     '8. **诱导/迷信玄学话术**：能量低的人刷不到、刷到就是缘分\n'+
     '9. **教育图书行业专项**：K12 学科辅导承诺、新课改/教育部推荐（无授权）、保升学、押题保过\n'+
     '10. **虚假新闻/伪科学**：仿央视新闻报道口吻、必须吃X不能吃Y、X天X不吃饮食指令\n\n'+
-    '## 输出格式（严格 JSON，禁止任何额外文字）\n'+
+    '## 输出格式（严格 json，禁止任何额外文字）\n'+
     '```\n'+
     '{"results":[{"idx":1,"verdict":"reject"或"pass","cat":"违规类别（仅 reject 时必填，如「负向行为-学习作弊」「虚假效果承诺」「封建迷信」等）","desc":"违规描述（仅 reject 时必填，简洁一句话）","matched":"原文中违规的关键短语","fix":"修改建议（一句话）"},...]}\n'+
     '```\n\n'+
@@ -2191,9 +2191,10 @@ function callAIAudit(batch){
     '- 客观/中性表达不要误判（例如「考试很简单」「正在备考」「本书答案详尽」「他是营养师」「日本饮食文化」）\n'+
     '- 只要文案出现把违规行为作为卖点/比喻/诱导，就 reject\n'+
     '- 若整体是合规的图书内容介绍/客观描述，就 pass\n'+
-    '- matched 必须是原文中出现的连续短语（用于前端高亮），不要改写';
+    '- matched 必须是原文中出现的连续短语（用于前端高亮），不要改写\n'+
+    '- 你必须输出严格 json，不要任何 markdown code block 包裹';
 
-  var userPrompt='请审核以下 '+batch.length+' 条文案：\n\n'+listText+'\n\n按上述 JSON 格式输出每条的判定结果。';
+  var userPrompt='请审核以下 '+batch.length+' 条文案，并按上面定义的 json schema 输出（每条对应 results 数组的一项）：\n\n'+listText+'\n\n再次提醒：输出必须是合法的 json 对象，不要任何额外文字、不要 markdown 包裹。';
 
   return fetch('/api/deepseek/chat/completions',{
     method:'POST',
@@ -2209,7 +2210,17 @@ function callAIAudit(batch){
       max_tokens:1200
     })
   }).then(function(r){
-    if(!r.ok) throw new Error('HTTP '+r.status);
+    if(!r.ok){
+      // 把上游错误体读出来，便于诊断
+      return r.text().then(function(body){
+        var msg='HTTP '+r.status;
+        try{
+          var j=JSON.parse(body);
+          if(j && j.error && j.error.message) msg+=': '+j.error.message;
+        }catch(_){}
+        throw new Error(msg);
+      });
+    }
     return r.json();
   }).then(function(data){
     var content=data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
