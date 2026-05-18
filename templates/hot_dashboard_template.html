@@ -163,6 +163,19 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div>
 </div>
 <textarea id="scriptInput" rows="8" placeholder="在此粘贴脚本文案，支持多条（每条一段或一行），系统将逐条进行风控审核并给出修改建议…&#10;&#10;示例：&#10;大家苦苦寻找的按摩大全，有些按摩店不想让你知道这本书，因为这本书里的按摩技法完全是0成本……" style="width:100%;padding:12px;border:2px solid #30363d;border-radius:8px;font-size:12px;line-height:1.7;outline:none;background:#0d1117;color:#c9d1d9;resize:vertical;font-family:inherit;transition:.2s"></textarea>
+
+<!-- 自定义审核规则（用户喂入的额外违禁词/规则） -->
+<details id="customRulesPanel" style="margin-top:10px;background:#0d1117;border:1px dashed #30363d;border-radius:8px;padding:8px 12px">
+<summary style="cursor:pointer;font-size:11.5px;color:#8b949e;user-select:none;outline:none">
+➕ 自定义审核规则 <span style="color:#484f58;font-weight:400">（粘贴你的审核规范，逐行或逗号分隔关键词；命中即标记为"不通过"）</span>
+</summary>
+<textarea id="customRulesInput" rows="4" placeholder="支持以下任意一种格式，每行一条或多条：&#10;• 关键词形式：早恋, 性教育, 自闭症&#10;• 自然语言：不得出现性教育、早恋、自闭症等内容&#10;• 一行一条：&#10;  早恋&#10;  性教育&#10;  自闭症" style="width:100%;margin-top:8px;padding:10px;border:1px solid #30363d;border-radius:6px;font-size:11.5px;line-height:1.6;outline:none;background:#161b22;color:#c9d1d9;resize:vertical;font-family:inherit"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+<span id="customRulesStatus" style="font-size:10.5px;color:#484f58">尚未配置自定义规则</span>
+<button onclick="clearCustomRules()" style="padding:3px 10px;border-radius:4px;border:1px solid #30363d;background:#161b22;color:#8b949e;font-size:10.5px;cursor:pointer">清空规则</button>
+</div>
+</details>
+
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
 <span id="charCount" style="font-size:10px;color:#484f58">0 字 / 0 条</span>
 <button onclick="runAudit()" style="padding:8px 24px;border-radius:8px;border:none;background:#e63946;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'">🔍 开始预审</button>
@@ -438,6 +451,18 @@ var AUDIT_RULES=[
  re:/解决所有?问题|治(好|愈)\s*(全部|一切|所有)|效果立竿见影/,
  desc:"禁止「解决所有问题」类全能承诺",
  fix:"改为「有助于」「帮助了解」"},
+{id:"EFF_7",cat:"虚假效果承诺",level:"reject",
+ re:/(你|你的孩子|你家孩子|你家娃|您|您的孩子)?\s*永远\s*(都)?\s*(赶|追|比|赢|拼|斗|超)?\s*不(上|过|了)/,
+ desc:"禁止「你永远赶不上 / 永远比不过 / 永远赢不过」式对比承诺（无法核实的能力对比）",
+ fix:"删除对比承诺表述，改为正向客观介绍图书内容（参考 https://support.e.qq.com/detail?cid=4502&pid=11181）"},
+{id:"EFF_8",cat:"虚假效果承诺",level:"reject",
+ re:/(从\s*\d+\s*岁(开始|起)?|从小)[\s\S]{0,12}(每天|坚持|每月|每周|长期|一直|从不间断|风雨无阻)[\s\S]{0,8}(翻|读|看|学|背|写|练|用|刷)/,
+ desc:"禁止「从X岁开始每天翻/读/学」式长期坚持人设暗示能力差距（属无法核实的效果暗示）",
+ fix:"改为客观推荐适读年龄/阅读建议，删除长期坚持的能力对比暗示"},
+{id:"EFF_9",cat:"虚假效果承诺",level:"reject",
+ re:/(只要|如果|只需)[\s\S]{0,15}(每天|坚持|长期|一直)[\s\S]{0,15}(就(一定|肯定|必|必然)?(能|会|可以)|必然|一定(能|会|可以))/,
+ desc:"禁止「只要每天坚持就一定能/会XX」式无条件效果承诺",
+ fix:"删除「就一定能」承诺，改为「有助于」「可能会有所帮助」"},
 
 // ====== 三、焦虑营销（V6规则 + 广告法）======
 {id:"ANX_1",cat:"焦虑营销",level:"reject",
@@ -469,9 +494,9 @@ var AUDIT_RULES=[
 
 // ====== 五、虚构人设/虚假事件（V6规则 + 广告法第28条）======
 {id:"FAKE_1",cat:"虚构人设",level:"reject",
- re:/\d+\s*岁.{0,6}(老奶奶|奶奶|老人|大爷|爷爷|老头).{0,20}(还在|吃|用|推荐)/,
- desc:"禁止虚构高龄人设背书",
- fix:"删除虚构人物故事"},
+ re:/\d+\s*岁.{0,8}(老奶奶|奶奶|老人|大爷|爷爷|老头|老太太|老婆婆|老中医|中医|大夫|医生|护士|营养师|教授|院士|专家|研究员|科学家|博士|师傅|老师|校长|主任|大师|高人).{0,20}(还在|吃|用|推荐|说|告诉|透露|讲|分享|坦言|直言|亲口|劝|提醒|强调|建议|忠告)/,
+ desc:"禁止虚构高龄人设/高龄从业者背书（86岁的营养师说/90岁老中医告诉我）",
+ fix:"删除虚构人物故事，改为客观介绍图书内容"},
 {id:"FAKE_2",cat:"虚构人设",level:"reject",
  re:/(震惊医学界|填补.*空白|突破.*壁垒|解密|机密|高层重视|祖传秘方|不外传)/,
  desc:"禁止虚构权威背景/神秘化表述",
@@ -484,6 +509,18 @@ var AUDIT_RULES=[
  re:/(老仓库|上次印刷还是.{0,5}\d+年前|稀有的书籍)/,
  desc:"涉嫌虚构稀缺场景制造紧迫感",
  fix:"删除虚构场景描述，客观介绍产品"},
+{id:"FAKE_5",cat:"虚构人设",level:"reject",
+ re:/(日本|韩国|美国|欧洲|德国|法国|英国|意大利|瑞士|北欧|犹太人?|以色列|印度|新加坡)[人]?[\s\S]{0,30}(很难|几乎(没有|看不到|不|不会)|从来不|根本(没有|不会|不)|都不|不会|没有|找不到|遇不到|看不到)[\s\S]{0,15}(老人|病人|胖子|失眠|肥胖|癌症|高血压|糖尿病|近视|脱发|秃头|肠胃病|颈椎病|腰椎病|抑郁|焦虑|生病|卧病在床|住院)/,
+ desc:"禁止虚构「在X国很难看到XX病/某人群」式国外见闻噱头（无事实依据）",
+ fix:"删除国外见闻类虚构故事，改为客观介绍图书内容"},
+{id:"FAKE_6",cat:"虚构人设",level:"reject",
+ re:/(一个|有一个|有个).{0,4}(奇怪|惊人|神奇|罕见|特别|怪异|诡异|不可思议|很有意思).{0,4}(现象|事情|秘密|规律|事儿)/,
+ desc:"禁止「有一个奇怪/惊人的现象」式虚构噱头开场",
+ fix:"删除虚构噱头，改为客观介绍图书内容"},
+{id:"FAKE_7",cat:"虚构人设",level:"reject",
+ re:/\d+\s*岁.{0,4}(的)?(老中医|中医|大夫|医生|护士|营养师|教授|院士|专家|研究员|科学家|博士|师傅|老师|校长|主任|大师|高人|阿婆|奶奶|爷爷).{0,15}(说|告诉|透露|讲|分享|坦言|直言|亲口|劝|提醒|强调|建议|忠告)/,
+ desc:"禁止「N岁的XX师/中医/教授说」类虚构高龄从业者背书（缺乏真实出处）",
+ fix:"删除虚构人物，改用真实来源（如书中作者+真实身份+原文引用）"},
 
 // ====== 六、K12学科培训暗示（教育专项 + 广告法第24条）======
 {id:"K12_1",cat:"K12违规",level:"reject",
@@ -654,8 +691,8 @@ var AUDIT_RULES=[
 
 // ====== 教育行业风控文档 — 封建迷信(L3) ======
 {id:"SUP_1",cat:"封建迷信",level:"reject",
- re:/(算命|占卜|批命|改命|批卦|改运|转运|招财|辟邪)/,
- desc:"禁止涉及运势/批命/改命/转运等封建迷信内容",
+ re:/(算命|占卜|批命|改命|批卦|改运|转运|招财|辟邪|命理|八字|生辰八字|生辰|本命年|犯太岁|开光|招桃花|看八字|测八字|算八字|测运势|算运势|属相运|生肖运|缺金|缺木|缺水|缺火|缺土)/,
+ desc:"禁止涉及运势/批命/改命/转运/八字命理等封建迷信内容",
  fix:"删除迷信内容"},
 {id:"SUP_2",cat:"封建迷信",level:"reject",
  re:/(天干地支|八卦|五行相克|九宫).{0,8}(人体|健康|疾病|出行|凶|吉)/,
@@ -665,6 +702,26 @@ var AUDIT_RULES=[
  re:/(面相|手相|骨相).{0,8}(判断|看出|预测|决定).{0,8}(命运|运势|性格|富贵|穷)/,
  desc:"禁止通过面相/手相预测命运",
  fix:"删除面相命运关联内容"},
+{id:"SUP_4",cat:"封建迷信",level:"reject",
+ re:/(命里|命中|八字里).{0,5}(缺|带|注定|有没|没|有)/,
+ desc:"禁止「命里缺X / 命中注定 / 八字里带X」等命数论表述",
+ fix:"删除命数论相关表述"},
+{id:"SUP_5",cat:"封建迷信",level:"reject",
+ re:/(运气|运势|命运).{0,3}(如何|怎么样|好不好|测一测|预测|算一算|算算|查一查|看一看|看看)|(测一测|算一算|算算|查一查|看一看|看看|测算|预测).{0,5}(运气|运势|命运)/,
+ desc:"禁止「运气如何 / 测一测命运 / 算一算运势」等命理预测式表述",
+ fix:"删除运势预测内容，改为客观描述"},
+{id:"SUP_6",cat:"封建迷信",level:"reject",
+ re:/(大运|流年|本命年|犯太岁|金木水火土命|纳音|紫微斗数|奇门遁甲|周易测算)/,
+ desc:"禁止「大运 / 流年 / 本命年 / 犯太岁 / 紫微斗数」等命理玄学表述",
+ fix:"删除命理玄学相关内容"},
+{id:"SUP_7",cat:"封建迷信",level:"reject",
+ re:/(属相|生肖|星座|血型).{0,3}(运|运势|运程|预测|测|配对|不合|相冲|相克)/,
+ desc:"禁止借生肖/星座/血型预测运势或人生",
+ fix:"仅作为兴趣话题客观介绍，不得关联运势/吉凶"},
+{id:"SUP_8",cat:"封建迷信",level:"reject",
+ re:/(风水|玄学|阴宅|阳宅|镇宅|化煞|貔貅|开运|招财进宝|五行调运|破财消灾|烧香拜佛|许愿成真)/,
+ desc:"禁止风水/玄学/招财/化煞/许愿等迷信内容",
+ fix:"删除风水玄学相关表述"},
 
 // ====== 教育行业风控文档 — 恐吓/制造焦虑/卖惨 ======
 {id:"FEAR_1",cat:"恐吓制造焦虑",level:"reject",
@@ -1477,7 +1534,30 @@ var AUDIT_RULES=[
 {id:"BOOK_ELDERLY_NUTRITIONIST",cat:"图书-虚构高龄专家",level:"reject",
  re:/\d+\s*岁的?\s*(?:营养师|养生专家|老中医|长寿专家)/,
  desc:"【拒审案例 80070096】禁止虚构「N岁营养师」类高龄专家人设作为图书背书",
- fix:"删除虚构高龄人设，使用作者真实身份与出版社背书"}];
+ fix:"删除虚构高龄人设，使用作者真实身份与出版社背书"},
+
+// ====== 四十九、教育图书行业 - 青少年敏感话题 ======
+// 来源：腾讯广告教育/图书行业审核规范，禁止在素材中出现的青少年相关敏感议题
+{id:"YOUTH_1",cat:"青少年敏感话题",level:"reject",
+ re:/(早恋|早恋情|青春期恋爱|中学生恋爱|小学生恋爱)/,
+ desc:"禁止出现'早恋'等渲染未成年人恋爱关系的话题，教育/图书品类素材不支持",
+ fix:"删除早恋相关表述，改为中性话题如'青春期成长''情绪管理'"},
+{id:"YOUTH_2",cat:"青少年敏感话题",level:"reject",
+ re:/(性教育|两性教育|青春期性启蒙|生理启蒙|两性话题|两性关系)/,
+ desc:"禁止出现'性教育'等两性敏感话题，教育/图书品类素材不支持直接描述",
+ fix:"删除两性话题表述，改为'科学认识身体''青春期心理疏导'等中性表达"},
+{id:"YOUTH_3",cat:"青少年敏感话题",level:"reject",
+ re:/(自闭症|阿斯伯格|多动症|ADHD|抽动症|学习障碍|读写障碍|智力障碍|精神发育迟缓|发育迟缓)/,
+ desc:"禁止以'自闭症/多动症'等特殊儿童疾病作为卖点或引子（涉医疗诊断且易引发歧视/焦虑）",
+ fix:"删除疾病诊断相关词，改为'专注力提升''行为习惯培养'等中性能力维度"},
+{id:"YOUTH_4",cat:"青少年敏感话题",level:"reject",
+ re:/(抑郁症|焦虑症|双相情感障碍|强迫症|厌学症|网瘾|自残|自杀|轻生)/,
+ desc:"禁止使用心理疾病诊断或自残自杀类敏感词（医疗+负向情绪叠加，违规风险高）",
+ fix:"删除心理疾病/自残词，改为'情绪调节''心理健康陪伴'等正向中性表达"},
+{id:"YOUTH_5",cat:"青少年敏感话题",level:"warn",
+ re:/(叛逆|逆反|早熟|性早熟|青春期叛逆)/,
+ desc:"渲染未成年人负面行为标签，建议谨慎使用",
+ fix:"建议改为'独立意识增强''青春期沟通'等中性描述"}];
 
 // --- ADQ违规词精确匹配列表（非正则，用于逐词检测）---
 var ADQ_BANNED_WORDS=["送分题","押中考点","押中考题","命中考点","命中考题","永远考不过","盈利","长脑子最快","洞察天地","领悟天地","天地自然","天地规律","财富风口","最后一批","最神秘","最美","最管用","天罡","地煞","算卦","道冠","裸体","注射","解剖","解剖学","司法考试","中考真题讲解","繁体字","被迫结婚","郭继承","删减版","未删减版","台版","港版","港台原版","港台版","台港原版","台湾版","香港版","冬衔春","夏衔秋","幼小衔接","老师推荐","班主任推荐","万年历","生辰八字","大运流年","命里缺啥","K糖期","9吃9不吃","10吃9不吃","核桃编程","少儿编程课","口算PK抢答赛","86岁的营养师","晚间播报","记者获悉","央视报道"];
@@ -1503,7 +1583,7 @@ function splitCopies(text){
 }
 
 // --- 审核单条文案 ---
-function auditOneCopy(text){
+function auditOneCopy(text,customWords){
   var violations=[];
   // 正则规则检测
   for(var i=0;i<AUDIT_RULES.length;i++){
@@ -1539,9 +1619,90 @@ function auditOneCopy(text){
       }
     }
   }
+  // === 用户自定义规则检测（来自页面"自定义审核规则"输入框） ===
+  if(customWords && customWords.length){
+    for(var i=0;i<customWords.length;i++){
+      var cw=customWords[i];
+      if(!cw) continue;
+      var cIdx=text.indexOf(cw);
+      if(cIdx!==-1){
+        // 与已命中区间重叠则跳过，避免重复报告
+        var dup=false;
+        for(var j=0;j<violations.length;j++){
+          var v=violations[j];
+          if(cIdx<v.end && cIdx+cw.length>v.start){dup=true;break;}
+        }
+        if(!dup){
+          violations.push({
+            id:"USER_RULE",cat:"用户自定义规则",level:"reject",
+            desc:"命中用户配置的自定义审核规则关键词",
+            fix:"删除或替换该关键词，使其符合自定义审核规范",
+            matched:cw,start:cIdx,end:cIdx+cw.length
+          });
+        }
+      }
+    }
+  }
   // === 同类别区间重叠去重：保留更长/更具体的匹配 ===
   violations=dedupViolations(violations);
   return violations;
+}
+
+// --- 解析"自定义审核规则" textarea 内容为关键词数组 ---
+// 支持：换行分隔、逗号（中英文）、顿号、分号、空白；自动剥离常见停用前缀（"不得出现"等）
+function parseCustomRules(raw){
+  if(!raw) return [];
+  var STOP_PHRASES=['不得出现','不能出现','禁止出现','禁止使用','不得使用','不能使用','请勿出现','请勿使用','避免出现','避免使用','严禁出现','严禁使用','严禁','禁止','请勿','等内容','等词语','等关键词','等敏感词','等词','以下内容','以下关键词','以下敏感词','的内容','的关键词'];
+  var parts=raw.split(/[\n\r,，、;；]+/);
+  var words=[];
+  var seen={};
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i].trim();
+    if(!p) continue;
+    // 去掉首尾标点
+    p=p.replace(/^[\s\-\*•·。.:：>›\]\[【】「」『』"'"'`]+|[\s。.:："'"'`]+$/g,'');
+    // 移除常见自然语言停用短语（按长度从长到短，避免短词先吃掉长词的子串）
+    for(var s=0;s<STOP_PHRASES.length;s++){
+      while(p.indexOf(STOP_PHRASES[s])!==-1){
+        p=p.split(STOP_PHRASES[s]).join('');
+      }
+    }
+    // 再做一次"出现"裸字清理（防 "严禁出现:" 这类残留）
+    p=p.replace(/^出现[：:、]?/,'').trim();
+    if(!p) continue;
+    // 长句继续按"和/与/及/或/或者/还有"再切一层
+    var subs=p.split(/(?:和|与|及|或者|或|还有|以及)/);
+    for(var k=0;k<subs.length && words.length<200;k++){
+      var s2=subs[k].trim().replace(/^[\s\-\*•·。.:：]+|[\s。.:：]+$/g,'');
+      if(s2.length>=2 && s2.length<=20 && !seen[s2]){
+        seen[s2]=1;
+        words.push(s2);
+      }
+    }
+  }
+  return words;
+}
+
+// 实时回显自定义规则解析状态
+(function(){
+  var el=document.getElementById('customRulesInput');
+  if(!el) return;
+  el.addEventListener('input',function(){
+    var status=document.getElementById('customRulesStatus');
+    if(!status) return;
+    var ws=parseCustomRules(this.value);
+    if(ws.length===0){
+      status.textContent='尚未配置自定义规则';
+      status.style.color='#484f58';
+    } else {
+      status.textContent='已识别 '+ws.length+' 条自定义关键词：'+ws.slice(0,8).join('、')+(ws.length>8?'…':'');
+      status.style.color='#3fb950';
+    }
+  });
+})();
+function clearCustomRules(){
+  var el=document.getElementById('customRulesInput');
+  if(el){el.value='';el.dispatchEvent(new Event('input'));}
 }
 
 // --- 同类别（cat）区间重叠去重：保留覆盖范围更长的那条 ---
@@ -1635,6 +1796,10 @@ function runAudit(){
   var text=document.getElementById('scriptInput').value.trim();
   if(!text){alert('请先输入或粘贴脚本文案');return;}
   
+  // 解析"自定义审核规则"输入框
+  var customEl=document.getElementById('customRulesInput');
+  var customWords=parseCustomRules(customEl?customEl.value:'');
+  
   var copies=splitCopies(text);
   var totalReject=0,totalWarn=0,totalPass=0;
   var html='';
@@ -1644,7 +1809,7 @@ function runAudit(){
   
   for(var i=0;i<copies.length;i++){
     var copy=copies[i];
-    var violations=auditOneCopy(copy);
+    var violations=auditOneCopy(copy,customWords);
     allViolations=allViolations.concat(violations);
     
     var rejectCount=0,warnCount=0;
