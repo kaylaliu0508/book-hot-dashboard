@@ -140,7 +140,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
 <button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit">AI预审</button>
 <a href="/summer/" class="tb" data-track="tab_btn_summer">📅 暑期专栏</a>
-<button class="tb tb-ai" onclick="go('pai',this)" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:linear-gradient(135deg,#ff6b35,#ff9a3c);color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
+<button class="tb tb-ai" onclick="go('pai',this)" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
 </div></div>
 
 <div class="wrap">
@@ -3258,12 +3258,12 @@ function adExportMd(){
 
 <!-- ==================== AI 营销助手面板 ==================== -->
 <style>
-/* AI营销助手 TAB 特殊高亮样式 */
-.tb.tb-ai{color:#ff8c42}
-.tb.tb-ai:hover{color:#fff;background:rgba(255,107,53,.15)}
-.tb.tb-ai.on{background:linear-gradient(135deg,#ff6b35,#ff9a3c);color:#fff}
+/* AI营销助手 TAB 特殊高亮样式：与主站红色风格统一 */
+.tb.tb-ai{color:rgba(255,255,255,.4)}
+.tb.tb-ai:hover{color:#fff;background:rgba(230,57,70,.15)}
+.tb.tb-ai.on{background:#e63946;color:#fff}
 </style>
-<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#0f3460;z-index:50">
+<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#0d1117;z-index:50">
   <iframe id="aiAssistantFrame" src="" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write; clipboard-read; camera; microphone" title="AI 营销助手"></iframe>
 </div>
 
