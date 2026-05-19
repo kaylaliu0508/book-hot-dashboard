@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>图书选品台 · 2026年6月</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<link rel="stylesheet" href="select.css">
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="topnav">
+  <div class="logo">📚 图书灵感中心</div>
+  <div class="tabs">
+    <a class="tab active" href="/select/"><span class="step-num">1</span>图书选品台<span class="badge">NEW</span></a>
+    <a class="tab" href="/#p4">图书内容提取</a>
+    <a class="tab" href="/#p5">一键生成口播脚本</a>
+    <a class="tab" href="/#p3">AI 预审</a>
+    <a class="tab" href="/summer/">📅 暑期专栏</a>
+  </div>
+  </div>
+  <div class="pool-btn" onclick="switchSection('pool')">🛒 选品池 <span class="num" id="poolCountNav">0</span></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div>
+        <h1>📅 <span class="accent">2026 年 6 月</span> · 图书选品台</h1>
+        <div class="sub">
+          <span>🎯 ISBN 全链路锚点</span>
+          <span>📊 看过去 · 实战榜单 + 🔮 看未来 · 趋势预判</span>
+          <span style="color:#10b981;">●  实时同步</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-icon red">🎯</div><div class="stat-body"><div class="label">本月主推</div><div class="value">教辅 · 童书</div><div class="delta">期末季 + 暑期前哨</div></div></div>
+      <div class="stat"><div class="stat-icon blue">📚</div><div class="stat-body"><div class="label">候选 ISBN</div><div class="value" id="statSku">225</div><div class="delta">↑ 实战 + 推荐书单</div></div></div>
+      <div class="stat"><div class="stat-icon orange">📍</div><div class="stat-body"><div class="label">关键节点</div><div class="value">5 个</div><div class="delta">六一·高考·端午·期末·暑期</div></div></div>
+      <div class="stat"><div class="stat-icon green">🛒</div><div class="stat-body"><div class="label">已选品</div><div class="value" id="heroPoolCount">0</div><div class="delta">→ 直通创意生产</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 主导航：看过去 vs 看未来（双视角） -->
+<div class="subtabs">
+  <div class="subtab active" data-section="past">
+    <span class="subtab-num">📊</span>
+    <div class="subtab-text">看过去<span class="subtab-desc">实战复盘 · 大盘现在火什么</span></div>
+  </div>
+  <span class="subtab-arrow">·</span>
+  <div class="subtab" data-section="future">
+    <span class="subtab-num">🔮</span>
+    <div class="subtab-text">看未来<span class="subtab-desc">趋势预判 · 下个月该投什么</span></div>
+  </div>
+  <span class="subtab-arrow">·</span>
+  <div class="subtab" data-section="recommend">
+    <span class="subtab-num">⭐</span>
+    <div class="subtab-text">推荐书单<span class="subtab-desc">综合精选 · 按品类×策略分类</span></div>
+  </div>
+  <span style="margin-left:auto;display:flex;align-items:center;">
+    <div class="subtab" data-section="pool" style="border-bottom:none;">🛒 我的选品池</div>
+  </span>
+</div>
+
+<div class="container">
+
+<!-- ========================================== -->
+<!-- 1. 看过去：实战榜单 + 类目占比 + 跑量书拆解 -->
+<!-- ========================================== -->
+<section class="section active" id="section-past">
+
+  <div class="insight-banner">
+    <div class="icon">📊</div>
+    <div class="text">
+      <strong>看过去 · 实战复盘：</strong>
+      基于近一周 <span class="hl">实际投放表现</span>（ADQ 热投 + 腾讯营销小店版） + <span class="hl">真实销量榜单</span>（潜力优品），看大盘当下哪些书在跑量、哪些品类在吃量。
+    </div>
+  </div>
+
+  <!-- 1.1 类目占比横条（始终显示） -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>📊 本周类目消耗占比
+      <span class="extra" id="rankWeekLabel">2026-05-12 至 05-18</span>
+    </div>
+    <div class="cat-share-bar" id="catShareBar"></div>
+  </div>
+
+  <!-- 1.2 跑量书拆解（前置·洞察先行） -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>🔬 跑量书洞察
+      <span class="extra">代表书的核心数据 + 创意公式</span>
+    </div>
+    <div id="hotBookBreakdown"></div>
+  </div>
+
+  <!-- 1.3 实战榜单 3 小 Tab -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>🔥 实战榜单（近一周真实表现）
+      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?scode=AJEAIQdfAAo9zE4tgmARQAcAYdADQ&tab=fxrf9j" target="_blank" class="doc-link">
+        📎 查看往期文档
+      </a>
+    </div>
+    <div class="rank-tabs">
+      <div class="rank-tab active" data-rank="adq_hot" data-tip="腾讯广告 ADQ 平台近一周实际投放最热门的图书优品（按销量+转化率综合排名）">
+        🔥 ADQ 热投优品 <span class="count">20</span>
+      </div>
+      <div class="rank-tab" data-rank="weixinshop" data-tip="腾讯营销（小店版）近一周爆品榜单 — 微信小店广告无转化不扣费的实战优品">
+        💰 腾讯营销（小店版） <span class="count">15</span>
+      </div>
+      <div class="rank-tab" data-rank="potential" data-tip="ADQ 尚未投放/少量投放，但在抖音/小红书等其他媒体已经爆品的图书 — 蓝海机会">
+        💎 潜力爆品 <span class="count">15</span>
+      </div>
+    </div>
+    <div class="tab-tip" id="tabTipPast"></div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportCurrentRank()">📥 导出当前榜单 ISBN</button>
+    </div>
+    <div id="rankBody"></div>
+  </div>
+
+</section>
+
+<!-- ========================================== -->
+<!-- 2. 看未来：趋势预判 + 节点 + 4大品类透视 -->
+<!-- ========================================== -->
+<section class="section" id="section-future">
+
+  <div class="insight-banner">
+    <div class="icon">🔮</div>
+    <div class="text">
+      <strong>看未来 · 趋势预判：</strong>
+      基于<span class="hl">去年同期数据</span>推演 + <span class="hl">本月核心洞察</span> + <span class="hl">关键节点 × 人群画像</span>，预判下个月（6月）该重点投什么品类、什么节点、打什么人群。
+    </div>
+  </div>
+
+  <!-- 2.1 全年趋势图 -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>📈 2026 全年图书赛道节奏
+      <span class="extra">4 大品类消耗占比 + 总消耗趋势 + 关键节点</span>
+    </div>
+    <div class="chart chart-xl" id="chartYearTrend"></div>
+  </div>
+
+  <!-- 2.2 6月核心洞察 -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>💡 <span style="color:#3b82f6;">6 月</span> 核心洞察
+      <span class="extra">本月（5月）→ 下月（6月）选品策略</span>
+    </div>
+    
+    <div class="kpi-grid">
+      <div class="kpi tinted-red"><div class="kpi-label">📖 教辅</div><div class="kpi-value">36%</div><div class="kpi-sub up">期末+高考双引擎</div></div>
+      <div class="kpi tinted-orange"><div class="kpi-label">🧸 童书</div><div class="kpi-value">29%</div><div class="kpi-sub up">六一+暑期送礼高峰</div></div>
+      <div class="kpi tinted-purple"><div class="kpi-label">🏛 社科</div><div class="kpi-value">22%</div><div class="kpi-sub">情商/育儿稳态</div></div>
+      <div class="kpi tinted-green"><div class="kpi-label">🌿 健康</div><div class="kpi-value">13%</div><div class="kpi-sub">夏季减糖+24节气</div></div>
+    </div>
+
+    <div class="insight-banner" style="margin-top:14px;">
+      <div class="icon">🎯</div>
+      <div class="text">
+        <strong>6月选品策略：</strong>
+        以<span class="hl">教辅期末（6/20-30）</span>抢量为基本盘，<span class="hl">童书六一（5/25-6/1）</span>抓送礼增量，<span class="hl">高考志愿（6/7-9）</span>跑短窗口高客单，<span class="hl">端午国学（6/19）</span>攻文化属性创意。预算建议 <strong>教辅 50% / 童书 25% / 社科 15% / 健康 10%</strong>。
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 节点 × 人群画像 -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>📍 6 月关键节点 × 目标人群画像
+    </div>
+    <div class="np-list" id="nodePersonaList"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>🎯 重点品类深度选品思路
+      <span class="extra">基本盘 · 机会盘 · 潜力盘 三大角色定位</span>
+    </div>
+    <div id="deepGrid"></div>
+  </div>
+
+</section>
+
+<!-- ========================================== -->
+<!-- 3. 推荐书单：综合精选 · 按品类×策略分 -->
+<!-- ========================================== -->
+<section class="section" id="section-recommend">
+
+  <div class="insight-banner">
+    <div class="icon">⭐</div>
+    <div class="text">
+      <strong>推荐书单 · 综合精选：</strong>
+      基于<span class="hl">市场趋势 + AMS 准入 + 选品指南</span>整理的精选书单，按品类（童书/健康/社科）和策略（潜力/预测）分类，可一键加入选品池。
+    </div>
+  </div>
+
+  <!-- 推荐书单 6 个 Tab -->
+  <div class="panel">
+    <div class="panel-title">
+      <span class="dot"></span>📚 选择推荐维度
+      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?scode=AJEAIQdfAAo9zE4tgmARQAcAYdADQ&tab=fxrf9j" target="_blank" class="doc-link">
+        📎 查看往期文档
+      </a>
+    </div>
+    <div class="rec-tabs">
+      <div class="rec-tab active" data-rec="all" data-tip="所有推荐书单综合视图，按童书/健康/社科分组展示">
+        📋 全部推荐 <span class="count" id="recCountAll">--</span>
+      </div>
+      <div class="rec-tab" data-rec="童书" data-tip="童书推荐书单 — 来自选品指南，包含心理情绪、成长教育、青春期类等高潜书目">
+        🧸 童书 <span class="count" id="recCountChild">--</span>
+      </div>
+      <div class="rec-tab" data-rec="健康" data-tip="健康推荐书单 — 中医养生、饮食健康、家庭护理类精选，覆盖夏季+24节气节点">
+        🌿 健康 <span class="count" id="recCountHealth">--</span>
+      </div>
+      <div class="rec-tab" data-rec="社科" data-tip="社科推荐书单 — AI/管理/历史/文学/励志类精选，覆盖职场+成长场景">
+        🏛 社科 <span class="count" id="recCountSocial">--</span>
+      </div>
+      <div class="rec-tab" data-rec="potential" data-tip="潜力爆品 — ADQ 尚未充分投放，但在抖音/小红书等其他媒体已爆品的图书（蓝海机会）">
+        💎 潜力爆品 <span class="count">15</span>
+      </div>
+      <div class="rec-tab" data-rec="forecast" data-tip="预测爆品 — 基于去年下一周期数据推演，预判本月即将爆发的潜质书">
+        🎯 预测爆品 <span class="count">15</span>
+      </div>
+    </div>
+    <div class="tab-tip" id="tabTipRec"></div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportCurrentRec()">📥 导出当前书单 ISBN</button>
+    </div>
+    <div id="recBody"></div>
+  </div>
+
+</section>
+
+<!-- 我的选品池 -->
+<section class="section" id="section-pool">
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>🛒 我的选品池</div>
+    <div id="poolBody"></div>
+  </div>
+</section>
+
+</div>
+
+<script src="isbn-image-map.js"></script>
+<script src="rank-data.js"></script>
+<script src="select-data.js"></script>
+<script src="recommend-data.js"></script>
+<script src="select-app.js"></script>
+</body>
+</html>
