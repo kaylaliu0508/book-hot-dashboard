@@ -414,7 +414,8 @@ function go(id,el){
 (function(){
   var h=location.hash.replace('#','');
   var tbs=document.querySelectorAll('.bar-in .tb');
-  var map={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':5};
+  // 注意：暑期专栏(/summer/)也是 .tb 元素占用 index 5，所以 pai=6
+  var map={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':6};
   if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
   else{
     // 默认 tab 也要打首屏 PV
