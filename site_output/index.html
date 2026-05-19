@@ -167,9 +167,9 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- 自定义审核规则（用户喂入的额外违禁词/规则） -->
 <details id="customRulesPanel" style="margin-top:10px;background:#0d1117;border:1px dashed #30363d;border-radius:8px;padding:8px 12px">
 <summary style="cursor:pointer;font-size:11.5px;color:#8b949e;user-select:none;outline:none">
-➕ 自定义审核规则 <span style="color:#484f58;font-weight:400">（粘贴你的审核规范，逐行或逗号分隔关键词；命中即标记为"不通过"）</span>
+➕ 自定义审核规则 <span style="color:#484f58;font-weight:400">（支持关键词清单或自然语言描述，命中即不通过；同时会作为最高优先级规则交给 AI 语义复审，识别同义/改写）</span>
 </summary>
-<textarea id="customRulesInput" rows="4" placeholder="支持以下任意一种格式，每行一条或多条：&#10;• 关键词形式：早恋, 性教育, 自闭症&#10;• 自然语言：不得出现性教育、早恋、自闭症等内容&#10;• 一行一条：&#10;  早恋&#10;  性教育&#10;  自闭症" style="width:100%;margin-top:8px;padding:10px;border:1px solid #30363d;border-radius:6px;font-size:11.5px;line-height:1.6;outline:none;background:#161b22;color:#c9d1d9;resize:vertical;font-family:inherit"></textarea>
+<textarea id="customRulesInput" rows="4" placeholder="支持以下任意一种格式：&#10;• 关键词清单（逗号/换行/斜杠分隔）：早恋, 性教育, 自闭症&#10;• 自然语言：不得出现性教育、早恋、自闭症等内容&#10;• 整段规则文档（含「如/例如」举例）：均不支持使用，如保送 XX 大学/985/211，从倒数变前三&#10;&#10;系统会自动剥离「如/例如/不得出现」等无关措辞；同时把原文规则交给 AI 做语义判断（如规则写「从倒数变前三」，文案写「从倒数变成前三名」也能识别）" style="width:100%;margin-top:8px;padding:10px;border:1px solid #30363d;border-radius:6px;font-size:11.5px;line-height:1.6;outline:none;background:#161b22;color:#c9d1d9;resize:vertical;font-family:inherit"></textarea>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
 <span id="customRulesStatus" style="font-size:10.5px;color:#484f58">尚未配置自定义规则</span>
 <button onclick="clearCustomRules()" style="padding:3px 10px;border-radius:4px;border:1px solid #30363d;background:#161b22;color:#8b949e;font-size:10.5px;cursor:pointer">清空规则</button>
@@ -1833,29 +1833,56 @@ function auditOneCopy(text,customWords){
 // 支持：换行分隔、逗号（中英文）、顿号、分号、空白；自动剥离常见停用前缀（"不得出现"等）
 function parseCustomRules(raw){
   if(!raw) return [];
+
+  // === 1. 字符归一化：全角→半角、统一空白 ===
+  raw=raw
+    .replace(/，/g,',').replace(/；/g,';').replace(/、/g,',')
+    .replace(/【/g,'[').replace(/】/g,']')
+    .replace(/「/g,'"').replace(/」/g,'"')
+    .replace(/[ \t\u3000]+/g,' ');
+
+  // === 2. 元规则措辞剔除（这些是"规则的描述语"而非关键词）===
+  var META_PHRASES=[
+    '受益人\\+','受益人[+加和]','可量化的明确承诺类效果','可量化的承诺类效果','明确承诺类效果',
+    '无论是否(?:添加|加上)?(?:警示语|提示语)','均不(?:支持|可以)?使用','均不(?:支持|可以)?',
+    '无法衡量的模糊效果','模糊效果','可支持','不支持使用','不支持',
+    '需要?\\s*(?:添加|加上|提供)\\s*(?:警示语|提示语|证明)',
+    '添加.{0,8}警示语','如下','以下','支持使用',
+    '添加.{0,15}警示语.{0,5}可支持'
+  ];
+  for(var im=0;im<META_PHRASES.length;im++){
+    raw=raw.replace(new RegExp(META_PHRASES[im],'g'),' ');
+  }
+
+  // === 3. 举例引导词剥离（如/例如/比如/譬如/像/举例 等）===
+  raw=raw.replace(/(?:^|[\s,;:：])\s*(?:如|例如|比如|譬如|像|举例[：:]?|例[：:])\s*/g,' ');
+
+  // === 4. 停用短语剔除 ===
   var STOP_PHRASES=['不得出现','不能出现','禁止出现','禁止使用','不得使用','不能使用','请勿出现','请勿使用','避免出现','避免使用','严禁出现','严禁使用','严禁','禁止','请勿','等内容','等词语','等关键词','等敏感词','等词','以下内容','以下关键词','以下敏感词','的内容','的关键词'];
-  var parts=raw.split(/[\n\r,，、;；]+/);
+  for(var s=0;s<STOP_PHRASES.length;s++){
+    while(raw.indexOf(STOP_PHRASES[s])!==-1){
+      raw=raw.split(STOP_PHRASES[s]).join(' ');
+    }
+  }
+
+  // === 5. 切分：换行/逗号/分号/斜杠（斜杠是为了 "985/211/XX大学" 这种枚举）===
+  var parts=raw.split(/[\n\r,;\/／]+/);
   var words=[];
   var seen={};
   for(var i=0;i<parts.length;i++){
     var p=parts[i].trim();
     if(!p) continue;
-    // 去掉首尾标点
-    p=p.replace(/^[\s\-\*•·。.:：>›\]\[【】「」『』"'"'`]+|[\s。.:："'"'`]+$/g,'');
-    // 移除常见自然语言停用短语（按长度从长到短，避免短词先吃掉长词的子串）
-    for(var s=0;s<STOP_PHRASES.length;s++){
-      while(p.indexOf(STOP_PHRASES[s])!==-1){
-        p=p.split(STOP_PHRASES[s]).join('');
-      }
-    }
-    // 再做一次"出现"裸字清理（防 "严禁出现:" 这类残留）
-    p=p.replace(/^出现[：:、]?/,'').trim();
+    p=p.replace(/^[\s\-\*•·。.:：>›\]\[\(\)（）"'"'`+]+|[\s。.:："'"'`+]+$/g,'');
+    p=p.replace(/^出现[：:]?/,'').trim();
     if(!p) continue;
-    // 长句继续按"和/与/及/或/或者/还有"再切一层
+    // 长句按 和/与/及/或/或者/还有/以及 再切一层
     var subs=p.split(/(?:和|与|及|或者|或|还有|以及)/);
     for(var k=0;k<subs.length && words.length<200;k++){
       var s2=subs[k].trim().replace(/^[\s\-\*•·。.:：]+|[\s。.:：]+$/g,'');
-      if(s2.length>=2 && s2.length<=20 && !seen[s2]){
+      // 关键词长度 2~25 字
+      if(s2.length>=2 && s2.length<=25 && !seen[s2]){
+        // 过滤含元规则措辞或多个标点的"长描述"
+        if(/[，。；！？]|无论是否|均不支持|可支持|警示语|不支持使用/.test(s2)) continue;
         seen[s2]=1;
         words.push(s2);
       }
@@ -2106,13 +2133,15 @@ function runAudit(){
   // === AI 语义复审（异步，仅对未被快路径 reject 的文案）===
   var aiToggle=document.getElementById('aiAuditEnabled');
   if(aiToggle && aiToggle.checked){
-    runAIAuditBatch(copies, allViolations, totalReject, totalWarn, totalPass);
+    // 把用户原始规则文本一并传入，让 AI 也按用户规则做语义判断
+    var customRulesRawText=customEl?customEl.value.trim():'';
+    runAIAuditBatch(copies, allViolations, totalReject, totalWarn, totalPass, customRulesRawText);
   }
 }
 
 // --- AI 语义复审：调用 /api/deepseek/chat/completions 做语义判断，结果合并到 UI ---
 // 仅对"快路径未 reject 的文案"做二审，避免重复消耗
-function runAIAuditBatch(copies, prevViolations, prevReject, prevWarn, prevPass){
+function runAIAuditBatch(copies, prevViolations, prevReject, prevWarn, prevPass, customRulesRawText){
   // 收集需要 AI 复审的文案：跳过已经被快路径 reject 掉的（不再浪费 AI 调用）
   var rejectedIdx={};
   for(var i=0;i<prevViolations.length;i++){
@@ -2136,8 +2165,8 @@ function runAIAuditBatch(copies, prevViolations, prevReject, prevWarn, prevPass)
   // 注入"AI 复审中"加载条
   insertAIAuditLoadingBanner(batch.length);
 
-  // 调用 AI
-  callAIAudit(batch).then(function(aiResults){
+  // 调用 AI（携带用户自定义规则）
+  callAIAudit(batch, customRulesRawText).then(function(aiResults){
     applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prevWarn, prevPass);
   }).catch(function(err){
     console.warn('AI 复审失败:',err);
@@ -2168,11 +2197,25 @@ function insertAIAuditLoadingBanner(n){
   result.insertBefore(b, result.firstChild);
 }
 
-function callAIAudit(batch){
+function callAIAudit(batch, customRulesRawText){
   // 构造 prompt：把每条文案编号，让模型对每条返回 verdict
   var listText=batch.map(function(b,i){return '第'+(i+1)+'条：'+b.text;}).join('\n');
-  var sysPrompt='你是腾讯广告平台教育/图书行业的资深审核专家，熟悉广告法、腾讯广告 V6 规则、腾讯广告教育图书行业审核规范。请从语义层面判断给定的广告/口播文案是否违规。\n\n'+
-    '## 重点关注的违规类别（命中任一即 reject）\n'+
+
+  // === 用户自定义规则注入（最高优先级，置于规则前面）===
+  var userRulesSection='';
+  if(customRulesRawText && customRulesRawText.trim()){
+    var trimmed=customRulesRawText.trim();
+    // 防止 token 溢出：用户规则单边截断到 3000 字符
+    if(trimmed.length>3000) trimmed=trimmed.slice(0,3000)+'\n（用户规则过长，已截断）';
+    userRulesSection='## 🔥 用户自定义审核规则（最高优先级，必须严格遵守）\n'+
+      '以下是用户为本次审核额外添加的规则。**只要文案在语义上违反了这些规则中的任何一条**（即使是同义改写或近似表达，例如规则写「从倒数变前三」、文案写「从倒数变成前三名」也算命中），就必须 reject，并在 cat 字段标注「用户自定义规则」开头：\n\n'+
+      '```\n'+trimmed+'\n```\n\n'+
+      '判定时请重点理解规则的**语义**而非字面，对同义、改写、扩展形式都要识别。\n\n';
+  }
+
+  var sysPrompt=userRulesSection+
+    '你是腾讯广告平台教育/图书行业的资深审核专家，熟悉广告法、腾讯广告 V6 规则、腾讯广告教育图书行业审核规范。请从语义层面判断给定的广告/口播文案是否违规。\n\n'+
+    '## 通用违规类别（命中任一即 reject）\n'+
     '1. **负向行为宣传**：抄答案、考试作弊、翻书抄、偷看答案、找枪手代考；未成年人不良行为；贬损同行\n'+
     '2. **虚假承诺/无法核实的效果描述**：保过/稳过、X天学会、看完就懂、永远赶不上、只要每天X就一定Y\n'+
     '3. **绝对化用语/夸大宣传**：最/第一/唯一/顶级/万能/国家级/权威认证（无授权）\n'+
@@ -2182,12 +2225,18 @@ function callAIAudit(batch){
     '7. **饥饿营销**：仅剩X本、马上下架、限量\n'+
     '8. **诱导/迷信玄学话术**：能量低的人刷不到、刷到就是缘分\n'+
     '9. **教育图书行业专项**：K12 学科辅导承诺、新课改/教育部推荐（无授权）、保升学、押题保过\n'+
-    '10. **虚假新闻/伪科学**：仿央视新闻报道口吻、必须吃X不能吃Y、X天X不吃饮食指令\n\n'+
+    '10. **虚假新闻/伪科学**：仿央视新闻报道口吻、必须吃X不能吃Y、X天X不吃饮食指令\n'+
+    '11. **不文明用语**：傻逼/弱智/卧槽/装逼/草泥马/屎/尿/屁/狗屁 等\n'+
+    '12. **负面价值观**：躺平/内卷/靠勤奋发不了财/中国人活得很累/人生结束了/举报公司\n'+
+    '13. **负面行为引导**：不吃饭/贷款也要买、霸凌、殴打父母、撕书扔书、跳楼自杀、丢下孩子\n'+
+    '14. **负面议题**：抨击/抹黑政府、动了XX的蛋糕、得罪XX、补习机构要关门、损害XX利益、影射张雪峰被打压\n'+
+    '15. **抨击家长/负面归因**：不懂xx的家长、聪明的家长和啥的家长、孩子不爱学习都是家长教育的问题\n\n'+
     '## 输出格式（严格 json，禁止任何额外文字）\n'+
     '```\n'+
-    '{"results":[{"idx":1,"verdict":"reject"或"pass","cat":"违规类别（仅 reject 时必填，如「负向行为-学习作弊」「虚假效果承诺」「封建迷信」等）","desc":"违规描述（仅 reject 时必填，简洁一句话）","matched":"原文中违规的关键短语","fix":"修改建议（一句话）"},...]}\n'+
+    '{"results":[{"idx":1,"verdict":"reject"或"pass","cat":"违规类别（仅 reject 时必填；如来自用户规则则以「用户自定义规则」开头）","desc":"违规描述（仅 reject 时必填，简洁一句话，并说明依据是用户规则还是通用规则）","matched":"原文中违规的关键短语","fix":"修改建议（一句话）"},...]}\n'+
     '```\n\n'+
     '## 判定原则\n'+
+    (userRulesSection?'- **用户自定义规则优先**：先按用户规则语义判定；用户规则未涉及的，再按下方通用规则判定\n':'')+
     '- 客观/中性表达不要误判（例如「考试很简单」「正在备考」「本书答案详尽」「他是营养师」「日本饮食文化」）\n'+
     '- 只要文案出现把违规行为作为卖点/比喻/诱导，就 reject\n'+
     '- 若整体是合规的图书内容介绍/客观描述，就 pass\n'+
