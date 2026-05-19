@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="app-version" content="2026-05-19-r6-prompt-redline">
 <title>图书灵感中心 - {{DATE_STR}}</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -183,6 +187,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <span>🤖 启用 AI 语义复审</span>
 </label>
 <span style="font-size:10px;color:#484f58;flex:1">在正则规则之外，由 AI 从语义层面判断负向行为/虚假承诺/迷信噱头等违规话术（每次最多复审 5 条文案，限频 30 次/分钟）</span>
+<span id="aiRuleVer" title="点击强制刷新到最新规则版本" onclick="forceReloadLatest()" style="font-size:10px;color:#58a6ff;background:rgba(88,166,255,.08);padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid rgba(88,166,255,.2);user-select:none">规则版本：v2026-05-19-r6 🔄</span>
 </div>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
@@ -2443,6 +2448,20 @@ function applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prev
     summaryNums[1].textContent=newPass;
     summaryNums[3].textContent=newRej;
   }
+}
+
+// 强制清缓存并重新加载最新版本
+function forceReloadLatest(){
+  try{
+    if('caches' in window){
+      caches.keys().then(function(names){
+        names.forEach(function(n){caches.delete(n);});
+      });
+    }
+  }catch(_){}
+  // 加时间戳强制 bypass HTTP 缓存
+  var u=window.location.pathname+'?_v='+Date.now();
+  window.location.replace(u);
 }
 
 function escapeHtml(s){
