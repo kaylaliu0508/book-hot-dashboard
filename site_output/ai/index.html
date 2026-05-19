@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图书灵感中心 · 智能营销助手</title>
+<style>
+  :root {
+    --primary: #FF6B35;
+    --primary-dark: #E85A24;
+    --primary-light: #FFF0EB;
+    --secondary: #2D3A8C;
+    --miaowen: #7C3AED;
+    --miaowen-light: #F5F3FF;
+    --book: #059669;
+    --book-light: #ECFDF5;
+    --hybrid: #D97706;
+    --hybrid-light: #FFFBEB;
+    --bg: #F7F8FC;
+    --white: #FFFFFF;
+    --text: #1A1A2E;
+    --text-light: #6B7280;
+    --border: #E5E7EB;
+    --shadow: 0 4px 24px rgba(0,0,0,0.12);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.18);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── 演示页 ─── */
+  .demo-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demo-page::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,107,53,0.1), transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(124,58,237,0.15), transparent 50%);
+    animation: bgFloat 8s ease-in-out infinite;
+  }
+
+  @keyframes bgFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .demo-content { position: relative; z-index: 1; text-align: center; max-width: 860px; width: 100%; }
+
+  .demo-logo {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--primary), #FF9A3C);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 24px;
+    box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+  }
+
+  .demo-title { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .demo-subtitle { font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 14px; line-height: 1.5; }
+
+  .power-badges {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-bottom: 14px;
+  }
+
+  .power-badge {
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-book { background: rgba(5,150,105,0.25); border: 1px solid rgba(5,150,105,0.5); color: #6EE7B7; }
+  .badge-miaowen { background: rgba(124,58,237,0.25); border: 1px solid rgba(124,58,237,0.5); color: #C4B5FD; }
+
+  /* 移除重复 */
+  .demo-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+  .demo-features .card-full { grid-column: 1 / -1; }
+
+  .feature-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 14px;
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), transparent);
+    opacity: 0; transition: opacity 0.25s;
+    border-radius: 16px;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+  .feature-card:active { transform: translateY(0) scale(0.98); }
+
+  .feature-card .f-icon { font-size: 20px; margin-bottom: 6px; display: block; }
+  .feature-card .f-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.95); margin-bottom: 4px; }
+  .feature-card .f-desc { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 7px; }
+  .feature-card .f-action {
+    font-size: 10px; color: var(--primary);
+    display: flex; align-items: center; gap: 4px;
+    font-weight: 600; opacity: 0.85;
+  }
+  .feature-card:hover .f-action { opacity: 1; }
+
+  /* 各卡片主题色边框 */
+  .card-book { border-top: 3px solid #10B981; }
+  .card-hot { border-top: 3px solid #F59E0B; }
+  .card-white { border-top: 3px solid #7C3AED; }
+  .card-black { border-top: 3px solid #EF4444; }
+
+  .demo-hint { color: rgba(255,255,255,0.45); font-size: 12px; animation: pulse 2s ease-in-out infinite; margin-top: 6px; }
+
+  @keyframes pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.9; } }
+
+  /* ─── 悬浮按钮 ─── */
+  .chat-fab { position: fixed; bottom: 28px; right: 28px; z-index: 1000; }
+
+  .fab-btn {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #FF9A3C 100%);
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.5);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: fabPulse 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  @keyframes fabPulse {
+    0% { box-shadow: 0 4px 20px rgba(255,107,53,0.5), 0 0 0 0 rgba(255,107,53,0.4); }
+    50% { box-shadow: 0 4px 20px rgba(255,107,53,0.5), 0 0 0 14px rgba(255,107,53,0); }
+    100% { box-shadow: 0 4px 20px rgba(255,107,53,0.5), 0 0 0 0 rgba(255,107,53,0); }
+  }
+
+  .fab-btn:hover { transform: scale(1.1); }
+  .fab-btn:active { transform: scale(0.95); }
+  .fab-icon { font-size: 26px; transition: all 0.3s; }
+  .fab-btn.open .fab-icon { transform: rotate(180deg); font-size: 20px; }
+
+  .fab-badge {
+    position: absolute; top: -4px; right: -4px;
+    width: 18px; height: 18px;
+    background: #FF3B30; border-radius: 50%; border: 2px solid white;
+    font-size: 10px; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+
+  /* ─── 聊天窗口 ─── */
+  .chat-window {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    background: var(--white);
+    border-radius: 0;
+    box-shadow: none;
+    display: flex; flex-direction: column;
+    z-index: 999; overflow: hidden;
+    transform: scale(0.97) translateY(16px);
+    opacity: 0; pointer-events: none;
+    transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center center;
+  }
+
+  .chat-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+  /* 头部 */
+  .chat-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #FF9A3C 100%);
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .bot-avatar {
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+
+  .bot-info { flex: 1; }
+  .bot-name { font-size: 15px; font-weight: 700; color: white; }
+  .bot-status { font-size: 11px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .status-dot { width: 7px; height: 7px; background: #4ADE80; border-radius: 50%; animation: statusPulse 2s infinite; }
+  @keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .header-actions { display: flex; gap: 6px; }
+  .header-btn {
+    width: 30px; height: 30px;
+    background: rgba(255,255,255,0.15); border: none; border-radius: 8px;
+    color: white; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .header-btn:hover { background: rgba(255,255,255,0.28); }
+
+  /* 能力标签栏 */
+  .capability-bar {
+    background: linear-gradient(90deg, var(--book-light), var(--miaowen-light));
+    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0; flex-wrap: wrap;
+  }
+
+  .cap-label { font-size: 10px; color: var(--text-light); font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; }
+
+  .cap-badge {
+    padding: 3px 9px;
+    border-radius: 100px;
+    font-size: 11px; font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .cap-book { background: var(--book-light); color: var(--book); border: 1px solid rgba(5,150,105,0.25); }
+  .cap-miaowen { background: var(--miaowen-light); color: var(--miaowen); border: 1px solid rgba(124,58,237,0.25); }
+
+  /* Token 配置提示 */
+  .token-notice {
+    background: #FFFBEB; border-bottom: 1px solid #FCD34D;
+    padding: 9px 14px;
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+    font-size: 12px; color: #92400E;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .token-notice:hover { background: #FEF3C7; }
+  .token-notice.hidden { display: none; }
+
+  /* 快捷问题 */
+  .quick-questions {
+    padding: 10px 14px 8px;
+    background: var(--primary-light);
+    border-bottom: 1px solid rgba(255,107,53,0.12);
+    flex-shrink: 0;
+  }
+
+  .quick-label { font-size: 10px; color: var(--text-light); margin-bottom: 7px; font-weight: 600; }
+
+  .quick-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .quick-chips::-webkit-scrollbar { display: none; }
+
+  .quick-chip {
+    padding: 5px 11px;
+    background: white; border-radius: 100px;
+    font-size: 12px; cursor: pointer; white-space: nowrap;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+
+  .quick-chip.type-book { border: 1px solid rgba(5,150,105,0.4); color: var(--book); }
+  .quick-chip.type-book:hover { background: var(--book); color: white; }
+  .quick-chip.type-miaowen { border: 1px solid rgba(124,58,237,0.4); color: var(--miaowen); }
+  .quick-chip.type-miaowen:hover { background: var(--miaowen); color: white; }
+  .quick-chip.type-default { border: 1px solid rgba(255,107,53,0.3); color: var(--primary); }
+  .quick-chip.type-default:hover { background: var(--primary); color: white; }
+
+  /* 消息区 */
+  .chat-messages {
+    flex: 1; overflow-y: auto;
+    padding: 14px; display: flex; flex-direction: column; gap: 14px;
+    scroll-behavior: smooth;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 3px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .message { display: flex; gap: 9px; animation: msgIn 0.3s ease; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .message.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0; margin-top: 2px;
+  }
+
+  .message.bot .msg-avatar { background: linear-gradient(135deg, var(--primary), #FF9A3C); }
+  .message.user .msg-avatar { background: linear-gradient(135deg, var(--secondary), #4F64D8); font-size: 11px; color: white; font-weight: 700; }
+
+  .msg-content { max-width: 80%; }
+
+  .msg-source-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px;
+    border-radius: 100px; font-size: 10px; font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .source-book { background: var(--book-light); color: var(--book); }
+  .source-miaowen { background: var(--miaowen-light); color: var(--miaowen); }
+  .source-hybrid { background: var(--hybrid-light); color: var(--hybrid); }
+  .source-default { background: var(--bg); color: var(--text-light); }
+
+  .msg-bubble {
+    padding: 10px 13px; border-radius: 16px;
+    font-size: 14px; line-height: 1.65; word-break: break-word;
+  }
+
+  .message.bot .msg-bubble { background: var(--bg); color: var(--text); border-radius: 4px 16px 16px 16px; }
+  .message.user .msg-bubble { background: linear-gradient(135deg, var(--primary), #FF9A3C); color: white; border-radius: 16px 4px 16px 16px; }
+
+  .msg-bubble a { color: var(--primary); text-decoration: underline; }
+  .message.user .msg-bubble a { color: rgba(255,255,255,0.9); }
+  .msg-bubble strong { font-weight: 600; }
+  .msg-bubble code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  .message.user .msg-bubble code { background: rgba(255,255,255,0.2); }
+
+  .msg-time { font-size: 10px; color: var(--text-light); margin-top: 4px; padding: 0 3px; }
+  .message.user .msg-time { text-align: right; }
+
+  /* 打字动画 */
+  .typing-indicator {
+    display: flex; align-items: center; gap: 5px;
+    padding: 11px 13px;
+    background: var(--bg); border-radius: 4px 16px 16px 16px;
+    width: fit-content;
+  }
+
+  .typing-dot { width: 7px; height: 7px; background: var(--text-light); border-radius: 50%; animation: typingBounce 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%, 100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(-5px); opacity: 1; } }
+
+  /* 图片消息 */
+  .msg-image { max-width: 180px; max-height: 180px; border-radius: 10px; cursor: pointer; display: block; margin-bottom: 5px; }
+
+  /* 反馈 */
+  .feedback-row { display: flex; align-items: center; gap: 6px; margin-top: 5px; }
+  .feedback-label { font-size: 10px; color: var(--text-light); }
+  .feedback-btn {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 2px 7px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+  }
+  .feedback-btn:hover { background: var(--bg); }
+  .feedback-btn.liked { background: #ECFDF5; border-color: #10B981; }
+  .feedback-btn.disliked { background: #FEF2F2; border-color: #EF4444; }
+
+  /* 输入区 */
+  .chat-input-area { border-top: 1px solid var(--border); padding: 11px 14px; background: white; flex-shrink: 0; }
+
+  .input-preview-area { margin-bottom: 8px; display: none; }
+  .img-preview-wrap { position: relative; display: inline-block; }
+  .img-preview { max-width: 160px; max-height: 110px; border-radius: 10px; object-fit: cover; display: block; }
+  .img-preview-remove {
+    position: absolute; top: -6px; right: -6px;
+    width: 19px; height: 19px; background: #FF3B30; border: 2px solid white; border-radius: 50%;
+    color: white; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .input-row { display: flex; align-items: flex-end; gap: 7px; }
+  .input-actions { display: flex; gap: 5px; }
+
+  .action-btn {
+    width: 34px; height: 34px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 9px;
+    cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0; color: var(--text-light);
+  }
+  .action-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+  .chat-input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 9px 13px; font-size: 14px; outline: none;
+    resize: none; min-height: 38px; max-height: 110px;
+    line-height: 1.5; font-family: inherit; color: var(--text);
+    transition: border-color 0.2s; overflow-y: auto;
+  }
+  .chat-input:focus { border-color: var(--primary); }
+  .chat-input::placeholder { color: #B0B7C3; }
+
+  .send-btn {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--primary), #FF9A3C);
+    border: none; border-radius: 11px; color: white; cursor: pointer;
+    font-size: 17px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 4px 12px rgba(255,107,53,0.4); }
+  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .input-hint { font-size: 10px; color: var(--text-light); margin-top: 5px; text-align: center; }
+
+  /* Token 弹窗 */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: white; border-radius: 20px; padding: 28px;
+    width: 360px; box-shadow: var(--shadow-lg);
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes modalIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .modal-desc { font-size: 13px; color: var(--text-light); margin-bottom: 18px; line-height: 1.6; }
+
+  .modal-input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 13px; font-size: 14px; outline: none;
+    transition: border-color 0.2s; margin-bottom: 14px;
+  }
+  .modal-input:focus { border-color: var(--miaowen); }
+
+  .modal-actions { display: flex; gap: 10px; }
+  .modal-btn {
+    flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer;
+    font-size: 14px; font-weight: 600; transition: all 0.2s;
+  }
+  .modal-btn-cancel { background: var(--bg); color: var(--text-light); }
+  .modal-btn-cancel:hover { background: var(--border); }
+  .modal-btn-save { background: linear-gradient(135deg, var(--miaowen), #9F5DE2); color: white; }
+  .modal-btn-save:hover { opacity: 0.9; }
+
+  .modal-link { font-size: 12px; color: var(--miaowen); text-decoration: none; display: block; margin-bottom: 14px; }
+  .modal-link:hover { text-decoration: underline; }
+
+  /* 欢迎卡片 */
+  .welcome-card {
+    background: linear-gradient(135deg, var(--primary-light), white);
+    border: 1px solid rgba(255,107,53,0.2); border-radius: 14px; padding: 14px;
+  }
+  .welcome-card .w-emoji { font-size: 28px; margin-bottom: 6px; }
+  .welcome-card .w-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .welcome-card .w-desc { font-size: 12px; color: var(--text-light); line-height: 1.6; }
+
+  .capability-list {
+    margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
+  }
+
+  .cap-item {
+    padding: 5px 8px; border-radius: 7px;
+    font-size: 11px; display: flex; align-items: center; gap: 4px;
+  }
+
+  .cap-item.book { background: var(--book-light); color: var(--book); }
+  .cap-item.miaowen { background: var(--miaowen-light); color: var(--miaowen); }
+
+  /* 灯箱 */
+  .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; display: none; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; }
+  .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 26px; cursor: pointer; background: rgba(255,255,255,0.15); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  @media (max-width: 480px) {
+    .chat-fab { bottom: 20px; right: 16px; }
+    .demo-features { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- 演示页面 -->
+<div class="demo-page">
+  <div class="demo-content">
+    <div class="demo-logo">📚</div>
+    <h1 class="demo-title">图书灵感中心 · 智能营销助手</h1>
+    <p class="demo-subtitle">
+      腾讯营销 · 图书行业商家专属智能服务平台<br>
+      <span style="font-size:15px;opacity:0.8">选品决策 · 营销投放 · 合规审核 · 能力申请 · 全链路 AI 解答</span>
+    </p>
+
+    <div class="power-badges">
+      <span class="power-badge badge-book">📚 图书专属知识库</span>
+      <span class="power-badge badge-miaowen">🤖 妙问 · 腾讯营销官方 AI 引擎</span>
+    </div>
+
+    <div class="demo-features">
+      <div class="feature-card card-full" style="border-top:3px solid #EC4899;background:linear-gradient(135deg,rgba(236,72,153,0.12),rgba(255,255,255,0.04));" onclick="openAndAsk('图书行业营销密码是什么？如何从选品到爆量？')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:24px">🔑</span>
+          <div>
+            <div class="f-title" style="font-size:14px">图书行业营销密码</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px">腾讯营销 · 图书全链路增长方法论</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px">
+          <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.06);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:2px">🎯</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600">选品密码</div>
+          </div>
+          <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.06);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:2px">✍️</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600">内容密码</div>
+          </div>
+          <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.06);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:2px">🚀</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600">投放密码</div>
+          </div>
+          <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.06);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:2px">📈</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600">增长密码</div>
+          </div>
+          <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.06);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:2px">✅</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600">合规密码</div>
+          </div>
+        </div>
+        <div class="f-action">▶ 点击让图图解锁营销密码，或直接查看完整文档 →</div>
+      </div>
+      <div class="feature-card card-book" onclick="openAndAsk('图书专属百宝箱有哪些功能？链接在哪里？')">
+        <span class="f-icon">📚</span>
+        <div class="f-title">图书专属百宝箱</div>
+        <div class="f-desc">汇聚图书行业投放全链路知识：审核规则、链路搭建、开学季策略、创意方法论、发货售后规范等，专属图书商家的一站式投放指南。</div>
+        <div class="f-action">▶ 点击了解百宝箱内容 →</div>
+      </div>
+      <div class="feature-card card-hot" onclick="openAndAsk('最新的图书热投榜单有什么爆品推荐？怎么使用榜单选品？')">
+        <span class="f-icon">🔥</span>
+        <div class="f-title">爆品榜单</div>
+        <div class="f-desc">每周二更新 ADQ 热投优品 TOP8，包含书名、类目、客单价、日销售额、转化率及推荐链路，帮你提前锁定下一周爆品。</div>
+        <div class="f-action">▶ 点击查看本周爆品 →</div>
+      </div>
+      <div class="feature-card card-white" onclick="openAndAsk('图书行业有哪些产品能力可以申请开白？怎么提报？')">
+        <span class="f-icon">📋</span>
+        <div class="f-title">产品能力开白</div>
+        <div class="f-desc">支持申请：艾米智投ROI、净成交下单/ROI、直播快推、智投扶持等专属能力，统一在线提报，腾讯直客审核处理。</div>
+        <div class="f-action">▶ 点击获取开白申请入口 →</div>
+      </div>
+      <div class="feature-card card-black" onclick="openAndAsk('我的广告素材有个词被判为黑词了，如何申请黑词赦免？')">
+        <span class="f-icon">🚫</span>
+        <div class="f-title">黑词赦免</div>
+        <div class="f-desc">广告文案触发禁投词？可通过线下提报申请赦免。支持关键词清单或自然语言描述提报，AI 语义复审可识别同义改写。</div>
+        <div class="f-action">▶ 点击获取赦免申请表 →</div>
+      </div>
+    </div>
+
+    <div class="demo-hint">👇 点击右下角按钮，向图图提问</div>
+  </div>
+</div>
+
+<!-- 悬浮按钮 -->
+<div class="chat-fab">
+  <button class="fab-btn" id="fabBtn" onclick="toggleChat()">
+    <span class="fab-icon">📚</span>
+    <span class="fab-badge" id="fabBadge">1</span>
+  </button>
+</div>
+
+<!-- 聊天窗口 -->
+<div class="chat-window" id="chatWindow">
+  <!-- 头部 -->
+  <div class="chat-header">
+    <div class="bot-avatar">🐰</div>
+    <div class="bot-info">
+      <div class="bot-name">图图 · 图书行业智能助手</div>
+      <div class="bot-status">
+        <span class="status-dot"></span>
+        图书专属知识库 × 妙问 AI 双引擎
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" onclick="clearChat()" title="清空对话" style="width:36px;height:36px;font-size:17px">🗑</button>
+      <button class="header-btn" onclick="toggleChat()" title="关闭" style="width:40px;height:40px;font-size:20px;font-weight:700">✕</button>
+    </div>
+  </div>
+
+  <!-- 能力标签栏 -->
+  <div class="capability-bar">
+    <span class="cap-label">能力：</span>
+    <span class="cap-badge cap-book">📚 图书专属知识</span>
+    <span class="cap-badge cap-book">🔥 爆品榜单</span>
+    <span class="cap-badge cap-book">📋 能力开白</span>
+    <span class="cap-badge cap-book">🚫 黑词赦免</span>
+    <span class="cap-badge cap-miaowen">🔍 营销规则</span>
+    <span class="cap-badge cap-miaowen">📺 视频号投放</span>
+  </div>
+
+  <!-- Token 已内置，商家无需配置 -->
+  <div class="token-notice hidden" id="tokenNotice"></div>
+
+  <!-- 快捷问题 -->
+  <div class="quick-questions">
+    <div class="quick-label">💡 快捷提问 · 点击直接发送</div>
+    <div class="quick-chips">
+      <div class="quick-chip type-book" onclick="sendQuick('最新的图书热投榜单有什么爆品推荐？')">🔥 本周爆品</div>
+      <div class="quick-chip type-book" onclick="sendQuick('2026年暑期图书投放策略和时间节奏是什么？')">☀️ 暑期策略</div>
+      <div class="quick-chip type-book" onclick="sendQuick('图书行业有哪些产品能力可以申请开白？')">📋 能力开白</div>
+      <div class="quick-chip type-book" onclick="sendQuick('我的广告素材有个词被判为黑词了，如何申请黑词赦免？')">🚫 黑词赦免</div>
+      <div class="quick-chip type-book" onclick="sendQuick('开学季图书投放策略和各品类选品建议是什么？')">📚 开学季策略</div>
+      <div class="quick-chip type-book" onclick="sendQuick('营销审核常见拒绝原因有哪些？如何催审复审？')">✅ 审核被拒</div>
+      <div class="quick-chip type-book" onclick="sendQuick('视频号原生广告有哪些新能力？怎么投放？')">📺 视频号投放</div>
+      <div class="quick-chip type-book" onclick="sendQuick('图书行业营销密码是什么？如何从选品到爆量？')">🔑 营销密码</div>
+      <div class="quick-chip type-default" onclick="sendQuick('如何绑定我的Token查看自己的账户数据？')">🔗 绑定账户</div>
+    </div>
+  </div>
+
+  <!-- 消息列表 -->
+  <div class="chat-messages" id="chatMessages">
+    <div class="message bot" id="welcomeMsg">
+      <div class="msg-avatar">🐰</div>
+      <div class="msg-content">
+        <div class="welcome-card">
+          <div class="w-emoji">👋</div>
+          <div class="w-title">嗨！我是图图，图书灵感中心的专属 AI 助手</div>
+          <div class="w-desc">我融合了 <strong>图书行业知识库</strong> × <strong>妙问 AI 引擎</strong>，专为图书商家打造，可以帮你：</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+            <button onclick="sendQuick('图书专属百宝箱有哪些功能？审核规则、链路、开学季策略有哪些？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#ECFDF5;border:1px solid rgba(5,150,105,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#065F46;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#D1FAE5'" onmouseout="this.style.background='#ECFDF5'">
+              <span>📚</span><span>百宝箱行业规则速查</span>
+            </button>
+            <button onclick="sendQuick('最新的图书热投榜单有什么爆品推荐？本周TOP8是什么？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FFF7ED;border:1px solid rgba(245,158,11,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#92400E;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#FEF3C7'" onmouseout="this.style.background='#FFF7ED'">
+              <span>🔥</span><span>本周爆品榜单推荐</span>
+            </button>
+            <button onclick="sendQuick('图书行业有哪些产品能力可以申请开白？怎么提报？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#F5F3FF;border:1px solid rgba(124,58,237,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#5B21B6;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#EDE9FE'" onmouseout="this.style.background='#F5F3FF'">
+              <span>📋</span><span>产品能力开白申请</span>
+            </button>
+            <button onclick="sendQuick('我的广告素材有个词被判为黑词了，如何申请黑词赦免？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FEF2F2;border:1px solid rgba(239,68,68,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#991B1B;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#FEE2E2'" onmouseout="this.style.background='#FEF2F2'">
+              <span>🚫</span><span>黑词赦免提报指引</span>
+            </button>
+            <button onclick="sendQuick('图书行业营销密码是什么？如何从选品到爆量？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FFF0F6;border:1px solid rgba(236,72,153,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#9D174D;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#FCE7F3'" onmouseout="this.style.background='#FFF0F6'">
+              <span>🔑</span><span>营销密码全链路方法</span>
+            </button>
+            <button onclick="sendQuick('视频号原生广告有哪些新能力？弹幕、图文、标签组件怎么投放？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#EFF6FF;border:1px solid rgba(59,130,246,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#1E40AF;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#DBEAFE'" onmouseout="this.style.background='#EFF6FF'">
+              <span>📺</span><span>视频号投放专项指引</span>
+            </button>
+            <button onclick="sendQuick('2026年暑期图书投放策略和时间节奏是什么？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FEF3C7;border:1px solid rgba(245,158,11,0.3);border-radius:9px;cursor:pointer;font-size:12px;color:#92400E;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#FDE68A'" onmouseout="this.style.background='#FEF3C7'">
+              <span>☀️</span><span>暑期投放策略</span>
+            </button>
+            <button onclick="sendQuick('图书选品台有哪些功能？怎么用选品台做暑期选品？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#ECFDF5;border:1px solid rgba(5,150,105,0.2);border-radius:9px;cursor:pointer;font-size:12px;color:#065F46;font-weight:500;text-align:left;transition:all 0.2s" onmouseover="this.style.background='#D1FAE5'" onmouseout="this.style.background='#ECFDF5'">
+              <span>🎯</span><span>暑期选品台工具</span>
+            </button>
+          </div>
+          <div style="margin-top:10px;padding:8px 10px;background:#FFFBEB;border-radius:8px;font-size:11px;color:#92400E;line-height:1.6">
+            💡 需要查询<strong>您自己账户的投放数据</strong>？发送「<strong>绑定Token sk-mw-你的token</strong>」解锁账户数据查询能力。<a href="https://miaowen.qq.com" target="_blank" style="color:#D97706;font-weight:600">获取 Token →</a>
+          </div>
+        </div>
+        <div class="msg-time" id="welcomeTime"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 输入区 -->
+  <div class="chat-input-area">
+    <div class="input-preview-area" id="inputPreviewArea">
+      <div class="img-preview-wrap" id="imgPreviewWrap" style="display:none">
+        <img id="imgPreview" class="img-preview" src="" alt="预览">
+        <div class="img-preview-remove" onclick="removeImage()">✕</div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="input-actions">
+        <label class="action-btn" title="上传素材图片（自动触发审核分析）" style="cursor:pointer">
+          🖼
+          <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+        </label>
+      </div>
+      <textarea
+        class="chat-input" id="chatInput"
+        placeholder="问图书投放、审核、数据、创意... 都可以！"
+        rows="1"
+        onkeydown="handleKeyDown(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="input-hint">Enter 发送 · Shift+Enter 换行 · 上传素材图片可进行审核预检</div>
+  </div>
+</div>
+
+<!-- Token 配置弹窗 -->
+<div class="modal-overlay" id="tokenModal">
+  <div class="modal-box">
+    <div class="modal-title">🔑 配置妙问 Token</div>
+    <div class="modal-desc">妙问是腾讯营销官方 AI 引擎，配置 Token 后可解锁：<br>📊 实时数据查询 · 🔬 投放诊断 · 📈 账户深度分析 · 🎨 创意灵感 · ✅ 素材审核</div>
+    <a href="https://miaowen.qq.com/" target="_blank" class="modal-link">👉 点击前往妙问官网获取 Token →</a>
+    <input type="password" class="modal-input" id="tokenInput" placeholder="粘贴你的妙问 Token...">
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="hideTokenModal()">取消</button>
+      <button class="modal-btn modal-btn-save" onclick="saveToken()">保存 Token</button>
+    </div>
+  </div>
+</div>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close">✕</div>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+let isOpen = false;
+let isLoading = false;
+let selectedImage = null;
+let conversationHistory = [];
+
+const SOURCE_LABELS = {
+  book_kb:          { label: '📚 图书专属知识', cls: 'source-book' },
+  miaowen_plain:    { label: '🔍 妙问·营销规则', cls: 'source-miaowen' },
+  miaowen_agent:    { label: '🤖 妙问·智能分析', cls: 'source-miaowen' },
+  miaowen_audit:    { label: '✅ 妙问·素材审核', cls: 'source-miaowen' },
+  hybrid:           { label: '🔀 综合解答', cls: 'source-hybrid' },
+  deepseek_fallback:{ label: '💬 AI 辅助回答', cls: 'source-default' },
+  error:            { label: '⚠️ 服务异常', cls: 'source-default' },
+};
+
+// 初始化
+document.getElementById('welcomeTime').textContent = formatTime(new Date());
+checkTokenStatus();
+
+// 点击首页卡片：打开聊天窗并自动发问
+function openAndAsk(text) {
+  if (!isOpen) toggleChat();
+  setTimeout(() => {
+    document.getElementById('chatInput').value = text;
+    sendMessage();
+  }, isOpen ? 100 : 500);
+}
+
+function toggleChat() {
+  isOpen = !isOpen;
+  const win = document.getElementById('chatWindow');
+  const btn = document.getElementById('fabBtn');
+  const badge = document.getElementById('fabBadge');
+  if (isOpen) {
+    win.classList.add('open');
+    btn.classList.add('open');
+    // 全屏模式下 fab 按钮隐藏，关闭走右上角 ✕
+    btn.style.display = 'none';
+    if (badge) badge.style.display = 'none';
+    setTimeout(() => document.getElementById('chatInput').focus(), 400);
+  } else {
+    win.classList.remove('open');
+    btn.classList.remove('open');
+    btn.style.display = 'flex';
+    btn.querySelector('.fab-icon').textContent = '📚';
+  }
+}
+
+function formatTime(d) {
+  return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+}
+
+function renderMd(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^#{1,3} (.*$)/gm, '<strong>$1</strong>')
+    .replace(/^[-•] (.*$)/gm, '• $1')
+    .replace(/^\d+\. (.*$)/gm, '• $1')
+    .replace(/(https?:\/\/[^\s<\u3000-\u303F\uFF00-\uFFEF\u2000-\u206F]+)/g, function(url) {
+      // 去掉尾部可能误匹配的中文标点
+      url = url.replace(/[，。！？、；：""''）】》]+$/, '');
+      return '<a href="' + url + '" target="_blank" rel="noopener">' + (url.length > 50 ? url.substring(0, 50) + '...' : url) + '</a>';
+    })
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function addMessage(role, content, imageSrc, source, intentLabel) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `message ${role}`;
+
+  const avatar = role === 'bot'
+    ? '<div class="msg-avatar">🐰</div>'
+    : '<div class="msg-avatar">商</div>';
+
+  // 来源标签（仅 bot）
+  let sourceBadge = '';
+  if (role === 'bot') {
+    const displayLabel = intentLabel || (source && SOURCE_LABELS[source]?.label) || '';
+    const cls = (source && SOURCE_LABELS[source]?.cls) || 'source-default';
+    if (displayLabel) {
+      sourceBadge = `<div class="msg-source-badge ${cls}">${displayLabel}</div>`;
+    }
+  }
+
+  const bubbleContent = imageSrc
+    ? `<img src="${imageSrc}" class="msg-image" onclick="openLightbox('${imageSrc}')" alt="图片"><div>${renderMd(content)}</div>`
+    : renderMd(content);
+
+  const feedback = role === 'bot'
+    ? `<div class="feedback-row">
+        <span class="feedback-label">有帮助吗？</span>
+        <button class="feedback-btn" onclick="doFeedback(this,'like')">👍</button>
+        <button class="feedback-btn" onclick="doFeedback(this,'dislike')">👎</button>
+       </div>`
+    : '';
+
+  div.innerHTML = `
+    ${avatar}
+    <div class="msg-content">
+      ${sourceBadge}
+      <div class="msg-bubble">${bubbleContent}</div>
+      ${feedback}
+      <div class="msg-time">${formatTime(new Date())}</div>
+    </div>
+  `;
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping(label) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'message bot';
+  div.id = 'typingMsg';
+  div.innerHTML = `
+    <div class="msg-avatar">🐰</div>
+    <div class="msg-content">
+      <div style="font-size:10px;color:#9CA3AF;margin-bottom:4px">${label || '思考中...'}</div>
+      <div class="typing-indicator">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typingMsg');
+  if (el) el.remove();
+}
+
+// 发送消息
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text && !selectedImage) return;
+  if (isLoading) return;
+
+  const imageToSend = selectedImage;
+  const imgSrc = imageToSend ? URL.createObjectURL(imageToSend) : null;
+
+  input.value = '';
+  input.style.height = 'auto';
+  removeImage();
+
+  addMessage('user', text || '（已上传素材图片）', imgSrc);
+
+  const userContent = text || '请帮我预审这张广告素材，分析可能存在的审核风险';
+  conversationHistory.push({ role: 'user', content: userContent });
+
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  // 预判意图（显示提示）
+  let intentHint = '正在思考...';
+  if (imageToSend) intentHint = '🔍 正在上传素材并预审...';
+  else if (/消耗|数据|报表|roi|花费/i.test(text)) intentHint = '📊 正在查询数据...';
+  else if (/诊断|不起量|掉量/i.test(text)) intentHint = '🔬 正在进行投放诊断...';
+  else if (/分析.*账户|账户.*分析/i.test(text)) intentHint = '📈 正在深度分析...';
+  else if (/创意|灵感|案例/i.test(text)) intentHint = '🎨 正在寻找优秀创意...';
+  else if (/审核|预审|过审/i.test(text)) intentHint = '✅ 正在查询审核规则...';
+  else if (/图书|开学|百宝箱/i.test(text)) intentHint = '📚 检索图书专属知识...';
+
+  showTyping(intentHint);
+
+  try {
+    let response;
+    if (imageToSend) {
+      const form = new FormData();
+      form.append('message', text || '');
+      form.append('history', JSON.stringify(conversationHistory.slice(-6, -1)));
+      form.append('image', imageToSend);
+      const res = await fetch(`${API_BASE}/api/chat/image`, { method: 'POST', body: form });
+      response = await res.json();
+    } else {
+      const res = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: conversationHistory.slice(-10) }),
+      });
+      response = await res.json();
+    }
+
+    removeTyping();
+
+    const botReply = response.content || response.detail || '抱歉，暂时没有收到回复，请稍后再试～';
+    addMessage('bot', botReply, null, response.source, response.intent_label);
+    conversationHistory.push({ role: 'assistant', content: botReply });
+
+  } catch (err) {
+    removeTyping();
+    addMessage('bot', '😅 连接出了点问题，请确认后端服务已启动（默认端口 8000）。\n\n如需帮助，请联系您的腾讯营销对接运营同学～');
+    console.error(err);
+  }
+
+  isLoading = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function sendQuick(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function handleKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+}
+
+function handleImageSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  selectedImage = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('imgPreview').src = ev.target.result;
+    document.getElementById('imgPreviewWrap').style.display = 'block';
+    document.getElementById('inputPreviewArea').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function removeImage() {
+  selectedImage = null;
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgPreviewWrap').style.display = 'none';
+  document.getElementById('inputPreviewArea').style.display = 'none';
+}
+
+function doFeedback(btn, type) {
+  const row = btn.parentElement;
+  row.querySelectorAll('.feedback-btn').forEach(b => b.className = 'feedback-btn');
+  btn.classList.add(type === 'like' ? 'liked' : 'disliked');
+  btn.textContent = type === 'like' ? '👍 谢谢！' : '👎 已记录';
+  setTimeout(() => row.querySelectorAll('.feedback-btn').forEach(b => b.style.display = 'none'), 2000);
+}
+
+function clearChat() {
+  if (!confirm('确认清空对话？')) return;
+  conversationHistory = [];
+  const c = document.getElementById('chatMessages');
+  c.innerHTML = '';
+  addMessage('bot', '✨ 对话已清空，有什么问题尽管问我！', null, 'book_kb', '📚 图书专属知识');
+}
+
+// Token 管理
+async function checkTokenStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/api/token/status`);
+    const data = await res.json();
+    const notice = document.getElementById('tokenNotice');
+    if (data.miaowen) {
+      notice.classList.add('hidden');
+    } else {
+      notice.classList.remove('hidden');
+    }
+  } catch (e) {}
+}
+
+function showTokenModal() { document.getElementById('tokenModal').classList.add('open'); }
+function hideTokenModal() { document.getElementById('tokenModal').classList.remove('open'); }
+
+async function saveToken() {
+  const token = document.getElementById('tokenInput').value.trim();
+  if (!token) return alert('请输入 Token');
+  try {
+    const res = await fetch(`${API_BASE}/api/token/miaowen`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      hideTokenModal();
+      document.getElementById('tokenNotice').classList.add('hidden');
+      addMessage('bot', '🎉 妙问 Token 配置成功！现在可以使用数据查询、投放诊断、创意灵感、素材审核等高级功能了～', null, 'book_kb', '📚 系统提示');
+    } else {
+      alert('保存失败：' + (data.detail || '未知错误'));
+    }
+  } catch (e) {
+    alert('保存失败，请检查服务是否正常');
+  }
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); hideTokenModal(); } });
+document.getElementById('tokenModal').addEventListener('click', e => { if (e.target === e.currentTarget) hideTokenModal(); });
+</script>
+</body>
+</html>

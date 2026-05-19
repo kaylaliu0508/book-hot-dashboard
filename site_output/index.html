@@ -396,7 +396,13 @@ function go(id,el){
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
   window.scrollTo(0,0);
-  // AI营销助手面板已内嵌，无需额外加载
+  // AI营销助手：iframe 懒加载（首次切换时才加载）
+  if(id==='pai'){
+    var aif=document.getElementById('aiAssistantFrame');
+    if(aif && (!aif.src || aif.src==='about:blank' || aif.src===window.location.href)){
+      aif.src='/ai/';
+    }
+  }
   // 埋点：切 tab
   try{
     var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','pselect':'select_hub','pai':'ai_assistant'};
@@ -3250,245 +3256,14 @@ function adExportMd(){
 </script>
 
 <!-- ==================== AI 营销助手面板 ==================== -->
-<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;height:auto;overflow:hidden;padding:0;background:#F7F8FC;z-index:50">
 <style>
 /* AI营销助手 TAB 特殊高亮样式 */
 .tb.tb-ai{color:#ff8c42}
 .tb.tb-ai:hover{color:#fff;background:rgba(255,107,53,.15)}
 .tb.tb-ai.on{background:linear-gradient(135deg,#ff6b35,#ff9a3c);color:#fff}
-/* AI 营销助手内嵌样式 */
-#pg-pai .ai-chat-container{display:flex;flex-direction:column;height:100%;width:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;overflow:hidden}
-#pg-pai .ai-header{background:linear-gradient(135deg,#FF6B35,#FF9A3C);padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
-#pg-pai .ai-header .bot-avatar{width:42px;height:42px;background:rgba(255,255,255,.2);border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:22px}
-#pg-pai .ai-header .bot-name{font-size:15px;font-weight:700;color:#fff}
-#pg-pai .ai-header .bot-status{font-size:11px;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:4px;margin-top:2px}
-#pg-pai .ai-header .status-dot{width:7px;height:7px;background:#4ADE80;border-radius:50%;animation:aiPulse 2s infinite}
-@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.4}}
-#pg-pai .ai-cap-bar{background:linear-gradient(90deg,#ECFDF5,#F5F3FF);border-bottom:1px solid #E5E7EB;padding:8px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap}
-#pg-pai .ai-cap-bar .cap-label{font-size:10px;color:#6B7280;font-weight:600}
-#pg-pai .ai-cap-bar .cap-badge{padding:3px 9px;border-radius:100px;font-size:11px;font-weight:500}
-#pg-pai .cap-book{background:#ECFDF5;color:#059669;border:1px solid rgba(5,150,105,.25)}
-#pg-pai .cap-miaowen{background:#F5F3FF;color:#7C3AED;border:1px solid rgba(124,58,237,.25)}
-#pg-pai .ai-quick{padding:10px 14px 8px;background:#FFF0EB;border-bottom:1px solid rgba(255,107,53,.12);flex-shrink:0}
-#pg-pai .ai-quick .quick-label{font-size:10px;color:#6B7280;margin-bottom:7px;font-weight:600}
-#pg-pai .ai-quick .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
-#pg-pai .ai-quick .chips::-webkit-scrollbar{display:none}
-#pg-pai .ai-quick .chip{padding:5px 11px;background:#fff;border-radius:100px;font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;border:1px solid rgba(5,150,105,.4);color:#059669}
-#pg-pai .ai-quick .chip:hover{background:#059669;color:#fff}
-#pg-pai .ai-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
-#pg-pai .ai-messages::-webkit-scrollbar{width:3px}
-#pg-pai .ai-messages::-webkit-scrollbar-thumb{background:#E5E7EB;border-radius:3px}
-#pg-pai .ai-msg{display:flex;gap:9px;animation:aiMsgIn .3s ease}
-@keyframes aiMsgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-#pg-pai .ai-msg.user{flex-direction:row-reverse}
-#pg-pai .ai-msg .msg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:2px}
-#pg-pai .ai-msg.bot .msg-av{background:linear-gradient(135deg,#FF6B35,#FF9A3C)}
-#pg-pai .ai-msg.user .msg-av{background:linear-gradient(135deg,#2D3A8C,#4F64D8);font-size:11px;color:#fff;font-weight:700}
-#pg-pai .ai-msg .msg-body{max-width:80%}
-#pg-pai .ai-msg .bubble{padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.65;word-break:break-word;color:#1A1A2E}
-#pg-pai .ai-msg.bot .bubble{background:#F7F8FC;border-radius:4px 16px 16px 16px}
-#pg-pai .ai-msg.user .bubble{background:linear-gradient(135deg,#FF6B35,#FF9A3C);color:#fff;border-radius:16px 4px 16px 16px}
-#pg-pai .ai-msg .bubble a{color:#FF6B35;text-decoration:underline}
-#pg-pai .ai-msg.user .bubble a{color:rgba(255,255,255,.9)}
-#pg-pai .ai-msg .bubble strong{font-weight:600}
-#pg-pai .ai-msg .msg-time{font-size:10px;color:#6B7280;margin-top:4px;padding:0 3px}
-#pg-pai .ai-msg.user .msg-time{text-align:right}
-#pg-pai .ai-typing{display:flex;align-items:center;gap:5px;padding:11px 13px;background:#F7F8FC;border-radius:4px 16px 16px 16px;width:fit-content}
-#pg-pai .ai-typing .dot{width:7px;height:7px;background:#6B7280;border-radius:50%;animation:aiDotBounce 1.2s infinite}
-#pg-pai .ai-typing .dot:nth-child(2){animation-delay:.2s}
-#pg-pai .ai-typing .dot:nth-child(3){animation-delay:.4s}
-@keyframes aiDotBounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-5px);opacity:1}}
-#pg-pai .ai-input-area{border-top:1px solid #E5E7EB;padding:11px 14px;background:#fff;flex-shrink:0}
-#pg-pai .ai-input-row{display:flex;align-items:flex-end;gap:7px}
-#pg-pai .ai-input{flex:1;border:1.5px solid #E5E7EB;border-radius:12px;padding:9px 13px;font-size:14px;outline:none;resize:none;min-height:38px;max-height:110px;line-height:1.5;font-family:inherit;color:#1A1A2E;transition:border-color .2s;overflow-y:auto}
-#pg-pai .ai-input:focus{border-color:#FF6B35}
-#pg-pai .ai-input::placeholder{color:#B0B7C3}
-#pg-pai .ai-send-btn{width:38px;height:38px;background:linear-gradient(135deg,#FF6B35,#FF9A3C);border:none;border-radius:11px;color:#fff;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-#pg-pai .ai-send-btn:hover:not(:disabled){transform:scale(1.08);box-shadow:0 4px 12px rgba(255,107,53,.4)}
-#pg-pai .ai-send-btn:disabled{opacity:.5;cursor:not-allowed}
-#pg-pai .ai-input-hint{font-size:10px;color:#6B7280;margin-top:5px;text-align:center}
-#pg-pai .ai-source-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:500;margin-bottom:5px;background:#ECFDF5;color:#059669}
 </style>
-
-<div class="ai-chat-container">
-  <!-- 头部 -->
-  <div class="ai-header">
-    <div class="bot-avatar">🐰</div>
-    <div style="flex:1">
-      <div class="bot-name">图图 · 图书行业智能助手</div>
-      <div class="bot-status"><span class="status-dot"></span>图书专属知识库 × 妙问 AI 双引擎</div>
-    </div>
-    <button onclick="aiClearChat()" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;color:#fff;cursor:pointer;padding:6px 10px;font-size:13px" title="清空对话">🗑 清空</button>
-  </div>
-
-  <!-- 能力标签 -->
-  <div class="ai-cap-bar">
-    <span class="cap-label">能力：</span>
-    <span class="cap-badge cap-book">📚 图书专属知识</span>
-    <span class="cap-badge cap-book">🔥 爆品榜单</span>
-    <span class="cap-badge cap-book">📋 能力开白</span>
-    <span class="cap-badge cap-book">🚫 黑词赦免</span>
-    <span class="cap-badge cap-miaowen">🔍 营销规则</span>
-    <span class="cap-badge cap-miaowen">📺 视频号投放</span>
-  </div>
-
-  <!-- 快捷问题 -->
-  <div class="ai-quick">
-    <div class="quick-label">💡 快捷提问 · 点击直接发送</div>
-    <div class="chips">
-      <div class="chip" onclick="aiSendQuick('最新的图书热投榜单有什么爆品推荐？')">🔥 本周爆品</div>
-      <div class="chip" onclick="aiSendQuick('2026年暑期图书投放策略和时间节奏是什么？')">☀️ 暑期策略</div>
-      <div class="chip" onclick="aiSendQuick('图书行业有哪些产品能力可以申请开白？')">📋 能力开白</div>
-      <div class="chip" onclick="aiSendQuick('我的广告素材有个词被判为黑词了，如何申请黑词赦免？')">🚫 黑词赦免</div>
-      <div class="chip" onclick="aiSendQuick('图书行业营销密码是什么？如何从选品到爆量？')">🔑 营销密码</div>
-      <div class="chip" onclick="aiSendQuick('视频号原生广告有哪些新能力？怎么投放？')">📺 视频号投放</div>
-      <div class="chip" onclick="aiSendQuick('营销审核常见拒绝原因有哪些？如何催审复审？')">✅ 审核被拒</div>
-    </div>
-  </div>
-
-  <!-- 消息列表 -->
-  <div class="ai-messages" id="aiMessages">
-    <div class="ai-msg bot">
-      <div class="msg-av">🐰</div>
-      <div class="msg-body">
-        <div class="bubble">
-          <div style="font-size:28px;margin-bottom:6px">👋</div>
-          <div style="font-size:14px;font-weight:700;margin-bottom:4px">嗨！我是图图，图书灵感中心的专属 AI 助手</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6">我融合了 <strong>图书行业知识库</strong> × <strong>妙问 AI 引擎</strong>，可以帮你解答选品、投放、审核、数据等所有图书营销问题 📚</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
-            <div onclick="aiSendQuick('图书专属百宝箱有哪些功能？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#ECFDF5;border:1px solid rgba(5,150,105,.2);border-radius:9px;cursor:pointer;font-size:12px;color:#065F46;font-weight:500">📚 百宝箱规则速查</div>
-            <div onclick="aiSendQuick('最新的图书热投榜单有什么爆品推荐？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FFF7ED;border:1px solid rgba(245,158,11,.2);border-radius:9px;cursor:pointer;font-size:12px;color:#92400E;font-weight:500">🔥 本周爆品榜单</div>
-            <div onclick="aiSendQuick('图书行业有哪些产品能力可以申请开白？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#F5F3FF;border:1px solid rgba(124,58,237,.2);border-radius:9px;cursor:pointer;font-size:12px;color:#5B21B6;font-weight:500">📋 能力开白申请</div>
-            <div onclick="aiSendQuick('图书行业营销密码是什么？')" style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:#FFF0F6;border:1px solid rgba(236,72,153,.2);border-radius:9px;cursor:pointer;font-size:12px;color:#9D174D;font-weight:500">🔑 营销密码解锁</div>
-          </div>
-        </div>
-        <div class="msg-time" id="aiWelcomeTime"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 输入区 -->
-  <div class="ai-input-area">
-    <div class="ai-input-row">
-      <textarea class="ai-input" id="aiInput" placeholder="问图书投放、审核、数据、创意... 都可以！" rows="1" onkeydown="aiHandleKey(event)" oninput="aiAutoResize(this)"></textarea>
-      <button class="ai-send-btn" id="aiSendBtn" onclick="aiSendMessage()">➤</button>
-    </div>
-    <div class="ai-input-hint">Enter 发送 · Shift+Enter 换行</div>
-  </div>
-</div>
-
-<script>
-// ═══ AI 营销助手逻辑 ═══
-(function(){
-  var AI_API = window.location.origin + '/api/chat';
-  var aiLoading = false;
-  var aiHistory = [];
-  var aiSessionToken = null;
-
-  // 初始化欢迎时间
-  var wt = document.getElementById('aiWelcomeTime');
-  if(wt) wt.textContent = new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
-
-  function aiRenderMd(text){
-    return text
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/`([^`]+)`/g,'<code style="background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:13px">$1</code>')
-      .replace(/^#{1,3} (.*$)/gm,'<strong>$1</strong>')
-      .replace(/^[-•] (.*$)/gm,'• $1')
-      .replace(/^\d+\. (.*$)/gm,'• $1')
-      .replace(/(https?:\/\/[^\s<\u3000-\u303F\uFF00-\uFFEF\u2000-\u206F]+)/g,function(url){
-        url=url.replace(/[，。！？、；：""''）】》]+$/,'');
-        return '<a href="'+url+'" target="_blank" rel="noopener">'+(url.length>50?url.substring(0,50)+'...':url)+'</a>';
-      })
-      .replace(/\n\n/g,'<br><br>')
-      .replace(/\n/g,'<br>');
-  }
-
-  function aiAddMsg(role, content, source, label){
-    var c=document.getElementById('aiMessages');
-    var d=document.createElement('div');
-    d.className='ai-msg '+role;
-    var av=role==='bot'?'<div class="msg-av">🐰</div>':'<div class="msg-av">商</div>';
-    var badge='';
-    if(role==='bot'&&label){
-      badge='<div class="ai-source-badge">'+label+'</div>';
-    }
-    d.innerHTML=av+'<div class="msg-body">'+badge+'<div class="bubble">'+aiRenderMd(content)+'</div><div class="msg-time">'+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})+'</div></div>';
-    c.appendChild(d);
-    c.scrollTop=c.scrollHeight;
-  }
-
-  function aiShowTyping(hint){
-    var c=document.getElementById('aiMessages');
-    var d=document.createElement('div');
-    d.className='ai-msg bot';d.id='aiTypingMsg';
-    d.innerHTML='<div class="msg-av">🐰</div><div class="msg-body"><div style="font-size:10px;color:#9CA3AF;margin-bottom:4px">'+(hint||'思考中...')+'</div><div class="ai-typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  }
-
-  function aiRemoveTyping(){var e=document.getElementById('aiTypingMsg');if(e)e.remove();}
-
-  window.aiSendMessage=async function(){
-    var input=document.getElementById('aiInput');
-    var text=input.value.trim();
-    if(!text||aiLoading)return;
-    input.value='';input.style.height='auto';
-    aiAddMsg('user',text);
-    aiHistory.push({role:'user',content:text});
-    aiLoading=true;
-    document.getElementById('aiSendBtn').disabled=true;
-
-    var hint='正在思考...';
-    if(/消耗|数据|报表|roi|花费/i.test(text))hint='📊 正在查询数据...';
-    else if(/诊断|不起量|掉量/i.test(text))hint='🔬 正在进行投放诊断...';
-    else if(/创意|灵感|案例/i.test(text))hint='🎨 正在寻找优秀创意...';
-    else if(/审核|预审|过审/i.test(text))hint='✅ 正在查询审核规则...';
-    else if(/图书|开学|百宝箱|选品|暑期/i.test(text))hint='📚 检索图书专属知识...';
-    aiShowTyping(hint);
-
-    try{
-      var payload={messages:aiHistory.slice(-10)};
-      if(aiSessionToken)payload.session_token=aiSessionToken;
-      var resp=await fetch(AI_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      var data=await resp.json();
-      aiRemoveTyping();
-      var reply=data.content||data.detail||'抱歉，暂时没有收到回复，请稍后再试～';
-      // Token 绑定
-      if(data.session_token)aiSessionToken=data.session_token;
-      aiAddMsg('bot',reply,data.source,data.intent_label);
-      aiHistory.push({role:'assistant',content:reply});
-    }catch(err){
-      aiRemoveTyping();
-      aiAddMsg('bot','😅 连接出了点问题，请稍后再试～\n\n如需帮助，请联系您的腾讯营销对接运营同学。','error','⚠️ 连接异常');
-      console.error(err);
-    }
-    aiLoading=false;
-    document.getElementById('aiSendBtn').disabled=false;
-  };
-
-  window.aiSendQuick=function(text){
-    document.getElementById('aiInput').value=text;
-    aiSendMessage();
-  };
-
-  window.aiHandleKey=function(e){
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();aiSendMessage();}
-  };
-
-  window.aiAutoResize=function(el){
-    el.style.height='auto';
-    el.style.height=Math.min(el.scrollHeight,110)+'px';
-  };
-
-  window.aiClearChat=function(){
-    if(!confirm('确认清空对话？'))return;
-    aiHistory=[];
-    var c=document.getElementById('aiMessages');
-    c.innerHTML='';
-    aiAddMsg('bot','✨ 对话已清空，有什么问题尽管问我！',null,'📚 图书专属知识');
-  };
-})();
-</script>
+<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#0f3460;z-index:50">
+  <iframe id="aiAssistantFrame" src="" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write; clipboard-read; camera; microphone" title="AI 营销助手"></iframe>
 </div>
 
 </body>
