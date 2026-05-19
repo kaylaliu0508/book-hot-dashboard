@@ -6,6 +6,18 @@
 <title>图书选品台 · 2026年6月</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <link rel="stylesheet" href="select.css">
+<script>
+// 嵌入 iframe 时隐藏自身顶部导航（由父页面 index.html 统一导航）
+if(window.self !== window.top){
+  document.addEventListener('DOMContentLoaded',function(){
+    var nav=document.querySelector('.topnav');
+    if(nav) nav.style.display='none';
+    // subtabs sticky top 依赖 topnav 高度，嵌入时重置为 0
+    var subtabs=document.querySelector('.subtabs');
+    if(subtabs) subtabs.style.top='0';
+  });
+}
+</script>
 </head>
 <body>
 
