@@ -104,8 +104,16 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <script>
 (function(){
   var KEY='bhd_invite_pass_v1', CODE='6688';
-  // 已通过则立即移除遮罩
-  try{ if(sessionStorage.getItem(KEY)==='1'){ var g=document.getElementById('invite-gate'); if(g) g.parentNode.removeChild(g); return; } }catch(e){}
+  // 使用 localStorage 持久化记忆（跨标签页/跨子页面/关闭浏览器后再打开均有效）
+  // 兼容旧版 sessionStorage：如果 sessionStorage 已通过，迁移到 localStorage
+  try{
+    if(localStorage.getItem(KEY)==='1' || sessionStorage.getItem(KEY)==='1'){
+      try{ localStorage.setItem(KEY,'1'); }catch(e){}
+      var g=document.getElementById('invite-gate');
+      if(g) g.parentNode.removeChild(g);
+      return;
+    }
+  }catch(e){}
   document.body.classList.add('invite-locked');
   var gate=document.getElementById('invite-gate'),
       inp=document.getElementById('invite-input'),
@@ -114,7 +122,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
   setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
   function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
   function pass(){
-    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+    try{ localStorage.setItem(KEY,'1'); sessionStorage.setItem(KEY,'1'); }catch(e){}
     document.body.classList.remove('invite-locked');
     gate.style.transition='opacity .3s'; gate.style.opacity='0';
     setTimeout(function(){ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },320);

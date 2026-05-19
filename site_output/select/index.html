@@ -20,6 +20,90 @@ if(window.self !== window.top){
 </script>
 </head>
 <body>
+<!-- ===== 邀请码登录拦截层（与主站共享 localStorage Key，已登录则秒过）===== -->
+<div id="invite-gate">
+  <div class="ig-bg"><span class="ig-blob ig-b1"></span><span class="ig-blob ig-b2"></span><span class="ig-blob ig-b3"></span><span class="ig-grid"></span></div>
+  <div class="ig-card">
+    <div class="ig-head">
+      <div class="ig-logo"><svg viewBox="0 0 32 32" width="28" height="28" fill="none"><defs><linearGradient id="igLg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".75"/></linearGradient></defs><rect x="5" y="14" width="4" height="13" rx="1.2" fill="url(#igLg)"/><rect x="14" y="6" width="4" height="21" rx="1.2" fill="url(#igLg)"/><rect x="23" y="10" width="4" height="17" rx="1.2" fill="url(#igLg)"/></svg></div>
+      <div class="ig-title">图书灵感中心</div>
+      <div class="ig-sub">请输入邀请码以继续访问</div>
+    </div>
+    <div class="ig-field">
+      <input id="invite-input" type="password" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="邀请码" />
+    </div>
+    <div id="invite-err" class="ig-err"></div>
+    <button id="invite-btn" class="ig-btn"><span>进 入</span></button>
+    <div class="ig-foot">仅限内部受邀使用 · 请勿外传<br/>如需邀请码请联系管理员</div>
+  </div>
+</div>
+<style>
+  body.invite-locked{overflow:hidden}
+  #invite-gate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;color:#e6e9ff;background:#070a1a;overflow:hidden}
+  #invite-gate .ig-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  #invite-gate .ig-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
+  #invite-gate .ig-b1{width:520px;height:520px;left:-120px;top:-140px;background:radial-gradient(circle,#7c3aed 0%,transparent 70%);animation:igFloat1 18s ease-in-out infinite}
+  #invite-gate .ig-b2{width:560px;height:560px;right:-140px;top:30%;background:radial-gradient(circle,#2563eb 0%,transparent 70%);animation:igFloat2 22s ease-in-out infinite}
+  #invite-gate .ig-b3{width:480px;height:480px;left:30%;bottom:-160px;background:radial-gradient(circle,#06b6d4 0%,transparent 70%);opacity:.45;animation:igFloat3 20s ease-in-out infinite}
+  #invite-gate .ig-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+  #invite-gate .ig-card{position:relative;width:min(420px,92vw);padding:42px 36px 32px;border-radius:20px;background:linear-gradient(160deg,rgba(30,32,64,.72) 0%,rgba(18,20,44,.78) 100%);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px -20px rgba(8,10,30,.8),0 0 0 1px rgba(255,255,255,.02) inset,0 1px 0 rgba(255,255,255,.06) inset;animation:igIn .6s cubic-bezier(.2,.8,.2,1)}
+  #invite-gate .ig-card::before{content:"";position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(140deg,rgba(124,58,237,.5),rgba(37,99,235,.35) 40%,transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  #invite-gate .ig-head{text-align:center;margin-bottom:26px}
+  #invite-gate .ig-logo{width:56px;height:56px;margin:0 auto 14px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed 0%,#3b82f6 55%,#06b6d4 100%);box-shadow:0 10px 24px -6px rgba(99,102,241,.55),0 0 0 1px rgba(255,255,255,.12) inset}
+  #invite-gate .ig-title{font-size:22px;font-weight:600;letter-spacing:1px;background:linear-gradient(90deg,#fff 0%,#c7d2fe 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px}
+  #invite-gate .ig-sub{font-size:13px;color:#8b91b8;letter-spacing:.5px}
+  #invite-gate .ig-field{position:relative;border-radius:12px;padding:1px;background:linear-gradient(135deg,rgba(124,58,237,.35),rgba(37,99,235,.18) 50%,rgba(6,182,212,.2));transition:.25s}
+  #invite-gate .ig-field:focus-within{background:linear-gradient(135deg,#7c3aed,#3b82f6 50%,#06b6d4);box-shadow:0 0 0 4px rgba(99,102,241,.18),0 8px 24px -8px rgba(99,102,241,.4)}
+  #invite-gate #invite-input{width:100%;padding:14px 16px;border:0;border-radius:11px;background:rgba(10,12,28,.85);color:#e6e9ff;font-size:15px;letter-spacing:6px;outline:none;text-align:center;box-sizing:border-box;font-family:inherit}
+  #invite-gate #invite-input::placeholder{color:#5a608a;letter-spacing:4px;font-weight:400}
+  #invite-gate .ig-err{min-height:20px;margin:10px 0 4px;font-size:12px;color:#fb7185;text-align:center;letter-spacing:.3px}
+  #invite-gate .ig-btn{width:100%;margin-top:6px;padding:14px;border:0;border-radius:12px;background:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);background-size:200% 200%;background-position:0% 50%;color:#fff;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:6px;transition:.35s;box-shadow:0 8px 24px -6px rgba(99,102,241,.55),0 0 0 1px rgba(255,255,255,.1) inset;position:relative;overflow:hidden}
+  #invite-gate .ig-btn:hover{background-position:100% 50%;transform:translateY(-1px);box-shadow:0 14px 32px -6px rgba(99,102,241,.7),0 0 0 1px rgba(255,255,255,.15) inset}
+  #invite-gate .ig-btn:active{transform:translateY(0);box-shadow:0 6px 16px -4px rgba(99,102,241,.5),0 0 0 1px rgba(255,255,255,.1) inset}
+  #invite-gate .ig-foot{margin-top:22px;font-size:11px;color:#6b7099;text-align:center;line-height:1.7;letter-spacing:.3px}
+  #invite-gate.shake .ig-card{animation:igShake .4s}
+  @keyframes igIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes igShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}50%{transform:translateX(9px)}75%{transform:translateX(-5px)}}
+  @keyframes igFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,40px) scale(1.08)}}
+  @keyframes igFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,30px) scale(1.05)}}
+  @keyframes igFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.1)}}
+</style>
+<script>
+(function(){
+  var KEY='bhd_invite_pass_v1', CODE='6688';
+  try{
+    if(localStorage.getItem(KEY)==='1' || sessionStorage.getItem(KEY)==='1'){
+      try{ localStorage.setItem(KEY,'1'); }catch(e){}
+      var g=document.getElementById('invite-gate');
+      if(g) g.parentNode.removeChild(g);
+      return;
+    }
+  }catch(e){}
+  document.body.classList.add('invite-locked');
+  var gate=document.getElementById('invite-gate'),
+      inp=document.getElementById('invite-input'),
+      btn=document.getElementById('invite-btn'),
+      err=document.getElementById('invite-err');
+  setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
+  function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
+  function pass(){
+    try{ localStorage.setItem(KEY,'1'); sessionStorage.setItem(KEY,'1'); }catch(e){}
+    document.body.classList.remove('invite-locked');
+    gate.style.transition='opacity .3s'; gate.style.opacity='0';
+    setTimeout(function(){ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },320);
+  }
+  function submit(){
+    var v=(inp.value||'').trim();
+    if(!v){ fail('请输入邀请码'); return; }
+    if(v===CODE){ pass(); } else { fail(); }
+  }
+  btn.addEventListener('click',submit);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+  inp.addEventListener('input',function(){ err.textContent=''; });
+})();
+</script>
+<!-- ===== /邀请码登录拦截层 ===== -->
+
 
 <!-- 顶部导航 -->
 <nav class="topnav">
