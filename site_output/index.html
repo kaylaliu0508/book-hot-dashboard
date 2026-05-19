@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="app-version" content="2026-05-19-r10-k12-tutoring-service-form">
-<title>图书灵感中心 - {{DATE_STR}}</title>
+<title>图书灵感中心 - 2026.05.19</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -133,12 +133,13 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 <!-- Header -->
 <div class="bar"><div class="bar-in">
-<div class="lg">📊 图书灵感中心</div>
-<button class="tb on" onclick="go('p4',this)">图书内容提取</button>
-<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
+<div class="lg">📚 图书灵感中心</div>
+<a href="/select/" class="tb" data-track="tab_btn_select_hub" style="display:flex;align-items:center;gap:4px;text-decoration:none"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#e63946;border-radius:50%;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">1</span>图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:2px">NEW</span></a>
+<button class="tb on" onclick="go('p4',this)" data-track="tab_btn_book_extract" style="display:flex;align-items:center;gap:4px"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:rgba(255,255,255,.15);border-radius:50%;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">2</span>图书内容提取</button>
+<button class="tb" onclick="go('p5',this)" data-track="tab_btn_script_gen">一键生成口播脚本</button>
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
-<button class="tb" onclick="go('p3',this)">AI预审</button>
-<a href="/summer/" class="tb">📅 暑期专栏</a>
+<button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:rgba(255,255,255,.1);border-radius:50%;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">3</span> AI预审</button>
+<a href="/summer/" class="tb" data-track="tab_btn_summer">📅 暑期专栏</a>
 </div></div>
 
 <div class="wrap">
@@ -191,6 +192,21 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 <!-- ==================== 页面4: ISBN采集 ==================== -->
 <div class="ct pg on" id="pg-p4">
+<!-- 选品工作台引流横幅 -->
+<div style="background:linear-gradient(135deg,rgba(230,57,70,.12),rgba(230,57,70,.04));border:1px solid rgba(230,57,70,.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:40px;height:40px;background:rgba(230,57,70,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🛒</div>
+    <div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <span style="font-size:14px;font-weight:700;color:#f0f6fc">图书选品台</span>
+        <span style="background:#e63946;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px">第 1 步</span>
+        <span style="background:rgba(230,57,70,.2);color:#ff8a94;font-size:9px;padding:1px 5px;border-radius:4px">NEW</span>
+      </div>
+      <div style="font-size:11px;color:#8b949e;line-height:1.5">先去选品台挑书 → 确定 ISBN → 再回来提取内容 · <span style="color:#ff8a94">实战榜单 + 趋势预判 + 推荐书单，一站式选品</span></div>
+    </div>
+  </div>
+  <a href="/select/" style="flex-shrink:0;padding:8px 20px;border-radius:8px;background:#e63946;color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;transition:.2s" onmouseover="this.style.background='#c1374a'" onmouseout="this.style.background='#e63946'">进入选品台 →</a>
+</div>
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📚 图书内容提取</h2>
 <p class="subtitle">输入 ISBN编号，一键检索全维度图书内容</p>
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
@@ -384,7 +400,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 function go(id,el){
   var pgs=document.querySelectorAll('.pg');
   for(var i=0;i<pgs.length;i++) pgs[i].classList.remove('on');
-  var tbs=document.querySelectorAll('.tb');
+  var tbs=document.querySelectorAll('.bar-in button.tb');
   for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
@@ -393,10 +409,14 @@ function go(id,el){
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
-  if(h){
-    var map={'p4':0,'p5':1,'p6':2,'p3':3};
-    var tbs=document.querySelectorAll('.bar-in .tb');
-    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+  // 只匹配内部 button tab（排除外链 a 标签）
+  var tbs=document.querySelectorAll('.bar-in button.tb');
+  var map={'p4':0,'p5':1,'p6':2,'p3':3};
+  if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
+  else{
+    // 默认 tab 也要打首屏 PV
+    try{ if(window.tracker) window.tracker.pv('book_extract'); }catch(e){}
+  }
   }
 })();
 
