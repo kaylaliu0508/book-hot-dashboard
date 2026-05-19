@@ -13,6 +13,15 @@
   // 检测方式：iframe 嵌入或 /ai/ 路径
   if (location.pathname === '/ai/' || location.pathname === '/ai/index.html') return;
 
+  // 如果当前页面在 iframe 中（被父页面嵌入），不注入悬浮按钮
+  // 因为父页面已经有全局图图按钮，避免重叠显示两个
+  try {
+    if (window.top !== window.self) return;
+  } catch(e) {
+    // 跨域 iframe 也直接退出
+    return;
+  }
+
   var API_BASE = window.location.origin;
 
   // ============ 注入样式 ============
