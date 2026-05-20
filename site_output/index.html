@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="app-version" content="2026-05-19-r10-k12-tutoring-service-form">
-<title>图书灵感中心 - 2026.05.19</title>
+<title>图书灵感中心 - 2026.05.20</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -104,16 +104,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <script>
 (function(){
   var KEY='bhd_invite_pass_v1', CODE='6688';
-  // 使用 localStorage 持久化记忆（跨标签页/跨子页面/关闭浏览器后再打开均有效）
-  // 兼容旧版 sessionStorage：如果 sessionStorage 已通过，迁移到 localStorage
-  try{
-    if(localStorage.getItem(KEY)==='1' || sessionStorage.getItem(KEY)==='1'){
-      try{ localStorage.setItem(KEY,'1'); }catch(e){}
-      var g=document.getElementById('invite-gate');
-      if(g) g.parentNode.removeChild(g);
-      return;
-    }
-  }catch(e){}
+  // 已通过则立即移除遮罩
+  try{ if(sessionStorage.getItem(KEY)==='1'){ var g=document.getElementById('invite-gate'); if(g) g.parentNode.removeChild(g); return; } }catch(e){}
   document.body.classList.add('invite-locked');
   var gate=document.getElementById('invite-gate'),
       inp=document.getElementById('invite-input'),
@@ -122,7 +114,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
   setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
   function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
   function pass(){
-    try{ localStorage.setItem(KEY,'1'); sessionStorage.setItem(KEY,'1'); }catch(e){}
+    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
     document.body.classList.remove('invite-locked');
     gate.style.transition='opacity .3s'; gate.style.opacity='0';
     setTimeout(function(){ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },320);
@@ -142,13 +134,11 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书灵感中心</div>
-<button class="tb" onclick="go('pselect',this)" data-track="tab_btn_select_hub">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
-<button class="tb on" onclick="go('p4',this)" data-track="tab_btn_book_extract">图书内容提取</button>
-<button class="tb" onclick="go('p5',this)" data-track="tab_btn_script_gen">一键生成口播脚本</button>
+<button class="tb on" onclick="go('p4',this)">图书内容提取</button>
+<button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
-<button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit">AI预审</button>
-<a href="/summer/" class="tb" data-track="tab_btn_summer">📅 暑期专栏</a>
-<button class="tb tb-ai" onclick="go('pai',this)" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
+<button class="tb" onclick="go('p3',this)">AI预审</button>
+<a href="/summer/" class="tb">📅 暑期专栏</a>
 </div></div>
 
 <div class="wrap">
@@ -156,11 +146,6 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面1: 话题监控 (已下线) ==================== -->
 
 <!-- ==================== 页面2: 类目找灵感 (已下线) ==================== -->
-
-<!-- ==================== 选品工作台 ==================== -->
-<div class="ct pg" id="pg-pselect" style="padding:0">
-<iframe src="/select/" style="width:100%;height:calc(100vh - 48px);border:none;display:block" allowfullscreen loading="lazy" id="selectIframe"></iframe>
-</div>
 
 <!-- ==================== 页面3: AI预审 ==================== -->
 <div class="ct pg" id="pg-p3">
@@ -399,40 +384,19 @@ tr.rl td{background:rgba(230,57,70,.02)}
 function go(id,el){
   var pgs=document.querySelectorAll('.pg');
   for(var i=0;i<pgs.length;i++) pgs[i].classList.remove('on');
-  var tbs=document.querySelectorAll('.bar-in .tb');
+  var tbs=document.querySelectorAll('.tb');
   for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
   window.scrollTo(0,0);
-  // AI营销助手：iframe 懒加载（首次切换时才加载）
-  if(id==='pai'){
-    var aif=document.getElementById('aiAssistantFrame');
-    if(aif && (!aif.src || aif.src==='about:blank' || aif.src===window.location.href)){
-      aif.src='/ai/';
-    }
-  }
-  // 全局悬浮按钮：进入 AI 营销助手 TAB 时隐藏（iframe 里有自己的按钮），其他 TAB 显示
-  try{
-    var tutuFab=document.getElementById('tutuFab');
-    if(tutuFab) tutuFab.style.display = (id==='pai') ? 'none' : '';
-  }catch(e){}
-  // 埋点：切 tab
-  try{
-    var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','pselect':'select_hub','pai':'ai_assistant'};
-    var t=TAB_MAP[id];
-    if(t&&window.tracker)window.tracker.setTab(t);
-  }catch(e){}
 }
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
-  var tbs=document.querySelectorAll('.bar-in .tb');
-  // 注意：暑期专栏(/summer/)也是 .tb 元素占用 index 5，所以 pai=6
-  var map={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':6};
-  if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
-  else{
-    // 默认 tab 也要打首屏 PV
-    try{ if(window.tracker) window.tracker.pv('book_extract'); }catch(e){}
+  if(h){
+    var map={'p4':0,'p5':1,'p6':2,'p3':3};
+    var tbs=document.querySelectorAll('.bar-in .tb');
+    if(map[h]!==undefined){go(h,tbs[map[h]]);}
   }
 })();
 
@@ -3269,25 +3233,5 @@ function adExportMd(){
 
 </script>
 
-<!-- ==================== AI 营销助手面板 ==================== -->
-<style>
-/* AI营销助手 TAB 特殊高亮样式：与主站红色风格统一 */
-.tb.tb-ai{color:rgba(255,255,255,.4)}
-.tb.tb-ai:hover{color:#fff;background:rgba(230,57,70,.15)}
-.tb.tb-ai.on{background:#e63946;color:#fff}
-</style>
-<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#F7F8FC;z-index:50">
-  <div id="aiFrameLoading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#F7F8FC;color:#6B7280;font-family:-apple-system,'PingFang SC',sans-serif;z-index:1;transition:opacity .3s">
-    <div style="width:48px;height:48px;border:3px solid #E5E7EB;border-top-color:#E63946;border-radius:50%;animation:aiSpin 1s linear infinite"></div>
-    <div style="margin-top:14px;font-size:13px;font-weight:500">🐰 图图正在赶来...</div>
-    <div style="margin-top:4px;font-size:11px;color:#9CA3AF">智能营销助手加载中</div>
-    <style>@keyframes aiSpin{to{transform:rotate(360deg)}}</style>
-  </div>
-  <iframe id="aiAssistantFrame" src="" style="width:100%;height:100%;border:none;display:block;background:#F7F8FC;position:relative;z-index:2" allow="clipboard-write; clipboard-read; camera; microphone" title="AI 营销助手" onload="(function(f){var l=document.getElementById('aiFrameLoading');if(l){l.style.opacity='0';setTimeout(function(){l.style.display='none'},300)}})(this)"></iframe>
-</div>
-
-
-<!-- 图图 · 全站悬浮 AI 助手 -->
-<script src="/assets/tutu-chat.js" defer></script>
 </body>
 </html>
