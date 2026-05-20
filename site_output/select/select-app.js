@@ -670,37 +670,82 @@ function renderCatShareBar() {
   }).join('');
 }
 
-// ==================== 节点 × 人群画像（单行紧凑版）====================
-function renderNodePersona() {
-  const list = document.getElementById('nodePersonaList');
-  if (!list) return;
-  list.innerHTML = NODES_PERSONA.map(n => `
-    <div class="np-row-card ${n.urgent?'urgent':''}">
-      <div class="np-icon-block">
-        <div class="icon">${n.icon}</div>
-      </div>
-      <div class="np-name-block">
-        <div class="date">📍 ${n.date}</div>
-        <div class="name">${n.name}</div>
-        <div class="cat-line">
-          <span class="cat-tag ${n.cat}">${n.cat}</span>
-          ${n.urgent ? '<span class="urgent-pill">紧迫</span>' : ''}
-        </div>
-      </div>
-      <div class="np-persona-block">
-        <div class="l">👥 目标人群</div>
-        <div class="p1" style="line-height:1.6;">${n.targetAudience}</div>
-      </div>
-      <div class="np-strategy-block">
-        <div class="np-block-title strategy">📦 选品策略</div>
-        <div class="np-block-body">${n.selectionStrategy}</div>
-      </div>
-      <div class="np-creative-block">
-        <div class="np-block-title creative">✨ 创意亮点</div>
-        <div class="np-block-body">${n.creativeIdea}</div>
-      </div>
+// ==================== 6 月选品 by 周节奏图（替代旧的节点×人群画像）====================
+function renderWeekRhythm() {
+  const grid = document.getElementById('weekRhythmGrid');
+  if (!grid || typeof WEEK_RHYTHM === 'undefined') return;
+
+  const { weeks, rows } = WEEK_RHYTHM;
+  const weekIdx = {}; weeks.forEach((w,i) => weekIdx[w.key] = i + 1); // 第 1 列是品类标签列
+
+  // 表头
+  let html = `
+    <div class="wr-corner">📅 选品节奏</div>
+  ` + weeks.map(w => `
+    <div class="wr-week-head">
+      <div class="wr-wk">${w.key} · ${w.name}</div>
+      <div class="wr-wk-date">${w.date}</div>
     </div>
   `).join('');
+
+  // 数据行
+  rows.forEach(row => {
+    // 品类标签列
+    const prioCls = row.priority.toLowerCase(); // p0 / p1 / p2
+    html += `
+      <div class="wr-cat-head ${row.colorClass}">
+        <div class="wr-cat-icon">${row.icon}</div>
+        <div class="wr-cat-name">${row.cat}</div>
+        <span class="wr-prio ${prioCls}">${row.priority}</span>
+      </div>
+    `;
+
+    // 单元格按 W1-W4 顺序铺；考虑 span 跨列：先建一个 covered 数组
+    const covered = { W1:false, W2:false, W3:false, W4:false };
+    // 把 cells 按 week 排序（其实数据已是顺序）
+    const cells = row.cells.slice().sort((a,b) => weekIdx[a.week] - weekIdx[b.week]);
+    cells.forEach(c => {
+      const span = c.span || 1;
+      const startCol = weekIdx[c.week] + 1; // grid 第 1 列是品类列，所以 W1 实际是第 2 列，weekIdx[W1]=1+1=2
+      const styleSpan = span > 1 ? `style="grid-column: span ${span};"` : '';
+      // 标记 covered
+      const startNum = parseInt(c.week.replace('W',''));
+      for (let i = 0; i < span; i++) covered['W'+(startNum+i)] = true;
+
+      if (c.empty) {
+        html += `<div class="wr-cell empty" ${styleSpan}>${c.note || '—'}</div>`;
+      } else if (c.groups && c.groups.length) {
+        // 多分组：紧凑模式 —— 标题 + items 同一行（顿号分隔），痛点紧贴
+        const groupsHtml = c.groups.map(g => {
+          const inline = g.items && g.items.length
+            ? `<span class="wr-group-inline">${g.items.join('、')}</span>`
+            : (g.body ? `<span class="wr-group-inline">${g.body}</span>` : '');
+          return `
+            <div class="wr-group">
+              <div class="wr-group-line"><span class="wr-group-title">${g.title}</span>${inline ? '：' + inline : ''}</div>
+              ${g.pain ? `<div class="wr-cell-pain">${g.pain}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+        html += `
+          <div class="wr-cell ${row.colorClass}" ${styleSpan}>
+            ${groupsHtml}
+            ${c.lead ? `<div class="wr-cell-lead">${c.lead.replace(/^⏰\s*/,'')}</div>` : ''}
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="wr-cell ${row.colorClass}" ${styleSpan}>
+            <div class="wr-cell-direction">${c.direction}</div>
+            ${c.pain  ? `<div class="wr-cell-pain">${c.pain}</div>`   : ''}
+            ${c.lead  ? `<div class="wr-cell-lead">${c.lead.replace(/^⏰\s*/,'')}</div>` : ''}
+          </div>
+        `;
+      }
+    });
+  });
+
+  grid.innerHTML = html;
 }
 
 // ==================== 典型跑量书拆解 ====================
@@ -1083,8 +1128,8 @@ function initOverview() {
     ]
   });
 
-  // 节点 + 人群画像
-  renderNodePersona();
+  // 6 月选品 by 周节奏图
+  renderWeekRhythm();
 }
 
 // ==================== 看未来：综合初始化 ====================
