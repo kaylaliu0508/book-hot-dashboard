@@ -494,19 +494,23 @@
 </style>
 </head>
 <body>
-<!-- ===== 邀请码登录态校验（iframe 友好：未登录则跳回主站，不阻塞渲染）===== -->
+<!-- ===== 邀请码登录态校验（iframe 友好：在 iframe 内不做任何跳转，避免影响主站嵌入）===== -->
 <script>
 (function(){
   var KEY='bhd_invite_pass_v1';
+  // 在 iframe 内（被主站嵌入）：完全跳过校验，让主站负责登录态
+  try{
+    if(window.top !== window.self || window.frameElement){ return; }
+  }catch(e){ return; /* 跨域访问 top 抛异常说明在 iframe 中，直接渲染 */ }
+  // 顶层访问：检查登录态
   try{
     if(localStorage.getItem(KEY)==='1' || sessionStorage.getItem(KEY)==='1'){
       try{ localStorage.setItem(KEY,'1'); }catch(e){}
       return;
     }
   }catch(e){ return; }
-  if(window.top === window.self){
-    location.replace('/');
-  }
+  // 顶层 + 未登录 → 跳回主站
+  location.replace('/');
 })();
 </script>
 
