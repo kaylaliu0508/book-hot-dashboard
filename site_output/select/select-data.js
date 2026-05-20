@@ -383,7 +383,7 @@ const HOT_BOOK_BREAKDOWN = [
     roleClass:'basic',
     title:'我们的中国立体书 + 环游世界立体书',
     isbn:'9787521748459',
-    image:'rank-images/image1373.png',
+    image:'rank-images/image1373.jpg',
     cat:'童书',
     stats:[
       {icon:'💰', label:'客单', val:'¥89-159'},
@@ -433,7 +433,7 @@ const HOT_BOOK_BREAKDOWN = [
     roleClass:'opportunity',
     title:'漫画帝王家书',
     isbn:'9787515366692',
-    image:'rank-images/image1377.png',
+    image:'rank-images/image1377.jpg',
     cat:'童书',
     stats:[
       {icon:'💰', label:'客单', val:'¥39.9'},
@@ -442,8 +442,8 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
     ],
     persona:{
-      core:'8-14岁孩子的妈妈（关注课外阅读+家庭情感教育）',
-      pain:'孩子课外阅读缺历史人文素材 / 想找日常话题切入点',
+      core:'8-14岁孩子的妈妈（关注孩子成长教育）',
+      pain:'关注孩子成长教育，提高孩子认知格局，减少信息差',
       scene:'暑假课外阅读 / 亲子共读 / 父母日常话题切入'
     },
     sellingPoints:[
