@@ -140,6 +140,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
 <button class="tb" onclick="go('p3',this)">AI预审</button>
 <a href="/summer/" class="tb">📅 暑期专栏</a>
+<button class="tb tb-ai" onclick="go('pai',this)" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
 </div></div>
 
 <div class="wrap">
@@ -394,11 +395,17 @@ function go(id,el){
   for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
-  // iframe 类 tab 懒加载（首次切到时才设 src，避免页面初始加载就拉 /select/ 大资源）
+  // iframe 类 tab 懒加载（首次切到时才设 src，避免页面初始加载就拉重资源）
   if(id==='pselect'){
     var f=document.getElementById('pselect-frame');
     if(f && f.getAttribute('src')==='about:blank'){
       f.setAttribute('src', f.getAttribute('data-src'));
+    }
+  }
+  if(id==='pai'){
+    var aif=document.getElementById('aiAssistantFrame');
+    if(aif && (!aif.src || aif.src==='' || aif.src==='about:blank' || aif.src===window.location.href)){
+      aif.src='/ai/';
     }
   }
   window.scrollTo(0,0);
@@ -407,13 +414,9 @@ function go(id,el){
 (function(){
   var h=location.hash.replace('#','');
   if(h){
-    var map={'pselect':-1,'p4':0,'p5':1,'p6':2,'p3':3};
     var tbs=document.querySelectorAll('.bar-in .tb');
-    if(h==='pselect'){
-      // pselect 是 nav 第 1 个 .tb（index=0），后面的 p4-p3 顺移
-    }
-    // 重新构建 index 映射（pselect 在最前，p4..p3 紧随）
-    var navMap={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4};
+    // nav .tb 顺序: pselect(0) p4(1) p5(2) p6(3) p3(4) 暑期(5) pai(6)
+    var navMap={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':6};
     if(navMap[h]!==undefined){go(h,tbs[navMap[h]]);}
   }
 })();
@@ -3250,6 +3253,17 @@ function adExportMd(){
 }
 
 </script>
+
+<!-- ==================== AI 营销助手面板（iframe 内嵌，懒加载）==================== -->
+<style>
+/* AI营销助手 TAB 特殊高亮样式：与主站红色风格统一 */
+.tb.tb-ai{color:rgba(255,255,255,.4)}
+.tb.tb-ai:hover{color:#fff;background:rgba(230,57,70,.15)}
+.tb.tb-ai.on{background:#e63946;color:#fff}
+</style>
+<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#0d1117;z-index:50">
+  <iframe id="aiAssistantFrame" src="" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write; clipboard-read; camera; microphone" title="AI 营销助手"></iframe>
+</div>
 
 </body>
 </html>
