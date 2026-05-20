@@ -134,7 +134,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书灵感中心</div>
-<a href="/select/" class="tb" data-track="tab_btn_select_hub" style="text-decoration:none">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></a>
+<button class="tb" data-track="tab_btn_select_hub" onclick="go('pselect',this)">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
 <button class="tb on" onclick="go('p4',this)">图书内容提取</button>
 <button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
@@ -143,6 +143,11 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div></div>
 
 <div class="wrap">
+
+<!-- ==================== 页面: 图书选品台（iframe 内嵌，懒加载）==================== -->
+<div class="pg" id="pg-pselect" style="padding:0">
+<iframe id="pselect-frame" src="about:blank" data-src="/select/" title="图书选品台" style="display:block;width:100%;height:calc(100vh - 60px);border:0;background:#0d1117"></iframe>
+</div>
 
 <!-- ==================== 页面1: 话题监控 (已下线) ==================== -->
 
@@ -389,15 +394,27 @@ function go(id,el){
   for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
+  // iframe 类 tab 懒加载（首次切到时才设 src，避免页面初始加载就拉 /select/ 大资源）
+  if(id==='pselect'){
+    var f=document.getElementById('pselect-frame');
+    if(f && f.getAttribute('src')==='about:blank'){
+      f.setAttribute('src', f.getAttribute('data-src'));
+    }
+  }
   window.scrollTo(0,0);
 }
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
   if(h){
-    var map={'p4':0,'p5':1,'p6':2,'p3':3};
+    var map={'pselect':-1,'p4':0,'p5':1,'p6':2,'p3':3};
     var tbs=document.querySelectorAll('.bar-in .tb');
-    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+    if(h==='pselect'){
+      // pselect 是 nav 第 1 个 .tb（index=0），后面的 p4-p3 顺移
+    }
+    // 重新构建 index 映射（pselect 在最前，p4..p3 紧随）
+    var navMap={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4};
+    if(navMap[h]!==undefined){go(h,tbs[navMap[h]]);}
   }
 })();
 
