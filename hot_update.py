@@ -1572,34 +1572,23 @@ def main():
     if total_raw == 0:
         log("⚠️ 未获取到任何数据！将使用空数据渲染（页面将显示暂无内容）", "WARN")
     
-    # Step 3: 渲染HTML
-    print("\n🖥️  [Step 2/4] 渲染HTML页面...")
-    try:
-        renderer = DashboardRenderer(TEMPLATE_FILE)
-        html_output = renderer.render(raw_data, {
-            "UPDATE_FREQUENCY": "每日自动更新",
-            "SOURCE_NOTE": f"数据源: {DATA_SOURCE}",
-        })
-    except FileNotFoundError:
-        log("模板文件不存在，无法继续！", "ERROR")
-        sys.exit(1)
-    
-    # Step 4: 写入输出文件
-    print("\n💾 [Step 3/4] 写入输出文件...")
-    OUTPUT_FILE.write_text(html_output, encoding="utf-8")
-    file_size = OUTPUT_FILE.stat().st_size
-    
+    # Step 3-4: 跳过 HTML 渲染与写入
+    # 重要变更（2026-05）：site_output/index.html 由人工维护
+    #   （含 图书选品台 / AI营销助手 等 tab），bot 不再覆盖它。
+    #   热点数据已通过 Step 1 写入 data/hot_data.json，
+    #   主页前端 JS 通过 fetch(/data/hot_data.json) 动态读取。
+    print("\n[Step 2/3] 跳过 HTML 渲染（保护人工维护的 index.html）")
+    print("\n[Step 3/3] 仅更新 data/hot_data.json，未写入 site_output/index.html")
+
     # 完成
     print("\n" + "=" * 65)
-    print(f"✅ 更新完成！")
-    print(f"   📄 输出文件: {OUTPUT_FILE}")
-    print(f"   📦 文件大小: {file_size:,} bytes ({file_size // 1024} KB)")
-    if OUTPUT_MODE == "cloud":
-        print(f"   🔗 访问方式: Vercel 自动部署后通过域名访问 index.html")
-    else:
-        print(f"   🔗 访问链接: 不变（同一文件被内容覆盖）")
-    print(f"   📊 数据条数: {total_raw}")
-    print(f"   ⏰ 更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"更新完成！")
+    print(f"   数据文件: {JSON_DATA_FILE}")
+    if JSON_DATA_FILE.exists():
+        _fs = JSON_DATA_FILE.stat().st_size
+        print(f"   文件大小: {_fs:,} bytes ({_fs // 1024} KB)")
+    print(f"   数据条数: {total_raw}")
+    print(f"   更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 65)
     
     return True

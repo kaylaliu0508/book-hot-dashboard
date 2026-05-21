@@ -134,14 +134,21 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书灵感中心</div>
+<button class="tb" data-track="tab_btn_select_hub" onclick="go('pselect',this)">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
 <button class="tb on" onclick="go('p4',this)">图书内容提取</button>
 <button class="tb" onclick="go('p5',this)">一键生成口播脚本</button>
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
 <button class="tb" onclick="go('p3',this)">AI预审</button>
 <a href="/summer/" class="tb">📅 暑期专栏</a>
+<button class="tb tb-ai" onclick="go('pai',this)" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
 </div></div>
 
 <div class="wrap">
+
+<!-- ==================== 页面: 图书选品台（iframe 内嵌，懒加载）==================== -->
+<div class="pg" id="pg-pselect" style="padding:0">
+<iframe id="pselect-frame" src="about:blank" data-src="/select/" title="图书选品台" style="display:block;width:100%;height:calc(100vh - 60px);border:0;background:#0d1117"></iframe>
+</div>
 
 <!-- ==================== 页面1: 话题监控 (已下线) ==================== -->
 
@@ -388,15 +395,36 @@ function go(id,el){
   for(var i=0;i<tbs.length;i++) tbs[i].classList.remove('on');
   document.getElementById('pg-'+id).classList.add('on');
   if(el) el.classList.add('on');
+  // iframe 类 tab 懒加载（首次切到时才设 src，避免页面初始加载就拉重资源）
+  if(id==='pselect'){
+    var f=document.getElementById('pselect-frame');
+    if(f && f.getAttribute('src')==='about:blank'){
+      f.setAttribute('src', f.getAttribute('data-src'));
+    }
+  }
+  if(id==='pai'){
+    var aif=document.getElementById('aiAssistantFrame');
+    if(aif){
+      var cur=aif.getAttribute('src')||'';
+      // 仅在尚未加载（about:blank/空/被浏览器解析成主站自身）时才注入真实地址，避免重复加载
+      if(cur===''||cur==='about:blank'||cur===window.location.href||cur===window.location.origin+'/'){
+        aif.setAttribute('src', aif.getAttribute('data-src')||'/ai/');
+      }
+    }
+  }
   window.scrollTo(0,0);
+  // AI 悬浮按钮：在 AI 助手页面时隐藏，其他页面显示
+  var fb=document.querySelector('.ai-float-btn');
+  if(fb){fb.style.display=(id==='pai')?'none':'';}
 }
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
   if(h){
-    var map={'p4':0,'p5':1,'p6':2,'p3':3};
     var tbs=document.querySelectorAll('.bar-in .tb');
-    if(map[h]!==undefined){go(h,tbs[map[h]]);}
+    // nav .tb 顺序: pselect(0) p4(1) p5(2) p6(3) p3(4) 暑期(5) pai(6)
+    var navMap={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':6};
+    if(navMap[h]!==undefined){go(h,tbs[navMap[h]]);}
   }
 })();
 
@@ -3232,6 +3260,49 @@ function adExportMd(){
 }
 
 </script>
+
+<!-- ==================== AI 营销助手面板（iframe 内嵌，懒加载）==================== -->
+<style>
+/* AI营销助手 TAB 特殊高亮样式：与主站红色风格统一 */
+.tb.tb-ai{color:rgba(255,255,255,.4)}
+.tb.tb-ai:hover{color:#fff;background:rgba(230,57,70,.15)}
+.tb.tb-ai.on{background:#e63946;color:#fff}
+</style>
+<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;background:#0d1117;z-index:50">
+  <iframe id="aiAssistantFrame" src="about:blank" data-src="/ai/" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write; clipboard-read; camera; microphone" referrerpolicy="no-referrer-when-downgrade" title="AI 营销助手"></iframe>
+</div>
+
+<!-- ==================== 全局悬浮：AI 营销助手入口（右下角）==================== -->
+<style>
+.ai-float-btn{
+  position:fixed;right:24px;bottom:24px;z-index:90;
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,#e63946,#c1374a);
+  color:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(230,57,70,.45),0 0 0 0 rgba(230,57,70,.3);
+  font-size:26px;line-height:1;transition:transform .2s,box-shadow .2s;
+  animation:aiPulse 2.5s ease-in-out infinite;
+}
+.ai-float-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(230,57,70,.55)}
+.ai-float-btn .ai-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:#fff;color:#e63946;font-size:10px;font-weight:800;
+  width:20px;height:20px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;border:2px solid #e63946;
+  line-height:1;
+}
+@keyframes aiPulse{
+  0%,100%{box-shadow:0 4px 20px rgba(230,57,70,.45),0 0 0 0 rgba(230,57,70,.3)}
+  50%{box-shadow:0 4px 20px rgba(230,57,70,.55),0 0 0 12px rgba(230,57,70,0)}
+}
+/* 在 AI 助手页面时隐藏悬浮按钮 */
+#pg-pai.on ~ .ai-float-btn,
+body[data-tab="pai"] .ai-float-btn{display:none}
+</style>
+<button class="ai-float-btn" onclick="go('pai',this)" title="AI 营销助手" aria-label="打开 AI 营销助手">
+  📚<span class="ai-badge">1</span>
+</button>
 
 </body>
 </html>
