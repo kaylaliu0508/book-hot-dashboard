@@ -1,0 +1,43 @@
+---
+description: book-hot-dashboard 项目级规则。所有 CodeBuddy 对话默认遵循。
+alwaysApply: true
+---
+
+# 项目规则：图书热点营销工作台
+
+## 必读上下文
+- 每次新对话先阅读仓库根目录的 `CODEBUDDY.md`（项目共享大脑）和 `TRACKER.md`（埋点系统手册）。
+- 部署平台是 **Cloudflare Pages**，不是 Vercel。`README.md` 里的 Vercel 内容是历史，不要据此判断当前架构。
+
+## 部署与构建
+- 这是一个**无构建**的纯静态站点 + Pages Functions 项目。`site_output/` 是部署根目录，源即产物。
+- 修改 `site_output/` 下任何文件，commit + push 到 `main` 即触发 Cloudflare Pages 自动部署。
+- 后端能力走 `functions/api/*`（Pages Functions）和 `workers/*`（独立 Workers）。
+
+## 修改 Tab 的硬性规则
+新增、删除或重命名一个 tab 时，**必须同步修改以下 3 处**，缺一不可：
+1. `functions/api/_tracker_lib.js` 的 `VALID_TABS` 白名单
+2. `site_output/index.html` 的 `TRACK_TAB_MAP` 切换映射
+3. `site_output/stats/index.html` 的 `TAB_LABELS` / `TAB_COLORS` / `.tab-color-*` 样式
+
+如果用户改了其中任意一处而没改另外两处，CodeBuddy 必须主动提醒并补全。
+
+## AI 调用与密钥
+- 所有大模型调用必须走 `functions/api/*` 代理（智谱 / DeepSeek），**禁止**在前端硬编码 API Key。
+- Prompt 修改时，先确认是改后端代理（`functions/api/zhipu/*` 等）还是前端模板字符串。
+
+## Git 协作
+- 默认分支 `main`，保持干净随时可发布。
+- 探索性、易破坏性改动开 `feature/xxx` 分支，验证 OK 再合回 `main`。
+- commit message 中文 OK，遵循 `feat(scope): xxx` / `fix(scope): xxx` / `chore: xxx` 格式（参考已有提交历史）。
+- 完成实质性优化后，主动建议把摘要追加到 `CODEBUDDY.md` 第 6 节「优化历程」。
+
+## 双设备协同
+- 此项目在两台 Mac 间通过 GitHub 同步，CodeBuddy 上下文通过 `CODEBUDDY.md` + `.codebuddy/rules/` 同步。
+- 用户切换设备前，CodeBuddy 应主动提醒：
+  1. 是否要更新 `CODEBUDDY.md` 第 6/7 节？
+  2. 是否已 `git push origin main`？
+
+## 安全与边界
+- 邀请码校验是前端降噪，不是安全机制，**不要假装它在做鉴权**。
+- 涉及埋点数据，遵循 `TRACKER.md` 中 90 天 TTL 设计，不要误改 KV 的过期策略。
