@@ -39,7 +39,10 @@ h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
 .empty{color:#484f58;font-size:11px;text-align:center;padding:30px 0}
 .tab-color-book_extract{color:#1a73e8}
 .tab-color-script_gen{color:#e63946}
+.tab-color-ad_copy{color:#fd7e14}
 .tab-color-ai_audit{color:#fdcb6e}
+.tab-color-select_hub{color:#a78bfa}
+.tab-color-ai_assistant{color:#06b6d4}
 .tab-color-summer{color:#10b981}
 .error-box{background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);color:#f85149;padding:12px;border-radius:8px;margin-bottom:18px;display:none}
 .foot{text-align:center;color:#484f58;font-size:11px;padding:20px 0}
@@ -111,20 +114,27 @@ h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
 <script>
 var API = (window.__STATS_ENDPOINT__) || '/api/stats';
 var TAB_LABELS = {
-  book_extract:'图书内容提取',
-  script_gen:'一键生成口播脚本',
-  ai_audit:'AI预审',
-  summer:'暑期专栏'
+  book_extract:'📚 图书内容提取',
+  script_gen:'🎬 一键生成口播脚本',
+  ad_copy:'📐 图片文案生成',
+  ai_audit:'🛡️ AI预审',
+  select_hub:'🛒 图书选品台',
+  ai_assistant:'🤖 AI营销助手',
+  summer:'📅 暑期专栏'
 };
 var TAB_COLORS = {
   book_extract:'#1a73e8',
   script_gen:'#e63946',
+  ad_copy:'#fd7e14',
   ai_audit:'#fdcb6e',
+  select_hub:'#a78bfa',
+  ai_assistant:'#06b6d4',
   summer:'#10b981'
 };
 var EVT_NICE = {
   // book_extract
   isbn_collect_run:'🚀 开始采集',
+  isbn_query:'🔎 ISBN 查询',
   isbn_copy:'📋 复制报告',
   isbn_download:'💾 下载报告',
   // script_gen
@@ -132,6 +142,10 @@ var EVT_NICE = {
   script_copy_all:'📋 复制全部',
   script_export_md:'📄 导出 MD',
   script_demo:'📝 加载示例',
+  // ad_copy（图片文案生成 NEW）
+  ad_copy_run:'✨ 生成图片文案',
+  ad_copy_all:'📋 复制全部',
+  ad_copy_export_md:'📄 导出 MD',
   // ai_audit
   audit_run:'🔍 开始预审',
   audit_load_sample:'📝 加载示例',
@@ -144,11 +158,14 @@ var EVT_NICE = {
   script_group_expand:'展开脚本分组',
   keyframe_view:'查看关键帧',
   dim_card_jump:'点击维度卡片',
-  // tab buttons
+  // tab buttons（顶部导航）
+  tab_btn_select_hub:'切到 图书选品台',
   tab_btn_book_extract:'切到 图书内容提取',
   tab_btn_script_gen:'切到 口播脚本',
+  tab_btn_ad_copy:'切到 图片文案生成',
   tab_btn_ai_audit:'切到 AI预审',
-  tab_btn_summer:'切到 暑期专栏'
+  tab_btn_summer:'切到 暑期专栏',
+  tab_btn_ai_assistant:'切到 AI营销助手'
 };
 
 var state = { range:'1d', data:null, currentEvtTab:'book_extract', trendChart:null, deviceChart:null };

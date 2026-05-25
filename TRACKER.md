@@ -22,14 +22,22 @@
 
 ## 3. 已经埋了哪些事件
 
-### 4 个 Tab（自动统计 PV/UV/停留/设备/来源）
+### 7 个 Tab（自动统计 PV/UV/停留/设备/来源）
 
 | tab_id | 名字 | 入口 |
 |---|---|---|
-| `book_extract` | 图书内容提取 | `index.html#p4` |
-| `script_gen` | 一键生成口播脚本 | `index.html#p5` |
-| `ai_audit` | AI 预审 | `index.html#p3` |
-| `summer` | 暑期专栏 | `/summer/` |
+| `book_extract` | 📚 图书内容提取 | `index.html#p4` |
+| `script_gen` | 🎬 一键生成口播脚本 | `index.html#p5` |
+| `ad_copy` | 📐 图片文案生成 | `index.html#p6` |
+| `ai_audit` | 🛡️ AI 预审 | `index.html#p3` |
+| `select_hub` | 🛒 图书选品台 | `index.html#pselect`（iframe → `/select/`） |
+| `ai_assistant` | 🤖 AI 营销助手 | `index.html#pai`（iframe → `/ai/`） |
+| `summer` | 📅 暑期专栏 | `/summer/` |
+
+> ⚠️ 新增 tab 时 **必须同步** 改 3 个地方：
+> 1. `functions/api/_tracker_lib.js` 的 `VALID_TABS`（否则后端会丢弃上报）
+> 2. `site_output/index.html` 的 `TRACK_TAB_MAP`（让 `go()` 切换时 `tracker.setTab` 拿到正确 tab id）
+> 3. `site_output/stats/index.html` 的 `TAB_LABELS / TAB_COLORS / .tab-color-*`（让看板能展示）
 
 ### 按钮点击事件（自动通过 `data-track` 属性捕获）
 
@@ -37,9 +45,23 @@
 
 **script_gen**：`script_generate_run`（生成）/ `script_copy_all`（复制全部）/ `script_export_md`（导出MD）/ `script_demo`（示例）
 
+**ad_copy（NEW）**：`ad_copy_run`（生成图片文案）/ `ad_copy_all`（复制全部）/ `ad_copy_export_md`（导出MD）
+
 **ai_audit**：`audit_run`（开始预审）/ `audit_load_sample`（示例文案）/ `audit_upload_file`（上传文件）/ `audit_clear`（清空）
 
+**select_hub / ai_assistant**：本身是 iframe 嵌入的子站，子站如需埋点请在子站源码里调用 `parent.tracker.feature(name, meta, value, 'select_hub')` 或自己引入 tracker.js。
+
 **summer**：`summer_nav_calendar/scripts/tags`（侧边栏导航）/ `script_group_expand`（展开脚本组）/ `keyframe_view`（查看关键帧）/ `dim_card_jump`（点维度卡片）
+
+### 业务 feature 事件（带额外 meta）
+
+| 事件名 | tab | meta 字段 |
+|---|---|---|
+| `audit_run` | `ai_audit` | `chars` |
+| `isbn_collect_run` | `book_extract` | `isbn_len`, `has_title` |
+| `isbn_query` | `book_extract` | `isbn`, `title` ← **驱动 ISBN Top 看板** |
+| `script_generate_run` | `script_gen` | `chars`, `audience` |
+| `ad_copy_run` | `ad_copy` | `isbn_len`, `has_title` |
 
 ---
 

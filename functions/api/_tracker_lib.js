@@ -3,7 +3,17 @@
  * 必须在 Pages 项目里绑定 KV：变量名 TRACKER_AGG，namespace id = 2360767d707143e394cf90766faf418c
  */
 
-export const VALID_TABS = new Set(['book_extract', 'script_gen', 'ai_audit', 'summer']);
+// 注：新增 tab 时务必同步更新 site_output/stats/index.html 的 TAB_LABELS / TAB_COLORS
+// 已知 tab：原始 4 个 + 2026-05 起新增的 select_hub / ad_copy / ai_assistant
+export const VALID_TABS = new Set([
+  'book_extract',  // 📚 图书内容提取
+  'script_gen',    // 🎬 一键生成口播脚本
+  'ai_audit',      // 🛡️ AI预审
+  'summer',        // 📅 暑期专栏
+  'select_hub',    // 🛒 图书选品台（NEW）
+  'ad_copy',       // 📐 图片文案生成（NEW）
+  'ai_assistant',  // 🤖 AI营销助手（NEW）
+]);
 export const VALID_TYPES = new Set(['pv', 'tab_view', 'click', 'feature', 'stay', 'error']);
 const UV_DAILY_CAP = 50000;
 
