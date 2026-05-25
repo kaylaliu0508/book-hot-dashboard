@@ -174,9 +174,64 @@ GitHub 会触发 Cloudflare Pages 自动构建（约 1-2 分钟）。
 
 ### Q：看板打不开 / 数据为空？
 
-1. 先访问 https://book-hot-dashboard.pages.dev/api/health 确认 API 活着
-2. 再访问 https://book-hot-dashboard.pages.dev/api/stats?range=1d&tab=all 看 JSON 是否有数据
-3. 如果 health 是 200 但 stats 全 0：说明刚部署还没数据，去主站点几个 tab 等 5 秒再看
+按顺序排查（**这是 2026-05-25 实战定位流程**，必照做）：
+
+#### Step 1 · 看 health 接口看 KV 是否绑定（最重要）
+
+访问 https://book-hot-dashboard.pages.dev/api/health ，正常应返回：
+
+```json
+{
+  "ok": true,
+  "ts": ...,
+  "checks": {
+    "kv_binding": "bound",   // ← 必须是 "bound"
+    "kv_probe": "ok",        // ← 必须是 "ok"
+    "retention_days": "90"
+  }
+}
+```
+
+**如果 `kv_binding` 是 `"MISSING"`** → 说明 Pages 项目没把 KV namespace 绑定到 `TRACKER_AGG` 变量名上，所有上报会被静默丢弃。立刻按 Step 1.1 修复。
+
+#### Step 1.1 · 修复 KV 绑定（必须人工去 Cloudflare Dashboard 操作，无法 git push 修）
+
+1. 登录 https://dash.cloudflare.com → 左侧 **Workers & Pages**
+2. 选中 **book-hot-dashboard** 项目 → **Settings** → **Bindings**（旧版叫 Functions → KV namespace bindings）
+3. 点 **Add binding**，类型选 **KV namespace**
+4. 填：
+   - Variable name：`TRACKER_AGG`（**严格一致**，区分大小写）
+   - KV namespace：`tracker-api-TRACKER_AGG`（id = `2360767d707143e394cf90766faf418c`）
+5. **两个 environment（Production + Preview）都要加**，否则只有生产能写
+6. 保存后必须 **Redeploy** 一次（Deployments → 最新部署 → ⋯ → Retry deployment），新绑定才会对线上生效
+7. 再访问 `/api/health`，`kv_binding` 应变成 `"bound"`、`kv_probe` 应变成 `"ok"`
+
+#### Step 2 · 看 stats API 是否还在 no_kv
+
+访问 https://book-hot-dashboard.pages.dev/api/stats?range=1d&tab=all
+
+- 返回 `{"error":"no_kv"}` → 回 Step 1.1，KV 没绑好
+- 返回 `{"range":"1d", ..., "tabs":{}}` 但 tabs 全空 → 见 Step 3
+- 返回正常含数据 → 一切就绪
+
+#### Step 3 · 自测一次上报链路
+
+```bash
+curl -X POST https://book-hot-dashboard.pages.dev/api/track \
+  -H "Content-Type: text/plain;charset=UTF-8" \
+  -d '{"type":"pv","tab":"book_extract","ts":'$(date +%s)'000,"uid":"u_smoke","sid":"s_smoke","dev":"desktop"}'
+```
+
+- 期望返回 `{"ok":1}`
+- 等 10 秒后再查 stats，对应 tab 的 `pv` 应 +1
+- 如果 pv 没动 → Cloudflare Dashboard → Workers & Pages → book-hot-dashboard → Functions → **Real-time Logs**，复现一次访问主站，看是否打印了 `bad_tab` / `no_kv` 之类的错误
+
+#### Step 4 · 前端埋点是否打出去
+
+DevTools → Network → 过滤 `track` → 切几次 tab、点几下"开始采集"，应看到一连串 `POST /api/track` 都是 200。
+如果一条都没有：
+- 看页面源码 view-source 里是否有 `<script src="/assets/tracker.js">`
+- 看 Console 是否有 `window.tracker` 对象（直接在 Console 敲 `tracker` 应能看到 `{setTab, pv, click, feature, error}`）
 
 ### Q：怎么知道某个事件埋点是否生效？
 
