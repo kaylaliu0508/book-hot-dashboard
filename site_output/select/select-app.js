@@ -37,6 +37,23 @@ function addToPool(book, source) {
   const heroEl = document.getElementById('heroPoolCount');
   if (navEl) navEl.textContent = pool.length;
   if (heroEl) heroEl.textContent = pool.length;
+  // 高亮反馈：右上方"🛒 选品池"按钮 + Hero 已选品计数 短暂 pulse
+  const navBtn = document.querySelector('.topnav .pool-btn');
+  if (navBtn) {
+    navBtn.classList.remove('pool-btn-pulse');
+    void navBtn.offsetWidth; // 强制重排，确保动画能重新触发
+    navBtn.classList.add('pool-btn-pulse');
+  }
+  if (heroEl) {
+    heroEl.classList.remove('pool-count-pulse');
+    void heroEl.offsetWidth;
+    heroEl.classList.add('pool-count-pulse');
+  }
+  if (navEl) {
+    navEl.classList.remove('pool-count-pulse');
+    void navEl.offsetWidth;
+    navEl.classList.add('pool-count-pulse');
+  }
   // 仅当选品池可见时才异步重绘表格
   schedulePoolRender();
 }
@@ -250,11 +267,10 @@ document.addEventListener('click', e => {
         if (bk.title === book.title) {
           if (isAdd) {
             b.classList.add('added');
-            // 同时支持「+ 加入选品池」/「+ 加入」两种文案
-            b.textContent = b.textContent.indexOf('选品池') >= 0 ? '✓ 已加入' : '✓ 已加';
+            b.textContent = '✓ 已加入';
           } else {
             b.classList.remove('added');
-            b.textContent = b.textContent.indexOf('选品池') >= 0 ? '+ 加入选品池' : '+ 加入';
+            b.textContent = '+ 加入选品池';
           }
         }
       } catch (e2) {}
@@ -485,7 +501,7 @@ function renderRankCell(item, col, listName) {
   if (col.key === 'action') {
     const inPool = pool.some(p => p.title === item.title);
     const safeBook = escapeHtml(JSON.stringify(item));
-    return `<button class="${inPool?'added':''}" data-book="${safeBook}" data-source="${listName}">${inPool?'✓ 已加':'+ 加入'}</button>`;
+    return `<button class="${inPool?'added':''}" data-book="${safeBook}" data-source="${listName}">${inPool?'✓ 已加入':'+ 加入选品池'}</button>`;
   }
   return v ? escapeHtml(v) : '-';
 }
