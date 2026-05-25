@@ -1100,23 +1100,22 @@ function renderDeepCats() {
 // ==================== Hub（书单中心）渲染 ====================
 // 一次性渲染所有 9 个 panel，并联动左侧栏
 function renderHub() {
-  // 4 个榜单
-  renderRanking('adq_hot',     'rankBodyAdq');
-  renderRanking('weixinshop',  'rankBodyShop');
-  renderRanking('potential',   'rankBodyPotential');
-  renderRanking('forecast',    'rankBodyForecast');
-  // 3 个推荐书单（按品类拆分）
-  renderRecommend('童书', 'recBodyChild');
-  renderRecommend('健康', 'recBodyHealth');
-  renderRecommend('社科', 'recBodySocial');
-  // 3 个数据洞察
-  renderCatShareBar();
-  renderHotBookBreakdown();
-  renderBenchmark('cat_price');
-  // 同步左侧栏的数量
-  syncHubSideCount();
-  // 启动滚动观察（高亮当前可见 panel 的左侧栏项）
-  observeHubAnchors();
+  // 每个渲染独立 try，单个失败不挡其他
+  const safeRender = (fn, label) => {
+    try { fn(); } catch (e) { console.error('[renderHub] ' + label + ' 失败:', e); }
+  };
+  safeRender(() => renderRanking('adq_hot',     'rankBodyAdq'),       'ADQ 热投');
+  safeRender(() => renderRanking('weixinshop',  'rankBodyShop'),      '微信小店');
+  safeRender(() => renderRanking('potential',   'rankBodyPotential'), '潜力爆品');
+  safeRender(() => renderRanking('forecast',    'rankBodyForecast'),  '预测爆品');
+  safeRender(() => renderRecommend('童书', 'recBodyChild'),  '童书推荐');
+  safeRender(() => renderRecommend('健康', 'recBodyHealth'), '健康推荐');
+  safeRender(() => renderRecommend('社科', 'recBodySocial'), '社科推荐');
+  safeRender(() => renderCatShareBar(),          '类目占比');
+  safeRender(() => renderHotBookBreakdown(),     '跑量书洞察');
+  safeRender(() => renderBenchmark('cat_price'), '大盘指标');
+  safeRender(() => syncHubSideCount(),  '左侧栏数量');
+  safeRender(() => observeHubAnchors(), '锚点观察');
 }
 
 // 同步左侧栏数量徽章
@@ -1492,8 +1491,11 @@ initWeekSelect();
 initRankWeekSwitcher();
 initFollowWeekSwitcher();
 buildCrossIndex();
-// 默认 active 的 section 是 hub，初始化时调用 renderHub() 一次性渲染所有 panel
-renderHub();
+// 默认 active 是 future（先看趋势）→ 初始化 future
+// hub 改为切到时按需渲染（避免初始化时因数据未就绪报错）
+try { initFuture(); } catch (e) { console.error('[init] initFuture 失败:', e); }
+// 提前预渲染一次 hub，让用户切到 hub 时表格已就绪
+try { renderHub(); } catch (e) { console.error('[init] renderHub 失败:', e); }
 updatePoolUI();
 syncRecSideCount();
 

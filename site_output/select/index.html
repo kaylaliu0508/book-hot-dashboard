@@ -124,16 +124,16 @@ if(window.self !== window.top){
   </div>
 </section>
 
-<!-- 主导航：3 大核心模块 -->
+<!-- 主导航：3 大核心模块（先看趋势 → 看具体榜单 → 选品池）-->
 <div class="subtabs">
-  <div class="subtab active" data-section="hub">
-    <span class="subtab-num">📚</span>
-    <div class="subtab-text">书单中心<span class="subtab-desc">所有可选品来源 · 7 大榜单聚合</span></div>
-  </div>
-  <span class="subtab-arrow">·</span>
-  <div class="subtab" data-section="future">
+  <div class="subtab active" data-section="future">
     <span class="subtab-num">🔮</span>
     <div class="subtab-text">看未来<span class="subtab-desc">趋势预判 · 下个月该投什么</span></div>
+  </div>
+  <span class="subtab-arrow">·</span>
+  <div class="subtab" data-section="hub">
+    <span class="subtab-num">📚</span>
+    <div class="subtab-text">书单中心<span class="subtab-desc">所有可选品来源 · 7 大榜单聚合</span></div>
   </div>
   <span class="subtab-arrow">·</span>
   <div class="subtab" data-section="pool">
@@ -154,20 +154,34 @@ if(window.self !== window.top){
 <!-- ========================================== -->
 <!-- 📚 书单中心：所有可选品来源（实战/潜力/精选/数据洞察）-->
 <!-- ========================================== -->
-<section class="section active" id="section-hub">
+<section class="section" id="section-hub">
 
   <!-- 左侧锚点导航：4 大分组共 9 个标签 -->
   <aside class="rec-side-nav hub-side-nav" id="hubSideNav">
     <div class="rsn-title">📑 书单导航</div>
 
-    <!-- 分组 1：实战榜单 -->
+    <!-- 分组 1：实战榜单（含类目占比 + 跑量书洞察作为大盘背景）-->
     <div class="rsn-group rsn-group-rank">
       <div class="rsn-group-title">🔥 实战榜单<span class="rsn-group-tip">大盘正在跑</span></div>
+      <a class="rsn-item" href="#hub-block-share" data-target="hub-block-share">
+        <span class="rsn-icon">📊</span>
+        <div class="rsn-body">
+          <div class="rsn-name">本周类目占比</div>
+          <div class="rsn-desc">实战榜单背景</div>
+        </div>
+      </a>
       <a class="rsn-item active" href="#hub-block-rank-adq" data-target="hub-block-rank-adq" data-jump-rank="adq_hot">
         <span class="rsn-icon">🏆</span>
         <div class="rsn-body">
           <div class="rsn-name">ADQ 热投榜</div>
           <div class="rsn-desc">销量+转化综合 <span class="rsn-count" id="rsnCountAdq">20</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-hot-insight" data-target="hub-block-hot-insight">
+        <span class="rsn-icon">🔬</span>
+        <div class="rsn-body">
+          <div class="rsn-name">跑量书洞察</div>
+          <div class="rsn-desc">代表书数据+创意</div>
         </div>
       </a>
       <a class="rsn-item" href="#hub-block-rank-shop" data-target="hub-block-rank-shop" data-jump-rank="weixinshop">
@@ -224,23 +238,9 @@ if(window.self !== window.top){
       </a>
     </div>
 
-    <!-- 分组 4：数据洞察（不是书单，辅助决策）-->
+    <!-- 分组 4：投放参考（辅助决策）-->
     <div class="rsn-group rsn-group-insight">
-      <div class="rsn-group-title">📈 数据洞察<span class="rsn-group-tip">辅助决策</span></div>
-      <a class="rsn-item" href="#hub-block-share" data-target="hub-block-share">
-        <span class="rsn-icon">📊</span>
-        <div class="rsn-body">
-          <div class="rsn-name">类目占比</div>
-          <div class="rsn-desc">本周消耗结构</div>
-        </div>
-      </a>
-      <a class="rsn-item" href="#hub-block-hot-insight" data-target="hub-block-hot-insight">
-        <span class="rsn-icon">🔬</span>
-        <div class="rsn-body">
-          <div class="rsn-name">跑量书洞察</div>
-          <div class="rsn-desc">代表书数据+创意</div>
-        </div>
-      </a>
+      <div class="rsn-group-title">📉 投放参考<span class="rsn-group-tip">辅助决策</span></div>
       <a class="rsn-item" href="#hub-block-bench" data-target="hub-block-bench">
         <span class="rsn-icon">📉</span>
         <div class="rsn-body">
@@ -273,6 +273,15 @@ if(window.self !== window.top){
 
   <!-- ========== 分组 1：实战榜单 ========== -->
 
+  <!-- 4.1 类目占比 -->
+  <div class="panel" id="hub-block-share">
+    <div class="panel-title">
+      <span class="dot"></span>📊 本周类目消耗占比<span class="badge-insight">洞察</span>
+      <span class="extra">本周消耗结构 · 选品风向</span>
+    </div>
+    <div class="cat-share-bar" id="catShareBar"></div>
+  </div>
+
   <!-- 1.1 ADQ 热投榜 -->
   <div class="panel" id="hub-block-rank-adq">
     <div class="panel-title">
@@ -291,6 +300,15 @@ if(window.self !== window.top){
     <div id="rankBodyAdq"></div>
   </div>
 
+  <!-- 4.2 跑量书洞察 -->
+  <div class="panel" id="hub-block-hot-insight">
+    <div class="panel-title">
+      <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
+      <span class="extra">代表书的核心数据 + 创意公式</span>
+    </div>
+    <div id="hotBookBreakdown"></div>
+  </div>
+
   <!-- 1.2 微信小店榜 -->
   <div class="panel" id="hub-block-rank-shop">
     <div class="panel-title">
@@ -305,8 +323,6 @@ if(window.self !== window.top){
     </div>
     <div id="rankBodyShop"></div>
   </div>
-
-  <!-- ========== 分组 2：潜力榜单 ========== -->
 
   <!-- 2.1 潜力爆品 -->
   <div class="panel" id="hub-block-follow-potential">
@@ -388,26 +404,6 @@ if(window.self !== window.top){
     <div id="recBodySocial"></div>
   </div>
 
-  <!-- ========== 分组 4：数据洞察 ========== -->
-
-  <!-- 4.1 类目占比 -->
-  <div class="panel" id="hub-block-share">
-    <div class="panel-title">
-      <span class="dot"></span>📊 本周类目消耗占比<span class="badge-insight">洞察</span>
-      <span class="extra">本周消耗结构 · 选品风向</span>
-    </div>
-    <div class="cat-share-bar" id="catShareBar"></div>
-  </div>
-
-  <!-- 4.2 跑量书洞察 -->
-  <div class="panel" id="hub-block-hot-insight">
-    <div class="panel-title">
-      <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
-      <span class="extra">代表书的核心数据 + 创意公式</span>
-    </div>
-    <div id="hotBookBreakdown"></div>
-  </div>
-
   <!-- 4.3 大盘投放指标参考 -->
   <div class="panel" id="hub-block-bench">
     <div class="panel-title">
@@ -421,6 +417,13 @@ if(window.self !== window.top){
     <div id="benchBody"></div>
   </div>
 
+
+  <!-- ========== 分组 2：潜力榜单 ========== -->
+
+
+  <!-- ========== 分组 4：数据洞察 ========== -->
+
+
   </div><!-- /.rec-main -->
 </section>
 
@@ -430,7 +433,7 @@ if(window.self !== window.top){
 <!-- ========================================== -->
 <!-- 2. 看未来：趋势预判 + 节点 + 4大品类透视 -->
 <!-- ========================================== -->
-<section class="section" id="section-future">
+<section class="section active" id="section-future">
 
   <!-- 左侧锚点导航 -->
   <aside class="rec-side-nav" id="futureSideNav">
