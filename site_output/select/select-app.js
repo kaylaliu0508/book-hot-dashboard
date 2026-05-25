@@ -25,11 +25,14 @@ function formatPrice(v) {
 }
 
 function addToPool(book, source) {
-  if (pool.some(p => p.title === book.title)) {
+  const wasInPool = pool.some(p => p.title === book.title);
+  if (wasInPool) {
     pool = pool.filter(p => p.title !== book.title);
   } else {
     pool.push({...book, source: source || 'unknown', addedAt: new Date().toISOString()});
   }
+  // 埋点：加入/移除选品池
+  try{ if(window.tracker) window.tracker.feature('select_pool_toggle', {action: wasInPool?'remove':'add', title: (book.title||'').slice(0,30), isbn: book.isbn||'', source: source||''}, null, 'select_hub'); }catch(e){}
   // 池数量变化后选中索引可能错位，简单做法是清空选中
   poolSelected.clear();
   // 仅更新轻量计数（O(1) 操作），避免整表重绘
@@ -190,6 +193,8 @@ document.addEventListener('click', e => {
 });
 
 function exportPool(fmt) {
+  // 埋点：选品池导出
+  try{ if(window.tracker) window.tracker.feature('select_pool_export', {fmt: fmt, count: pool.length}, null, 'select_hub'); }catch(e){}
   const date = new Date().toISOString().slice(0,10);
   if (fmt === 'csv') {
     const csv = 'rank,title,isbn,top_cat,source,score,price\n' +
@@ -584,6 +589,8 @@ function renderRanking(rankKey, bodyId) {
 function exportRankByKey(key) {
   const data = getRankItems(key);
   if (!data) return;
+  // 埋点：导出榜单
+  try{ if(window.tracker) window.tracker.feature('select_export_rank', {rankKey: k}, null, 'select_hub'); }catch(e){}
   const csv = 'rank,title,isbn,cat,price,sales_idx,conv,channel/roi\n' +
     data.items.map(b => `${b.rank},"${b.title||''}",${b.isbn||''},"${b.cat||''}",${b.price||''},${b.sales_idx||''},${b.conv||''},${b.channel_or_roi||''}`).join('\n');
   download(`${data.name}.csv`, '\uFEFF'+csv, 'text/csv');
@@ -679,6 +686,8 @@ function exportCurrentRec() {
   const tab = document.querySelector('.rec-tab.active[data-rec]');
   if (!tab) return;
   const k = tab.dataset.rec;
+  // 埋点：导出推荐书单
+  try{ if(window.tracker) window.tracker.feature('select_export_rec', {recKey: k}, null, 'select_hub'); }catch(e){}
   let items = [], name = '';
   if (k === 'all') {
     items = getRecommendBooks(); name = '全部推荐书单';
@@ -780,6 +789,8 @@ function exportCurrentFollow() {
   const k = tab.dataset.follow;
   const data = getFollowItems(k);
   if (!data) return;
+  // 埋点：导出跟品书单
+  try{ if(window.tracker) window.tracker.feature('select_export_follow', {followKey: k}, null, 'select_hub'); }catch(e){}
   const csv = 'rank,title,isbn,cat,price\n' +
     data.items.map(b => `${b.rank},"${b.title||''}",${b.isbn||''},"${b.cat||''}",${b.price||''}`).join('\n');
   download(`${data.name}_${WEEK_RANK_LIST[currentFollowWeek].short}.csv`, '\uFEFF'+csv, 'text/csv');
@@ -1157,6 +1168,8 @@ function observeHubAnchors() {
 function switchSection(name) {
   document.querySelectorAll('.subtab').forEach(t => t.classList.toggle('active', t.dataset.section === name));
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-'+name));
+  // 埋点：子 tab 切换上报
+  try{ if(window.tracker) window.tracker.setTab('select_hub'); }catch(e){}
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
     if (name === 'hub') {
@@ -1563,6 +1576,8 @@ document.addEventListener('click', e => {
 // 处理完后用户点「下一本」/「跳过」/「清空队列」推进。
 function sendPoolToCreative(target) {
   target = target || 'p4';
+  // 埋点：送至创意生产
+  try{ if(window.tracker) window.tracker.feature('select_send_creative', {target: target, poolSize: pool.length}, null, 'select_hub'); }catch(e){}
   if (!pool || !pool.length) {
     alert('选品池为空，请先添加 ISBN 到选品池');
     return;

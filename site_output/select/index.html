@@ -18,6 +18,8 @@ if(window.self !== window.top){
   });
 }
 </script>
+<script>window.__TRACKER_ENDPOINT__='/api/track';</script>
+<script src="/assets/tracker.js?v=20260525a" defer></script>
 </head>
 <body>
 <!-- ===== 邀请码登录态校验（iframe 友好：未登录则跳回主站，不阻塞渲染）===== -->
@@ -54,7 +56,7 @@ if(window.self !== window.top){
   </div>
   </div>
   </div>
-  <div class="pool-btn" onclick="switchSection('pool')">🛒 选品池 <span class="num" id="poolCountNav">0</span></div>
+  <div class="pool-btn" onclick="switchSection('pool')" data-track="select_pool_btn" data-track-tab="select_hub">🛒 选品池 <span class="num" id="poolCountNav">0</span></div>
 </nav>
 
 <section class="hero">
@@ -284,7 +286,7 @@ if(window.self !== window.top){
       💡 腾讯广告 ADQ 平台近一周实际投放最热门的图书优品（按销量+转化率综合排名）。所有书目支持「+ 加入选品池」。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRankByKey('adq_hot')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRankByKey('adq_hot')" data-track="select_export_rank" data-track-key="adq_hot" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="rankBodyAdq"></div>
   </div>
@@ -299,7 +301,7 @@ if(window.self !== window.top){
       💡 腾讯营销（小店版）近一周爆品榜单 — 微信小店广告无转化不扣费的实战优品。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRankByKey('weixinshop')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRankByKey('weixinshop')" data-track="select_export_rank" data-track-key="weixinshop" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="rankBodyShop"></div>
   </div>
@@ -316,7 +318,7 @@ if(window.self !== window.top){
       💡 ADQ 尚未充分投放，但在抖音/小红书等其他媒体已爆品的图书 — 蓝海机会，可快速跟投。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRankByKey('potential')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRankByKey('potential')" data-track="select_export_rank" data-track-key="potential" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="rankBodyPotential"></div>
   </div>
@@ -331,7 +333,7 @@ if(window.self !== window.top){
       💡 基于去年下一周期数据推演，预判本月即将爆发的潜质书 — 抢跑机会。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRankByKey('forecast')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRankByKey('forecast')" data-track="select_export_rank" data-track-key="forecast" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="rankBodyForecast"></div>
   </div>
@@ -357,7 +359,7 @@ if(window.self !== window.top){
       <span class="extra">心理情绪 · 成长教育 · 青春期</span>
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRecByCat('童书')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRecByCat('童书')" data-track="select_export_rec" data-track-cat="童书" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="recBodyChild"></div>
   </div>
@@ -369,7 +371,7 @@ if(window.self !== window.top){
       <span class="extra">中医养生 · 饮食健康 · 家庭护理（已过滤 AMS 禁投）</span>
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRecByCat('健康')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRecByCat('健康')" data-track="select_export_rec" data-track-cat="健康" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="recBodyHealth"></div>
   </div>
@@ -381,7 +383,7 @@ if(window.self !== window.top){
       <span class="extra">AI · 管理 · 历史 · 文学 · 励志</span>
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRecByCat('社科')">📥 导出 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportRecByCat('社科')" data-track="select_export_rec" data-track-cat="社科" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="recBodySocial"></div>
   </div>
@@ -541,6 +543,15 @@ if(window.self !== window.top){
 <script src="select-data.js"></script>
 <script src="recommend-data.js"></script>
 <script src="select-app.js"></script>
+
+<!-- 埋点初始化：选品台 PV -->
+<script>
+try{
+  window.addEventListener('load',function(){
+    if(window.tracker) window.tracker.pv('select_hub');
+  });
+}catch(e){}
+</script>
 
 <!-- 图图 · 全站悬浮 AI 助手 -->
 <script src="/assets/tutu-chat.js" defer></script>

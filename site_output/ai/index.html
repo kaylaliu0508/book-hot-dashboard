@@ -495,6 +495,8 @@
 </head>
 <body>
 <!-- ===== 邀请码登录态校验（iframe 友好：在 iframe 内不做任何跳转，避免影响主站嵌入）===== -->
+<script>window.__TRACKER_ENDPOINT__='/api/track';</script>
+<script src="/assets/tracker.js?v=20260525a" defer></script>
 <script>
 (function(){
   var KEY='bhd_invite_pass_v1';
@@ -595,7 +597,7 @@
 
 <!-- 悬浮按钮 -->
 <div class="chat-fab">
-  <button class="fab-btn" id="fabBtn" onclick="toggleChat()">
+  <button class="fab-btn" id="fabBtn" onclick="toggleChat()" data-track="ai_fab_btn" data-track-tab="ai_assistant">
     <span class="fab-icon">📚</span>
     <span class="fab-badge" id="fabBadge">1</span>
   </button>
@@ -773,6 +775,8 @@ function openAndAsk(text) {
 
 function toggleChat() {
   isOpen = !isOpen;
+  // 埋点：切换聊天窗口
+  try{ if(window.tracker) window.tracker.feature('ai_chat_toggle', {action: isOpen?'open':'close'}, null, 'ai_assistant'); }catch(e){}
   const win = document.getElementById('chatWindow');
   const btn = document.getElementById('fabBtn');
   const badge = document.getElementById('fabBadge');
@@ -885,6 +889,8 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text && !selectedImage) return;
   if (isLoading) return;
+  // 埋点：发送消息
+  try{ if(window.tracker) window.tracker.feature('ai_chat_send', {hasImage: !!selectedImage, textLen: (text||'').length}, null, 'ai_assistant'); }catch(e){}
 
   const imageToSend = selectedImage;
   const imgSrc = imageToSend ? URL.createObjectURL(imageToSend) : null;
@@ -948,6 +954,8 @@ async function sendMessage() {
 }
 
 function sendQuick(text) {
+  // 埋点：快捷提问
+  try{ if(window.tracker) window.tracker.feature('ai_chat_quick', {text: (text||'').slice(0,40)}, null, 'ai_assistant'); }catch(e){}
   document.getElementById('chatInput').value = text;
   sendMessage();
 }
@@ -992,6 +1000,8 @@ function doFeedback(btn, type) {
 
 function clearChat() {
   if (!confirm('确认清空对话？')) return;
+  // 埋点：清空对话
+  try{ if(window.tracker) window.tracker.feature('ai_chat_clear', null, null, 'ai_assistant'); }catch(e){}
   conversationHistory = [];
   const c = document.getElementById('chatMessages');
   c.innerHTML = '';
@@ -1046,6 +1056,9 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); hideTokenModal(); } });
 document.getElementById('tokenModal').addEventListener('click', e => { if (e.target === e.currentTarget) hideTokenModal(); });
+
+// 埋点：AI 助手页面 PV
+try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('ai_assistant'); }); }catch(e){}
 </script>
 </body>
 </html>
