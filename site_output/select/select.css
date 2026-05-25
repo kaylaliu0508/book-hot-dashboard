@@ -762,3 +762,55 @@ a { color: inherit; text-decoration: none; }
   100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); transform: scale(1); }
 }
 .topnav .pool-btn.pool-btn-pulse { animation: pool-btn-pulse 0.6s ease-out; background: #fee2e2; }
+
+/* ============================================================ */
+/* ★ 书单中心 v5（2026-05·一站式架构）                            */
+/* ============================================================ */
+
+/* ====== 左侧栏分组 ====== */
+.hub-side-nav { padding: 10px 8px; }
+.hub-side-nav .rsn-group { padding: 8px 0; border-top: 1px dashed #f3f4f6; }
+.hub-side-nav .rsn-group:first-of-type { border-top: none; padding-top: 0; }
+.hub-side-nav .rsn-group-title { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 8px 6px; font-size: 11px; font-weight: 700; color: #1e293b; letter-spacing: 0.5px; }
+.hub-side-nav .rsn-group-title .rsn-group-tip { font-size: 10px; color: #94a3b8; font-weight: 500; }
+.hub-side-nav .rsn-item { padding: 8px 10px; margin-bottom: 2px; }
+.hub-side-nav .rsn-item .rsn-name { font-size: 12.5px; }
+.hub-side-nav .rsn-item .rsn-desc { font-size: 10px; color: #6b7280; margin-top: 2px; display: flex; gap: 5px; align-items: center; }
+.hub-side-nav .rsn-item.active .rsn-desc { color: rgba(255,255,255,0.85); }
+.hub-side-nav .rsn-item .rsn-count { background: #eef0f3; color: #6b7280; padding: 1px 6px; border-radius: 8px; font-size: 9px; font-weight: 700; }
+.hub-side-nav .rsn-item.active .rsn-count { background: rgba(255,255,255,0.25); color: #fff; }
+
+/* 不同分组的轻强调色 */
+.hub-side-nav .rsn-group-rank .rsn-item.active { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.hub-side-nav .rsn-group-follow .rsn-item.active { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.hub-side-nav .rsn-group-rec .rsn-item.active { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.hub-side-nav .rsn-group-insight .rsn-item.active { background: linear-gradient(135deg, #6b7280, #4b5563); }
+
+/* ====== panel 标题徽章 ====== */
+.panel-title .badge-rank-fire,
+.panel-title .badge-rank-potential,
+.panel-title .badge-rank-forecast,
+.panel-title .badge-rec,
+.panel-title .badge-insight {
+  display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; margin-left: 8px; letter-spacing: 0.3px; vertical-align: middle;
+}
+.panel-title .badge-rank-fire { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #b91c1c; border: 1px solid #fca5a5; }
+.panel-title .badge-rank-potential { background: linear-gradient(135deg, #ddd6fe, #c4b5fd); color: #6d28d9; border: 1px solid #a78bfa; }
+.panel-title .badge-rank-forecast { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #b45309; border: 1px solid #fbbf24; }
+.panel-title .badge-rec { background: linear-gradient(135deg, #cffafe, #a5f3fc); color: #0e7490; border: 1px solid #67e8f9; }
+.panel-title .badge-insight { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+
+/* ====== ISBN 完整度提示 ====== */
+.isbn-completeness {
+  display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 8px;
+}
+.isbn-completeness.is-full { background: #dcfce7; color: #166534; }
+.isbn-completeness.is-partial { background: #fef3c7; color: #92400e; }
+.isbn-completeness.is-empty { background: #fee2e2; color: #b91c1c; }
+
+/* ====== Hub 周切换器作用域提示 ====== */
+.hub-week-switcher .ws-scope { margin-left: auto; font-size: 11px; color: #94a3b8; padding: 3px 8px; background: #f1f5f9; border-radius: 4px; }
+
+/* ====== 顶部 subtab 池子快捷数字 ====== */
+.subtabs .pool-quick-link { transition: all .15s; }
+.subtabs .pool-quick-link:hover { color: #2563eb !important; }

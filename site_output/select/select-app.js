@@ -35,8 +35,10 @@ function addToPool(book, source) {
   // 仅更新轻量计数（O(1) 操作），避免整表重绘
   const navEl = document.getElementById('poolCountNav');
   const heroEl = document.getElementById('heroPoolCount');
+  const subEl = document.getElementById('subtabPoolCount');
   if (navEl) navEl.textContent = pool.length;
   if (heroEl) heroEl.textContent = pool.length;
+  if (subEl) subEl.textContent = pool.length;
   // 高亮反馈：右上方"🛒 选品池"按钮 + Hero 已选品计数 短暂 pulse
   const navBtn = document.querySelector('.topnav .pool-btn');
   if (navBtn) {
@@ -44,16 +46,12 @@ function addToPool(book, source) {
     void navBtn.offsetWidth; // 强制重排，确保动画能重新触发
     navBtn.classList.add('pool-btn-pulse');
   }
-  if (heroEl) {
-    heroEl.classList.remove('pool-count-pulse');
-    void heroEl.offsetWidth;
-    heroEl.classList.add('pool-count-pulse');
-  }
-  if (navEl) {
-    navEl.classList.remove('pool-count-pulse');
-    void navEl.offsetWidth;
-    navEl.classList.add('pool-count-pulse');
-  }
+  [heroEl, navEl, subEl].forEach(el => {
+    if (!el) return;
+    el.classList.remove('pool-count-pulse');
+    void el.offsetWidth;
+    el.classList.add('pool-count-pulse');
+  });
   // 仅当选品池可见时才异步重绘表格
   schedulePoolRender();
 }
@@ -62,8 +60,10 @@ function addToPool(book, source) {
 function updatePoolUI() {
   const navEl = document.getElementById('poolCountNav');
   const heroEl = document.getElementById('heroPoolCount');
+  const subEl = document.getElementById('subtabPoolCount');
   if (navEl) navEl.textContent = pool.length;
   if (heroEl) heroEl.textContent = pool.length;
+  if (subEl) subEl.textContent = pool.length;
   renderPool();
 }
 
@@ -506,10 +506,12 @@ function renderRankCell(item, col, listName) {
   return v ? escapeHtml(v) : '-';
 }
 
-function renderRanking(rankKey) {
+function renderRanking(rankKey, bodyId) {
   rankKey = rankKey || 'adq_hot';
+  bodyId = bodyId || 'rankBody';
   const data = getRankItems(rankKey);
-  const body = document.getElementById('rankBody');
+  const body = document.getElementById(bodyId);
+  if (!body) return;
   if (!data || !data.items?.length) {
     // 区分"该榜单全无数据"与"该周此榜单源数据未提供"
     const wd = (typeof getCurrentWeekData === 'function') ? getCurrentWeekData() : null;
@@ -522,6 +524,12 @@ function renderRanking(rankKey) {
   }
   const cfg = RANK_COLUMNS[rankKey] || RANK_COLUMNS.adq_hot;
   
+  // ISBN 完整度提示
+  const total = data.items.length;
+  const isbnCount = data.items.filter(it => it.isbn && String(it.isbn).trim()).length;
+  const isbnRatio = total ? Math.round(isbnCount/total*100) : 0;
+  const isbnHint = `<span class="isbn-completeness ${isbnCount===total?'is-full':(isbnCount===0?'is-empty':'is-partial')}">ISBN 完整度 ${isbnCount}/${total}（${isbnRatio}%）</span>`;
+  
   const headerHtml = `
     <div class="rank-header-bar">
       <div class="icon">${rankKey==='recommend'?'⭐':'📊'}</div>
@@ -529,7 +537,7 @@ function renderRanking(rankKey) {
         <div class="name">${data.name}</div>
         <div class="subtitle">${data.subtitle}</div>
       </div>
-      <div class="meta">共 ${data.items.length} 本</div>
+      <div class="meta">${isbnHint} · 共 ${total} 本</div>
     </div>`;
   
   // 推荐书单按品类分组
@@ -572,13 +580,19 @@ function renderRanking(rankKey) {
     </table>`;
 }
 
-function exportCurrentRank() {
-  const k = document.querySelector('.rank-tab.active').dataset.rank;
-  const data = getRankItems(k);
+// 新版导出：按 key 导出
+function exportRankByKey(key) {
+  const data = getRankItems(key);
   if (!data) return;
   const csv = 'rank,title,isbn,cat,price,sales_idx,conv,channel/roi\n' +
     data.items.map(b => `${b.rank},"${b.title||''}",${b.isbn||''},"${b.cat||''}",${b.price||''},${b.sales_idx||''},${b.conv||''},${b.channel_or_roi||''}`).join('\n');
   download(`${data.name}.csv`, '\uFEFF'+csv, 'text/csv');
+}
+window.exportRankByKey = exportRankByKey;
+
+function exportCurrentRank() {
+  const t = document.querySelector('.rank-tab.active');
+  if (t) exportRankByKey(t.dataset.rank);
 }
 
 // 更新推荐书单数量
@@ -595,9 +609,10 @@ function updateRecCount() {
 }
 
 // ==================== 推荐书单（选品板块）====================
-function renderRecommend(recKey) {
+function renderRecommend(recKey, bodyId) {
   recKey = recKey || 'all';
-  const body = document.getElementById('recBody');
+  bodyId = bodyId || 'recBody';
+  const body = document.getElementById(bodyId);
   if (!body) return;
   
   const all = getRecommendBooks();
@@ -674,6 +689,16 @@ function exportCurrentRec() {
     items.map(b => `${b.rank},"${b.title||''}",${b.isbn||''},${b.top_cat||mapToTopCat(b.cat||'')},"${b.author||''}","${b.publisher||''}","${b.ams_status||''}"`).join('\n');
   download(`${name}.csv`, '\uFEFF'+csv, 'text/csv');
 }
+// 新版导出：按品类导出
+function exportRecByCat(cat) {
+  const items = getRecommendBooks().filter(b => b.top_cat === cat);
+  if (!items.length) return;
+  const name = cat + '推荐书单';
+  const csv = 'rank,title,isbn,top_cat,author,publisher,ams_status\n' +
+    items.map(b => `${b.rank},"${b.title||''}",${b.isbn||''},${b.top_cat||mapToTopCat(b.cat||'')},"${b.author||''}","${b.publisher||''}","${b.ams_status||''}"`).join('\n');
+  download(`${name}.csv`, '\uFEFF'+csv, 'text/csv');
+}
+window.exportRecByCat = exportRecByCat;
 
 // ==================== 跟品板块（潜力 + 预测，带往期）====================
 let currentFollowWeek = 0;
@@ -1061,37 +1086,83 @@ function renderDeepCats() {
   document.getElementById('deepGrid').innerHTML = html;
 }
 
+// ==================== Hub（书单中心）渲染 ====================
+// 一次性渲染所有 9 个 panel，并联动左侧栏
+function renderHub() {
+  // 4 个榜单
+  renderRanking('adq_hot',     'rankBodyAdq');
+  renderRanking('weixinshop',  'rankBodyShop');
+  renderRanking('potential',   'rankBodyPotential');
+  renderRanking('forecast',    'rankBodyForecast');
+  // 3 个推荐书单（按品类拆分）
+  renderRecommend('童书', 'recBodyChild');
+  renderRecommend('健康', 'recBodyHealth');
+  renderRecommend('社科', 'recBodySocial');
+  // 3 个数据洞察
+  renderCatShareBar();
+  renderHotBookBreakdown();
+  renderBenchmark('cat_price');
+  // 同步左侧栏的数量
+  syncHubSideCount();
+  // 启动滚动观察（高亮当前可见 panel 的左侧栏项）
+  observeHubAnchors();
+}
+
+// 同步左侧栏数量徽章
+function syncHubSideCount() {
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  // 榜单数量
+  const wd = (typeof getCurrentWeekData === 'function') ? getCurrentWeekData() : null;
+  if (wd && wd.lists) {
+    set('rsnCountAdq', wd.lists.adq_hot?.items?.length || 0);
+    set('rsnCountShop', wd.lists.weixinshop?.items?.length || 0);
+    set('rsnCountPotential', wd.lists.potential?.items?.length || 0);
+    set('rsnCountForecast', wd.lists.forecast?.items?.length || 0);
+  }
+  // 推荐书单数量
+  const all = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
+  set('rsnCountChild', all.filter(b => b.top_cat === '童书').length);
+  set('rsnCountHealth', all.filter(b => b.top_cat === '健康').length);
+  set('rsnCountSocial', all.filter(b => b.top_cat === '社科').length);
+}
+
+// 滚动到 panel 时高亮对应左侧栏项
+let _hubObserver = null;
+function observeHubAnchors() {
+  if (_hubObserver) _hubObserver.disconnect();
+  const sidebar = document.getElementById('hubSideNav');
+  if (!sidebar) return;
+  const targets = Array.from(sidebar.querySelectorAll('.rsn-item[data-target]'));
+  if (!targets.length) return;
+  const map = {};
+  targets.forEach(a => { map[a.dataset.target] = a; });
+  const panels = targets.map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+  _hubObserver = new IntersectionObserver(entries => {
+    // 取最大可见比例的那个
+    let bestEntry = null;
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        if (!bestEntry || en.intersectionRatio > bestEntry.intersectionRatio) bestEntry = en;
+      }
+    });
+    if (bestEntry) {
+      const id = bestEntry.target.id;
+      targets.forEach(a => a.classList.toggle('active', a.dataset.target === id));
+    }
+  }, { rootMargin: '-100px 0px -60% 0px', threshold: [0, 0.25, 0.5] });
+  panels.forEach(p => _hubObserver.observe(p));
+}
+
 // ==================== Tab 切换 ====================
 function switchSection(name) {
   document.querySelectorAll('.subtab').forEach(t => t.classList.toggle('active', t.dataset.section === name));
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-'+name));
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
-    if (name === 'past') {
-      renderCatShareBar();
-      // 默认渲染 ADQ 热投
-      const tab = document.querySelector('#section-past .rank-tab.active');
-      if (tab) {
-        renderRanking(tab.dataset.rank);
-        updateTabTip('tabTipPast', tab);
-      }
-      renderHotBookBreakdown();
+    if (name === 'hub') {
+      renderHub();
     }
     if (name === 'future') initFuture();
-    if (name === 'recommend') {
-      // 选品板块
-      const recTab = document.querySelector('.rec-tab.active[data-rec]');
-      if (recTab) {
-        renderRecommend(recTab.dataset.rec);
-        updateTabTip('tabTipRec', recTab);
-      }
-      // 跟品板块
-      const followTab = document.querySelector('.rec-tab.active[data-follow]');
-      if (followTab) {
-        renderFollow(followTab.dataset.follow);
-        updateTabTip('tabTipFollow', followTab);
-      }
-    }
     if (name === 'pool') {
       // 切到选品池时做一次完整渲染（其他 section 时不渲染以提升性能）
       renderPool();
@@ -1140,14 +1211,14 @@ function onRankWeekChange(idx) {
   updateRankWeekUI();
   // 重新构建跨模块索引（在榜书随当周数据变动）
   buildCrossIndex();
-  // 重新渲染榜单 + 类目占比
-  const activeTab = document.querySelector('#section-past .rank-tab.active');
-  if (activeTab) renderRanking(activeTab.dataset.rank);
-  renderCatShareBar();
-  // 推荐书单视图若已渲染，刷新跨模块标记
-  const recTab = document.querySelector('.rec-tab.active[data-rec]');
-  if (recTab && document.getElementById('recBody') && document.getElementById('recBody').innerHTML.trim()) {
-    renderRecommend(recTab.dataset.rec);
+  // 在 hub 中：4 个榜单 + 类目占比都需要重渲染
+  if (document.getElementById('section-hub')?.classList.contains('active')) {
+    renderRanking('adq_hot',     'rankBodyAdq');
+    renderRanking('weixinshop',  'rankBodyShop');
+    renderRanking('potential',   'rankBodyPotential');
+    renderRanking('forecast',    'rankBodyForecast');
+    renderCatShareBar();
+    syncHubSideCount();
   }
   // 同步更新 rankWeekLabel
   const lbl = document.getElementById('rankWeekLabel');
@@ -1408,16 +1479,12 @@ initWeekSelect();
 initRankWeekSwitcher();
 initFollowWeekSwitcher();
 buildCrossIndex();
-renderRanking();
-renderCatShareBar();
-renderHotBookBreakdown();
-renderBenchmark('cat_price');
+// 默认 active 的 section 是 hub，初始化时调用 renderHub() 一次性渲染所有 panel
+renderHub();
 updatePoolUI();
 syncRecSideCount();
 
-// 初始化默认 Tab 提示
-const initialPastTab = document.querySelector('#section-past .rank-tab.active');
-if (initialPastTab) updateTabTip('tabTipPast', initialPastTab);
+// 初始化默认 Tab 提示（hub 架构下已不需要）
 
 window.addEventListener('resize', () => {
   document.querySelectorAll('.chart, .chart-md, .chart-lg, .chart-xl').forEach(el => {
@@ -1439,27 +1506,45 @@ function initDecisionSummary() {
     c.addEventListener('click', e => {
       e.preventDefault();
       const target = c.dataset.dsJump;
+      const anchor = c.dataset.dsAnchor; // 可选：跳转到 hub 的某个具体 panel
       switchSection(target);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // 等 section 渲染完再滚到锚点
+      setTimeout(() => {
+        if (anchor) {
+          const el = document.getElementById(anchor);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 120);
     });
   });
 }
 initDecisionSummary();
 
-// ==================== ★ 优化方向三：周节奏图 → 推荐书单跳转 ====================
-// 事件代理：点击 [data-wr-jump] 链接 → 切换到推荐书单 section + 切到对应品类 tab
+// ==================== ★ 优化方向三：周节奏图 → 书单中心跳转 ====================
+// 事件代理：点击 [data-wr-jump] 链接 → 切到 hub + 滚到对应品类的精选书单 panel
 document.addEventListener('click', e => {
   const link = e.target.closest('[data-wr-jump]');
   if (!link) return;
   e.preventDefault();
   const recKey = link.dataset.wrJump || 'all';
-  switchSection('recommend');
+  switchSection('hub');
   setTimeout(() => {
-    const tab = document.querySelector(`.rec-tab[data-rec="${recKey}"]`);
-    if (tab) tab.click();
-    const target = document.getElementById('rec-block-1');
+    // 推荐书单的 panel id 映射（教辅暂无独立精选书单，回退到 intro）
+    const panelMap = {
+      '童书': 'hub-block-rec-child',
+      '健康': 'hub-block-rec-health',
+      '社科': 'hub-block-rec-social',
+      '教辅': 'hub-block-rec-intro',
+      'all':  'hub-block-rec-intro'
+    };
+    const targetId = panelMap[recKey] || 'hub-block-rec-intro';
+    const target = document.getElementById(targetId);
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  }, 120);
 });
 
 // ==================== ★ 优化方向四：选品池 → 创意生产中心闭环（队列模式 · 多对一接力）====================

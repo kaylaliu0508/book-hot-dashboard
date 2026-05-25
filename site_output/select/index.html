@@ -97,12 +97,12 @@ if(window.self !== window.top){
       </div>
     </div>
     <div class="ds-cards">
-      <a class="ds-card ds-past" href="#" data-ds-jump="past">
+      <a class="ds-card ds-past" href="#" data-ds-jump="hub" data-ds-anchor="hub-block-rank-adq">
         <div class="ds-card-head">
-          <span class="ds-card-icon">📊</span>
-          <span class="ds-card-name">看过去 · 实战复盘</span>
+          <span class="ds-card-icon">🔥</span>
+          <span class="ds-card-name">实战榜单 · 大盘正在跑</span>
         </div>
-        <div class="ds-card-cta">查看实战榜单 →</div>
+        <div class="ds-card-cta">查看 ADQ 热投榜 →</div>
       </a>
       <a class="ds-card ds-future" href="#" data-ds-jump="future">
         <div class="ds-card-head">
@@ -111,22 +111,22 @@ if(window.self !== window.top){
         </div>
         <div class="ds-card-cta">查看周节奏图 →</div>
       </a>
-      <a class="ds-card ds-recommend" href="#" data-ds-jump="recommend">
+      <a class="ds-card ds-recommend" href="#" data-ds-jump="hub" data-ds-anchor="hub-block-rec-child">
         <div class="ds-card-head">
           <span class="ds-card-icon">⭐</span>
-          <span class="ds-card-name">推荐书单 · 候选 ISBN</span>
+          <span class="ds-card-name">精选书单 · 适配腾讯生态</span>
         </div>
-        <div class="ds-card-cta">挑选 ISBN 入池 →</div>
+        <div class="ds-card-cta">查看童书推荐 →</div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- 主导航：看过去 vs 看未来（双视角） -->
+<!-- 主导航：3 大核心模块 -->
 <div class="subtabs">
-  <div class="subtab active" data-section="past">
-    <span class="subtab-num">📊</span>
-    <div class="subtab-text">看过去<span class="subtab-desc">实战复盘 · 大盘现在火什么</span></div>
+  <div class="subtab active" data-section="hub">
+    <span class="subtab-num">📚</span>
+    <div class="subtab-text">书单中心<span class="subtab-desc">所有可选品来源 · 7 大榜单聚合</span></div>
   </div>
   <span class="subtab-arrow">·</span>
   <div class="subtab" data-section="future">
@@ -134,12 +134,14 @@ if(window.self !== window.top){
     <div class="subtab-text">看未来<span class="subtab-desc">趋势预判 · 下个月该投什么</span></div>
   </div>
   <span class="subtab-arrow">·</span>
-  <div class="subtab" data-section="recommend">
-    <span class="subtab-num">⭐</span>
-    <div class="subtab-text">推荐书单<span class="subtab-desc">综合精选 · 按品类×策略分类</span></div>
+  <div class="subtab" data-section="pool">
+    <span class="subtab-num">🛒</span>
+    <div class="subtab-text">我的 ISBN 选品池<span class="subtab-desc">选品终点 · 一键送至创意生产</span></div>
   </div>
   <span style="margin-left:auto;display:flex;align-items:center;">
-    <div class="subtab" data-section="pool" style="border-bottom:none;">🛒 我的选品池</div>
+    <div class="pool-quick-link" onclick="switchSection('pool')" style="font-size:13px;color:#6b7280;cursor:pointer;padding:8px 12px;">
+      🛒 已选 <strong id="subtabPoolCount" style="color:#3b82f6;">0</strong> 本
+    </div>
   </span>
 </div>
 
@@ -148,103 +150,266 @@ if(window.self !== window.top){
 <!-- ========================================== -->
 <!-- 1. 看过去：实战榜单 + 类目占比 + 跑量书拆解 -->
 <!-- ========================================== -->
-<section class="section active" id="section-past">
+<!-- 📚 书单中心：所有可选品来源（实战/潜力/精选/数据洞察）-->
+<!-- ========================================== -->
+<section class="section active" id="section-hub">
 
-  <!-- 左侧锚点导航 -->
-  <aside class="rec-side-nav" id="pastSideNav">
-    <div class="rsn-title">📑 板块导航</div>
-    <a class="rsn-item active" href="#past-block-share" data-target="past-block-share">
-      <span class="rsn-icon">📊</span>
-      <div class="rsn-body">
-        <div class="rsn-name">类目占比</div>
-        <div class="rsn-desc">本周消耗结构</div>
-      </div>
-    </a>
-    <a class="rsn-item" href="#past-block-hot" data-target="past-block-hot">
-      <span class="rsn-icon">🔬</span>
-      <div class="rsn-body">
-        <div class="rsn-name">跑量书洞察</div>
-        <div class="rsn-desc">代表书数据+创意</div>
-      </div>
-    </a>
-    <a class="rsn-item" href="#past-block-rank" data-target="past-block-rank">
-      <span class="rsn-icon">🔥</span>
-      <div class="rsn-body">
-        <div class="rsn-name">实战榜单</div>
-        <div class="rsn-desc">ADQ + 小店版</div>
-      </div>
-    </a>
-    <a class="rsn-item" href="#past-block-bench" data-target="past-block-bench">
-      <span class="rsn-icon">📈</span>
-      <div class="rsn-body">
-        <div class="rsn-name">大盘投放指标参考</div>
-        <div class="rsn-desc">品类×客单 / 客单×链路</div>
-      </div>
-    </a>
+  <!-- 左侧锚点导航：4 大分组共 9 个标签 -->
+  <aside class="rec-side-nav hub-side-nav" id="hubSideNav">
+    <div class="rsn-title">📑 书单导航</div>
+
+    <!-- 分组 1：实战榜单 -->
+    <div class="rsn-group rsn-group-rank">
+      <div class="rsn-group-title">🔥 实战榜单<span class="rsn-group-tip">大盘正在跑</span></div>
+      <a class="rsn-item active" href="#hub-block-rank-adq" data-target="hub-block-rank-adq" data-jump-rank="adq_hot">
+        <span class="rsn-icon">🏆</span>
+        <div class="rsn-body">
+          <div class="rsn-name">ADQ 热投榜</div>
+          <div class="rsn-desc">销量+转化综合 <span class="rsn-count" id="rsnCountAdq">20</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-rank-shop" data-target="hub-block-rank-shop" data-jump-rank="weixinshop">
+        <span class="rsn-icon">💰</span>
+        <div class="rsn-body">
+          <div class="rsn-name">微信小店榜</div>
+          <div class="rsn-desc">无转化不扣费 <span class="rsn-count" id="rsnCountShop">15</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 分组 2：潜力榜单 -->
+    <div class="rsn-group rsn-group-follow">
+      <div class="rsn-group-title">💎 潜力榜单<span class="rsn-group-tip">别处爆/即将爆</span></div>
+      <a class="rsn-item" href="#hub-block-follow-potential" data-target="hub-block-follow-potential" data-jump-follow="potential">
+        <span class="rsn-icon">💎</span>
+        <div class="rsn-body">
+          <div class="rsn-name">潜力爆品</div>
+          <div class="rsn-desc">蓝海机会 <span class="rsn-count" id="rsnCountPotential">15</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-follow-forecast" data-target="hub-block-follow-forecast" data-jump-follow="forecast">
+        <span class="rsn-icon">🎯</span>
+        <div class="rsn-body">
+          <div class="rsn-name">预测爆品</div>
+          <div class="rsn-desc">即将爆发预判 <span class="rsn-count" id="rsnCountForecast">15</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 分组 3：精选书单（适配腾讯生态）-->
+    <div class="rsn-group rsn-group-rec">
+      <div class="rsn-group-title">⭐ 精选书单<span class="rsn-group-tip">适配腾讯生态</span></div>
+      <a class="rsn-item" href="#hub-block-rec-child" data-target="hub-block-rec-child" data-jump-rec="童书">
+        <span class="rsn-icon">🧸</span>
+        <div class="rsn-body">
+          <div class="rsn-name">童书推荐</div>
+          <div class="rsn-desc">心理/成长/青春期 <span class="rsn-count" id="rsnCountChild">--</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-rec-health" data-target="hub-block-rec-health" data-jump-rec="健康">
+        <span class="rsn-icon">🌿</span>
+        <div class="rsn-body">
+          <div class="rsn-name">健康推荐</div>
+          <div class="rsn-desc">中医/养生/护理 <span class="rsn-count" id="rsnCountHealth">--</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-rec-social" data-target="hub-block-rec-social" data-jump-rec="社科">
+        <span class="rsn-icon">🏛</span>
+        <div class="rsn-body">
+          <div class="rsn-name">社科推荐</div>
+          <div class="rsn-desc">AI/管理/历史/文学 <span class="rsn-count" id="rsnCountSocial">--</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 分组 4：数据洞察（不是书单，辅助决策）-->
+    <div class="rsn-group rsn-group-insight">
+      <div class="rsn-group-title">📈 数据洞察<span class="rsn-group-tip">辅助决策</span></div>
+      <a class="rsn-item" href="#hub-block-share" data-target="hub-block-share">
+        <span class="rsn-icon">📊</span>
+        <div class="rsn-body">
+          <div class="rsn-name">类目占比</div>
+          <div class="rsn-desc">本周消耗结构</div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-hot-insight" data-target="hub-block-hot-insight">
+        <span class="rsn-icon">🔬</span>
+        <div class="rsn-body">
+          <div class="rsn-name">跑量书洞察</div>
+          <div class="rsn-desc">代表书数据+创意</div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-bench" data-target="hub-block-bench">
+        <span class="rsn-icon">📉</span>
+        <div class="rsn-body">
+          <div class="rsn-name">大盘指标参考</div>
+          <div class="rsn-desc">品类×客单×链路</div>
+        </div>
+      </a>
+    </div>
   </aside>
 
   <div class="rec-main">
 
   <div class="insight-banner">
-    <div class="icon">📊</div>
+    <div class="icon">📚</div>
     <div class="text">
-      <strong>看过去 · 实战复盘：</strong>
-      基于近一周 <span class="hl">实际投放表现</span>（ADQ 热投 + 腾讯营销小店版） + <span class="hl">大盘投放指标参考</span>，看大盘当下哪些书在跑量、哪些品类/客单/链路在吃量。
+      <strong>书单中心 · 一站式选品来源：</strong>
+      左侧 4 大分组覆盖 <span class="hl">实战榜单</span>（已发生）、<span class="hl">潜力榜单</span>（在别处爆/即将爆）、<span class="hl">精选书单</span>（适配腾讯生态）和 <span class="hl">数据洞察</span>（辅助）。所有榜单/书单均支持「+ 加入选品池」。
     </div>
   </div>
 
-  <!-- 1.1 类目占比横条 -->
-  <div class="panel" id="past-block-share">
+  <!-- 全局周切换（仅对实战/潜力榜单生效）-->
+  <div class="week-switcher-bar hub-week-switcher">
+    <span class="ws-label">📅 榜单周次：</span>
+    <button class="ws-btn" onclick="changeRankWeek(-1)" id="wsPrev">◀ 上一周</button>
+    <select class="ws-select" id="wsSelect" onchange="onRankWeekChange(this.value)"></select>
+    <button class="ws-btn" onclick="changeRankWeek(1)" id="wsNext">下一周 ▶</button>
+    <span class="ws-current" id="wsCurrent">当前查看：本周</span>
+    <span class="ws-scope">作用于：实战榜单 + 潜力榜单</span>
+  </div>
+
+  <!-- ========== 分组 1：实战榜单 ========== -->
+
+  <!-- 1.1 ADQ 热投榜 -->
+  <div class="panel" id="hub-block-rank-adq">
     <div class="panel-title">
-      <span class="dot"></span>📊 本周类目消耗占比
+      <span class="dot"></span>🏆 ADQ 热投榜<span class="badge-rank-fire">实战</span>
       <span class="extra" id="rankWeekLabel">2026-05-12 至 05-18</span>
+      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?scode=AJEAIQdfAAo9zE4tgmARQAcAYdADQ&tab=fxrf9j" target="_blank" class="doc-link">
+        📎 查看往期文档
+      </a>
+    </div>
+    <div class="panel-sub-tip">
+      💡 腾讯广告 ADQ 平台近一周实际投放最热门的图书优品（按销量+转化率综合排名）。所有书目支持「+ 加入选品池」。
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRankByKey('adq_hot')">📥 导出 ISBN</button>
+    </div>
+    <div id="rankBodyAdq"></div>
+  </div>
+
+  <!-- 1.2 微信小店榜 -->
+  <div class="panel" id="hub-block-rank-shop">
+    <div class="panel-title">
+      <span class="dot"></span>💰 微信小店榜<span class="badge-rank-fire">实战</span>
+      <span class="extra">无转化不扣费 · 实战优品</span>
+    </div>
+    <div class="panel-sub-tip">
+      💡 腾讯营销（小店版）近一周爆品榜单 — 微信小店广告无转化不扣费的实战优品。
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRankByKey('weixinshop')">📥 导出 ISBN</button>
+    </div>
+    <div id="rankBodyShop"></div>
+  </div>
+
+  <!-- ========== 分组 2：潜力榜单 ========== -->
+
+  <!-- 2.1 潜力爆品 -->
+  <div class="panel" id="hub-block-follow-potential">
+    <div class="panel-title">
+      <span class="dot"></span>💎 潜力爆品<span class="badge-rank-potential">蓝海</span>
+      <span class="extra">ADQ 未充分投放 · 别处已爆</span>
+    </div>
+    <div class="panel-sub-tip">
+      💡 ADQ 尚未充分投放，但在抖音/小红书等其他媒体已爆品的图书 — 蓝海机会，可快速跟投。
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRankByKey('potential')">📥 导出 ISBN</button>
+    </div>
+    <div id="rankBodyPotential"></div>
+  </div>
+
+  <!-- 2.2 预测爆品 -->
+  <div class="panel" id="hub-block-follow-forecast">
+    <div class="panel-title">
+      <span class="dot"></span>🎯 预测爆品<span class="badge-rank-forecast">前瞻</span>
+      <span class="extra">基于去年同期推演 · 即将爆发</span>
+    </div>
+    <div class="panel-sub-tip">
+      💡 基于去年下一周期数据推演，预判本月即将爆发的潜质书 — 抢跑机会。
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRankByKey('forecast')">📥 导出 ISBN</button>
+    </div>
+    <div id="rankBodyForecast"></div>
+  </div>
+
+  <!-- ========== 分组 3：精选书单 ========== -->
+
+  <div class="panel" id="hub-block-rec-intro">
+    <div class="panel-title">
+      <span class="dot"></span>⭐ 精选书单（适配腾讯生态）
+      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMYCNBY2vYRsOTr22OCI0?scode=AJEAIQdfAAoJ1CUM1YARQAcAYdADQ&tab=BB08J2" target="_blank" class="doc-link">
+        📎 查看往期文档（Q2潜力增长图书书单）
+      </a>
+    </div>
+    <div class="panel-sub-tip">
+      💡 来自《2026 教育行业图书选品指南》，已对照 AMS 准入情况筛选，含完整准入说明（普通可投/医疗禁投/减肥禁投 等）。下方按品类分别呈现。
+    </div>
+  </div>
+
+  <!-- 3.1 童书推荐 -->
+  <div class="panel" id="hub-block-rec-child">
+    <div class="panel-title">
+      <span class="dot"></span>🧸 童书推荐<span class="badge-rec">精选</span>
+      <span class="extra">心理情绪 · 成长教育 · 青春期</span>
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRecByCat('童书')">📥 导出 ISBN</button>
+    </div>
+    <div id="recBodyChild"></div>
+  </div>
+
+  <!-- 3.2 健康推荐 -->
+  <div class="panel" id="hub-block-rec-health">
+    <div class="panel-title">
+      <span class="dot"></span>🌿 健康推荐<span class="badge-rec">精选</span>
+      <span class="extra">中医养生 · 饮食健康 · 家庭护理（已过滤 AMS 禁投）</span>
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRecByCat('健康')">📥 导出 ISBN</button>
+    </div>
+    <div id="recBodyHealth"></div>
+  </div>
+
+  <!-- 3.3 社科推荐 -->
+  <div class="panel" id="hub-block-rec-social">
+    <div class="panel-title">
+      <span class="dot"></span>🏛 社科推荐<span class="badge-rec">精选</span>
+      <span class="extra">AI · 管理 · 历史 · 文学 · 励志</span>
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRecByCat('社科')">📥 导出 ISBN</button>
+    </div>
+    <div id="recBodySocial"></div>
+  </div>
+
+  <!-- ========== 分组 4：数据洞察 ========== -->
+
+  <!-- 4.1 类目占比 -->
+  <div class="panel" id="hub-block-share">
+    <div class="panel-title">
+      <span class="dot"></span>📊 本周类目消耗占比<span class="badge-insight">洞察</span>
+      <span class="extra">本周消耗结构 · 选品风向</span>
     </div>
     <div class="cat-share-bar" id="catShareBar"></div>
   </div>
 
-  <!-- 1.2 跑量书拆解 -->
-  <div class="panel" id="past-block-hot">
+  <!-- 4.2 跑量书洞察 -->
+  <div class="panel" id="hub-block-hot-insight">
     <div class="panel-title">
-      <span class="dot"></span>🔬 跑量书洞察
+      <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
       <span class="extra">代表书的核心数据 + 创意公式</span>
     </div>
     <div id="hotBookBreakdown"></div>
   </div>
 
-  <!-- 1.3 实战榜单 -->
-  <div class="panel" id="past-block-rank">
+  <!-- 4.3 大盘投放指标参考 -->
+  <div class="panel" id="hub-block-bench">
     <div class="panel-title">
-      <span class="dot"></span>🔥 实战榜单（近一周真实表现）
-      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?scode=AJEAIQdfAAo9zE4tgmARQAcAYdADQ&tab=fxrf9j" target="_blank" class="doc-link">
-        📎 查看往期文档
-      </a>
-    </div>
-    <div class="week-switcher-bar">
-      <span class="ws-label">📅 往期榜单：</span>
-      <button class="ws-btn" onclick="changeRankWeek(-1)" id="wsPrev">◀ 上一周</button>
-      <select class="ws-select" id="wsSelect" onchange="onRankWeekChange(this.value)"></select>
-      <button class="ws-btn" onclick="changeRankWeek(1)" id="wsNext">下一周 ▶</button>
-      <span class="ws-current" id="wsCurrent">当前查看：本周</span>
-    </div>
-    <div class="rank-tabs">
-      <div class="rank-tab active" data-rank="adq_hot" data-tip="腾讯广告 ADQ 平台近一周实际投放最热门的图书优品（按销量+转化率综合排名）">
-        🔥 ADQ 热投优品 <span class="count">20</span>
-      </div>
-      <div class="rank-tab" data-rank="weixinshop" data-tip="腾讯营销（小店版）近一周爆品榜单 — 微信小店广告无转化不扣费的实战优品">
-        💰 腾讯营销（小店版） <span class="count">15</span>
-      </div>
-    </div>
-    <div class="tab-tip" id="tabTipPast"></div>
-    <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentRank()">📥 导出当前榜单 ISBN</button>
-    </div>
-    <div id="rankBody"></div>
-  </div>
-
-  <!-- 1.4 大盘 投放指标参考 -->
-  <div class="panel" id="past-block-bench">
-    <div class="panel-title">
-      <span class="dot"></span>📈 大盘投放指标参考
+      <span class="dot"></span>📉 大盘投放指标参考<span class="badge-insight">洞察</span>
       <span class="extra">5 月图书行业大盘 · 视频号 og 链路</span>
     </div>
     <div class="bench-tabs">
@@ -257,6 +422,9 @@ if(window.self !== window.top){
   </div><!-- /.rec-main -->
 </section>
 
+<!-- ========================================== -->
+<!-- 🔮 看未来：趋势预判 + 节点 + 4 大品类透视 -->
+<!-- ========================================== -->
 <!-- ========================================== -->
 <!-- 2. 看未来：趋势预判 + 节点 + 4大品类透视 -->
 <!-- ========================================== -->
@@ -357,118 +525,6 @@ if(window.self !== window.top){
 
   </div><!-- /.rec-main -->
 </section>
-
-<!-- ========================================== -->
-<!-- 3. 推荐书单：选品 + 跟品 双板块 -->
-<!-- ========================================== -->
-<section class="section" id="section-recommend">
-
-  <!-- 左侧锚点导航 -->
-  <aside class="rec-side-nav" id="recSideNav">
-    <div class="rsn-title">📑 板块导航</div>
-    <a class="rsn-item active" href="#rec-block-1" data-target="rec-block-1">
-      <span class="rsn-icon">🎯</span>
-      <div class="rsn-body">
-        <div class="rsn-name">板块一 · 选品</div>
-        <div class="rsn-desc">适配腾讯生态推荐书单</div>
-      </div>
-    </a>
-    <div class="rsn-sub">
-      <a class="rsn-sub-item" href="#" data-rec-jump="all">📋 全部推荐</a>
-      <a class="rsn-sub-item" href="#" data-rec-jump="童书">🧸 童书 <span id="rsnCountChild" class="rsn-count">--</span></a>
-      <a class="rsn-sub-item" href="#" data-rec-jump="健康">🌿 健康 <span id="rsnCountHealth" class="rsn-count">--</span></a>
-      <a class="rsn-sub-item" href="#" data-rec-jump="社科">🏛 社科 <span id="rsnCountSocial" class="rsn-count">--</span></a>
-    </div>
-    <a class="rsn-item" href="#rec-block-2" data-target="rec-block-2">
-      <span class="rsn-icon">🚀</span>
-      <div class="rsn-body">
-        <div class="rsn-name">板块二 · 跟品</div>
-        <div class="rsn-desc">潜力爆品 + 预测爆品</div>
-      </div>
-    </a>
-    <div class="rsn-sub">
-      <a class="rsn-sub-item" href="#" data-follow-jump="potential">💎 潜力爆品</a>
-      <a class="rsn-sub-item" href="#" data-follow-jump="forecast">🎯 预测爆品</a>
-    </div>
-  </aside>
-
-  <!-- 主内容区 -->
-  <div class="rec-main">
-
-  <div class="insight-banner">
-    <div class="icon">⭐</div>
-    <div class="text">
-      <strong>推荐书单 · 选品 + 跟品 双视角：</strong>
-      <span class="hl">选品板块</span>面向"还没投但适合腾讯生态的好书"，<span class="hl">跟品板块</span>面向"在跑或即将爆的潜力书"。
-    </div>
-  </div>
-
-  <!-- ========== 板块 1：选品 ========== -->
-  <div class="panel" id="rec-block-1">
-    <div class="panel-title">
-      <span class="dot"></span>🎯 板块一 · 选品（适配腾讯生态推荐书单）
-      <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMYCNBY2vYRsOTr22OCI0?scode=AJEAIQdfAAoJ1CUM1YARQAcAYdADQ&tab=BB08J2" target="_blank" class="doc-link">
-        📎 查看往期文档（Q2潜力增长图书书单）
-      </a>
-    </div>
-    <div class="panel-sub-tip">
-      💡 来自《2026 教育行业图书选品指南》，已对照 AMS 准入情况筛选，含完整准入说明（普通可投/医疗禁投/减肥禁投 等）。
-    </div>
-    <div class="rec-tabs">
-      <div class="rec-tab active" data-rec="all" data-tip="所有适配腾讯生态的推荐书单（童书+健康+社科），按品类分组展示">
-        📋 全部推荐 <span class="count" id="recCountAll">--</span>
-      </div>
-      <div class="rec-tab" data-rec="童书" data-tip="童书推荐书单 — 包含心理情绪、成长教育、青春期类等高潜书目">
-        🧸 童书 <span class="count" id="recCountChild">--</span>
-      </div>
-      <div class="rec-tab" data-rec="健康" data-tip="健康推荐书单 — 中医养生、饮食健康、家庭护理类精选（已过滤 AMS 禁投）">
-        🌿 健康 <span class="count" id="recCountHealth">--</span>
-      </div>
-      <div class="rec-tab" data-rec="社科" data-tip="社科推荐书单 — AI/管理/历史/文学/励志类精选，覆盖职场+成长场景">
-        🏛 社科 <span class="count" id="recCountSocial">--</span>
-      </div>
-    </div>
-    <div class="tab-tip" id="tabTipRec"></div>
-    <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentRec()">📥 导出当前书单 ISBN</button>
-    </div>
-    <div id="recBody"></div>
-  </div>
-
-  <!-- ========== 板块 2：跟品 ========== -->
-  <div class="panel" id="rec-block-2">
-    <div class="panel-title">
-      <span class="dot"></span>🚀 板块二 · 跟品（潜力爆品 + 预测爆品）
-    </div>
-    <div class="panel-sub-tip">
-      💡 跟品 = "已经在别处爆 / 即将爆"的书，可快速跟投。支持往期查询。
-    </div>
-    <!-- 跟品周切换器 -->
-    <div class="week-switcher-bar">
-      <span class="ws-label">📅 往期榜单：</span>
-      <button class="ws-btn" onclick="changeFollowWeek(-1)" id="fwPrev">◀ 上一周</button>
-      <select class="ws-select" id="fwSelect" onchange="onFollowWeekChange(this.value)"></select>
-      <button class="ws-btn" onclick="changeFollowWeek(1)" id="fwNext">下一周 ▶</button>
-      <span class="ws-current" id="fwCurrent">当前查看：本周</span>
-    </div>
-    <div class="rec-tabs">
-      <div class="rec-tab active" data-follow="potential" data-tip="潜力爆品 — ADQ 尚未充分投放，但在抖音/小红书等其他媒体已爆品的图书（蓝海机会）">
-        💎 潜力爆品 <span class="count">15</span>
-      </div>
-      <div class="rec-tab" data-follow="forecast" data-tip="预测爆品 — 基于去年下一周期数据推演，预判本月即将爆发的潜质书">
-        🎯 预测爆品 <span class="count">15</span>
-      </div>
-    </div>
-    <div class="tab-tip" id="tabTipFollow"></div>
-    <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentFollow()">📥 导出当前书单 ISBN</button>
-    </div>
-    <div id="followBody"></div>
-  </div>
-
-  </div><!-- /.rec-main -->
-</section>
-
 <!-- 我的选品池 -->
 <section class="section" id="section-pool">
   <div class="panel">
