@@ -86,6 +86,42 @@ if(window.self !== window.top){
   </span>
 </div>
 
+<!-- ★ 本周决策摘要卡：三视角入口（点击直达对应 section） -->
+<section class="decision-summary" id="decisionSummary">
+  <div class="ds-inner">
+    <div class="ds-head">
+      <div class="ds-head-left">
+        <span class="ds-badge">📌 本周决策摘要</span>
+        <span class="ds-week" id="dsWeekLabel">2026-05-19 至 05-25</span>
+        <span class="ds-tip">三视角直达入口 · 点击卡片跳转对应板块</span>
+      </div>
+    </div>
+    <div class="ds-cards">
+      <a class="ds-card ds-past" href="#" data-ds-jump="past">
+        <div class="ds-card-head">
+          <span class="ds-card-icon">📊</span>
+          <span class="ds-card-name">看过去 · 实战复盘</span>
+        </div>
+        <div class="ds-card-cta">查看实战榜单 →</div>
+      </a>
+      <a class="ds-card ds-future" href="#" data-ds-jump="future">
+        <div class="ds-card-head">
+          <span class="ds-card-icon">🔮</span>
+          <span class="ds-card-name">看未来 · 趋势预判</span>
+        </div>
+        <div class="ds-card-cta">查看周节奏图 →</div>
+      </a>
+      <a class="ds-card ds-recommend" href="#" data-ds-jump="recommend">
+        <div class="ds-card-head">
+          <span class="ds-card-icon">⭐</span>
+          <span class="ds-card-name">推荐书单 · 候选 ISBN</span>
+        </div>
+        <div class="ds-card-cta">挑选 ISBN 入池 →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- 主导航：看过去 vs 看未来（双视角） -->
 <div class="subtabs">
   <div class="subtab active" data-section="past">
@@ -141,7 +177,7 @@ if(window.self !== window.top){
     <a class="rsn-item" href="#past-block-bench" data-target="past-block-bench">
       <span class="rsn-icon">📈</span>
       <div class="rsn-body">
-        <div class="rsn-name">大盘 Benchmark</div>
+        <div class="rsn-name">大盘投放指标参考</div>
         <div class="rsn-desc">品类×客单 / 客单×链路</div>
       </div>
     </a>
@@ -153,7 +189,7 @@ if(window.self !== window.top){
     <div class="icon">📊</div>
     <div class="text">
       <strong>看过去 · 实战复盘：</strong>
-      基于近一周 <span class="hl">实际投放表现</span>（ADQ 热投 + 腾讯营销小店版） + <span class="hl">大盘投放效率指标</span>，看大盘当下哪些书在跑量、哪些品类/客单/链路在吃量。
+      基于近一周 <span class="hl">实际投放表现</span>（ADQ 热投 + 腾讯营销小店版） + <span class="hl">大盘投放指标参考</span>，看大盘当下哪些书在跑量、哪些品类/客单/链路在吃量。
     </div>
   </div>
 
@@ -205,10 +241,10 @@ if(window.self !== window.top){
     <div id="rankBody"></div>
   </div>
 
-  <!-- 1.4 大盘 Benchmark -->
+  <!-- 1.4 大盘 投放指标参考 -->
   <div class="panel" id="past-block-bench">
     <div class="panel-title">
-      <span class="dot"></span>📈 大盘投放效率指标 Benchmark
+      <span class="dot"></span>📈 大盘投放指标参考
       <span class="extra">5 月图书行业大盘 · 视频号 og 链路</span>
     </div>
     <div class="bench-tabs">

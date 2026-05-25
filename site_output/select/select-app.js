@@ -46,7 +46,20 @@ function renderPool() {
       <span style="color:#374151;font-size:13px;">已选 <strong style="color:#3b82f6;">${pool.length}</strong> 本 · ISBN 完整 <strong style="color:#10b981;">${pool.filter(p=>p.isbn).length}</strong></span>
       <button class="toolbar-btn success" onclick="exportPool('csv')">📥 CSV</button>
       <button class="toolbar-btn success" onclick="exportPool('json')">📥 JSON</button>
-      <button class="toolbar-btn" style="background:linear-gradient(135deg,#ef4444,#dc2626);border-color:#dc2626;color:#fff;font-weight:600;margin-left:auto;" onclick="alert('已透传 '+pool.length+' 个 ISBN 到创意生产中心')">🚀 一键送至创意生产中心</button>
+      <div class="send-creative-wrap" style="margin-left:auto;position:relative;display:inline-block;">
+        <button class="toolbar-btn send-creative-btn" id="sendCreativeBtn" type="button" onclick="togglePoolSendMenu(event)">🚀 一键送至创意生产中心 <span style="margin-left:4px;font-size:10px;">▾</span></button>
+        <div class="send-creative-menu" id="sendCreativeMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:240px;z-index:20;overflow:hidden;">
+          <div style="padding:8px 12px;font-size:11px;color:#9ca3af;background:#f9fafb;border-bottom:1px solid #f3f4f6;">选择目标模块（队列模式）</div>
+          <button class="send-creative-item" type="button" onclick="sendPoolToCreative('p4')" style="display:block;width:100%;text-align:left;padding:10px 14px;font-size:13px;background:#fff;border:none;cursor:pointer;color:#111827;border-bottom:1px solid #f3f4f6;">
+            <span style="font-weight:600;">📚 图书内容提取</span>
+            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 自动检索全维度图书内容</div>
+          </button>
+          <button class="send-creative-item" type="button" onclick="sendPoolToCreative('p6')" style="display:block;width:100%;text-align:left;padding:10px 14px;font-size:13px;background:#fff;border:none;cursor:pointer;color:#111827;">
+            <span style="font-weight:600;">📐 图片文案生成</span>
+            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 生成 4 版本 22 条横版大图文案</div>
+          </button>
+        </div>
+      </div>
       <button class="toolbar-btn" onclick="if(confirm('确定清空？')){pool=[];updatePoolUI();}">清空</button>
     </div>
     <table class="pool-table">
@@ -69,6 +82,22 @@ function renderPool() {
       </tbody>
     </table>`;
 }
+
+// 下拉菜单开关
+function togglePoolSendMenu(e) {
+  if (e) e.stopPropagation();
+  const m = document.getElementById('sendCreativeMenu');
+  if (!m) return;
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+// 全局点击关闭
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.send-creative-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const m = document.getElementById('sendCreativeMenu');
+    if (m) m.style.display = 'none';
+  }
+});
 
 function exportPool(fmt) {
   const date = new Date().toISOString().slice(0,10);
@@ -255,6 +284,58 @@ function escapeHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ==================== 交叉索引：推荐书单 ↔ 实战榜单（基于 ISBN + 书名）====================
+// 优化方向二：两个模块通过 ISBN 互相打通标记
+//   - 在榜书：当周 ADQ 热投 + 微信小店 + 潜力 + 预测 中出现的书
+//   - 推荐书单中的书：getRecommendBooks() 全集
+let _crossIndex = null;
+function _normTitle(t) {
+  return String(t||'').replace(/\s+/g,'').replace(/[（(].*?[)）]/g,'').toLowerCase();
+}
+function buildCrossIndex() {
+  const onRankIsbn = new Set(), onRankTitle = new Set();
+  if (typeof WEEK_RANK_LIST !== 'undefined') {
+    const cur = WEEK_RANK_LIST[currentWeekIndex] && WEEK_RANK_LIST[currentWeekIndex].data;
+    if (cur && cur.lists) {
+      ['adq_hot','weixinshop','potential','forecast'].forEach(k => {
+        const list = cur.lists[k];
+        if (list && list.items) {
+          list.items.forEach(it => {
+            if (it.isbn) onRankIsbn.add(String(it.isbn).trim());
+            if (it.title) onRankTitle.add(_normTitle(it.title));
+          });
+        }
+      });
+    }
+  }
+  const recIsbn = new Set(), recTitle = new Set();
+  const recBooks = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
+  recBooks.forEach(b => {
+    if (b.isbn) recIsbn.add(String(b.isbn).trim());
+    if (b.title) recTitle.add(_normTitle(b.title));
+  });
+  _crossIndex = { onRankIsbn, onRankTitle, recIsbn, recTitle };
+  return _crossIndex;
+}
+function getCrossIndex() {
+  if (!_crossIndex) buildCrossIndex();
+  return _crossIndex;
+}
+// 该书是否出现在本周榜单中
+function isOnRank(item) {
+  const idx = getCrossIndex();
+  if (item.isbn && idx.onRankIsbn.has(String(item.isbn).trim())) return true;
+  if (item.title && idx.onRankTitle.has(_normTitle(item.title))) return true;
+  return false;
+}
+// 该书是否出现在推荐书单中
+function isInRecommend(item) {
+  const idx = getCrossIndex();
+  if (item.isbn && idx.recIsbn.has(String(item.isbn).trim())) return true;
+  if (item.title && idx.recTitle.has(_normTitle(item.title))) return true;
+  return false;
+}
+
 function renderRankCell(item, col, listName) {
   const v = item[col.key];
   if (col.key === 'rank') {
@@ -270,7 +351,17 @@ function renderRankCell(item, col, listName) {
     return `<img src="${cover}" alt="" loading="lazy"/>`;
   }
   if (col.key === 'title') {
-    return `<div class="title-text">${escapeHtml(v||'')}</div>`;
+    // ★ 优化方向二：跨模块交叉标记
+    //   - 榜单中的书 → 若同时在推荐书单 → 加「⭐ 精选」
+    //   - 推荐书单中的书 → 若同时在本周榜单 → 加「✅ 本周在跑」
+    const isRecList = listName === '推荐书单' || listName === '适配腾讯生态推荐书单';
+    let badge = '';
+    if (!isRecList && isInRecommend(item)) {
+      badge = `<span class="cross-badge cb-rec" title="本书同时在推荐书单中（适配腾讯生态）">⭐ 精选</span>`;
+    } else if (isRecList && isOnRank(item)) {
+      badge = `<span class="cross-badge cb-onrank" title="本书本周已出现在 ADQ 热投 / 小店 / 潜力 / 预测榜单">✅ 在跑</span>`;
+    }
+    return `<div class="title-text">${escapeHtml(v||'')}${badge}</div>`;
   }
   if (col.key === 'cat') {
     if (!v) return '-';
@@ -692,11 +783,16 @@ function renderWeekRhythm() {
   rows.forEach(row => {
     // 品类标签列
     const prioCls = row.priority.toLowerCase(); // p0 / p1 / p2
+    // ★ 优化方向三：每行品类标签列底部增加「查看对应书单」链接
+    //   推荐书单含 童书/健康/社科 三大品类，教辅暂无，回退到"全部推荐"
+    const recKey = ['童书','健康','社科'].indexOf(row.cat) >= 0 ? row.cat : 'all';
+    const jumpLabel = recKey === 'all' ? '全部书单' : (row.cat + '书单');
     html += `
       <div class="wr-cat-head ${row.colorClass}">
         <div class="wr-cat-icon">${row.icon}</div>
         <div class="wr-cat-name">${row.cat}</div>
         <span class="wr-prio ${prioCls}">${row.priority}</span>
+        <a class="wr-cat-jump" href="#" data-wr-jump="${recKey}" data-wr-cat="${row.cat}" title="跳转到推荐书单 · ${jumpLabel}">📚 ${jumpLabel} →</a>
       </div>
     `;
 
@@ -928,10 +1024,17 @@ function initRankWeekSwitcher() {
 function onRankWeekChange(idx) {
   currentWeekIndex = parseInt(idx);
   updateRankWeekUI();
+  // 重新构建跨模块索引（在榜书随当周数据变动）
+  buildCrossIndex();
   // 重新渲染榜单 + 类目占比
   const activeTab = document.querySelector('#section-past .rank-tab.active');
   if (activeTab) renderRanking(activeTab.dataset.rank);
   renderCatShareBar();
+  // 推荐书单视图若已渲染，刷新跨模块标记
+  const recTab = document.querySelector('.rec-tab.active[data-rec]');
+  if (recTab && document.getElementById('recBody') && document.getElementById('recBody').innerHTML.trim()) {
+    renderRecommend(recTab.dataset.rec);
+  }
   // 同步更新 rankWeekLabel
   const lbl = document.getElementById('rankWeekLabel');
   if (lbl && WEEK_RANK_LIST[currentWeekIndex]) lbl.textContent = WEEK_RANK_LIST[currentWeekIndex].data.week_label;
@@ -1190,6 +1293,7 @@ function renderCatRadar() {
 initWeekSelect();
 initRankWeekSwitcher();
 initFollowWeekSwitcher();
+buildCrossIndex();
 renderRanking();
 renderCatShareBar();
 renderHotBookBreakdown();
@@ -1207,3 +1311,148 @@ window.addEventListener('resize', () => {
     if (inst) inst.resize();
   });
 });
+
+// ==================== ★ 优化方向一：本周决策摘要卡（三视角直达入口）====================
+function initDecisionSummary() {
+  // 周次标签（基于 WEEK_RANK_LIST 最新一周）
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  if (typeof WEEK_RANK_LIST !== 'undefined' && WEEK_RANK_LIST[0]) {
+    const wd = WEEK_RANK_LIST[0].data;
+    if (wd && wd.week_label) setText('dsWeekLabel', wd.week_label);
+  }
+  // 卡片点击跳转
+  document.querySelectorAll('.ds-card[data-ds-jump]').forEach(c => {
+    c.addEventListener('click', e => {
+      e.preventDefault();
+      const target = c.dataset.dsJump;
+      switchSection(target);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+initDecisionSummary();
+
+// ==================== ★ 优化方向三：周节奏图 → 推荐书单跳转 ====================
+// 事件代理：点击 [data-wr-jump] 链接 → 切换到推荐书单 section + 切到对应品类 tab
+document.addEventListener('click', e => {
+  const link = e.target.closest('[data-wr-jump]');
+  if (!link) return;
+  e.preventDefault();
+  const recKey = link.dataset.wrJump || 'all';
+  switchSection('recommend');
+  setTimeout(() => {
+    const tab = document.querySelector(`.rec-tab[data-rec="${recKey}"]`);
+    if (tab) tab.click();
+    const target = document.getElementById('rec-block-1');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+});
+
+// ==================== ★ 优化方向四：选品池 → 创意生产中心闭环（队列模式 · 多对一接力）====================
+// 数据契约（localStorage 键：bhd_creative_inbox_v1）：
+//   {
+//     version: 1,
+//     source: 'select-workbench',
+//     target: 'p4' | 'p6',          // 目标模块
+//     sentAt: ISO 时间戳,
+//     cursor: 0,                     // 当前游标
+//     queue: [
+//       { isbn, title, top_cat, price, source, status: 'pending'|'done'|'skip' }
+//     ]
+//   }
+// 主站 #p4 / #p6 顶部的「选品池队列条」会读取该 inbox，自动填入当前游标对应书籍，
+// 处理完后用户点「下一本」/「跳过」/「清空队列」推进。
+function sendPoolToCreative(target) {
+  target = target || 'p4';
+  if (!pool || !pool.length) {
+    alert('选品池为空，请先添加 ISBN 到选品池');
+    return;
+  }
+  const queue = pool
+    .filter(p => p.isbn) // 只送 ISBN 完整的书（队列模式必须有 ISBN）
+    .map(p => ({
+      isbn: String(p.isbn).trim(),
+      title: p.title || '',
+      top_cat: p.top_cat || mapToTopCat(p.cat||'') || '',
+      price: p.price || '',
+      source: p.source || '',
+      status: 'pending'
+    }));
+
+  if (!queue.length) {
+    alert('选品池中没有 ISBN 完整的书籍，无法送至创意生产中心');
+    return;
+  }
+
+  const skipped = pool.length - queue.length;
+  if (skipped > 0) {
+    if (!confirm(`选品池共 ${pool.length} 本，其中 ${skipped} 本 ISBN 缺失将被跳过。\n确认送 ${queue.length} 本到「${target==='p4'?'图书内容提取':'图片文案生成'}」？`)) {
+      return;
+    }
+  }
+
+  const targetName = target === 'p4' ? '图书内容提取' : '图片文案生成';
+  const payload = {
+    version: 1,
+    source: 'select-workbench',
+    target: target,
+    targetName: targetName,
+    sentAt: new Date().toISOString(),
+    cursor: 0,
+    queue: queue
+  };
+  try {
+    localStorage.setItem('bhd_creative_inbox_v1', JSON.stringify(payload));
+    sessionStorage.setItem('bhd_creative_inbox_v1', JSON.stringify(payload));
+  } catch(e) {}
+
+  // 跳转策略：
+  // - 主站（/index.html）通过 iframe 嵌入 /select/，#p4 / #p6 这些 section 在父窗口里
+  // - 因此必须让"承载主站的窗口"切到 #p4，本 iframe 跳是无效的
+  var targetUrl = location.origin + '/index.html#' + target;
+
+  var jumped = false;
+  // ① 优先：父窗口同源 → 调用主站全局 go() 函数（不重载页面）
+  try {
+    if (window.top && window.top !== window.self) {
+      try {
+        if (typeof window.top.go === 'function') {
+          window.top.go(target);
+          jumped = true;
+        }
+      } catch(e1) {}
+
+      if (!jumped) {
+        try {
+          window.top.location.hash = '#' + target;
+          jumped = true;
+        } catch(e2) {}
+      }
+
+      if (!jumped) {
+        try {
+          window.top.location.href = targetUrl;
+          jumped = true;
+        } catch(e3) {}
+      }
+
+      // 主动触发主站重新读取 inbox 渲染队列条
+      try {
+        if (window.top.CreativeInbox && typeof window.top.CreativeInbox.refresh === 'function') {
+          setTimeout(function(){ try { window.top.CreativeInbox.refresh(); } catch(e){} }, 300);
+        }
+      } catch(e) {}
+    }
+  } catch(e) {}
+
+  // ② Fallback：当前窗口直接跳转（独立打开 select 页时走这条）
+  if (!jumped) {
+    try {
+      window.location.href = targetUrl;
+    } catch(e) {
+      window.location.assign(targetUrl);
+    }
+  }
+}
+window.sendPoolToCreative = sendPoolToCreative;
+window.togglePoolSendMenu = togglePoolSendMenu;

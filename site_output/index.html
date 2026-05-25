@@ -200,6 +200,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="ct pg on" id="pg-p4">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📚 图书内容提取</h2>
 <p class="subtitle">输入 ISBN编号，一键检索全维度图书内容</p>
+<!-- 选品池队列条挂载点 -->
+<div data-creative-inbox="p4"></div>
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
 <div style="flex:1;min-width:180px">
@@ -317,6 +319,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div class="ct pg" id="pg-p6">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📐 图片文案生成器</h2>
 <p class="subtitle">输入 ISBN → 自动识别书名 → 联网检索 → 一键产出4个版本共22条公众号横版大图营销文案（含AMS合规筛查）</p>
+<!-- 选品池队列条挂载点 -->
+<div data-creative-inbox="p6"></div>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
 ⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具基于公开数据生成营销文案，仅供素材参考，不构成投放指导。书中原文金句默认按搜索结果引用，如需逐字精确，请人工对照原书核实。实际素材合规性请以<a href="https://e.qq.com" target="_blank" style="color:#58a6ff;text-decoration:underline">腾讯广告</a>平台审核规范为准。
 </div>
@@ -3303,6 +3307,9 @@ body[data-tab="pai"] .ai-float-btn{display:none}
 <button class="ai-float-btn" onclick="go('pai',this)" title="AI 营销助手" aria-label="打开 AI 营销助手">
   📚<span class="ai-badge">1</span>
 </button>
+
+<!-- 创意生产中心 · 选品池队列条（接力消费）-->
+<script src="/assets/creative-inbox.js" defer></script>
 
 </body>
 </html>
