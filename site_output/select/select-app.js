@@ -1,5 +1,19 @@
 // ==================== 选品池 ====================
 let pool = [];
+// 选品池中被勾选的索引集合（用于批量移除）
+let poolSelected = new Set();
+// 防抖：避免高频点击时反复整表重渲染选品池
+let _poolRenderTimer = null;
+function schedulePoolRender() {
+  if (_poolRenderTimer) clearTimeout(_poolRenderTimer);
+  // 仅当选品池 section 可见时才走整表渲染；不可见时只刷新计数
+  const visible = document.getElementById('section-pool')?.classList.contains('active');
+  if (!visible) return;
+  _poolRenderTimer = setTimeout(() => {
+    renderPool();
+    _poolRenderTimer = null;
+  }, 60);
+}
 
 // 客单价统一格式化：所有数字保留 1 位小数（"399" → "399.0"，"89-159" → "89.0-159.0"，"39.9" 不变）
 function formatPrice(v) {
@@ -16,22 +30,28 @@ function addToPool(book, source) {
   } else {
     pool.push({...book, source: source || 'unknown', addedAt: new Date().toISOString()});
   }
-  updatePoolUI();
-  refreshActiveCards();
+  // 池数量变化后选中索引可能错位，简单做法是清空选中
+  poolSelected.clear();
+  // 仅更新轻量计数（O(1) 操作），避免整表重绘
+  const navEl = document.getElementById('poolCountNav');
+  const heroEl = document.getElementById('heroPoolCount');
+  if (navEl) navEl.textContent = pool.length;
+  if (heroEl) heroEl.textContent = pool.length;
+  // 仅当选品池可见时才异步重绘表格
+  schedulePoolRender();
+}
+
+// 兼容保留：原有 updatePoolUI 入口仍可用，但不再走在 addToPool 主路径里
+function updatePoolUI() {
+  const navEl = document.getElementById('poolCountNav');
+  const heroEl = document.getElementById('heroPoolCount');
+  if (navEl) navEl.textContent = pool.length;
+  if (heroEl) heroEl.textContent = pool.length;
+  renderPool();
 }
 
 function refreshActiveCards() {
-  const sec = document.querySelector('.subtab.active').dataset.section;
-  if (sec === 'pool-list') {
-    const activeTab = document.querySelector('.rank-tab.active');
-    if (activeTab) renderRanking(activeTab.dataset.rank);
-  }
-}
-
-function updatePoolUI() {
-  document.getElementById('poolCountNav').textContent = pool.length;
-  document.getElementById('heroPoolCount').textContent = pool.length;
-  renderPool();
+  // 不再做整表重渲染。按钮态由点击事件即时翻转 + 卡片切换 tab 时由对应 render 函数兜底
 }
 
 function renderPool() {
@@ -41,33 +61,42 @@ function renderPool() {
     body.innerHTML = `<div class="pool-empty"><div class="pool-empty-icon">🛒</div><p style="font-size:15px;color:#6b7280;">选品池为空</p><p style="margin-top:6px;font-size:12px;">从「选品 ISBN 池」加书～</p></div>`;
     return;
   }
+  const selectedCount = poolSelected.size;
+  const allSelected = selectedCount > 0 && selectedCount === pool.length;
+  const partialSelected = selectedCount > 0 && selectedCount < pool.length;
   body.innerHTML = `
     <div class="toolbar">
-      <span style="color:#374151;font-size:13px;">已选 <strong style="color:#3b82f6;">${pool.length}</strong> 本 · ISBN 完整 <strong style="color:#10b981;">${pool.filter(p=>p.isbn).length}</strong></span>
+      <span style="color:#374151;font-size:13px;">已选 <strong style="color:#3b82f6;">${pool.length}</strong> 本 · ISBN 完整 <strong style="color:#10b981;">${pool.filter(p=>p.isbn).length}</strong>${selectedCount?` · <span style="color:#ef4444;">勾选 <strong>${selectedCount}</strong> 本</span>`:''}</span>
       <button class="toolbar-btn success" onclick="exportPool('csv')">📥 CSV</button>
       <button class="toolbar-btn success" onclick="exportPool('json')">📥 JSON</button>
+      <button class="toolbar-btn pool-batch-remove ${selectedCount?'':'is-disabled'}" id="poolBatchRemoveBtn" type="button" onclick="batchRemovePool()" ${selectedCount?'':'disabled'} title="移除已勾选的图书">🗑 批量移除${selectedCount?` (${selectedCount})`:''}</button>
       <div class="send-creative-wrap" style="margin-left:auto;position:relative;display:inline-block;">
         <button class="toolbar-btn send-creative-btn" id="sendCreativeBtn" type="button" onclick="togglePoolSendMenu(event)">🚀 一键送至创意生产中心 <span style="margin-left:4px;font-size:10px;">▾</span></button>
         <div class="send-creative-menu" id="sendCreativeMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:240px;z-index:20;overflow:hidden;">
           <div style="padding:8px 12px;font-size:11px;color:#9ca3af;background:#f9fafb;border-bottom:1px solid #f3f4f6;">选择目标模块（队列模式）</div>
           <button class="send-creative-item" type="button" onclick="sendPoolToCreative('p4')" style="display:block;width:100%;text-align:left;padding:10px 14px;font-size:13px;background:#fff;border:none;cursor:pointer;color:#111827;border-bottom:1px solid #f3f4f6;">
             <span style="font-weight:600;">📚 图书内容提取</span>
-            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 自动检索全维度图书内容</div>
+            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 自动检索全维度图书内容${selectedCount?'（仅送勾选项）':'（送全部）'}</div>
           </button>
           <button class="send-creative-item" type="button" onclick="sendPoolToCreative('p6')" style="display:block;width:100%;text-align:left;padding:10px 14px;font-size:13px;background:#fff;border:none;cursor:pointer;color:#111827;">
             <span style="font-weight:600;">📐 图片文案生成</span>
-            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 生成 4 版本 22 条横版大图文案</div>
+            <div style="font-size:11px;color:#6b7280;margin-top:2px;">逐本 ISBN 生成 4 版本 22 条横版大图文案${selectedCount?'（仅送勾选项）':'（送全部）'}</div>
           </button>
         </div>
       </div>
-      <button class="toolbar-btn" onclick="if(confirm('确定清空？')){pool=[];updatePoolUI();}">清空</button>
+      <button class="toolbar-btn" onclick="if(confirm('确定清空整个选品池？')){pool=[];poolSelected.clear();updatePoolUI();}">清空</button>
     </div>
     <table class="pool-table">
-      <thead><tr><th>#</th><th>封面</th><th>书名</th><th>品类</th><th>来源</th><th>ISBN</th><th>潜力分</th><th>状态</th><th>操作</th></tr></thead>
+      <thead><tr>
+        <th class="col-check"><input type="checkbox" class="pool-check-all" id="poolCheckAll" ${allSelected?'checked':''} onclick="togglePoolSelectAll(this.checked)" title="${allSelected?'取消全选':'全选'}"></th>
+        <th>#</th><th>封面</th><th>书名</th><th>品类</th><th>来源</th><th>ISBN</th><th>潜力分</th><th>状态</th><th>操作</th>
+      </tr></thead>
       <tbody>
         ${pool.map((b, i) => {
           const cat = b.top_cat || mapToTopCat(b.cat||'');
-          return `<tr>
+          const checked = poolSelected.has(i);
+          return `<tr class="${checked?'pool-row-selected':''}">
+            <td class="col-check"><input type="checkbox" class="pool-row-check" ${checked?'checked':''} data-pool-idx="${i}" onclick="togglePoolRowSelect(${i}, this.checked)"></td>
             <td style="font-weight:700;color:#3b82f6;">${i+1}</td>
             <td><img class="pool-cover-mini" src="${bookCover(b)}" alt=""/></td>
             <td style="max-width:300px;line-height:1.4;">${b.title}</td>
@@ -76,12 +105,56 @@ function renderPool() {
             <td style="font-family:'SF Mono',monospace;font-size:11px;color:${b.isbn?'#059669':'#f59e0b'};">${b.isbn || '⚠ 待补'}</td>
             <td>${b.score ? '<strong style="color:#3b82f6;">'+b.score+'</strong>' : '-'}</td>
             <td><span class="status-pill">待评估</span></td>
-            <td><button class="toolbar-btn" style="padding:3px 8px;font-size:11px;" onclick="pool.splice(${i},1);updatePoolUI();">移除</button></td>
+            <td><button class="toolbar-btn" style="padding:3px 8px;font-size:11px;" onclick="removePoolItem(${i})">移除</button></td>
           </tr>`;
         }).join('')}
       </tbody>
     </table>`;
+  // 全选 checkbox 的 indeterminate 视觉态（部分勾选时半选）
+  const allBox = document.getElementById('poolCheckAll');
+  if (allBox) allBox.indeterminate = partialSelected;
 }
+
+// 单行勾选切换
+function togglePoolRowSelect(idx, checked) {
+  if (checked) poolSelected.add(idx);
+  else poolSelected.delete(idx);
+  renderPool();
+}
+// 全选/取消全选
+function togglePoolSelectAll(checked) {
+  if (checked) {
+    pool.forEach((_, i) => poolSelected.add(i));
+  } else {
+    poolSelected.clear();
+  }
+  renderPool();
+}
+// 单本移除（保持选中索引一致性）
+function removePoolItem(idx) {
+  pool.splice(idx, 1);
+  // 重建选中集合：原索引 < idx 不变；原索引 == idx 删除；原索引 > idx 减 1
+  const newSel = new Set();
+  poolSelected.forEach(i => {
+    if (i < idx) newSel.add(i);
+    else if (i > idx) newSel.add(i - 1);
+  });
+  poolSelected = newSel;
+  updatePoolUI();
+}
+// 批量移除已勾选项
+function batchRemovePool() {
+  if (!poolSelected.size) return;
+  if (!confirm(`确定批量移除已勾选的 ${poolSelected.size} 本？`)) return;
+  const sorted = Array.from(poolSelected).sort((a,b) => b - a); // 倒序删除
+  sorted.forEach(i => pool.splice(i, 1));
+  poolSelected.clear();
+  updatePoolUI();
+}
+window.togglePoolRowSelect = togglePoolRowSelect;
+window.togglePoolSelectAll = togglePoolSelectAll;
+window.removePoolItem = removePoolItem;
+window.batchRemovePool = batchRemovePool;
 
 // 下拉菜单开关
 function togglePoolSendMenu(e) {
@@ -163,14 +236,35 @@ function renderBookCard(b, opts) {
 }
 
 // 用事件代理处理"加入选品池"按钮（解决 onclick 转义问题）
+// 优化：点击瞬间立即翻转按钮态，避免等待重渲染造成的延迟感
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-book]');
-  if (btn) {
-    try {
-      const book = JSON.parse(btn.dataset.book.replace(/&quot;/g, '"'));
-      addToPool(book, btn.dataset.source);
-    } catch (err) { console.error('Parse error:', err); }
-  }
+  if (!btn) return;
+  try {
+    const book = JSON.parse(btn.dataset.book.replace(/&quot;/g, '"'));
+    // ① 立即翻转该按钮 + 同 title 的所有按钮（同一本书可能在多处出现）
+    const isAdd = !pool.some(p => p.title === book.title);
+    document.querySelectorAll('[data-book]').forEach(b => {
+      try {
+        const bk = JSON.parse(b.dataset.book.replace(/&quot;/g, '"'));
+        if (bk.title === book.title) {
+          if (isAdd) {
+            b.classList.add('added');
+            // 同时支持「+ 加入选品池」/「+ 加入」两种文案
+            b.textContent = b.textContent.indexOf('选品池') >= 0 ? '✓ 已加入' : '✓ 已加';
+          } else {
+            b.classList.remove('added');
+            b.textContent = b.textContent.indexOf('选品池') >= 0 ? '+ 加入选品池' : '+ 加入';
+          }
+        }
+      } catch (e2) {}
+    });
+    // ② 微动效：被点击按钮 pulse
+    btn.classList.add('book-btn-pulse');
+    setTimeout(() => btn.classList.remove('book-btn-pulse'), 400);
+    // ③ 数据操作交给 addToPool（已经做了轻量更新+防抖整表渲染）
+    addToPool(book, btn.dataset.source);
+  } catch (err) { console.error('Parse error:', err); }
 });
 
 // ==================== 推荐书单（按品类分组）====================
@@ -982,6 +1076,10 @@ function switchSection(name) {
         updateTabTip('tabTipFollow', followTab);
       }
     }
+    if (name === 'pool') {
+      // 切到选品池时做一次完整渲染（其他 section 时不渲染以提升性能）
+      renderPool();
+    }
   }, 60);
 }
 document.querySelectorAll('.subtab').forEach(t => t.addEventListener('click', () => switchSection(t.dataset.section)));
@@ -1368,7 +1466,12 @@ function sendPoolToCreative(target) {
     alert('选品池为空，请先添加 ISBN 到选品池');
     return;
   }
-  const queue = pool
+  // 若有勾选则只送勾选项，否则送全部
+  const sourceList = poolSelected.size
+    ? Array.from(poolSelected).sort((a,b) => a - b).map(i => pool[i]).filter(Boolean)
+    : pool;
+
+  const queue = sourceList
     .filter(p => p.isbn) // 只送 ISBN 完整的书（队列模式必须有 ISBN）
     .map(p => ({
       isbn: String(p.isbn).trim(),
@@ -1380,13 +1483,17 @@ function sendPoolToCreative(target) {
     }));
 
   if (!queue.length) {
-    alert('选品池中没有 ISBN 完整的书籍，无法送至创意生产中心');
+    alert(poolSelected.size
+      ? '勾选的图书中没有 ISBN 完整项，无法送至创意生产中心'
+      : '选品池中没有 ISBN 完整的书籍，无法送至创意生产中心');
     return;
   }
 
-  const skipped = pool.length - queue.length;
+  const totalCandidate = sourceList.length;
+  const skipped = totalCandidate - queue.length;
+  const scopeLabel = poolSelected.size ? `已勾选 ${totalCandidate} 本` : `选品池共 ${totalCandidate} 本`;
   if (skipped > 0) {
-    if (!confirm(`选品池共 ${pool.length} 本，其中 ${skipped} 本 ISBN 缺失将被跳过。\n确认送 ${queue.length} 本到「${target==='p4'?'图书内容提取':'图片文案生成'}」？`)) {
+    if (!confirm(`${scopeLabel}，其中 ${skipped} 本 ISBN 缺失将被跳过。\n确认送 ${queue.length} 本到「${target==='p4'?'图书内容提取':'图片文案生成'}」？`)) {
       return;
     }
   }
