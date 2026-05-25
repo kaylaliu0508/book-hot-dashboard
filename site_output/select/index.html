@@ -18,6 +18,8 @@ if(window.self !== window.top){
   });
 }
 </script>
+<script>window.__TRACKER_ENDPOINT__='/api/track';</script>
+<script src="/assets/tracker.js?v=20260525a" defer></script>
 </head>
 <body>
 <!-- ===== 邀请码登录态校验（iframe 友好：未登录则跳回主站，不阻塞渲染）===== -->
@@ -54,7 +56,7 @@ if(window.self !== window.top){
   </div>
   </div>
   </div>
-  <div class="pool-btn" onclick="switchSection('pool')">🛒 选品池 <span class="num" id="poolCountNav">0</span></div>
+  <div class="pool-btn" onclick="switchSection('pool')" data-track="select_pool_btn" data-track-tab="select_hub">🛒 选品池 <span class="num" id="poolCountNav">0</span></div>
 </nav>
 
 <section class="hero">
@@ -236,7 +238,7 @@ if(window.self !== window.top){
     </div>
     <div class="tab-tip" id="tabTipPast"></div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentRank()">📥 导出当前榜单 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportCurrentRank()" data-track="select_export_rank" data-track-tab="select_hub">📥 导出当前榜单 ISBN</button>
     </div>
     <div id="rankBody"></div>
   </div>
@@ -430,7 +432,7 @@ if(window.self !== window.top){
     </div>
     <div class="tab-tip" id="tabTipRec"></div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentRec()">📥 导出当前书单 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportCurrentRec()" data-track="select_export_rec" data-track-tab="select_hub">📥 导出当前书单 ISBN</button>
     </div>
     <div id="recBody"></div>
   </div>
@@ -461,7 +463,7 @@ if(window.self !== window.top){
     </div>
     <div class="tab-tip" id="tabTipFollow"></div>
     <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportCurrentFollow()">📥 导出当前书单 ISBN</button>
+      <button class="toolbar-btn success" onclick="exportCurrentFollow()" data-track="select_export_follow" data-track-tab="select_hub">📥 导出当前书单 ISBN</button>
     </div>
     <div id="followBody"></div>
   </div>
@@ -485,6 +487,15 @@ if(window.self !== window.top){
 <script src="select-data.js"></script>
 <script src="recommend-data.js"></script>
 <script src="select-app.js"></script>
+
+<!-- 埋点初始化：选品台 PV + 子 tab 切换 -->
+<script>
+try{
+  window.addEventListener('load',function(){
+    if(window.tracker) window.tracker.pv('select_hub');
+  });
+}catch(e){}
+</script>
 
 <!-- 图图 · 全站悬浮 AI 助手 -->
 <script src="/assets/tutu-chat.js" defer></script>
