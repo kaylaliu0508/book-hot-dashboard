@@ -818,3 +818,145 @@ a { color: inherit; text-decoration: none; }
 /* ====== 顶部 subtab 池子快捷数字 ====== */
 .subtabs .pool-quick-link { transition: all .15s; }
 .subtabs .pool-quick-link:hover { color: #2563eb !important; }
+
+/* ====== Hub 关键词搜索框 ====== */
+.hub-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.06);
+  transition: all .2s;
+}
+.hub-search-bar:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.18);
+}
+.hub-search-bar .hsb-icon { font-size: 16px; flex-shrink: 0; }
+.hub-search-bar .hsb-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 13.5px;
+  color: #1f2937;
+  background: transparent;
+  padding: 4px 0;
+}
+.hub-search-bar .hsb-input::placeholder { color: #9ca3af; }
+.hub-search-bar .hsb-clear {
+  border: none;
+  background: #f3f4f6;
+  color: #6b7280;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hub-search-bar .hsb-clear:hover { background: #e5e7eb; color: #1f2937; }
+
+/* 搜索结果下拉浮层 */
+.hsb-result {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 4px);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 100;
+}
+.hsb-result-empty {
+  padding: 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+}
+.hsb-result-summary {
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #6b7280;
+  background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+  position: sticky; top: 0;
+}
+.hsb-result-summary strong { color: #3b82f6; }
+.hsb-result-group {
+  padding: 6px 14px 4px;
+  font-size: 11px;
+  color: #6366f1;
+  font-weight: 700;
+  background: #f5f3ff;
+  letter-spacing: .5px;
+}
+.hsb-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background .12s;
+}
+.hsb-result-item:hover { background: #eff6ff; }
+.hsb-result-item .hsbi-rank {
+  width: 22px; height: 22px;
+  background: #e0e7ff; color: #4338ca;
+  border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hsb-result-item .hsbi-body { flex: 1; min-width: 0; }
+.hsb-result-item .hsbi-title { font-size: 13px; color: #1f2937; font-weight: 600; line-height: 1.3; }
+.hsb-result-item .hsbi-title em { background: #fef3c7; color: #92400e; font-style: normal; padding: 0 2px; border-radius: 2px; }
+.hsb-result-item .hsbi-meta { font-size: 11.5px; color: #6b7280; margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+.hsb-result-item .hsbi-meta .hsbi-isbn { font-family: 'SF Mono', monospace; color: #059669; }
+.hsb-result-item .hsbi-meta .hsbi-list { color: #3b82f6; font-weight: 600; }
+.hsb-result-item .hsbi-go {
+  font-size: 11px;
+  color: #fff;
+  background: #6366f1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* 命中行高亮（5s 闪烁） */
+.rank-table-excel tr.hsb-hit {
+  background: #fef9c3 !important;
+  animation: hsb-blink 1.6s ease-in-out 3;
+  box-shadow: inset 4px 0 0 #f59e0b;
+}
+@keyframes hsb-blink {
+  0%, 100% { background: #fef9c3 !important; }
+  50% { background: #fde68a !important; }
+}
+
+/* ====== 榜单更新频率标签（by 周更新 / 6月推荐书单 等） ====== */
+.badge-update {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #047857;
+  background: #d1fae5;
+  border-radius: 999px;
+  letter-spacing: .2px;
+  vertical-align: middle;
+}
+.badge-update.is-month {
+  color: #92400e;
+  background: #fed7aa;
+}
+

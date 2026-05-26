@@ -1163,6 +1163,208 @@ function observeHubAnchors() {
   panels.forEach(p => _hubObserver.observe(p));
 }
 
+// ==================== Hub 关键词搜索 ====================
+// 跨所有 7 榜单 + 精选书单 检索（书名/ISBN/作者），点击结果定位锚点+高亮该行
+let _hubSearchDebounce = null;
+function initHubSearch() {
+  const input = document.getElementById('hubSearchInput');
+  const clearBtn = document.getElementById('hubSearchClear');
+  const result = document.getElementById('hubSearchResult');
+  if (!input || !result) return;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    clearBtn.style.display = q ? 'inline-flex' : 'none';
+    clearTimeout(_hubSearchDebounce);
+    _hubSearchDebounce = setTimeout(() => doHubSearch(q), 150);
+  });
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.style.display = 'none';
+    result.style.display = 'none';
+    result.innerHTML = '';
+    input.focus();
+  });
+  // 点击外部关闭浮层
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#hubSearchBar')) {
+      result.style.display = 'none';
+    }
+  });
+  input.addEventListener('focus', () => {
+    if (input.value.trim() && result.innerHTML) result.style.display = 'block';
+  });
+  // Esc 关闭
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { result.style.display = 'none'; }
+  });
+}
+
+// 收集所有可搜索条目：榜单（含周）+ 精选书单
+function collectHubSearchPool() {
+  const pool = [];
+  // 1) 当前周次榜单（4 个）
+  const wd = (typeof getCurrentWeekData === 'function') ? getCurrentWeekData() : null;
+  const RANK_META = [
+    { key: 'adq_hot',    listName: 'ADQ 热投榜',           anchor: 'hub-block-rank-adq',       bodyId: 'rankBodyAdq' },
+    { key: 'weixinshop', listName: '腾讯营销（小店版）热投榜', anchor: 'hub-block-rank-shop',      bodyId: 'rankBodyShop' },
+    { key: 'potential',  listName: '潜力爆品',             anchor: 'hub-block-follow-potential',bodyId: 'rankBodyPotential' },
+    { key: 'forecast',   listName: '预测爆品',             anchor: 'hub-block-follow-forecast', bodyId: 'rankBodyForecast' },
+  ];
+  if (wd && wd.lists) {
+    RANK_META.forEach(meta => {
+      const list = wd.lists[meta.key];
+      if (!list || !list.items) return;
+      list.items.forEach((it, idx) => {
+        pool.push({
+          title: it.title || '',
+          isbn: it.isbn || '',
+          author: it.author || '',
+          cat: it.cat || it.top_cat || '',
+          rank: it.rank || (idx + 1),
+          listName: meta.listName,
+          listGroup: '实战 / 潜力榜单',
+          anchor: meta.anchor,
+          bodyId: meta.bodyId,
+        });
+      });
+    });
+  }
+  // 2) 精选书单（3 类）
+  const REC_META = [
+    { cat: '童书', listName: '童书推荐',   anchor: 'hub-block-rec-child',  bodyId: 'recBodyChild' },
+    { cat: '健康', listName: '健康推荐',   anchor: 'hub-block-rec-health', bodyId: 'recBodyHealth' },
+    { cat: '社科', listName: '社科推荐',   anchor: 'hub-block-rec-social', bodyId: 'recBodySocial' },
+  ];
+  const allRec = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
+  REC_META.forEach(meta => {
+    allRec.filter(b => b.top_cat === meta.cat).forEach((it, idx) => {
+      pool.push({
+        title: it.title || '',
+        isbn: it.isbn || '',
+        author: it.author || '',
+        cat: it.cat || it.top_cat || meta.cat,
+        rank: it.rank || (idx + 1),
+        listName: meta.listName,
+        listGroup: '精选书单',
+        anchor: meta.anchor,
+        bodyId: meta.bodyId,
+      });
+    });
+  });
+  return pool;
+}
+
+function doHubSearch(q) {
+  const result = document.getElementById('hubSearchResult');
+  if (!result) return;
+  if (!q || q.length < 1) { result.style.display = 'none'; result.innerHTML = ''; return; }
+
+  const qLower = q.toLowerCase();
+  const all = collectHubSearchPool();
+  const hits = all.filter(it => {
+    return (it.title && it.title.toLowerCase().includes(qLower))
+        || (it.isbn && String(it.isbn).includes(q))
+        || (it.author && it.author.toLowerCase().includes(qLower));
+  });
+
+  if (!hits.length) {
+    result.innerHTML = `<div class="hsb-result-empty">😶 未找到 "<strong>${escapeHtml(q)}</strong>" 相关的书目<br><span style="font-size:11.5px;color:#9ca3af;">可尝试：换关键词 / 输入完整 ISBN / 切换榜单周次</span></div>`;
+    result.style.display = 'block';
+    return;
+  }
+
+  // 限制最多 50 条；按所属分组聚合
+  const limited = hits.slice(0, 50);
+  const grouped = {};
+  limited.forEach(h => {
+    if (!grouped[h.listName]) grouped[h.listName] = [];
+    grouped[h.listName].push(h);
+  });
+
+  // 关键词高亮
+  const hl = (text) => {
+    if (!text) return '';
+    const safe = escapeHtml(String(text));
+    if (!q) return safe;
+    const re = new RegExp(q.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
+    return safe.replace(re, m => `<em>${m}</em>`);
+  };
+
+  let html = `<div class="hsb-result-summary">共找到 <strong>${hits.length}</strong> 本匹配 "<strong>${escapeHtml(q)}</strong>"${hits.length > 50 ? '，仅显示前 50 条' : ''}</div>`;
+  for (const listName of Object.keys(grouped)) {
+    html += `<div class="hsb-result-group">${listName} · ${grouped[listName].length} 本</div>`;
+    grouped[listName].forEach(h => {
+      const meta = [];
+      if (h.isbn) meta.push(`<span class="hsbi-isbn">${hl(h.isbn)}</span>`);
+      if (h.cat)  meta.push(`<span>${escapeHtml(h.cat)}</span>`);
+      if (h.author) meta.push(`<span>${hl(h.author)}</span>`);
+      meta.push(`<span class="hsbi-list">${escapeHtml(h.listName)}</span>`);
+      html += `
+        <div class="hsb-result-item"
+             data-anchor="${h.anchor}"
+             data-body-id="${h.bodyId}"
+             data-isbn="${escapeHtml(h.isbn||'')}"
+             data-title="${escapeHtml(h.title||'')}">
+          <span class="hsbi-rank">${h.rank}</span>
+          <div class="hsbi-body">
+            <div class="hsbi-title">${hl(h.title)}</div>
+            <div class="hsbi-meta">${meta.join('')}</div>
+          </div>
+          <span class="hsbi-go">跳转 →</span>
+        </div>`;
+    });
+  }
+  result.innerHTML = html;
+  result.style.display = 'block';
+
+  // 绑定点击跳转
+  result.querySelectorAll('.hsb-result-item').forEach(el => {
+    el.addEventListener('click', () => {
+      gotoHubSearchHit(el.dataset.anchor, el.dataset.bodyId, el.dataset.isbn, el.dataset.title);
+      result.style.display = 'none';
+    });
+  });
+}
+
+// 跳转到对应锚点 panel + 高亮匹配行
+function gotoHubSearchHit(anchorId, bodyId, isbn, title) {
+  // 确保在书单中心 section
+  if (!document.getElementById('section-hub')?.classList.contains('active')) {
+    switchSection('hub');
+  }
+  setTimeout(() => {
+    const panel = document.getElementById(anchorId);
+    if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 高亮命中行
+    setTimeout(() => highlightHitRow(bodyId, isbn, title), 320);
+  }, 100);
+}
+
+function highlightHitRow(bodyId, isbn, title) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  // 清旧高亮
+  body.querySelectorAll('tr.hsb-hit').forEach(tr => tr.classList.remove('hsb-hit'));
+  const trList = body.querySelectorAll('tbody tr');
+  let hitTr = null;
+  trList.forEach(tr => {
+    const text = tr.textContent || '';
+    const matchIsbn = isbn && text.includes(isbn);
+    const matchTitle = title && text.includes(title);
+    if (!hitTr && (matchIsbn || matchTitle)) hitTr = tr;
+  });
+  if (hitTr) {
+    hitTr.classList.add('hsb-hit');
+    // 滚到行（如果当前 panel 滚动锚点错过该行）
+    setTimeout(() => {
+      try { hitTr.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    }, 80);
+    // 5 秒后移除
+    setTimeout(() => hitTr.classList.remove('hsb-hit'), 5200);
+  }
+}
+
 // ==================== Tab 切换 ====================
 function switchSection(name) {
   document.querySelectorAll('.subtab').forEach(t => t.classList.toggle('active', t.dataset.section === name));
@@ -1235,6 +1437,9 @@ function onRankWeekChange(idx) {
   // 同步更新 rankWeekLabel
   const lbl = document.getElementById('rankWeekLabel');
   if (lbl && WEEK_RANK_LIST[currentWeekIndex]) lbl.textContent = WEEK_RANK_LIST[currentWeekIndex].data.week_label;
+  // 周次变更后，若搜索框有关键词则重搜（数据池变化）
+  const si = document.getElementById('hubSearchInput');
+  if (si && si.value.trim()) doHubSearch(si.value.trim());
 }
 function changeRankWeek(delta) {
   // delta: -1=上一周(更早,index+1)  +1=下一周(更近,index-1)
@@ -1496,6 +1701,7 @@ buildCrossIndex();
 try { initFuture(); } catch (e) { console.error('[init] initFuture 失败:', e); }
 // 提前预渲染一次 hub，让用户切到 hub 时表格已就绪
 try { renderHub(); } catch (e) { console.error('[init] renderHub 失败:', e); }
+try { initHubSearch(); } catch (e) { console.error('[init] initHubSearch 失败:', e); }
 updatePoolUI();
 syncRecSideCount();
 

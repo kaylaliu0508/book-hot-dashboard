@@ -257,7 +257,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -835,7 +835,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -1034,7 +1034,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -1364,7 +1364,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -1928,7 +1928,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -2258,7 +2258,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -2877,7 +2877,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -3441,7 +3441,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -3695,7 +3695,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -4259,7 +4259,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -4513,7 +4513,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -5077,7 +5077,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -5331,7 +5331,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -5950,7 +5950,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -6484,7 +6484,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -6683,7 +6683,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -6937,7 +6937,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -7471,7 +7471,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -7670,7 +7670,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -7924,7 +7924,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -8488,7 +8488,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -8742,7 +8742,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -9306,7 +9306,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -9560,7 +9560,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -10179,7 +10179,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -10798,7 +10798,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -11362,7 +11362,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -11561,7 +11561,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -11815,7 +11815,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -12379,7 +12379,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -12633,7 +12633,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -13252,7 +13252,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -13816,7 +13816,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -14070,7 +14070,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -14634,7 +14634,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -14888,7 +14888,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -15437,7 +15437,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -15691,7 +15691,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -16240,7 +16240,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -16494,7 +16494,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -17043,7 +17043,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -17297,7 +17297,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -17846,7 +17846,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -18100,7 +18100,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -18649,7 +18649,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -18903,7 +18903,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -19522,7 +19522,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -20141,7 +20141,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -20621,7 +20621,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -20855,7 +20855,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -21215,7 +21215,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -21449,7 +21449,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -21809,7 +21809,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -22043,7 +22043,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -22403,7 +22403,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -22637,7 +22637,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -22997,7 +22997,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -23231,7 +23231,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -23591,7 +23591,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -23825,7 +23825,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -24185,7 +24185,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -24419,7 +24419,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -24779,7 +24779,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -25033,7 +25033,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -25393,7 +25393,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -25647,7 +25647,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -26007,7 +26007,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -26261,7 +26261,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -26621,7 +26621,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -26875,7 +26875,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -27246,7 +27246,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -27500,7 +27500,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -27860,7 +27860,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -28114,7 +28114,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -28474,7 +28474,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -28728,7 +28728,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -29033,7 +29033,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -29287,7 +29287,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -29592,7 +29592,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -29846,7 +29846,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -30161,7 +30161,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -30415,7 +30415,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -30730,7 +30730,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -30984,7 +30984,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -31269,7 +31269,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -31523,7 +31523,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -31798,7 +31798,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -32052,7 +32052,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -32327,7 +32327,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -32581,7 +32581,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -32876,7 +32876,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -33130,7 +33130,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -33425,7 +33425,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -33679,7 +33679,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -33954,7 +33954,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -34208,7 +34208,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -34493,7 +34493,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -34747,7 +34747,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": [
             {
@@ -35052,7 +35052,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },
@@ -35251,7 +35251,7 @@ const WEEK_RANK_LIST = [
           ]
         },
         "weixinshop": {
-          "name": "腾讯营销（小店版）榜单",
+          "name": "腾讯营销（小店版）热投榜",
           "subtitle": "无转化不扣费",
           "items": []
         },

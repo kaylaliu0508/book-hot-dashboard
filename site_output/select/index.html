@@ -152,7 +152,7 @@ if(window.self !== window.top){
       <a class="rsn-item" href="#hub-block-rank-shop" data-target="hub-block-rank-shop" data-jump-rank="weixinshop">
         <span class="rsn-icon">💰</span>
         <div class="rsn-body">
-          <div class="rsn-name">微信小店榜</div>
+          <div class="rsn-name">腾讯营销（小店版）热投榜</div>
           <div class="rsn-desc">无转化不扣费 <span class="rsn-count" id="rsnCountShop">15</span></div>
         </div>
       </a>
@@ -222,8 +222,16 @@ if(window.self !== window.top){
     <div class="icon">📚</div>
     <div class="text">
       <strong>书单中心 · 一站式选品来源：</strong>
-      左侧 4 大分组覆盖 <span class="hl">实战榜单</span>（已发生）、<span class="hl">潜力榜单</span>（在别处爆/即将爆）、<span class="hl">精选书单</span>（适配腾讯生态）和 <span class="hl">数据洞察</span>（辅助）。所有榜单/书单均支持「+ 加入选品池」。
+      聚合 <span class="hl">实战榜单</span>、<span class="hl">潜力榜单</span>、<span class="hl">精选书单</span> 与 <span class="hl">投放参考</span>，左侧导航分组切换，所有书目均支持「+ 加入选品池」一键收藏。
     </div>
+  </div>
+
+  <!-- 🔎 全模块关键词搜索 -->
+  <div class="hub-search-bar" id="hubSearchBar">
+    <span class="hsb-icon">🔎</span>
+    <input type="text" id="hubSearchInput" class="hsb-input" placeholder="搜索书名 / ISBN / 作者，跨 7 个榜单一键定位…" autocomplete="off">
+    <button class="hsb-clear" id="hubSearchClear" title="清空" style="display:none;">✕</button>
+    <div class="hsb-result" id="hubSearchResult" style="display:none;"></div>
   </div>
 
   <!-- 全局周切换（仅对实战/潜力榜单生效）-->
@@ -251,6 +259,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-rank-adq">
     <div class="panel-title">
       <span class="dot"></span>🏆 ADQ 热投榜<span class="badge-rank-fire">实战</span>
+      <span class="badge-update">📅 by 周更新</span>
       <span class="extra" id="rankWeekLabel">2026-05-12 至 05-18</span>
       <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?scode=AJEAIQdfAAo9zE4tgmARQAcAYdADQ&tab=fxrf9j" target="_blank" class="doc-link">
         📎 查看往期文档
@@ -269,15 +278,17 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-hot-insight">
     <div class="panel-title">
       <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
-      <span class="extra">代表书的核心数据 + 创意公式</span>
+      <span class="badge-update">📅 by 周更新</span>
+      <span class="extra">代表书的核心数据 + 创意公式 · 从下一期开始新增</span>
     </div>
     <div id="hotBookBreakdown"></div>
   </div>
 
-  <!-- 1.2 微信小店榜 -->
+  <!-- 1.2 腾讯营销（小店版）热投榜 -->
   <div class="panel" id="hub-block-rank-shop">
     <div class="panel-title">
-      <span class="dot"></span>💰 微信小店榜<span class="badge-rank-fire">实战</span>
+      <span class="dot"></span>💰 腾讯营销（小店版）热投榜<span class="badge-rank-fire">实战</span>
+      <span class="badge-update">📅 by 周更新</span>
       <span class="extra">无转化不扣费 · 实战优品</span>
     </div>
     <div class="panel-sub-tip">
@@ -293,6 +304,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-follow-potential">
     <div class="panel-title">
       <span class="dot"></span>💎 潜力爆品<span class="badge-rank-potential">蓝海</span>
+      <span class="badge-update">📅 by 周更新</span>
       <span class="extra">ADQ 未充分投放 · 别处已爆</span>
     </div>
     <div class="panel-sub-tip">
@@ -308,6 +320,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-follow-forecast">
     <div class="panel-title">
       <span class="dot"></span>🎯 预测爆品<span class="badge-rank-forecast">前瞻</span>
+      <span class="badge-update">📅 by 周更新</span>
       <span class="extra">基于去年同期推演 · 即将爆发</span>
     </div>
     <div class="panel-sub-tip">
@@ -324,6 +337,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-rec-intro">
     <div class="panel-title">
       <span class="dot"></span>⭐ 精选书单（适配腾讯生态）
+      <span class="badge-update is-month">📅 6 月推荐书单</span>
       <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMYCNBY2vYRsOTr22OCI0?scode=AJEAIQdfAAoJ1CUM1YARQAcAYdADQ&tab=BB08J2" target="_blank" class="doc-link">
         📎 查看往期文档（Q2潜力增长图书书单）
       </a>
@@ -497,6 +511,13 @@ if(window.self !== window.top){
 </section>
 <!-- 我的选品池 -->
 <section class="section" id="section-pool">
+  <div class="insight-banner">
+    <div class="icon">🛒</div>
+    <div class="text">
+      <strong>我的 ISBN 选品池 · 选品终点：</strong>
+      汇总你从 <span class="hl">实战 / 潜力 / 精选</span> 各榜单加入的 ISBN，支持<span class="hl">多选 / 全选 / 批量移除</span>，确认后<span class="hl">一键送至「图书内容提取」或「口播脚本」</span>，进入创意生产环节。
+    </div>
+  </div>
   <div class="panel">
     <div class="panel-title"><span class="dot"></span>🛒 我的选品池</div>
     <div id="poolBody"></div>
