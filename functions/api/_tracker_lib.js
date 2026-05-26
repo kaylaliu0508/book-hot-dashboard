@@ -96,23 +96,23 @@ export async function persistEvent(env, body) {
       }
     }
 
-    // 📚 ISBN 查询专项统计（book_extract tab 的 isbn_query 事件 + select_hub tab 的 select_pool_toggle 事件）
+    // 📚 ISBN 专项统计（分来源独立统计）
+    // book_extract/isbn_query → isbn:book_extract:{date}
+    // select_hub/select_pool_toggle(add) → isbn:select_hub:{date}
     const isbnCollectTabs = {
       book_extract: 'isbn_query',
       select_hub: 'select_pool_toggle',
     };
     const isbnEventName = isbnCollectTabs[tab];
     if (isbnEventName && name === isbnEventName && body.meta && body.meta.isbn) {
-      // 选品池 toggle 只统计 add 动作，remove 不计入
       const action = body.meta.action || '';
       if (tab === 'select_hub' && action !== 'add') {
-        // skip
+        // remove 不计入 ISBN 统计
       } else {
         const isbn = String(body.meta.isbn).slice(0, 20).replace(/[^0-9xX]/g, '');
         if (isbn.length >= 10) {
           const title = body.meta.title ? String(body.meta.title).slice(0, 80) : '';
-          // 当日 map
-          const dayKeyName = `isbn:${date}`;
+          const dayKeyName = `isbn:${tab}:${date}`;
           const dayMap = (await KV.get(dayKeyName, 'json')) || {};
           if (!dayMap[isbn]) dayMap[isbn] = { count: 0, title: '', lastTs: 0 };
           dayMap[isbn].count += 1;
@@ -238,23 +238,29 @@ export async function aggregateStats(env, range, tabFilter) {
     result.tabs[tab] = tabAgg;
   }
 
-  // 📚 ISBN 查询 Top 聚合（只读所选日期范围的 isbn:{date} map）
-  const isbnAgg = {};
-  for (const date of dateList) {
-    const dayMap = (await KV.get(`isbn:${date}`, 'json')) || {};
-    for (const isbn of Object.keys(dayMap)) {
-      const entry = dayMap[isbn];
-      if (!isbnAgg[isbn]) isbnAgg[isbn] = { count: 0, title: '', lastTs: 0 };
-      isbnAgg[isbn].count += entry.count || 0;
-      if (entry.title && !isbnAgg[isbn].title) isbnAgg[isbn].title = entry.title;
-      if (entry.lastTs > isbnAgg[isbn].lastTs) isbnAgg[isbn].lastTs = entry.lastTs;
+  // 📚 ISBN 分来源 Top 聚合（isbn:book_extract:{date} / isbn:select_hub:{date}）
+  const isbnSources = ['book_extract', 'select_hub'];
+  const isbnResult = {};
+  for (const src of isbnSources) {
+    const agg = {};
+    for (const date of dateList) {
+      const dayMap = (await KV.get(`isbn:${src}:${date}`, 'json')) || {};
+      for (const isbn of Object.keys(dayMap)) {
+        const entry = dayMap[isbn];
+        if (!agg[isbn]) agg[isbn] = { count: 0, title: '', lastTs: 0 };
+        agg[isbn].count += entry.count || 0;
+        if (entry.title && !agg[isbn].title) agg[isbn].title = entry.title;
+        if (entry.lastTs > agg[isbn].lastTs) agg[isbn].lastTs = entry.lastTs;
+      }
     }
+    isbnResult[src] = Object.keys(agg)
+      .map((isbn) => ({ isbn, ...agg[isbn] }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 50);
   }
-  const isbnTop = Object.keys(isbnAgg)
-    .map((isbn) => ({ isbn, ...isbnAgg[isbn] }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 50);
-  result.isbnTop = isbnTop;
+  // 兼容旧接口：isbnTop 仍为 book_extract 的数据
+  result.isbnTop = isbnResult.book_extract || [];
+  result.isbnBySource = isbnResult;
 
   return result;
 }
