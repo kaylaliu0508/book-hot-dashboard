@@ -647,7 +647,7 @@
       <div class="quick-chip type-book" onclick="sendQuick('视频号原生广告有哪些新能力？怎么投放？')">📺 视频号投放</div>
       <div class="quick-chip type-book" onclick="sendQuick('图书行业营销密码是什么？如何从选品到爆量？')">🔑 营销密码</div>
       <div class="quick-chip type-default" onclick="sendQuick('如何绑定我的Token查看自己的账户数据？')">🔗 绑定账户</div>
-      <div class="quick-chip type-default" onclick="sendQuick('我想提交一个问题反馈或建议')">📝 问题反馈</div>
+      <div class="quick-chip type-default" onclick="openFeedback()">📝 问题反馈</div>
     </div>
   </div>
 
@@ -1060,5 +1060,122 @@ document.getElementById('tokenModal').addEventListener('click', e => { if (e.tar
 // 埋点：AI 助手页面 PV
 try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('ai_assistant'); }); }catch(e){}
 </script>
+<!-- ==================== 问题反馈弹窗 ==================== -->
+<style>
+.fb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center}
+.fb-overlay.open{display:flex !important}
+@keyframes fbIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.fb-box{background:#fff;border-radius:20px;padding:28px;width:380px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fbIn .3s cubic-bezier(.34,1.56,.64,1)}
+.fb-title{font-size:17px;font-weight:700;margin-bottom:6px;color:#1A1A2E}
+.fb-desc{font-size:13px;color:#6B7280;margin-bottom:16px;line-height:1.6}
+.fb-types{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.fb-type-btn{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;border:1.5px solid #E5E7EB;background:#fff;cursor:pointer;transition:all .2s;color:#1A1A2E}
+.fb-type-btn:hover{border-color:#2563EB;color:#2563EB}
+.fb-type-btn.active{background:#2563EB;color:#fff;border-color:#2563EB}
+.fb-textarea{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:10px 13px;font-size:13px;outline:none;resize:none;min-height:80px;max-height:160px;line-height:1.5;font-family:inherit;color:#1A1A2E;transition:border-color .2s;box-sizing:border-box}
+.fb-textarea:focus{border-color:#2563EB}
+.fb-textarea::placeholder{color:#B0B7C3}
+.fb-contact{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:8px 13px;font-size:13px;outline:none;margin-top:10px;transition:border-color .2s;box-sizing:border-box;color:#1A1A2E}
+.fb-contact:focus{border-color:#2563EB}
+.fb-contact::placeholder{color:#B0B7C3}
+.fb-actions{display:flex;gap:10px;margin-top:16px}
+.fb-cancel{flex:1;padding:10px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;background:#F7F8FC;color:#6B7280}
+.fb-cancel:hover{background:#E5E7EB}
+.fb-submit{flex:1;padding:10px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;background:linear-gradient(135deg,#2563EB,#3B82F6);color:#fff;transition:all .2s}
+.fb-submit:hover{opacity:.9}
+.fb-submit:disabled{opacity:.5;cursor:not-allowed}
+.fb-ok-icon{font-size:40px;text-align:center;margin-bottom:10px}
+.fb-ok-text{text-align:center;font-size:14px;color:#1A1A2E;line-height:1.6}
+.fb-ok-link{font-size:12px;color:#2563EB;text-decoration:none;display:block;margin-top:8px;text-align:center}
+.fb-ok-link:hover{text-decoration:underline}
+</style>
+<div class="fb-overlay" id="fbModal">
+  <div class="fb-box">
+    <div id="fbFormView">
+      <div class="fb-title">📝 问题反馈</div>
+      <div class="fb-desc">遇到平台功能问题？在这里提交反馈，我们会尽快处理！</div>
+      <div class="fb-types" id="fbTypeGroup">
+        <button class="fb-type-btn" data-type="产品功能" onclick="selectFbType(this)">🔧 产品功能</button>
+        <button class="fb-type-btn" data-type="审核规则" onclick="selectFbType(this)">✅ 审核规则</button>
+        <button class="fb-type-btn" data-type="投放问题" onclick="selectFbType(this)">📊 投放问题</button>
+        <button class="fb-type-btn" data-type="数据报表" onclick="selectFbType(this)">📈 数据报表</button>
+        <button class="fb-type-btn" data-type="其他问题" onclick="selectFbType(this)">💬 其他问题</button>
+      </div>
+      <textarea class="fb-textarea" id="fbContent" placeholder="请描述您遇到的问题或建议..."></textarea>
+      <input class="fb-contact" id="fbContact" placeholder="联系方式（选填：企业微信/手机号）">
+      <div class="fb-actions">
+        <button class="fb-cancel" onclick="closeFeedback()">取消</button>
+        <button class="fb-submit" id="fbSubmitBtn" onclick="submitFeedback()">提交反馈</button>
+      </div>
+    </div>
+    <div id="fbSuccessView" style="display:none">
+      <div class="fb-ok-icon">✅</div>
+      <div class="fb-ok-text">感谢您的反馈！<br>我们已收到您的问题，会尽快处理。</div>
+      <a class="fb-ok-link" href="/admin/feedback" target="_blank">📋 查看反馈记录 →</a>
+      <div class="fb-actions" style="margin-top:16px">
+        <button class="fb-cancel" style="flex:1" onclick="closeFeedback()">关闭</button>
+        <button class="fb-submit" style="flex:1" onclick="resetFeedback()">继续反馈</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var fbType = '';
+  window.openFeedback = function(){
+    resetFeedback();
+    document.getElementById('fbModal').classList.add('open');
+  };
+  window.closeFeedback = function(){
+    document.getElementById('fbModal').classList.remove('open');
+  };
+  window.resetFeedback = function(){
+    fbType = '';
+    document.getElementById('fbContent').value = '';
+    document.getElementById('fbContact').value = '';
+    document.getElementById('fbFormView').style.display = '';
+    document.getElementById('fbSuccessView').style.display = 'none';
+    document.getElementById('fbSubmitBtn').disabled = false;
+    document.getElementById('fbSubmitBtn').textContent = '提交反馈';
+    document.querySelectorAll('#fbTypeGroup .fb-type-btn').forEach(function(b){ b.classList.remove('active'); });
+  };
+  window.selectFbType = function(btn){
+    document.querySelectorAll('#fbTypeGroup .fb-type-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    fbType = btn.dataset.type;
+  };
+  window.submitFeedback = async function(){
+    var content = document.getElementById('fbContent').value.trim();
+    if(!content){ alert('请描述您遇到的问题'); return; }
+    if(!fbType){ alert('请选择反馈类型'); return; }
+    var btn = document.getElementById('fbSubmitBtn');
+    btn.disabled = true; btn.textContent = '提交中...';
+    var contact = document.getElementById('fbContact').value.trim();
+    try{
+      var resp = await fetch(window.location.origin + '/api/feedback', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({type: fbType, content: content, contact: contact})
+      });
+      var data = await resp.json();
+      if(data.ok){
+        document.getElementById('fbFormView').style.display = 'none';
+        document.getElementById('fbSuccessView').style.display = '';
+      } else {
+        alert('提交失败：' + (data.detail || '未知错误'));
+        btn.disabled = false; btn.textContent = '提交反馈';
+      }
+    } catch(e){
+      alert('提交失败，请检查网络后重试');
+      btn.disabled = false; btn.textContent = '提交反馈';
+    }
+  };
+  // 点击遮罩关闭
+  document.getElementById('fbModal').addEventListener('click', function(e){
+    if(e.target === this) closeFeedback();
+  });
+})();
+</script>
+
 </body>
 </html>
