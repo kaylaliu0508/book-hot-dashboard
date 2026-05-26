@@ -889,14 +889,62 @@ function renderBenchmark(key) {
 }
 
 // 类目占比横条 ===================
+// 历史归一：成人→社科、养生→健康；当 wd.cat_share 缺失时自动从 ADQ + 小店榜 items 聚合
 function renderCatShareBar() {
   const bar = document.getElementById('catShareBar');
   if (!bar) return;
   const wd = getCurrentWeekData();
-  const share = wd ? wd.cat_share : null;
-  if (!share || !share.length) { bar.innerHTML = ''; return; }
-  // 映射颜色（养生→健康，成人→社科）
-  const colorMap = { '养生':'#10b981', '童书':'#f59e0b', '成人':'#8b5cf6', '教辅':'#ef4444', '健康':'#10b981', '社科':'#8b5cf6' };
+  let share = wd ? wd.cat_share : null;
+
+  // 类目归一函数：把所有非 4 大类的（含"成人/养生"）映射回 4 大
+  const normalize = (catName) => {
+    if (!catName) return '社科';
+    if (catName.includes('成人')) return '社科';
+    if (catName.includes('养生')) return '健康';
+    if (['教辅','童书','健康','社科'].includes(catName)) return catName;
+    // 兜底：用 mapToTopCat
+    return (typeof mapToTopCat === 'function') ? mapToTopCat(catName) : '社科';
+  };
+
+  // 已有 cat_share：归一并合并同名
+  if (share && share.length) {
+    const merged = {};
+    share.forEach(s => {
+      const k = normalize(s.cat);
+      if (k === '其他') return;
+      merged[k] = (merged[k] || 0) + Number(s.share || 0);
+    });
+    share = Object.keys(merged).map(k => ({ cat:k, share: merged[k] }));
+  } else if (wd && wd.lists) {
+    // 自动从当周 ADQ + 小店榜聚合
+    const counts = { '教辅':0, '童书':0, '健康':0, '社科':0 };
+    let total = 0;
+    ['adq_hot','weixinshop'].forEach(key => {
+      const items = wd.lists[key]?.items || [];
+      items.forEach(it => {
+        const k = normalize(it.cat || it.top_cat || '');
+        if (counts[k] !== undefined) {
+          counts[k] += 1;
+          total += 1;
+        }
+      });
+    });
+    if (total > 0) {
+      share = ['教辅','童书','健康','社科']
+        .map(k => ({ cat:k, share: counts[k] / total * 100 }))
+        .filter(s => s.share > 0);
+    }
+  }
+
+  if (!share || !share.length) {
+    bar.innerHTML = `<div style="padding:14px;color:#9ca3af;font-size:12px;text-align:center;background:#f9fafb;border-radius:6px;">本周类目占比数据不足，已展示榜单详情。</div>`;
+    return;
+  }
+
+  // 按占比降序
+  share.sort((a, b) => b.share - a.share);
+
+  const colorMap = { '童书':'#f59e0b', '教辅':'#ef4444', '健康':'#10b981', '社科':'#8b5cf6' };
   bar.innerHTML = share.map(s => {
     const w = s.share;
     const color = colorMap[s.cat] || '#6b7280';
@@ -990,38 +1038,25 @@ function renderWeekRhythm() {
   grid.innerHTML = html;
 }
 
-// ==================== 典型跑量书拆解 ====================
+// ==================== 典型跑量书拆解（精简版）====================
 function renderHotBookBreakdown() {
-  const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map((b, idx) => {
+  const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map(b => {
     const cat = b.cat || '童书';
     const cover = b.image || bookCover({title:b.title, isbn:b.isbn, top_cat:cat});
-    const cs = b.creativeScript;
-    const csHtml = cs ? `
-      <!-- 创意脚本核心解读 -->
-      <div class="hot-block hot-block-creative">
-        <div class="hot-block-title">📹 <span>跑量创意脚本核心</span>${cs.videoUrl ? `<button class="creative-play-btn" data-creative-video="${escapeHtml(cs.videoUrl)}" data-creative-title="${escapeHtml(b.title)}" title="播放跑量创意视频">▶ 看视频</button>` : ''}</div>
-        <div class="creative-rows">
-          <div class="crow"><span class="clb">钩子</span><span class="cvl">${cs.hook||'-'}</span></div>
-          <div class="crow"><span class="clb">主体</span><span class="cvl">${cs.core||'-'}</span></div>
-          ${cs.cta ? `<div class="crow"><span class="clb">收口</span><span class="cvl">${cs.cta}</span></div>` : ''}
-        </div>
-      </div>` : '';
+    const personaText = (typeof b.persona === 'string') ? b.persona : (b.persona && b.persona.core) || '';
     return `
-    <div class="hot-card">
-      <!-- 顶部：封面 + 标题 -->
+    <div class="hot-card hot-card-slim">
       <div class="hot-head">
         <img class="hot-cover" src="${cover}" alt="${b.title}" onerror="this.src='${bookCover({title:b.title, isbn:b.isbn, top_cat:cat})}'"/>
         <div class="hot-meta">
           <span class="role-tag ${b.roleClass}">${b.role}</span>
           <h3>${b.title}</h3>
-          <div class="hot-isbn">📕 ISBN ${b.isbn}</div>
+          <div class="hot-isbn">📕 ${b.isbn}</div>
         </div>
       </div>
-      
-      <!-- 数据条 -->
+
       <div class="hot-stats">
         ${b.stats.map(s => {
-          // 客单类 val 统一 1 位小数（保留 ¥ 前缀）
           let val = s.val;
           if (s.label === '客单' || s.label === '低客单') {
             val = String(val).replace(/¥/g, '').trim();
@@ -1031,82 +1066,17 @@ function renderHotBookBreakdown() {
         }).join('')}
       </div>
 
-      ${csHtml}
-      
-      <!-- 目标人群（统一三栏：核心人群/痛点/场景）-->
-      <div class="hot-block">
-        <div class="hot-block-title">👥 <span>目标人群</span></div>
-        <div class="persona-3rows">
-          <div class="prow"><span class="pic">👤</span><span class="plb">核心人群</span><span class="pvl">${b.persona.core}</span></div>
-          <div class="prow"><span class="pic">😟</span><span class="plb">痛点</span><span class="pvl">${b.persona.pain}</span></div>
-          <div class="prow"><span class="pic">📍</span><span class="plb">场景</span><span class="pvl">${b.persona.scene}</span></div>
-        </div>
-      </div>
-      
-      <!-- 卖点拆解 -->
-      <div class="hot-block">
-        <div class="hot-block-title">🎯 <span>卖点拆解</span></div>
-        <div class="selling-grid">
-          ${b.sellingPoints.map(p => `
-            <div class="selling-item">
-              <div class="sp-icon">${p.icon}</div>
-              <div class="sp-body">
-                <div class="sp-label">${p.label}</div>
-                <div class="sp-val">${p.val}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
+      ${b.creativeCore ? `<div class="hot-line hot-line-creative"><span class="hl-tag">📹 创意核心</span><span class="hl-text">${escapeHtml(b.creativeCore)}</span></div>` : ''}
+      ${personaText ? `<div class="hot-line hot-line-persona"><span class="hl-tag">👥 核心人群</span><span class="hl-text">${escapeHtml(personaText)}</span></div>` : ''}
+
+      <div class="hot-selling-slim">
+        ${b.sellingPoints.map(p => `
+          <div class="ssi"><span class="ssi-ic">${p.icon}</span><span class="ssi-lb">${p.label}</span><span class="ssi-vl">${escapeHtml(p.val)}</span></div>
+        `).join('')}
       </div>
     </div>`;
   }).join('') + `</div>`;
   document.getElementById('hotBookBreakdown').innerHTML = html;
-
-  // 绑定播放视频按钮（弹出轻量 lightbox）
-  document.querySelectorAll('.creative-play-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const url = btn.dataset.creativeVideo;
-      const title = btn.dataset.creativeTitle || '跑量创意视频';
-      openCreativeVideo(url, title);
-    });
-  });
-}
-
-// 跑量创意视频 lightbox
-function openCreativeVideo(url, title) {
-  let mask = document.getElementById('creativeVideoMask');
-  if (!mask) {
-    mask = document.createElement('div');
-    mask.id = 'creativeVideoMask';
-    mask.className = 'creative-video-mask';
-    mask.innerHTML = `
-      <div class="cvm-box">
-        <div class="cvm-head">
-          <span class="cvm-title"></span>
-          <button class="cvm-close" title="关闭">✕</button>
-        </div>
-        <video class="cvm-video" controls playsinline preload="metadata"></video>
-      </div>`;
-    document.body.appendChild(mask);
-    mask.addEventListener('click', e => {
-      if (e.target === mask || e.target.classList.contains('cvm-close')) closeCreativeVideo();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && mask.classList.contains('is-open')) closeCreativeVideo();
-    });
-  }
-  mask.querySelector('.cvm-title').textContent = title;
-  const v = mask.querySelector('.cvm-video');
-  v.src = url;
-  v.play().catch(() => {});
-  mask.classList.add('is-open');
-}
-function closeCreativeVideo() {
-  const mask = document.getElementById('creativeVideoMask');
-  if (!mask) return;
-  const v = mask.querySelector('.cvm-video');
-  try { v.pause(); v.removeAttribute('src'); v.load(); } catch(e){}
-  mask.classList.remove('is-open');
 }
 
 // ==================== 重点品类深度卡 ====================

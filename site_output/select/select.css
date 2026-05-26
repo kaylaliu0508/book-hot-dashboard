@@ -991,116 +991,68 @@ a { color: inherit; text-decoration: none; }
 /* iframe 嵌入时（topnav 隐藏），搜索栏只需偏移 subtabs 高度 */
 body.is-embedded .hub-search-bar { top: 48px; }
 
-/* ====== 跑量创意脚本核心块 ====== */
-.hot-block-creative {
-  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
-  border: 1px solid #fdba74;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-}
-.hot-block-creative .hot-block-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #9a3412;
-  margin-bottom: 8px;
-}
-.creative-play-btn {
-  margin-left: auto;
-  padding: 3px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #f97316, #ea580c);
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all .15s;
-}
-.creative-play-btn:hover {
-  background: linear-gradient(135deg, #ea580c, #c2410c);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(234,88,12,0.3);
-}
-.creative-rows { display: flex; flex-direction: column; gap: 4px; }
-.creative-rows .crow {
+/* ====== 跑量书洞察（精简版）====== */
+.hot-card-slim { padding: 14px; gap: 10px; display: flex; flex-direction: column; }
+.hot-card-slim .hot-head { gap: 10px; align-items: flex-start; }
+.hot-card-slim .hot-cover { width: 56px; height: 78px; flex-shrink: 0; }
+.hot-card-slim .hot-meta h3 { font-size: 13.5px; line-height: 1.35; margin: 4px 0 2px; }
+.hot-card-slim .hot-isbn { font-size: 10.5px; color: #9ca3af; font-family: 'SF Mono', monospace; }
+.hot-card-slim .hot-stats { gap: 6px; flex-wrap: wrap; margin: 0; }
+.hot-card-slim .stat-chip { padding: 3px 7px; font-size: 11px; gap: 3px; }
+.hot-card-slim .stat-chip .lb { color: #9ca3af; font-size: 10px; }
+.hot-card-slim .stat-chip .vl { font-weight: 700; }
+.hot-card-slim .stat-chip.hot .vl { color: #dc2626; }
+
+/* 行内单行块（创意核心 / 核心人群） */
+.hot-line {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 11.5px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 12px;
   line-height: 1.55;
 }
-.creative-rows .clb {
+.hot-line .hl-tag {
   flex-shrink: 0;
-  width: 32px;
-  text-align: center;
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
-  color: #fff;
-  background: #f97316;
-  padding: 2px 0;
+  padding: 2px 8px;
   border-radius: 4px;
+  white-space: nowrap;
 }
-.creative-rows .cvl { flex: 1; color: #4b2510; }
+.hot-line .hl-text { flex: 1; color: #1f2937; }
+.hot-line-creative { background: #fff7ed; border-left: 3px solid #f97316; }
+.hot-line-creative .hl-tag { background: #f97316; color: #fff; }
+.hot-line-persona { background: #f0f9ff; border-left: 3px solid #3b82f6; }
+.hot-line-persona .hl-tag { background: #3b82f6; color: #fff; }
 
-/* ====== 跑量创意视频 lightbox ====== */
-.creative-video-mask {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.78);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 24px;
-}
-.creative-video-mask.is-open { display: flex; }
-.creative-video-mask .cvm-box {
-  background: #111827;
-  border-radius: 12px;
-  overflow: hidden;
-  max-width: 480px;
-  width: 100%;
-  max-height: calc(100vh - 48px);
+/* 卖点紧凑列表（3 项） */
+.hot-selling-slim {
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  gap: 4px;
+  padding: 8px 10px;
+  background: #fafafa;
+  border-radius: 7px;
 }
-.creative-video-mask .cvm-head {
+.hot-selling-slim .ssi {
   display: flex;
   align-items: center;
-  padding: 10px 14px;
-  background: #1f2937;
-  border-bottom: 1px solid #374151;
+  gap: 6px;
+  font-size: 11.5px;
+  line-height: 1.4;
 }
-.creative-video-mask .cvm-title {
-  flex: 1;
-  font-size: 13px;
-  color: #f3f4f6;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-.creative-video-mask .cvm-close {
-  border: none;
-  background: rgba(255,255,255,0.08);
-  color: #f3f4f6;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  font-size: 14px;
-  cursor: pointer;
+.hot-selling-slim .ssi-ic { font-size: 13px; flex-shrink: 0; width: 16px; text-align: center; }
+.hot-selling-slim .ssi-lb {
   flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #6b7280;
+  background: #fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid #e5e7eb;
 }
-.creative-video-mask .cvm-close:hover { background: rgba(239,68,68,0.6); }
-.creative-video-mask .cvm-video {
-  width: 100%;
-  max-height: calc(100vh - 130px);
-  background: #000;
-  display: block;
-}
+.hot-selling-slim .ssi-vl { flex: 1; color: #374151; }
 
