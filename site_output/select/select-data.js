@@ -394,7 +394,7 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'📊', label:'日销售额', val:'60-80W', cls:'hot'},
       {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
     ],
-    creativeCore:'爷爷奶奶送六一礼物 + 孩子翻页惊喜表情 + 沉浸式产品力展示，主打"知识认知提升 + 代际送礼"双属性',
+    creativeCore:'六一送礼场景 + 孩子翻立体页惊喜表情 + 知识科普沉浸式展示',
     persona:'3-8 岁孩子的妈妈 + 爷爷奶奶（代际购买）',
     sellingPoints:[
       {icon:'🎨', label:'形式', val:'立体翻页，礼物质感强'},
@@ -414,8 +414,8 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'📊', label:'日销售额', val:'10-20W'},
       {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
     ],
-    creativeCore:'居家空间布局技巧切入：「家中这 5 个位置怎么摆，住得更舒适」实拍开箱 + 翻页讲解，传递实用居家整理 + 中式家居美学',
-    creativeWarning:'⚠️ 创意必须围绕「居家整理 / 收纳 / 中式家居美学」展开，不可涉及封建迷信、风水命理、玄学等违规表述',
+    creativeCore:'居家空间布局技巧切入：「家中这 5 个位置怎么摆」实拍翻页讲解 + 中式家居美学',
+    creativeWarning:'⚠️ 不可涉及封建迷信',
     persona:'30-55 岁家庭主理人 + 关注中式生活美学的中老年',
     sellingPoints:[
       {icon:'🏠', label:'切口', val:'居家整理 + 中式生活美学双兴趣'},
@@ -435,7 +435,7 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'📊', label:'日销售额', val:'10-20W'},
       {icon:'🎯', label:'转化', val:'6.5-7.5%'}
     ],
-    creativeCore:'「会考还剩 30 天」紧迫感开场，4 门零碎 → 一本通 + 秒记法解决',
+    creativeCore:'「会考还剩 30 天」紧迫感开场 → 一本通 + 秒记法解决 4 门零碎',
     persona:'初二/初三孩子的妈妈（会考 + 中考冲刺）',
     sellingPoints:[
       {icon:'🎯', label:'刚需', val:'生地会考 6 月底前必考'},

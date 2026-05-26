@@ -1060,13 +1060,44 @@ a { color: inherit; text-decoration: none; }
 body.is-embedded .hub-search-bar { top: 48px; }
 
 /* ====== 跑量书洞察（精简版）====== */
-.hot-card-slim { padding: 14px; gap: 10px; display: flex; flex-direction: column; }
-.hot-card-slim .hot-head { gap: 10px; align-items: flex-start; }
+.hot-card-slim {
+  padding: 14px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;  /* 拉伸到 grid cell 同高 */
+}
+.hot-card-slim .hot-head { gap: 10px; align-items: flex-start; min-height: 78px; }
 .hot-card-slim .hot-cover { width: 56px; height: 78px; flex-shrink: 0; }
-.hot-card-slim .hot-meta h3 { font-size: 13.5px; line-height: 1.35; margin: 4px 0 2px; }
-.hot-card-slim .hot-isbn { font-size: 10.5px; color: #9ca3af; font-family: 'SF Mono', monospace; }
-.hot-card-slim .hot-stats { gap: 6px; flex-wrap: wrap; margin: 0; }
-.hot-card-slim .stat-chip { padding: 3px 7px; font-size: 11px; gap: 3px; }
+.hot-card-slim .hot-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.hot-card-slim .hot-meta h3 {
+  font-size: 13.5px; line-height: 1.35; margin: 4px 0 2px;
+  /* 标题统一最多 2 行，超出截断 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 38px;
+}
+.hot-card-slim .hot-isbn { font-size: 10.5px; color: #9ca3af; font-family: 'SF Mono', monospace; margin-top: auto; padding-top: 2px; }
+
+/* 数据条：固定 1 行 3 chip 等宽，3 张卡同高 */
+.hot-card-slim .hot-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 0;
+  min-height: 32px;
+}
+.hot-card-slim .stat-chip {
+  padding: 5px 6px;
+  font-size: 11px;
+  gap: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .hot-card-slim .stat-chip .lb { color: #9ca3af; font-size: 10px; }
 .hot-card-slim .stat-chip .vl { font-weight: 700; }
 .hot-card-slim .stat-chip.hot .vl { color: #dc2626; }
@@ -1090,24 +1121,67 @@ body.is-embedded .hub-search-bar { top: 48px; }
   white-space: nowrap;
 }
 .hot-line .hl-text { flex: 1; color: #1f2937; }
-.hot-line-creative { background: #fff7ed; border-left: 3px solid #f97316; }
+.hot-line-creative {
+  background: #fff7ed;
+  border-left: 3px solid #f97316;
+  /* 给创意核心固定最小高度，3 张卡片此行对齐 */
+  min-height: 56px;
+}
 .hot-line-creative .hl-tag { background: #f97316; color: #fff; }
-.hot-line-persona { background: #f0f9ff; border-left: 3px solid #3b82f6; }
+.hot-line-persona {
+  background: #f0f9ff;
+  border-left: 3px solid #3b82f6;
+  min-height: 40px;
+}
 .hot-line-persona .hl-tag { background: #3b82f6; color: #fff; }
 
-/* 创意合规警示语 */
+/* 创意合规警示语（短、单行、紧贴创意核心下方） */
 .hot-line-warning {
   background: #fef2f2;
-  border: 1px solid #fecaca;
   border-left: 3px solid #ef4444;
   color: #991b1b;
   font-size: 11px;
-  padding: 6px 10px;
-  font-weight: 500;
-  line-height: 1.5;
-  margin-top: -4px;
+  padding: 4px 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: -6px;
+  border-radius: 0 6px 6px 0;
 }
 .hot-line-warning .hl-text { color: #991b1b; }
+
+/* 卖点紧凑列表（推到底部，3 张卡的卖点区域底对齐） */
+.hot-selling-slim {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: #fafafa;
+  border-radius: 7px;
+  margin-top: auto;  /* 推到卡片底部 */
+}
+.hot-selling-slim .ssi {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+.hot-selling-slim .ssi-ic { font-size: 13px; flex-shrink: 0; width: 16px; text-align: center; }
+.hot-selling-slim .ssi-lb {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #6b7280;
+  background: #fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid #e5e7eb;
+}
+.hot-selling-slim .ssi-vl { flex: 1; color: #374151; }
+
+/* bd-grid-3 在 1100px+ 时 3 张卡同行同高 */
+.bd-grid-3 { align-items: stretch; }
+
 
 /* 跑量书 hot-meta 顶部标签行（角色 + 霸榜徽章并排） */
 .hot-tags-row {
