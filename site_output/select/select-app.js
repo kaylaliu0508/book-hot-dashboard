@@ -520,11 +520,12 @@ function renderRanking(rankKey, bodyId) {
   if (!data || !data.items?.length) {
     // 区分"该榜单全无数据"与"该周此榜单源数据未提供"
     const wd = (typeof getCurrentWeekData === 'function') ? getCurrentWeekData() : null;
-    const weekLabel = wd && wd.week_label ? `（${wd.week_label}）` : '';
+    const weekLabel = wd && wd.week_label ? `${wd.week_label}` : '';
+    const listName = data?.name || ({adq_hot:'ADQ 热投榜', weixinshop:'腾讯营销（小店版）热投榜', potential:'潜力爆品', forecast:'预测爆品'}[rankKey] || '本榜单');
     const tip = rankKey === 'recommend'
       ? '推荐书单 - 数据接入中'
-      : `${data?.name||'本榜单'}${weekLabel} 该周源数据未提供，请切换到其它周期查看`;
-    body.innerHTML = `<div class="pool-empty"><div class="pool-empty-icon">📭</div><p style="font-size:14px;color:#6b7280;">${tip}</p><p style="margin-top:6px;font-size:12px;color:#9ca3af;">早期周报仅提供 ADQ 热投榜单，3月3日起新增微信小店/潜力/预测共 4 榜单</p></div>`;
+      : `${listName}（${weekLabel}）该周未采集，请切回最新一周或切换其它周次`;
+    body.innerHTML = `<div class="pool-empty"><div class="pool-empty-icon">📭</div><p style="font-size:14px;color:#6b7280;font-weight:600;">${tip}</p><p style="margin-top:6px;font-size:12px;color:#9ca3af;">早期周报仅有 ADQ 单榜单，4 榜完整数据从 <strong style="color:#3b82f6;">3 月 24 日</strong> 起逐步开始采集。</p><button class="toolbar-btn" style="margin-top:10px;" onclick="changeRankWeek(1)">▶ 切到下一周</button></div>`;
     return;
   }
   const cfg = RANK_COLUMNS[rankKey] || RANK_COLUMNS.adq_hot;
@@ -1038,8 +1039,16 @@ function renderWeekRhythm() {
   grid.innerHTML = html;
 }
 
-// ==================== 典型跑量书拆解（精简版）====================
+// ==================== 典型跑量书拆解（精简版 · 仅最新 2 期展示）====================
 function renderHotBookBreakdown() {
+  const panel = document.getElementById('hub-block-hot-insight');
+  const sideNav = document.querySelector('#hubSideNav .rsn-item[data-target="hub-block-hot-insight"]');
+  // 仅在最新 2 期（currentWeekIndex 0 / 1）展示；往期隐藏整个模块 + 左侧栏入口
+  const visible = currentWeekIndex <= 1;
+  if (panel) panel.style.display = visible ? '' : 'none';
+  if (sideNav) sideNav.style.display = visible ? '' : 'none';
+  if (!visible) return;
+
   const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map(b => {
     const cat = b.cat || '童书';
     const cover = b.image || bookCover({title:b.title, isbn:b.isbn, top_cat:cat});
@@ -1468,12 +1477,27 @@ function onWeekChange(idx) {
 function changeWeek(delta) { /* no-op: 周切换UI已移除 */ }
 
 // ==================== 榜单周切换器 ====================
+// 计算每周完整度：4 榜单 = 完整 ✓；ADQ 单榜 = 仅 ADQ
+function getWeekCompleteness(w) {
+  const lists = w?.data?.lists || {};
+  let n = 0;
+  ['adq_hot','weixinshop','potential','forecast'].forEach(k => {
+    if ((lists[k]?.items || []).length > 0) n++;
+  });
+  return n;
+}
 function initRankWeekSwitcher() {
   const sel = document.getElementById('wsSelect');
   if (!sel || typeof WEEK_RANK_LIST === 'undefined') return;
-  sel.innerHTML = WEEK_RANK_LIST.map((w, i) => 
-    `<option value="${i}">${w.label}${w.is_current ? '（最新）' : ''}</option>`
-  ).join('');
+  sel.innerHTML = WEEK_RANK_LIST.map((w, i) => {
+    const n = getWeekCompleteness(w);
+    let badge = '';
+    if (w.is_current) badge = '（最新 · 4 榜全）';
+    else if (n >= 4) badge = '（4 榜全）';
+    else if (n >= 2) badge = `（${n} 榜）`;
+    else badge = '（仅 ADQ）';
+    return `<option value="${i}" data-complete="${n}">${w.label}${badge}</option>`;
+  }).join('');
   sel.value = currentWeekIndex;
   updateRankWeekUI();
 }
@@ -1482,13 +1506,14 @@ function onRankWeekChange(idx) {
   updateRankWeekUI();
   // 重新构建跨模块索引（在榜书随当周数据变动）
   buildCrossIndex();
-  // 在 hub 中：4 个榜单 + 类目占比都需要重渲染
+  // 在 hub 中：4 个榜单 + 类目占比 + 跑量书洞察都需要重渲染
   if (document.getElementById('section-hub')?.classList.contains('active')) {
     renderRanking('adq_hot',     'rankBodyAdq');
     renderRanking('weixinshop',  'rankBodyShop');
     renderRanking('potential',   'rankBodyPotential');
     renderRanking('forecast',    'rankBodyForecast');
     renderCatShareBar();
+    renderHotBookBreakdown();  // 重判：往期周次会自动隐藏
     syncHubSideCount();
   }
   // 同步更新 rankWeekLabel
@@ -1509,12 +1534,15 @@ function changeRankWeek(delta) {
 function updateRankWeekUI() {
   const cur = WEEK_RANK_LIST[currentWeekIndex];
   const tag = document.getElementById('wsCurrent');
+  const n = getWeekCompleteness(cur);
   if (tag) {
+    let extra = '';
+    if (n < 4) extra = ` · ⚠️ ${n === 1 ? '仅 ADQ 单榜' : n + ' 榜'}`;
     if (cur.is_current) {
-      tag.textContent = '✓ 当前查看：本周（最新）';
+      tag.textContent = '✓ 当前查看：本周（最新）' + extra;
       tag.classList.remove('is-history');
     } else {
-      tag.textContent = `📜 当前查看：往期 ${cur.short}`;
+      tag.textContent = `📜 当前查看：往期 ${cur.short}${extra}`;
       tag.classList.add('is-history');
     }
   }
