@@ -128,7 +128,7 @@ if(window.self !== window.top){
 
     <!-- 分组 1：实战榜单（含类目占比 + 跑量书洞察作为大盘背景）-->
     <div class="rsn-group rsn-group-rank">
-      <div class="rsn-group-title">🔥 实战榜单<span class="rsn-group-tip">周维度 · 大盘正在跑</span></div>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-share" data-target="hub-block-share">🔥 实战榜单<span class="rsn-group-tip">周维度 · 大盘正在跑</span></a>
       <a class="rsn-item" href="#hub-block-share" data-target="hub-block-share">
         <span class="rsn-icon">📊</span>
         <div class="rsn-body">
@@ -161,9 +161,9 @@ if(window.self !== window.top){
 
     <!-- 分组 2：潜力榜单 -->
     <div class="rsn-group rsn-group-follow">
-      <div class="rsn-group-title">💎 潜力榜单<span class="rsn-group-tip">周维度 · 别处爆/即将爆</span></div>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-follow-potential" data-target="hub-block-follow-potential">💎 潜力榜单<span class="rsn-group-tip">周维度 · 别处爆/即将爆</span></a>
       <a class="rsn-item" href="#hub-block-follow-potential" data-target="hub-block-follow-potential" data-jump-follow="potential">
-        <span class="rsn-icon">💎</span>
+        <span class="rsn-icon">🌊</span>
         <div class="rsn-body">
           <div class="rsn-name">潜力爆品</div>
           <div class="rsn-desc">蓝海机会 <span class="rsn-count" id="rsnCountPotential">15</span></div>
@@ -178,9 +178,9 @@ if(window.self !== window.top){
       </a>
     </div>
 
-    <!-- 分组 3：精选书单（适配腾讯生态）-->
+    <!-- 分组 3：当月推荐书单（去年同期全网榜单精选）-->
     <div class="rsn-group rsn-group-rec">
-      <div class="rsn-group-title">⭐ 精选书单<span class="rsn-group-tip">月维度 · 适配腾讯生态</span></div>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-rec-intro" data-target="hub-block-rec-intro">⭐ 当月推荐书单<span class="rsn-group-tip">月维度 · 去年同期全网榜单精选</span></a>
       <a class="rsn-item" href="#hub-block-rec-child" data-target="hub-block-rec-child" data-jump-rec="童书">
         <span class="rsn-icon">🧸</span>
         <div class="rsn-body">
@@ -192,7 +192,7 @@ if(window.self !== window.top){
         <span class="rsn-icon">🌿</span>
         <div class="rsn-body">
           <div class="rsn-name">健康推荐</div>
-          <div class="rsn-desc">中医/养生/护理 <span class="rsn-count" id="rsnCountHealth">--</span></div>
+          <div class="rsn-desc">食谱/健康管理 <span class="rsn-count" id="rsnCountHealth">--</span></div>
         </div>
       </a>
       <a class="rsn-item" href="#hub-block-rec-social" data-target="hub-block-rec-social" data-jump-rec="社科">
@@ -206,7 +206,7 @@ if(window.self !== window.top){
 
     <!-- 分组 4：投放参考（辅助决策）-->
     <div class="rsn-group rsn-group-insight">
-      <div class="rsn-group-title">📉 投放参考<span class="rsn-group-tip">辅助决策</span></div>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-bench" data-target="hub-block-bench">📉 投放参考<span class="rsn-group-tip">辅助决策</span></a>
       <a class="rsn-item" href="#hub-block-bench" data-target="hub-block-bench">
         <span class="rsn-icon">📉</span>
         <div class="rsn-body">
@@ -271,8 +271,8 @@ if(window.self !== window.top){
         📎 查看往期文档
       </a>
     </div>
-    <div class="panel-sub-tip">
-      💡 腾讯广告 ADQ 平台近一周实际投放最热门的图书优品（按销量+转化率综合排名）。所有书目支持「+ 加入选品池」。
+    <div class="panel-sub-tip panel-sub-tip-rank">
+      💡 <strong>腾讯广告 ADQ 平台</strong>近一周实际投放最热门的图书优品（按销量+转化率综合排名）。所有书目支持「+ 加入选品池」。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRankByKey('adq_hot')" data-track="select_export_rank" data-track-key="adq_hot" data-track-tab="select_hub">📥 导出 ISBN</button>
@@ -297,8 +297,8 @@ if(window.self !== window.top){
       <span class="badge-update">📅 by 周更新</span>
       <span class="extra">无转化不扣费 · 实战优品</span>
     </div>
-    <div class="panel-sub-tip">
-      💡 腾讯营销（小店版）近一周爆品榜单 — 微信小店广告无转化不扣费的实战优品。
+    <div class="panel-sub-tip panel-sub-tip-shop">
+      💡 <strong>腾讯营销（小店版）</strong>近一周爆品榜单 — 微信小店广告<strong>无转化不扣费</strong>的实战优品。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRankByKey('weixinshop')" data-track="select_export_rank" data-track-key="weixinshop" data-track-tab="select_hub">📥 导出 ISBN</button>
@@ -313,8 +313,8 @@ if(window.self !== window.top){
       <span class="badge-update">📅 by 周更新</span>
       <span class="extra">ADQ 未充分投放 · 别处已爆</span>
     </div>
-    <div class="panel-sub-tip">
-      💡 ADQ 尚未充分投放，但在抖音/小红书等其他媒体已爆品的图书 — 蓝海机会，可快速跟投。
+    <div class="panel-sub-tip panel-sub-tip-potential">
+      💡 ADQ 尚未充分投放，但在<strong>抖音/小红书等其他媒体已爆品</strong>的图书 — <strong>蓝海机会</strong>，可快速跟投。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRankByKey('potential')" data-track="select_export_rank" data-track-key="potential" data-track-tab="select_hub">📥 导出 ISBN</button>
@@ -329,8 +329,8 @@ if(window.self !== window.top){
       <span class="badge-update">📅 by 周更新</span>
       <span class="extra">基于去年同期推演 · 即将爆发</span>
     </div>
-    <div class="panel-sub-tip">
-      💡 基于去年下一周期数据推演，预判本月即将爆发的潜质书 — 抢跑机会。
+    <div class="panel-sub-tip panel-sub-tip-forecast">
+      💡 基于<strong>去年下一周期数据推演</strong>，预判本月即将爆发的潜质书 — <strong>抢跑机会</strong>。
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRankByKey('forecast')" data-track="select_export_rank" data-track-key="forecast" data-track-tab="select_hub">📥 导出 ISBN</button>
@@ -342,14 +342,14 @@ if(window.self !== window.top){
 
   <div class="panel" id="hub-block-rec-intro">
     <div class="panel-title">
-      <span class="dot"></span>⭐ 精选书单（适配腾讯生态）
+      <span class="dot"></span>⭐ 当月推荐书单<span class="badge-rec">精选</span>
       <span class="badge-update is-month">📅 6 月推荐书单</span>
       <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMYCNBY2vYRsOTr22OCI0?scode=AJEAIQdfAAoJ1CUM1YARQAcAYdADQ&tab=BB08J2" target="_blank" class="doc-link">
         📎 查看往期文档（Q2潜力增长图书书单）
       </a>
     </div>
-    <div class="panel-sub-tip">
-      💡 来自《2026 教育行业图书选品指南》，已对照 AMS 准入情况筛选，含完整准入说明（普通可投/医疗禁投/减肥禁投 等）。下方按品类分别呈现。
+    <div class="panel-sub-tip panel-sub-tip-strong">
+      💡 来源于全网去年当月销量/销售额榜单数据，已对照 AMS 准入情况筛选，精选适配腾讯生态人群的推荐书单，下方按品类分别呈现。
     </div>
   </div>
 
@@ -369,7 +369,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-rec-health">
     <div class="panel-title">
       <span class="dot"></span>🌿 健康推荐<span class="badge-rec">精选</span>
-      <span class="extra">中医养生 · 饮食健康 · 家庭护理（已过滤 AMS 禁投）</span>
+      <span class="extra">食谱 · 健康管理（已过滤 AMS 禁投）</span>
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRecByCat('健康')" data-track="select_export_rec" data-track-cat="健康" data-track-tab="select_hub">📥 导出 ISBN</button>

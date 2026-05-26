@@ -611,8 +611,25 @@ a { color: inherit; text-decoration: none; }
 .week-switcher-bar .ws-current.is-history { background: #fef3c7; color: #92400e; font-weight: 700; }
 
 /* ====== Panel sub tip ====== */
-.panel-sub-tip { background: linear-gradient(135deg,#eff6ff,#f0fdf4); padding: 8px 12px; border-radius: 6px; font-size: 12.5px; color: #1f2937; margin: 8px 0 12px; border-left: 3px solid #3b82f6; }
+.panel-sub-tip { background: linear-gradient(135deg,#eff6ff,#f0fdf4); padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #1f2937; margin: 10px 0 14px; border-left: 4px solid #3b82f6; line-height: 1.6; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .panel-sub-tip .hl { color: #2563eb; font-weight: 700; }
+.panel-sub-tip strong { color: #1e40af; font-weight: 700; }
+
+/* 各榜单类型差异化色块 */
+.panel-sub-tip-rank { background: linear-gradient(135deg, #fef2f2, #fff7ed); border-left-color: #ef4444; }
+.panel-sub-tip-rank strong { color: #b91c1c; }
+
+.panel-sub-tip-shop { background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border-left-color: #10b981; }
+.panel-sub-tip-shop strong { color: #047857; }
+
+.panel-sub-tip-potential { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-left-color: #f59e0b; }
+.panel-sub-tip-potential strong { color: #b45309; }
+
+.panel-sub-tip-forecast { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border-left-color: #8b5cf6; }
+.panel-sub-tip-forecast strong { color: #6d28d9; }
+
+.panel-sub-tip-strong { background: linear-gradient(135deg, #fff7ed, #fef3c7); border-left-color: #f97316; font-weight: 500; }
+.panel-sub-tip-strong strong { color: #c2410c; }
 
 /* ====== AMS 准入完整呈现（不截断）====== */
 .ams-cell { max-width: 200px; padding: 4px 8px; font-size: 11px; line-height: 1.5; border-radius: 4px; word-break: break-all; white-space: normal; text-align: left; display: inline-block; }
@@ -778,6 +795,20 @@ a { color: inherit; text-decoration: none; }
 .hub-side-nav .rsn-group { padding: 8px 0; border-top: 1px dashed #f3f4f6; }
 .hub-side-nav .rsn-group:first-of-type { border-top: none; padding-top: 0; }
 .hub-side-nav .rsn-group-title { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 8px 6px; font-size: 11px; font-weight: 700; color: #1e293b; letter-spacing: 0.5px; }
+.hub-side-nav .rsn-group-title.rsn-group-link {
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all .15s;
+}
+.hub-side-nav .rsn-group-title.rsn-group-link:hover {
+  background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+  color: #4338ca;
+  padding-left: 10px;
+}
+.hub-side-nav .rsn-group-title.rsn-group-link:hover .rsn-group-tip {
+  color: #6366f1;
+}
 .hub-side-nav .rsn-group-title .rsn-group-tip { font-size: 10px; color: #94a3b8; font-weight: 500; }
 .hub-side-nav .rsn-item { padding: 8px 10px; margin-bottom: 2px; }
 .hub-side-nav .rsn-item .rsn-name { font-size: 12.5px; }
@@ -806,13 +837,24 @@ a { color: inherit; text-decoration: none; }
 .panel-title .badge-rec { background: linear-gradient(135deg, #cffafe, #a5f3fc); color: #0e7490; border: 1px solid #67e8f9; }
 .panel-title .badge-insight { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
 
-/* ====== ISBN 完整度提示 ====== */
-.isbn-completeness {
-  display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 8px;
+/* ====== ISBN 列（榜单表格中）====== */
+.rank-table-excel .col-isbn {
+  font-family: 'SF Mono', 'Monaco', monospace;
+  font-size: 11px;
+  color: #059669;
+  white-space: nowrap;
+  background: #f0fdf4;
+  min-width: 110px;
+  max-width: 130px;
+  word-break: break-all;
 }
-.isbn-completeness.is-full { background: #dcfce7; color: #166534; }
-.isbn-completeness.is-partial { background: #fef3c7; color: #92400e; }
-.isbn-completeness.is-empty { background: #fee2e2; color: #b91c1c; }
+.rank-table-excel th.col-isbn {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+/* ====== ISBN 完整度提示（已去除，保留兼容样式以防有引用）====== */
+.isbn-completeness { display: none; }
 
 /* ====== Hub 周切换器作用域提示 ====== */
 .hub-week-switcher .ws-scope { margin-left: auto; font-size: 11px; color: #94a3b8; padding: 3px 8px; background: #f1f5f9; border-radius: 4px; }

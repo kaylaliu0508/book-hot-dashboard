@@ -336,6 +336,7 @@ const RANK_COLUMNS = {
       {key:'rank', label:'#', cls:'col-rank'},
       {key:'image', label:'商品图片', cls:'col-image'},
       {key:'title', label:'书名', cls:'col-title'},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'cat', label:'类目信息', cls:'col-cat'},
       {key:'price', label:'客单价(元)', cls:'col-price'},
       {key:'sales_range', label:'日销售额', cls:''},
@@ -351,6 +352,7 @@ const RANK_COLUMNS = {
       {key:'rank', label:'#', cls:'col-rank'},
       {key:'image', label:'商品图片', cls:'col-image'},
       {key:'title', label:'书名', cls:'col-title'},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'cat', label:'类目信息', cls:'col-cat'},
       {key:'price', label:'客单价(元)', cls:'col-price'},
       {key:'sales_range', label:'日销售额', cls:''},
@@ -366,6 +368,7 @@ const RANK_COLUMNS = {
       {key:'rank', label:'#', cls:'col-rank'},
       {key:'image', label:'商品图片', cls:'col-image'},
       {key:'title', label:'书名', cls:'col-title'},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'cat', label:'类目信息', cls:'col-cat'},
       {key:'price', label:'客单价(元)', cls:'col-price'},
       {key:'action', label:'操作', cls:'col-action'}
@@ -377,6 +380,7 @@ const RANK_COLUMNS = {
       {key:'rank', label:'#', cls:'col-rank'},
       {key:'image', label:'商品图片', cls:'col-image'},
       {key:'title', label:'书名', cls:'col-title'},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'action', label:'操作', cls:'col-action'}
     ]
   },
@@ -530,11 +534,8 @@ function renderRanking(rankKey, bodyId) {
   }
   const cfg = RANK_COLUMNS[rankKey] || RANK_COLUMNS.adq_hot;
   
-  // ISBN 完整度提示
+  // 总数提示（移除 ISBN 完整度徽章，按用户要求精简）
   const total = data.items.length;
-  const isbnCount = data.items.filter(it => it.isbn && String(it.isbn).trim()).length;
-  const isbnRatio = total ? Math.round(isbnCount/total*100) : 0;
-  const isbnHint = `<span class="isbn-completeness ${isbnCount===total?'is-full':(isbnCount===0?'is-empty':'is-partial')}">ISBN 完整度 ${isbnCount}/${total}（${isbnRatio}%）</span>`;
   
   const headerHtml = `
     <div class="rank-header-bar">
@@ -543,7 +544,7 @@ function renderRanking(rankKey, bodyId) {
         <div class="name">${data.name}</div>
         <div class="subtitle">${data.subtitle}</div>
       </div>
-      <div class="meta">${isbnHint} · 共 ${total} 本</div>
+      <div class="meta">共 ${total} 本</div>
     </div>`;
   
   // 推荐书单按品类分组
@@ -670,8 +671,8 @@ function renderRecommend(recKey, bodyId) {
     <div class="rank-header-bar">
       <div class="icon">${catIcon}</div>
       <div class="info">
-        <div class="name">${recKey}推荐书单（适配腾讯生态）</div>
-        <div class="subtitle">来自《2026 教育行业图书选品指南》${recKey}赛道精选 · AMS 准入完整呈现</div>
+        <div class="name">${recKey}推荐书单（去年同期全网精选）</div>
+        <div class="subtitle">来源于全网去年当月销量/销售额榜单数据 · ${recKey}赛道精选 · 已过 AMS 准入</div>
       </div>
       <div class="meta">共 ${filtered.length} 本</div>
     </div>
@@ -1619,6 +1620,14 @@ document.querySelectorAll('.rec-side-nav .rsn-item[data-target]').forEach(a => {
     if (sidebar) sidebar.querySelectorAll('.rsn-item').forEach(x => x.classList.remove('active'));
     a.classList.add('active');
     smoothScrollTo('#' + a.dataset.target);
+  });
+});
+// 点击「分组标题」（实战榜单 / 潜力榜单 / 当月推荐书单 / 投放参考）→ 跳转到对应区域
+document.querySelectorAll('.rec-side-nav .rsn-group-link[data-target]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = a.dataset.target;
+    smoothScrollTo('#' + target);
   });
 });
 // 点击子项「童书/健康/社科/全部」→ 切换 rec-tab + 滚动
