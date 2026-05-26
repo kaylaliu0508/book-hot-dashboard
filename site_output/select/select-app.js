@@ -1129,6 +1129,18 @@ function syncHubSideCount() {
     set('rsnCountPotential', wd.lists.potential?.items?.length || 0);
     set('rsnCountForecast', wd.lists.forecast?.items?.length || 0);
   }
+  // 书单中心 banner 周次徽章
+  const tag = document.getElementById('hubIntroWeekTag');
+  if (tag) {
+    if (wd && wd.week_label) {
+      const cur = (typeof WEEK_RANK_LIST !== 'undefined') ? WEEK_RANK_LIST[currentWeekIndex] : null;
+      const isLatest = cur && cur.is_current;
+      tag.textContent = (isLatest ? '本周 · ' : '往期 · ') + wd.week_label;
+      tag.style.background = isLatest
+        ? 'linear-gradient(135deg, #10b981, #059669)'
+        : 'linear-gradient(135deg, #f59e0b, #d97706)';
+    }
+  }
   // 推荐书单数量
   const all = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
   set('rsnCountChild', all.filter(b => b.top_cat === '童书').length);
@@ -1170,6 +1182,7 @@ function initHubSearch() {
   const input = document.getElementById('hubSearchInput');
   const clearBtn = document.getElementById('hubSearchClear');
   const result = document.getElementById('hubSearchResult');
+  const bar = document.getElementById('hubSearchBar');
   if (!input || !result) return;
 
   input.addEventListener('input', () => {
@@ -1198,6 +1211,21 @@ function initHubSearch() {
   input.addEventListener('keydown', e => {
     if (e.key === 'Escape') { result.style.display = 'none'; }
   });
+
+  // sticky 卡顶视觉反馈（IntersectionObserver 监听一个哨兵）
+  if (bar && 'IntersectionObserver' in window) {
+    // 在 bar 之前插入哨兵元素
+    let sentinel = document.getElementById('hubSearchSentinel');
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.id = 'hubSearchSentinel';
+      sentinel.style.cssText = 'height:1px;margin-bottom:-1px;';
+      bar.parentNode.insertBefore(sentinel, bar);
+    }
+    new IntersectionObserver(([entry]) => {
+      bar.classList.toggle('is-stuck', !entry.isIntersecting);
+    }, { threshold: [0] }).observe(sentinel);
+  }
 }
 
 // 收集所有可搜索条目：榜单（含周）+ 精选书单

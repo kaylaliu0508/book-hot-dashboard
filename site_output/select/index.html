@@ -10,6 +10,7 @@
 // 嵌入 iframe 时隐藏自身顶部导航（由父页面 index.html 统一导航）
 if(window.self !== window.top){
   document.addEventListener('DOMContentLoaded',function(){
+    document.body.classList.add('is-embedded');
     var nav=document.querySelector('.topnav');
     if(nav) nav.style.display='none';
     // subtabs sticky top 依赖 topnav 高度，嵌入时重置为 0
@@ -218,11 +219,16 @@ if(window.self !== window.top){
 
   <div class="rec-main">
 
-  <div class="insight-banner">
+  <div class="hub-intro-banner">
     <div class="icon">📚</div>
     <div class="text">
-      <strong>书单中心 · 一站式选品来源：</strong>
-      聚合 <span class="hl">实战榜单</span>、<span class="hl">潜力榜单</span>、<span class="hl">精选书单</span> 与 <span class="hl">投放参考</span>，左侧导航分组切换，所有书目均支持「+ 加入选品池」一键收藏。
+      <div class="title">
+        书单中心 · 一站式选品来源
+        <span class="week-tag" id="hubIntroWeekTag">本周</span>
+      </div>
+      <div class="desc">
+        聚合 <span class="hl">实战榜单</span>（ADQ 热投 / 腾讯营销小店版热投 · by 周更新）、<span class="hl">潜力榜单</span>（潜力 / 预测 · by 周更新）、<span class="hl">精选书单</span>（6 月推荐书单）与 <span class="hl">投放参考</span>（大盘指标）。左侧导航分组切换，所有书目均支持「+ 加入选品池」。
+      </div>
     </div>
   </div>
 
