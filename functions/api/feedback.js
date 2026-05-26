@@ -1,130 +1,126 @@
 /**
  * Pages Function: /api/feedback
- * - POST：接收图图智能体问题反馈（产品功能/审核规则/投放问题/数据报表/其他问题），写入 KV
- * - GET ：列出反馈（供 /admin/feedback 后台查看），需邀请码认证
- *
- * KV 存储结构（复用 TRACKER_AGG）：
- *   - 单条：  ai_fb:item:{date}:{uuid}  → 完整 JSON
- *   - 日期索引：ai_fb:index:{date}     → [id1, id2, ...]
- *   - 日期列表：ai_fb:index:dates      → [20260526, ...]
- *
- * 保留期：90 天
+ * POST: 接收图图智能体问题反馈，写入 KV (TRACKER_AGG)
+ * GET:  查询反馈列表（邀请码认证）
  */
-import { CORS, json, preflight, dayKey } from './_tracker_lib.js';
 
-const MAX_TEXT_LEN = 2000;
-const RETENTION_DAYS = 90;
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': '*',
+};
 
-function uuid() {
-  return (
-    Date.now().toString(36) +
-    Math.random().toString(36).slice(2, 8) +
-    Math.random().toString(36).slice(2, 6)
-  );
+function respond(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { 'Content-Type': 'application/json; charset=utf-8', ...CORS_HEADERS },
+  });
 }
 
-function sanitize(s, max) {
-  if (s == null) return '';
-  return String(s).slice(0, max || MAX_TEXT_LEN);
+export const onRequestOptions = () => new Response(null, { status: 204, headers: CORS_HEADERS });
+
+function makeId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
 }
 
-function isAuthed(request, env) {
-  const code = request.headers.get('X-Invite-Code') || '';
-  const token = request.headers.get('X-Admin-Token') || '';
-  const adminToken = env.ADMIN_TOKEN || '';
-  // 支持 env.INVITE_CODE，未配置时回退到主站邀请码
-  const inviteCode = env.INVITE_CODE || env.SITE_INVITE_CODE || '6688';
-  return code === inviteCode || (!!adminToken && token === adminToken);
+function dayKey() {
+  const d = new Date();
+  return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}`;
 }
-
-export const onRequestOptions = () => preflight();
 
 // ============ POST: 提交反馈 ============
 export const onRequestPost = async ({ request, env }) => {
-  let body;
   try {
-    body = JSON.parse(await request.text());
+    let body;
+    try { body = JSON.parse(await request.text()); }
+    catch { return respond({ ok: false, detail: 'bad_json' }, 400); }
+
+    const type    = String(body.type    || '').slice(0, 50);
+    const content = String(body.content || '').slice(0, 2000);
+    const contact = String(body.contact || '').slice(0, 200);
+
+    if (!content) return respond({ ok: false, detail: '内容不能为空' }, 400);
+    if (!type)    return respond({ ok: false, detail: '请选择反馈类型' }, 400);
+
+    const kv = env.TRACKER_AGG;
+    const id = makeId();
+
+    if (!kv) {
+      // KV 未绑定，仍返回成功避免打断用户
+      console.warn('TRACKER_AGG not bound, feedback id:', id);
+      return respond({ ok: true, id });
+    }
+
+    const date     = dayKey();
+    const TTL      = 90 * 86400;
+    const itemKey  = `ai_fb:item:${date}:${id}`;
+    const idxKey   = `ai_fb:index:${date}`;
+    const dateKey  = 'ai_fb:index:dates';
+
+    const item = {
+      id, date, type, content, contact,
+      status: 'new',
+      created_at: new Date().toISOString(),
+    };
+
+    // 同步写入（避免 waitUntil 丢失）
+    await kv.put(itemKey, JSON.stringify(item), { expirationTtl: TTL });
+
+    const rawIdx = await kv.get(idxKey);
+    const ids = rawIdx ? JSON.parse(rawIdx) : [];
+    ids.unshift(id);
+    await kv.put(idxKey, JSON.stringify(ids.slice(0, 5000)), { expirationTtl: TTL });
+
+    const rawDates = await kv.get(dateKey);
+    const dates = rawDates ? JSON.parse(rawDates) : [];
+    if (!dates.includes(date)) {
+      dates.unshift(date);
+      await kv.put(dateKey, JSON.stringify(dates.slice(0, 365)));
+    }
+
+    return respond({ ok: true, id });
   } catch (e) {
-    return json({ ok: false, detail: 'bad_json' }, 400);
+    console.error('feedback POST error:', e);
+    return respond({ ok: false, detail: String(e) }, 500);
   }
-
-  const type    = sanitize(body.type, 50);
-  const content = sanitize(body.content, MAX_TEXT_LEN);
-  const contact = sanitize(body.contact, 200);
-
-  if (!content) return json({ ok: false, detail: '内容不能为空' }, 400);
-  if (!type)    return json({ ok: false, detail: '请选择反馈类型' }, 400);
-
-  const kv = env.TRACKER_AGG;
-  if (!kv) {
-    // KV 未绑定时返回成功（不阻断用户体验，管理员后台为空）
-    console.warn('[feedback] TRACKER_AGG KV not bound');
-    return json({ ok: true, id: 'noop' });
-  }
-
-  const id      = uuid();
-  const date    = dayKey();  // e.g. "20260526"
-  const itemKey = `ai_fb:item:${date}:${id}`;
-  const idxKey  = `ai_fb:index:${date}`;
-  const datesKey = 'ai_fb:index:dates';
-  const expSec  = RETENTION_DAYS * 86400;
-
-  const item = {
-    id, date, type, content, contact,
-    status: 'new',
-    created_at: new Date().toISOString(),
-    ua: request.headers.get('user-agent') || '',
-  };
-
-  // 写入 item
-  await kv.put(itemKey, JSON.stringify(item), { expirationTtl: expSec });
-
-  // 更新日期内 id 索引
-  const rawIdx = await kv.get(idxKey);
-  const ids = rawIdx ? JSON.parse(rawIdx) : [];
-  ids.unshift(id);
-  await kv.put(idxKey, JSON.stringify(ids.slice(0, 5000)), { expirationTtl: expSec });
-
-  // 更新日期列表
-  const rawDates = await kv.get(datesKey);
-  const dates = rawDates ? JSON.parse(rawDates) : [];
-  if (!dates.includes(date)) {
-    dates.unshift(date);
-    await kv.put(datesKey, JSON.stringify(dates.slice(0, 365)));
-  }
-
-  return json({ ok: true, id });
 };
 
-// ============ GET: 查询反馈列表（需认证）============
+// ============ GET: 查询反馈列表 ============
 export const onRequestGet = async ({ request, env }) => {
-  if (!isAuthed(request, env)) {
-    return json({ ok: false, detail: 'unauthorized' }, 401);
-  }
+  try {
+    // 认证：支持 env.INVITE_CODE 或回退到 '6688'
+    const code = request.headers.get('X-Invite-Code') || '';
+    const adminToken = request.headers.get('X-Admin-Token') || '';
+    const inviteCode = env.INVITE_CODE || env.SITE_INVITE_CODE || '6688';
+    const envAdmin   = env.ADMIN_TOKEN || '';
+    if (code !== inviteCode && !(envAdmin && adminToken === envAdmin)) {
+      return respond({ ok: false, detail: 'unauthorized' }, 401);
+    }
 
-  const kv = env.TRACKER_AGG;
-  if (!kv) return json({ ok: true, items: [], dates: [] });
+    const kv = env.TRACKER_AGG;
+    if (!kv) return respond({ ok: true, date: dayKey(), dates: [], items: [], total: 0 });
 
-  const url    = new URL(request.url);
-  const date   = url.searchParams.get('date') || dayKey();
-  const limit  = Math.min(parseInt(url.searchParams.get('limit') || '100'), 500);
+    const url   = new URL(request.url);
+    const date  = url.searchParams.get('date') || dayKey();
+    const limit = Math.min(parseInt(url.searchParams.get('limit') || '100'), 500);
 
-  // 获取日期列表
-  const datesRaw = await kv.get('ai_fb:index:dates');
-  const dates = datesRaw ? JSON.parse(datesRaw) : [];
+    const datesRaw = await kv.get('ai_fb:index:dates');
+    const dates = datesRaw ? JSON.parse(datesRaw) : [];
 
-  // 获取当天索引
-  const idxRaw = await kv.get(`ai_fb:index:${date}`);
-  const ids = idxRaw ? JSON.parse(idxRaw) : [];
+    const idxRaw = await kv.get(`ai_fb:index:${date}`);
+    const ids = idxRaw ? JSON.parse(idxRaw) : [];
 
-  // 批量读取
-  const items = (
-    await Promise.all(
-      ids.slice(0, limit).map(id =>
-        kv.get(`ai_fb:item:${date}:${id}`).then(v => (v ? JSON.parse(v) : null))
+    const items = (
+      await Promise.all(
+        ids.slice(0, limit).map(id =>
+          kv.get(`ai_fb:item:${date}:${id}`).then(v => v ? JSON.parse(v) : null)
+        )
       )
-    )
-  ).filter(Boolean);
+    ).filter(Boolean);
 
-  return json({ ok: true, date, dates, items, total: ids.length });
+    return respond({ ok: true, date, dates, items, total: ids.length });
+  } catch (e) {
+    console.error('feedback GET error:', e);
+    return respond({ ok: false, detail: String(e) }, 500);
+  }
 };
