@@ -992,9 +992,20 @@ function renderWeekRhythm() {
 
 // ==================== 典型跑量书拆解 ====================
 function renderHotBookBreakdown() {
-  const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map(b => {
+  const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map((b, idx) => {
     const cat = b.cat || '童书';
     const cover = b.image || bookCover({title:b.title, isbn:b.isbn, top_cat:cat});
+    const cs = b.creativeScript;
+    const csHtml = cs ? `
+      <!-- 创意脚本核心解读 -->
+      <div class="hot-block hot-block-creative">
+        <div class="hot-block-title">📹 <span>跑量创意脚本核心</span>${cs.videoUrl ? `<button class="creative-play-btn" data-creative-video="${escapeHtml(cs.videoUrl)}" data-creative-title="${escapeHtml(b.title)}" title="播放跑量创意视频">▶ 看视频</button>` : ''}</div>
+        <div class="creative-rows">
+          <div class="crow"><span class="clb">钩子</span><span class="cvl">${cs.hook||'-'}</span></div>
+          <div class="crow"><span class="clb">主体</span><span class="cvl">${cs.core||'-'}</span></div>
+          ${cs.cta ? `<div class="crow"><span class="clb">收口</span><span class="cvl">${cs.cta}</span></div>` : ''}
+        </div>
+      </div>` : '';
     return `
     <div class="hot-card">
       <!-- 顶部：封面 + 标题 -->
@@ -1019,6 +1030,8 @@ function renderHotBookBreakdown() {
           return `<div class="stat-chip ${s.cls||''}"><span class="ic">${s.icon}</span><span class="lb">${s.label}</span><span class="vl">${val}</span></div>`;
         }).join('')}
       </div>
+
+      ${csHtml}
       
       <!-- 目标人群（统一三栏：核心人群/痛点/场景）-->
       <div class="hot-block">
@@ -1048,6 +1061,52 @@ function renderHotBookBreakdown() {
     </div>`;
   }).join('') + `</div>`;
   document.getElementById('hotBookBreakdown').innerHTML = html;
+
+  // 绑定播放视频按钮（弹出轻量 lightbox）
+  document.querySelectorAll('.creative-play-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const url = btn.dataset.creativeVideo;
+      const title = btn.dataset.creativeTitle || '跑量创意视频';
+      openCreativeVideo(url, title);
+    });
+  });
+}
+
+// 跑量创意视频 lightbox
+function openCreativeVideo(url, title) {
+  let mask = document.getElementById('creativeVideoMask');
+  if (!mask) {
+    mask = document.createElement('div');
+    mask.id = 'creativeVideoMask';
+    mask.className = 'creative-video-mask';
+    mask.innerHTML = `
+      <div class="cvm-box">
+        <div class="cvm-head">
+          <span class="cvm-title"></span>
+          <button class="cvm-close" title="关闭">✕</button>
+        </div>
+        <video class="cvm-video" controls playsinline preload="metadata"></video>
+      </div>`;
+    document.body.appendChild(mask);
+    mask.addEventListener('click', e => {
+      if (e.target === mask || e.target.classList.contains('cvm-close')) closeCreativeVideo();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mask.classList.contains('is-open')) closeCreativeVideo();
+    });
+  }
+  mask.querySelector('.cvm-title').textContent = title;
+  const v = mask.querySelector('.cvm-video');
+  v.src = url;
+  v.play().catch(() => {});
+  mask.classList.add('is-open');
+}
+function closeCreativeVideo() {
+  const mask = document.getElementById('creativeVideoMask');
+  if (!mask) return;
+  const v = mask.querySelector('.cvm-video');
+  try { v.pause(); v.removeAttribute('src'); v.load(); } catch(e){}
+  mask.classList.remove('is-open');
 }
 
 // ==================== 重点品类深度卡 ====================
@@ -1488,6 +1547,20 @@ function updateRankWeekUI() {
       tag.textContent = `📜 当前查看：往期 ${cur.short}`;
       tag.classList.add('is-history');
     }
+  }
+  // 同步 ADQ 榜单标题旁的周次显示（修复初始加载时显示 hard-code 旧日期的 bug）
+  const rwl = document.getElementById('rankWeekLabel');
+  if (rwl && cur && cur.data && cur.data.week_label) {
+    rwl.textContent = cur.data.week_label;
+  }
+  // 同步书单中心 banner 的周次徽章
+  const introTag = document.getElementById('hubIntroWeekTag');
+  if (introTag && cur && cur.data && cur.data.week_label) {
+    const isLatest = cur.is_current;
+    introTag.textContent = (isLatest ? '本周 · ' : '往期 · ') + cur.data.week_label;
+    introTag.style.background = isLatest
+      ? 'linear-gradient(135deg, #10b981, #059669)'
+      : 'linear-gradient(135deg, #f59e0b, #d97706)';
   }
   const prev = document.getElementById('wsPrev');  // 上一周(更早) - 应当 index+1
   const next = document.getElementById('wsNext');  // 下一周(更近) - 应当 index-1

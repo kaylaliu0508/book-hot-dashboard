@@ -376,81 +376,99 @@ const WEEK_RHYTHM = {
   ]
 };
 
-// ==================== 本周 ADQ Top3 跑量书洞察 ====================
+// ==================== 本周 ADQ Top3 跑量书洞察（5/25 周）====================
 const HOT_BOOK_BREAKDOWN = [
   {
     role:'#1 童书·立体书',
     roleClass:'basic',
     title:'我们的中国立体书 + 环游世界立体书',
-    isbn:'9787521748459',
-    image:'rank-images/image1373.jpg',
+    isbn:'9787555717119',
+    image:'rank-images/image233.jpg',
     cat:'童书',
     stats:[
       {icon:'💰', label:'客单', val:'¥89-159'},
-      {icon:'📊', label:'日销售额', val:'10-20W'},
+      {icon:'📊', label:'日销售额', val:'60-80W', cls:'hot'},
       {icon:'📈', label:'指数', val:'9.7', cls:'hot'},
-      {icon:'🎯', label:'转化', val:'7.5-8.5%', cls:'hot'}
+      {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
     ],
+    creativeScript:{
+      videoUrl:'https://adsmind.gdtimg.com/ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca.f0.mp4?dis_k=7f0618d5deb04a68bb29082a237d2f1b&dis_t=1779156958&m=76e378476ecb00af7613472176d6e07c&sha256=d01573a21c05c3991018004a4e879edd1111481a94c7d61720cb843b9b8a5dea',
+      hook:'妈妈实拍开箱 + 孩子翻立体页惊喜表情',
+      core:'「足不出户带孩子环游中国 + 世界」礼物质感开箱 → 翻页特写展示长城/埃菲尔铁塔等立体结构 → 强调"知识 + 礼物"双属性',
+      cta:'六一/暑假送礼首选 · 妈妈/爷爷奶奶都买'
+    },
     persona:{
-      core:'3-8岁孩子的妈妈 + ⭐ 爷爷奶奶（代际购买）',
+      core:'3-8 岁孩子的妈妈 + ⭐ 爷爷奶奶（代际购买）',
       pain:'绘本看腻缺新意 / 室内陪伴选项少 / 节日礼物想选有质感的',
       scene:'六一儿童节 / 生日 / 探亲送礼 / 暑期亲子陪伴'
     },
     sellingPoints:[
       {icon:'🎨', label:'视觉形式', val:'立体翻页结构，礼物质感强'},
-      {icon:'🌍', label:'内容主题', val:'中国地理 + 世界地理双套，知识面覆盖广'},
-      {icon:'💎', label:'价位适配', val:'¥89-159 适配节日送礼价位带'},
+      {icon:'🌍', label:'内容主题', val:'中国 + 世界地理双套，知识面广'},
+      {icon:'💎', label:'价位适配', val:'¥89-159 卡位节日送礼价位带'},
       {icon:'👥', label:'人群双触达', val:'妈妈自购 + 长辈送礼 双场景共振'}
     ]
   },
   {
-    role:'#2 教辅·暑期英语',
+    role:'#2 社科·文化民俗',
     roleClass:'opportunity',
-    title:'66 篇英语故事记 2100 词',
-    isbn:'9787521335156',
-    image:'rank-images/image1375.jpg',
-    cat:'教辅',
+    title:'家相',
+    isbn:'9787806537039',
+    image:'rank-images/image1694.jpg',
+    cat:'社科',
     stats:[
-      {icon:'💰', label:'客单', val:'¥399'},
+      {icon:'💰', label:'客单', val:'¥48'},
       {icon:'📊', label:'日销售额', val:'10-20W'},
       {icon:'📈', label:'指数', val:'9.7', cls:'hot'},
-      {icon:'🎯', label:'转化', val:'1.9-2.9%'}
+      {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
     ],
+    creativeScript:{
+      videoUrl:'https://adsmind.gdtimg.com/ads_svp_video__0bc3pqae6aaau4aiuhyg7bvbu7aej56aat2a.f0.mp4?dis_k=6ae58d668879d5a9b6b6814107ae45f2&dis_t=1778828768&m=e55172e093e13c995ce921b5827f9f87&sha256=bb0236e42bdfff2f9dbf38c27db3cf1db9274e01f6e4d7032b47e6997a07bb0b',
+      hook:'「家中这 5 个位置摆错，全家运势都不顺」悬念开场',
+      core:'传统文化解读家居方位 → 列举大门/卧室/厨房常见禁忌 → 「老一辈才知道的家相智慧，年轻人住新房一定要看」 → 翻页展示书内插图',
+      cta:'低客单 + 高悬念 · 转化率 12-16% 远超大盘'
+    },
     persona:{
-      core:'10-15岁孩子的妈妈（关注小升初/初中阶段）',
-      pain:'孩子背单词缺乏兴趣 / 暑期想找成体系的英语学习材料',
-      scene:'暑期亲子共读 / 每天1篇故事 / 2个月覆盖 2100 词'
+      core:'30-55 岁家庭主理人 + 关注传统文化的中老年群体',
+      pain:'装修买房后想求安稳 / 老人对家居布局有讲究但说不清来源 / 想给长辈买"用得上的礼物"',
+      scene:'新居落成 / 装修参考 / 给长辈/亲戚送礼 / 家庭茶余饭后阅读'
     },
     sellingPoints:[
-      {icon:'📖', label:'形式特色', val:'用故事载体讲解词汇，弱化机械记忆'},
-      {icon:'🎯', label:'词汇范围', val:'2100 词覆盖初中阶段常用词'},
-      {icon:'☀️', label:'节奏匹配', val:'暑期 60 天每日 1 篇，节奏轻'},
-      {icon:'🎁', label:'套装组品', val:'多本组套适配长周期学习'}
+      {icon:'🏠', label:'切口精准', val:'"家相"= 家居 + 命理，覆盖装修与传统文化双兴趣'},
+      {icon:'💸', label:'低客单冲转化', val:'¥48 决策门槛低，配高悬念创意冲转化率 12-16%'},
+      {icon:'📖', label:'内容形态', val:'图文 + 案例形式，老少皆宜'},
+      {icon:'🎁', label:'送礼场景', val:'适合送父母/长辈，"实用 + 有面子" 双重满足'}
     ]
   },
   {
-    role:'#3 童书·历史人文',
-    roleClass:'opportunity',
-    title:'漫画帝王家书',
-    isbn:'9787515366692',
-    image:'rank-images/image1377.jpg',
-    cat:'童书',
+    role:'#3 教辅·会考冲刺',
+    roleClass:'basic',
+    title:'备战生地会考一本通 + 秒记初中小四门',
+    isbn:'97875501958998',
+    image:'rank-images/image1695.jpg',
+    cat:'教辅',
     stats:[
-      {icon:'💰', label:'客单', val:'¥39.9'},
+      {icon:'💰', label:'客单', val:'¥399-499'},
       {icon:'📊', label:'日销售额', val:'10-20W'},
       {icon:'📈', label:'指数', val:'9.7', cls:'hot'},
-      {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
+      {icon:'🎯', label:'转化', val:'6.5-7.5%'}
     ],
+    creativeScript:{
+      videoUrl:'https://adsmind.gdtimg.com/ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa.f0.mp4?dis_k=40ac8587243354a7fce928e17527f8d3&dis_t=1779092697&m=3f291fe9f8f6a1478fb8a6918d3e7c5a&sha256=d577fb04e62f500997b089936eefc96ceae0ff08329735f1442ccfdf30acb47f',
+      hook:'「生地会考还剩 30 天，你家孩子还在死记硬背？」紧迫感开场',
+      core:'痛点：政史地生 4 科零碎易丢分 → 解决方案：一本通 + 秒记法 → 实拍翻书展示思维导图/口诀 → 「考前 30 天每天 1 小时，4 门稳过 A」',
+      cta:'高客单组套 · 暑期会考冲刺刚需'
+    },
     persona:{
-      core:'8-14岁孩子的妈妈（关注课外阅读+家庭情感教育）',
-      pain:'孩子课外阅读缺历史人文素材 / 想找日常话题切入点',
-      scene:'暑假课外阅读 / 亲子共读 / 父母日常话题切入'
+      core:'初二/初三孩子的妈妈（生地会考 + 中考冲刺人群）',
+      pain:'政史地生 4 门内容零碎、孩子背了忘 / 暑假想找成体系冲刺资料 / 家长辅导无从下手',
+      scene:'暑期会考冲刺 / 期末备考 / 中考前 30 天总复习'
     },
     sellingPoints:[
-      {icon:'📜', label:'题材组合', val:'帝王 + 漫画 + 家书 三种元素叠加'},
-      {icon:'😊', label:'阅读门槛', val:'漫画形态降低阅读门槛，自主翻阅率高'},
-      {icon:'💸', label:'价位适配', val:'¥39.9 适配课外阅读日常采购'},
-      {icon:'❤️', label:'情感切入', val:'以"家书"载体连接亲子话题'}
+      {icon:'🎯', label:'赛道刚需', val:'生地会考 6 月底前必考，时间窗口紧、决策快'},
+      {icon:'📚', label:'组套溢价', val:'¥399-499 组套定价，单本性价比合理'},
+      {icon:'🧠', label:'方法论卖点', val:'"秒记 + 一本通" 解决"零碎 + 易忘"双痛点'},
+      {icon:'☀️', label:'暑期前哨', val:'暑假前一周开跑，承接 6 月期末 + 暑期复习'}
     ]
   }
 ];
