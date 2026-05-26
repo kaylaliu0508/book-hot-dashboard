@@ -40,7 +40,7 @@ function isAuthed(request, env) {
 export const onRequestOptions = () => preflight();
 
 // ============ POST: 提交反馈 ============
-export const onRequestPost = async ({ request, env, waitUntil }) => {
+export const onRequestPost = async ({ request, env }) => {
   let body;
   try {
     body = JSON.parse(await request.text());
@@ -76,24 +76,22 @@ export const onRequestPost = async ({ request, env, waitUntil }) => {
     ua: request.headers.get('user-agent') || '',
   };
 
-  // 写入 KV（并行）
-  waitUntil(Promise.all([
-    kv.put(itemKey, JSON.stringify(item), { expirationTtl: expSec }),
-    (async () => {
-      const raw = await kv.get(idxKey);
-      const ids = raw ? JSON.parse(raw) : [];
-      ids.unshift(id);
-      await kv.put(idxKey, JSON.stringify(ids.slice(0, 5000)), { expirationTtl: expSec });
-    })(),
-    (async () => {
-      const raw = await kv.get(datesKey);
-      const dates = raw ? JSON.parse(raw) : [];
-      if (!dates.includes(date)) {
-        dates.unshift(date);
-        await kv.put(datesKey, JSON.stringify(dates.slice(0, 365)));
-      }
-    })(),
-  ]));
+  // 写入 item
+  await kv.put(itemKey, JSON.stringify(item), { expirationTtl: expSec });
+
+  // 更新日期内 id 索引
+  const rawIdx = await kv.get(idxKey);
+  const ids = rawIdx ? JSON.parse(rawIdx) : [];
+  ids.unshift(id);
+  await kv.put(idxKey, JSON.stringify(ids.slice(0, 5000)), { expirationTtl: expSec });
+
+  // 更新日期列表
+  const rawDates = await kv.get(datesKey);
+  const dates = rawDates ? JSON.parse(rawDates) : [];
+  if (!dates.includes(date)) {
+    dates.unshift(date);
+    await kv.put(datesKey, JSON.stringify(dates.slice(0, 365)));
+  }
 
   return json({ ok: true, id });
 };
