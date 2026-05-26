@@ -432,6 +432,15 @@ a { color: inherit; text-decoration: none; }
 .rank-header-bar .subtitle { font-size: 11.5px; color: #6b7280; margin-top: 1px; }
 .rank-header-bar .meta { font-size: 11.5px; color: #6b7280; }
 
+/* 周榜：合并到 panel-sub-tip 后，仅保留轻量计数 */
+.rank-count-line {
+  text-align: right;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+.rank-count-line strong { color: #3b82f6; font-weight: 700; }
+
 /* 推荐书单按品类分组 */
 .rec-group { margin-bottom: 18px; }
 .rec-group-title { font-size: 14px; font-weight: 700; color: #111827; padding: 8px 12px; margin-bottom: 10px; border-radius: 6px; display: flex; align-items: center; gap: 8px; }
@@ -794,7 +803,18 @@ a { color: inherit; text-decoration: none; }
 .hub-side-nav { padding: 10px 8px; }
 .hub-side-nav .rsn-group { padding: 8px 0; border-top: 1px dashed #f3f4f6; }
 .hub-side-nav .rsn-group:first-of-type { border-top: none; padding-top: 0; }
-.hub-side-nav .rsn-group-title { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 8px 6px; font-size: 11px; font-weight: 700; color: #1e293b; letter-spacing: 0.5px; }
+.hub-side-nav .rsn-group-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 4px 8px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
 .hub-side-nav .rsn-group-title.rsn-group-link {
   text-decoration: none;
   cursor: pointer;
@@ -804,12 +824,18 @@ a { color: inherit; text-decoration: none; }
 .hub-side-nav .rsn-group-title.rsn-group-link:hover {
   background: linear-gradient(135deg, #eef2ff, #f5f3ff);
   color: #4338ca;
-  padding-left: 10px;
 }
 .hub-side-nav .rsn-group-title.rsn-group-link:hover .rsn-group-tip {
   color: #6366f1;
 }
-.hub-side-nav .rsn-group-title .rsn-group-tip { font-size: 10px; color: #94a3b8; font-weight: 500; }
+.hub-side-nav .rsn-group-title .rsn-group-tip {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 500;
+  display: block;
+  margin-left: 0;
+  line-height: 1.4;
+}
 .hub-side-nav .rsn-item { padding: 8px 10px; margin-bottom: 2px; }
 .hub-side-nav .rsn-item .rsn-name { font-size: 12.5px; }
 .hub-side-nav .rsn-item .rsn-desc { font-size: 10px; color: #6b7280; margin-top: 2px; display: flex; gap: 5px; align-items: center; }

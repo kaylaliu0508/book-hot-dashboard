@@ -534,18 +534,20 @@ function renderRanking(rankKey, bodyId) {
   }
   const cfg = RANK_COLUMNS[rankKey] || RANK_COLUMNS.adq_hot;
   
-  // 总数提示（移除 ISBN 完整度徽章，按用户要求精简）
+  // 总数提示（移除 rank-header-bar，因为外层 panel 已有标题 + panel-sub-tip 色块；
+  // 周榜内只展示「共 N 本」轻量计数；推荐书单 (recommend) 保留 header-bar）
   const total = data.items.length;
-  
-  const headerHtml = `
+  const isRec = rankKey === 'recommend';
+
+  const headerHtml = isRec ? `
     <div class="rank-header-bar">
-      <div class="icon">${rankKey==='recommend'?'⭐':'📊'}</div>
+      <div class="icon">⭐</div>
       <div class="info">
         <div class="name">${data.name}</div>
         <div class="subtitle">${data.subtitle}</div>
       </div>
       <div class="meta">共 ${total} 本</div>
-    </div>`;
+    </div>` : `<div class="rank-count-line">共 <strong>${total}</strong> 本</div>`;
   
   // 推荐书单按品类分组
   if (rankKey === 'recommend') {
