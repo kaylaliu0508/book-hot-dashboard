@@ -31,9 +31,10 @@ function sanitize(s, max) {
 function isAuthed(request, env) {
   const code = request.headers.get('X-Invite-Code') || '';
   const token = request.headers.get('X-Admin-Token') || '';
-  const inviteCode = env.INVITE_CODE || '';
   const adminToken = env.ADMIN_TOKEN || '';
-  return (!!inviteCode && code === inviteCode) || (!!adminToken && token === adminToken);
+  // 支持 env.INVITE_CODE，未配置时回退到主站邀请码
+  const inviteCode = env.INVITE_CODE || env.SITE_INVITE_CODE || '6688';
+  return code === inviteCode || (!!adminToken && token === adminToken);
 }
 
 export const onRequestOptions = () => preflight();
