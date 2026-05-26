@@ -99,6 +99,38 @@ h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
     <div id="isbnTableBox"></div>
   </div>
 
+  <!-- 📮 AI 预审反馈板块 -->
+  <div class="section" id="auditFbSection">
+    <h2>📮 AI 预审反馈
+      <span style="color:#8b949e;font-size:11px;font-weight:400;margin-left:6px">用户在 AI 预审 tab 提交的判定准确性反馈</span>
+      <span id="auditFbRange" style="margin-left:auto;font-size:10px;color:#8b949e;background:#0d1117;padding:2px 8px;border-radius:10px;border:1px solid #21262d">最近 30 天</span>
+    </h2>
+
+    <!-- 6 个核心指标卡片 -->
+    <div id="auditFbCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px"></div>
+
+    <!-- 每日趋势 + 命中规则 Top -->
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:16px" id="auditFbGrid">
+      <div style="background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">
+        <div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-weight:600">📈 每日反馈趋势</div>
+        <div style="position:relative;height:200px"><canvas id="auditFbTrendChart"></canvas></div>
+      </div>
+      <div style="background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">
+        <div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-weight:600">🎯 用户反馈最多的规则 Top 10</div>
+        <div id="auditFbRuleTable" style="font-size:11.5px"></div>
+      </div>
+    </div>
+
+    <!-- 最近 10 条反馈记录 -->
+    <div style="background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:12px;color:#8b949e;font-weight:600">📋 最近 10 条反馈记录（脱敏）</div>
+        <a href="/admin/audit-feedback/" target="_blank" style="font-size:10.5px;color:#58a6ff;text-decoration:none">前往管理后台 →</a>
+      </div>
+      <div id="auditFbRecentTable"></div>
+    </div>
+  </div>
+
   <!-- 设备与来源 -->
   <div class="cards">
     <div class="card">
@@ -217,6 +249,7 @@ function render(){
   renderIsbnTop();
   renderDevice();
   renderReferrers();
+  loadAndRenderAuditFb();
 }
 
 function renderCards(){
@@ -405,6 +438,148 @@ function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
+}
+
+// ==================== 📮 AI 预审反馈板块 ====================
+var auditFbTrendChart = null;
+
+function loadAndRenderAuditFb(){
+  var sec = document.getElementById('auditFbSection');
+  if (!sec) return;
+  fetch('/api/audit_feedback_stats?days=30', { credentials:'omit' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.ok) return;
+      renderAuditFbCards(j.summary || {});
+      renderAuditFbTrend(j.byDate || []);
+      renderAuditFbRules(j.byRule || []);
+      renderAuditFbRecent(j.recent || []);
+    })
+    .catch(function(){});
+}
+
+function renderAuditFbCards(s){
+  var cards = document.getElementById('auditFbCards');
+  if (!cards) return;
+  function card(label, value, color, sub){
+    return '<div style="background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">'
+      + '<div style="font-size:11px;color:#8b949e;margin-bottom:6px">'+label+'</div>'
+      + '<div style="font-size:22px;font-weight:700;color:'+(color||'#f0f6fc')+'">'+value+'</div>'
+      + (sub ? '<div style="font-size:10.5px;color:#8b949e;margin-top:3px">'+sub+'</div>' : '')
+      + '</div>';
+  }
+  cards.innerHTML = ''
+    + card('总反馈数', s.total||0, '#f0f6fc')
+    + card('👍 判得准', s.good||0, '#3fb950', '准确率 ' + (s.good_rate||0) + '%')
+    + card('🛡️ 误杀', s.bad_fp||0, '#3fb950', '不该报却报了')
+    + card('⚠️ 漏判', s.bad_fn||0, '#f85149', '该报却没报')
+    + card('待处理', s.new||0, '#fdcb6e')
+    + card('已采纳', s.adopted||0, '#58a6ff', '采纳率 ' + (s.adopt_rate||0) + '%');
+}
+
+function renderAuditFbTrend(byDate){
+  var canvas = document.getElementById('auditFbTrendChart');
+  if (!canvas) return;
+  if (!byDate.length) {
+    canvas.parentElement.innerHTML = '<div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-weight:600">📈 每日反馈趋势</div><div style="height:160px;display:flex;align-items:center;justify-content:center;color:#484f58;font-size:12px">暂无数据</div>';
+    return;
+  }
+  var labels = byDate.map(function(d){ return d.date.slice(4,6) + '-' + d.date.slice(6,8); });
+  var goodArr = byDate.map(function(d){ return d.good||0; });
+  var badArr  = byDate.map(function(d){ return d.bad||0; });
+  if (auditFbTrendChart) auditFbTrendChart.destroy();
+  auditFbTrendChart = new Chart(canvas.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label:'判得准', data: goodArr, backgroundColor: 'rgba(63,185,80,0.7)', stack:'a' },
+        { label:'判错了', data: badArr,  backgroundColor: 'rgba(248,81,73,0.7)', stack:'a' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins:{ legend:{ labels:{ color:'#c9d1d9', font:{size:11} } } },
+      scales:{
+        x:{ stacked:true, ticks:{ color:'#8b949e', font:{size:10} }, grid:{ display:false } },
+        y:{ stacked:true, ticks:{ color:'#8b949e', font:{size:10}, precision:0 }, grid:{ color:'#21262d' } }
+      }
+    }
+  });
+}
+
+function renderAuditFbRules(rules){
+  var box = document.getElementById('auditFbRuleTable');
+  if (!box) return;
+  if (!rules.length) { box.innerHTML = '<div style="text-align:center;color:#484f58;font-size:12px;padding:30px 0">暂无规则误判数据</div>'; return; }
+  var html = '<table style="width:100%;font-size:11.5px"><thead><tr>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:6px 4px;border-bottom:1px solid #21262d">规则</th>'
+    + '<th style="color:#3fb950;font-weight:500;padding:6px 4px;border-bottom:1px solid #21262d">误杀</th>'
+    + '<th style="color:#f85149;font-weight:500;padding:6px 4px;border-bottom:1px solid #21262d">漏判</th>'
+    + '<th style="color:#8b949e;font-weight:500;padding:6px 4px;border-bottom:1px solid #21262d">合计</th>'
+    + '</tr></thead><tbody>';
+  rules.forEach(function(r){
+    html += '<tr>'
+      + '<td style="padding:6px 4px;color:#c9d1d9;border-bottom:1px solid #161b22">'
+      +   '<div style="font-weight:600">'+(r.cat||'-')+'</div>'
+      +   '<div style="font-size:10px;color:#484f58">'+r.rule_id+'</div>'
+      + '</td>'
+      + '<td style="text-align:center;padding:6px 4px;color:'+(r.fp>0?'#3fb950':'#484f58')+';border-bottom:1px solid #161b22">'+r.fp+'</td>'
+      + '<td style="text-align:center;padding:6px 4px;color:'+(r.fn>0?'#f85149':'#484f58')+';border-bottom:1px solid #161b22">'+r.fn+'</td>'
+      + '<td style="text-align:center;padding:6px 4px;color:#c9d1d9;font-weight:600;border-bottom:1px solid #161b22">'+(r.total||r.fp+r.fn)+'</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  box.innerHTML = html;
+}
+
+function renderAuditFbRecent(items){
+  var box = document.getElementById('auditFbRecentTable');
+  if (!box) return;
+  if (!items.length) { box.innerHTML = '<div style="text-align:center;color:#484f58;font-size:12px;padding:30px 0">暂无反馈数据</div>'; return; }
+  var ETAGS = {
+    false_positive: '<span style="color:#3fb950;background:rgba(63,185,80,.1);padding:1px 7px;border-radius:10px;font-size:10px">误杀</span>',
+    false_negative: '<span style="color:#f85149;background:rgba(248,81,73,.1);padding:1px 7px;border-radius:10px;font-size:10px">漏判</span>',
+    '': '<span style="color:#3fb950;background:rgba(63,185,80,.1);padding:1px 7px;border-radius:10px;font-size:10px">👍 判得准</span>'
+  };
+  var STAGS = {
+    new: '<span style="color:#fdcb6e;font-size:10px">● 待处理</span>',
+    adopted: '<span style="color:#58a6ff;font-size:10px">● 已采纳</span>',
+    rejected: '<span style="color:#8b949e;font-size:10px">● 已拒绝</span>'
+  };
+  function fmtTime(ts){
+    if (!ts) return '-';
+    var d = new Date(ts);
+    var p=function(n){return n<10?'0'+n:n;};
+    return (d.getMonth()+1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  var html = '<table style="width:100%;font-size:11.5px;border-collapse:collapse">'
+    + '<thead><tr>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">时间</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">反馈类型</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">命中规则</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">用户备注</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">处理状态</th>'
+    + '</tr></thead><tbody>';
+  items.forEach(function(it){
+    var et = it.verdict_user==='accept_ai' ? ETAGS[''] : (ETAGS[it.error_type]||'-');
+    var st = STAGS[it.status] || '-';
+    var note = it.note_excerpt ? escapeStatsHtml(it.note_excerpt) : '<span style="color:#484f58">—</span>';
+    html += '<tr>'
+      + '<td style="padding:7px 8px;color:#8b949e;border-bottom:1px solid #161b22">'+fmtTime(it.ts)+'</td>'
+      + '<td style="padding:7px 8px;border-bottom:1px solid #161b22">'+et+'</td>'
+      + '<td style="padding:7px 8px;color:#c9d1d9;border-bottom:1px solid #161b22">'+(it.hit_cat?escapeStatsHtml(it.hit_cat):'<span style="color:#484f58">—</span>')+'</td>'
+      + '<td style="padding:7px 8px;color:#c9d1d9;border-bottom:1px solid #161b22;max-width:280px;word-break:break-word">'+note+'</td>'
+      + '<td style="padding:7px 8px;border-bottom:1px solid #161b22">'+st+'</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  box.innerHTML = html;
+}
+
+function escapeStatsHtml(s){
+  if (s==null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 load();
