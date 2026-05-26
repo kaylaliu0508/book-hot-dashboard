@@ -2135,7 +2135,10 @@ function runAudit(){
         html+='<div style="background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.15);border-radius:6px;padding:8px 10px;margin-top:6px;font-size:10px;color:#ff8a94">⚠️ 违规内容过多，建议整条重写</div>';
       }
     }
-    
+
+    // === 反馈闭环：每条结果尾部加 "判得准 / 判错了" ===
+    html+=buildFeedbackRow(i+1, copy, violations, status);
+
     html+='</div>';
   }
   
@@ -2175,7 +2178,7 @@ function runAudit(){
     }
   }
   if(allCompliant.length>0){
-    summaryHtml+='<div style="margin-top:12px;display:flex;gap:8px">';
+    summaryHtml+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">';
     summaryHtml+='<button onclick="doCopyText(this,\''+btoa(unescape(encodeURIComponent(allCompliant.join('\n\n'))))+'\')" style="padding:6px 16px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;font-weight:600">📋 一键复制全部合规文案 ('+allCompliant.length+'条)</button>';
     summaryHtml+='</div>';
   }
@@ -2252,6 +2255,25 @@ function insertAIAuditLoadingBanner(n){
 }
 
 function callAIAudit(batch, customRulesRawText){
+  // 先异步拉取「已采纳学习样本」作为 few-shot，然后再调 AI
+  return fetchAuditLearnedCases().then(function(learnedCases){
+    return _callAIAuditInner(batch, customRulesRawText, learnedCases);
+  });
+}
+
+// 拉取已采纳反馈样本（最多 20 条，5 秒兜底超时）
+function fetchAuditLearnedCases(){
+  return new Promise(function(resolve){
+    var done=false;
+    var timer=setTimeout(function(){ if(!done){done=true;resolve([]);} }, 5000);
+    fetch('/api/audit_learned_cases?limit=20', {method:'GET'})
+      .then(function(r){return r.ok?r.json():{cases:[]};})
+      .then(function(j){ if(done) return; done=true; clearTimeout(timer); resolve((j&&j.cases)||[]); })
+      .catch(function(){ if(done) return; done=true; clearTimeout(timer); resolve([]); });
+  });
+}
+
+function _callAIAuditInner(batch, customRulesRawText, learnedCases){
   // 构造 prompt：把每条文案编号，让模型对每条返回 verdict
   var listText=batch.map(function(b,i){return '第'+(i+1)+'条：'+b.text;}).join('\n');
 
@@ -2267,7 +2289,30 @@ function callAIAudit(batch, customRulesRawText){
       '判定时请重点理解规则的**语义**而非字面，对同义、改写、扩展形式都要识别。\n\n';
   }
 
-  var sysPrompt=userRulesSection+
+  // === 用户反馈学习样本注入（来自后台已采纳的反馈，next-time 必须判准）===
+  var learnedSection='';
+  if(learnedCases && learnedCases.length){
+    var lines=[];
+    var V={should_pass:'pass', should_warn:'warn', should_reject:'reject'};
+    var typeCN={false_positive:'误杀-不该报',false_negative:'漏判-该报没报',bad_fix:'建议不合理'};
+    for(var ci=0; ci<learnedCases.length && ci<20; ci++){
+      var c=learnedCases[ci];
+      if(!c || !c.text) continue;
+      var t=String(c.text).slice(0,180).replace(/\n+/g,' ');
+      var v=V[c.verdict_user]||'';
+      var et=typeCN[c.error_type]||'';
+      var rs=c.reason?(' · 原因：'+String(c.reason).slice(0,80)):'';
+      if(v) lines.push('- 文案「'+t+'」→ 正确判定：'+v+(et?(' ('+et+')'):'')+rs);
+    }
+    if(lines.length){
+      learnedSection='## 🧠 已采纳的人工反馈样本（必须严格遵守，下次遇到同类必须判准）\n'+
+        '以下样本来自历史用户反馈中、已由审核员人工确认的"正确判定"。'+
+        '对语义近似（同义改写、近似表达、同结构同领域）的新文案，**必须延用这里的正确判定**：\n\n'+
+        lines.join('\n')+'\n\n';
+    }
+  }
+
+  var sysPrompt=userRulesSection+learnedSection+
     '你是腾讯广告平台教育/图书行业的资深审核专家，熟悉广告法、腾讯广告 V6 规则、腾讯广告教育图书行业审核规范。请从语义层面判断给定的广告/口播文案是否违规。\n\n'+
     '## 🚨 最高优先级红线（先于一切判定，命中即 reject）\n'+
     '在审核短文案时（无论它看起来像不像广告），先做一次"成绩/学习能力承诺"扫描。**只要满足下面任一结构，立即 reject，不要因为"看起来不像广告/像客观陈述/没有产品主语"而放行**：\n'+
@@ -2507,6 +2552,345 @@ function applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prev
     summaryNums[1].textContent=newPass;
     summaryNums[3].textContent=newRej;
   }
+}
+
+// ==================== 反馈闭环：用户反馈采集（AI 预审 tab）====================
+// 设计原则：用户最多 2 次点击完成反馈。
+//   - 👍 判得准 → 1 次点击即沉淀正样本
+//   - 🚩 判错了 → 弹出极简卡（3 个单选 + 1 个选填）
+
+var AUDIT_RULE_VERSION='v2026-05-21-r12'; // 与页面顶部规则版本徽章保持一致
+
+// 把反馈快照编码到 data-fb 里，避免 inline onclick 转义噩梦
+function _b64encJson(obj){
+  try{ return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }
+  catch(e){ return ''; }
+}
+function _b64decJson(s){
+  try{ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+  catch(e){ return null; }
+}
+
+// 为每条结果生成反馈行
+function buildFeedbackRow(rowIndex, copyText, violations, status){
+  // 拼装快照：只带必要字段，避免传整页冗余
+  var snap={
+    row: rowIndex,
+    text: copyText,
+    status: status,
+    rule_version: AUDIT_RULE_VERSION,
+    ai_recheck: !!(document.getElementById('aiAuditEnabled') && document.getElementById('aiAuditEnabled').checked),
+    hits: (violations||[]).map(function(v){
+      return {id:v.id, cat:v.cat, level:v.level, matched:v.matched, desc:v.desc, fix:v.fix};
+    })
+  };
+  var enc=_b64encJson(snap);
+  var hint=violations && violations.length
+    ? '此条判定是否准确？'
+    : '判为「通过」是否准确？';
+  return '<div class="audit-fb-row" data-fb-snap="'+enc+'" '
+    +'style="display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 10px;'
+    +'background:rgba(255,255,255,.02);border:1px dashed #21262d;border-radius:6px">'
+    +'<span style="font-size:10.5px;color:#8b949e;flex:1">💬 '+hint+'</span>'
+    +'<button class="audit-fb-good" data-track="audit_feedback_thumb_up" '
+    +'onclick="auditFeedbackQuickGood(this)" '
+    +'style="padding:3px 10px;border-radius:5px;border:1px solid rgba(63,185,80,.4);'
+    +'background:rgba(63,185,80,.08);color:#3fb950;font-size:11px;cursor:pointer">👍 判得准</button>'
+    +'<button class="audit-fb-bad" data-track="audit_feedback_thumb_down" '
+    +'onclick="auditFeedbackOpenBad(this)" '
+    +'style="padding:3px 10px;border-radius:5px;border:1px solid rgba(248,81,73,.4);'
+    +'background:rgba(248,81,73,.08);color:#ff8a94;font-size:11px;cursor:pointer">🚩 判错了</button>'
+    +'</div>';
+}
+
+// 👍 1 步沉淀正样本
+function auditFeedbackQuickGood(btn){
+  var row=btn.closest('.audit-fb-row');
+  var snap=_b64decJson(row.getAttribute('data-fb-snap'))||{};
+  submitAuditFeedback({
+    feedback_type:'rule_hit',
+    verdict_user:'accept_ai',           // 用户认同 AI 判定
+    error_type:'',
+    user_note:'',
+    snapshot:snap
+  });
+  // UI 锁定
+  row.querySelectorAll('button').forEach(function(b){b.disabled=true;b.style.opacity='0.5';b.style.cursor='default';});
+  btn.textContent='👍 已记录，谢谢！';
+  btn.style.background='rgba(63,185,80,.2)';
+}
+
+// 🚩 打开反馈弹窗
+function auditFeedbackOpenBad(btn){
+  var row=btn.closest('.audit-fb-row');
+  var snap=_b64decJson(row.getAttribute('data-fb-snap'))||{};
+  showAuditFeedbackModal(snap, row);
+}
+
+// 整体反馈
+function openOverallFeedback(){
+  try { window.tracker && window.tracker.feature('audit_overall_feedback_open', null, null, 'ai_audit'); } catch(_){}
+  // 整体反馈复用同一个弹窗，但 feedback_type=overall，text 让用户自己粘贴
+  showAuditFeedbackModal({
+    feedback_type:'overall',
+    text:'',
+    status:'',
+    rule_version: AUDIT_RULE_VERSION,
+    ai_recheck: !!(document.getElementById('aiAuditEnabled') && document.getElementById('aiAuditEnabled').checked),
+    hits:[]
+  }, null);
+}
+
+// 弹窗 DOM 懒加载（只创建一次）
+function ensureAuditFeedbackModal(){
+  if(document.getElementById('auditFbModal')) return;
+  var m=document.createElement('div');
+  m.id='auditFbModal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML=''
+    +'<div style="background:#161b22;border:1px solid #30363d;border-radius:12px;width:460px;max-width:100%;max-height:90vh;overflow-y:auto;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.5)">'
+    +'  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
+    +'    <h3 style="font-size:15px;color:#f0f6fc;font-weight:700">🚩 反馈这次判定</h3>'
+    +'    <button onclick="hideAuditFeedbackModal()" style="background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;line-height:1">✕</button>'
+    +'  </div>'
+    +'  <div style="font-size:11px;color:#8b949e;line-height:1.6;margin-bottom:12px">您的反馈会直接进入规则学习库，下次同类案例 AI 会判得更准。<span style="color:#3fb950">全部最多 2 步，第 ② 项可不填。</span></div>'
+
+    +'  <div id="auditFbContextBox" style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:8px 10px;margin-bottom:12px;font-size:11px;color:#c9d1d9;line-height:1.6;max-height:120px;overflow-y:auto"></div>'
+
+    +'  <div id="auditFbOverallTextWrap" style="display:none;margin-bottom:12px">'
+    +'    <label style="display:block;font-size:11px;color:#8b949e;margin-bottom:4px;font-weight:600">① 粘贴有问题的原文片段 <span style="color:#f85149">*</span></label>'
+    +'    <textarea id="auditFbOverallText" rows="3" placeholder="把您认为判得不准的那段原文粘贴到这里…" style="width:100%;padding:8px 10px;border:1px solid #30363d;border-radius:6px;background:#0d1117;color:#c9d1d9;font-size:12px;font-family:inherit;resize:vertical;outline:none"></textarea>'
+    +'  </div>'
+
+    +'  <div id="auditFbStep1" style="margin-bottom:14px">'
+    +'    <div style="font-size:12px;color:#c9d1d9;margin-bottom:8px;font-weight:600"><span id="auditFbStep1Idx">①</span> 哪里错了？ <span style="color:#f85149;font-weight:400">*</span></div>'
+    +'    <div class="audit-fb-radio-group" data-name="error_type" style="display:flex;flex-direction:column;gap:8px"></div>'
+    +'  </div>'
+
+    +'  <div id="auditFbStep3" style="margin-bottom:12px">'
+    +'    <div style="font-size:11px;color:#8b949e;margin-bottom:6px;font-weight:600"><span id="auditFbStep3Idx">②</span> 一句话补充原因 <span style="color:#484f58;font-weight:400">（选填，可不填）</span></div>'
+    +'    <input type="text" id="auditFbNote" maxlength="80" placeholder="例：图书赛道「完美」实际不卡审" '
+    +'      style="width:100%;padding:8px 10px;border:1px solid #30363d;border-radius:6px;background:#0d1117;color:#c9d1d9;font-size:12px;outline:none">'
+    +'  </div>'
+
+    +'  <div style="display:flex;gap:8px;justify-content:flex-end">'
+    +'    <button onclick="hideAuditFeedbackModal()" style="padding:7px 14px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:12px;cursor:pointer">取消</button>'
+    +'    <button id="auditFbSubmitBtn" onclick="auditFeedbackSubmitBad()" style="padding:7px 18px;border-radius:6px;border:none;background:#e63946;color:#fff;font-size:12px;font-weight:600;cursor:pointer">提交反馈</button>'
+    +'  </div>'
+    +'</div>';
+  document.body.appendChild(m);
+  // 点击空白关闭
+  m.addEventListener('click', function(e){ if(e.target===m) hideAuditFeedbackModal(); });
+}
+
+function _renderRadios(groupSelector, options, defaultVal){
+  var g=document.querySelector(groupSelector);
+  if(!g) return;
+  g.innerHTML='';
+  options.forEach(function(opt){
+    var b=document.createElement('button');
+    b.type='button';
+    b.setAttribute('data-value', opt.v);
+    var hasCard = !!(opt.icon || opt.sub);
+    if(hasCard){
+      b.innerHTML=''
+        +'<div style="display:flex;align-items:center;gap:8px">'
+        +(opt.icon?'<span class="fb-opt-icon" style="font-size:22px;line-height:1;flex-shrink:0">'+opt.icon+'</span>':'')
+        +'<div style="text-align:left;flex:1">'
+        +  '<div class="fb-opt-title" style="font-size:13px;font-weight:700;color:#f0f6fc;line-height:1.3">'+opt.t+'</div>'
+        +(opt.sub?'<div class="fb-opt-sub" style="font-size:10.5px;color:#8b949e;margin-top:2px;line-height:1.4">'+opt.sub+'</div>':'')
+        +'</div>'
+        +'<span class="fb-opt-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid #30363d;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent">✓</span>'
+        +'</div>';
+      var baseBg=opt.bg||'#0d1117';
+      var baseBorder=opt.border||'#30363d';
+      var activeBg=opt.activeBg||'rgba(230,57,70,.12)';
+      var activeBorder=opt.activeBorder||'#e63946';
+      var activeColor=opt.activeColor||'#e63946';
+      b.style.cssText='flex:1;min-width:120px;padding:11px 13px;border-radius:10px;border:1.5px solid '+baseBorder+';background:'+baseBg+';cursor:pointer;transition:.18s;text-align:left;position:relative';
+      // 存到 dataset 供选中切换用
+      b.dataset.activeBg=activeBg;b.dataset.activeBorder=activeBorder;b.dataset.activeColor=activeColor;
+      b.dataset.baseBg=baseBg;b.dataset.baseBorder=baseBorder;
+      b.onmouseenter=function(){ if(!b.getAttribute('data-selected'))b.style.borderColor=activeBorder; };
+      b.onmouseleave=function(){ if(!b.getAttribute('data-selected'))b.style.borderColor=baseBorder; };
+    } else {
+      b.textContent=opt.t;
+      b.style.cssText='padding:5px 12px;border-radius:14px;border:1px solid #30363d;background:#0d1117;color:#c9d1d9;font-size:11.5px;cursor:pointer;transition:.15s';
+    }
+    b.onclick=function(){
+      g.querySelectorAll('button').forEach(function(x){
+        if(x.dataset.baseBg){
+          x.style.background=x.dataset.baseBg;
+          x.style.borderColor=x.dataset.baseBorder;
+          var ck=x.querySelector('.fb-opt-check');
+          if(ck){ck.style.color='transparent';ck.style.borderColor='#30363d';ck.style.background='transparent';}
+        } else {
+          x.style.background='#0d1117';x.style.color='#c9d1d9';x.style.borderColor='#30363d';
+        }
+        x.removeAttribute('data-selected');
+      });
+      if(b.dataset.activeBg){
+        b.style.background=b.dataset.activeBg;
+        b.style.borderColor=b.dataset.activeBorder;
+        var ck=b.querySelector('.fb-opt-check');
+        if(ck){ck.style.color='#fff';ck.style.borderColor=b.dataset.activeBorder;ck.style.background=b.dataset.activeBorder;}
+      } else {
+        b.style.background='#e63946';b.style.color='#fff';b.style.borderColor='#e63946';
+      }
+      b.setAttribute('data-selected','1');
+    };
+    if(opt.v===defaultVal){ b.click(); }
+    g.appendChild(b);
+  });
+}
+
+function _getRadioValue(groupSelector){
+  var sel=document.querySelector(groupSelector+' button[data-selected="1"]');
+  return sel?sel.getAttribute('data-value'):'';
+}
+
+// 当前正在反馈的 snapshot
+var _currentFbSnap=null;
+var _currentFbRow=null;
+
+function showAuditFeedbackModal(snap, row){
+  ensureAuditFeedbackModal();
+  _currentFbSnap=snap||{};
+  _currentFbRow=row||null;
+
+  var isOverall=(snap.feedback_type==='overall');
+
+  // 上下文展示
+  var ctx=document.getElementById('auditFbContextBox');
+  var overallWrap=document.getElementById('auditFbOverallTextWrap');
+  if(isOverall){
+    ctx.style.display='none';
+    overallWrap.style.display='block';
+    document.getElementById('auditFbStep1Idx').textContent='②';
+    document.getElementById('auditFbStep3Idx').textContent='③';
+    document.getElementById('auditFbOverallText').value='';
+  } else {
+    overallWrap.style.display='none';
+    ctx.style.display='block';
+    document.getElementById('auditFbStep1Idx').textContent='①';
+    document.getElementById('auditFbStep3Idx').textContent='②';
+    var hits=(snap.hits||[]).map(function(h){
+      return '<span style="color:'+(h.level==='reject'?'#ff8a94':'#ffd43b')+'">['+h.cat+'] 「'+escapeHtml(h.matched||'')+'」</span>';
+    }).join('，');
+    ctx.innerHTML=''
+      +'<div style="font-size:10px;color:#484f58;margin-bottom:4px">第 '+snap.row+' 条 · 当前判定：<strong style="color:'+(snap.status==='通过'?'#3fb950':snap.status==='需修改'?'#ffd43b':'#ff6b6b')+'">'+(snap.status||'?')+'</strong></div>'
+      +'<div style="color:#c9d1d9;font-size:11.5px;line-height:1.6">'+escapeHtml(snap.text||'').slice(0,200)+(snap.text&&snap.text.length>200?'…':'')+'</div>'
+      +(hits?'<div style="margin-top:6px;font-size:10px">命中：'+hits+'</div>':'');
+  }
+
+  // 渲染选项（卡片化：图标 + 主标题 + 副标题 + 主题色）
+  _renderRadios('.audit-fb-radio-group[data-name="error_type"]',[
+    {v:'false_positive', icon:'🛡️', t:'误杀（不该报）',  sub:'本来合规的，AI 误判为违规',
+     bg:'rgba(63,185,80,.04)',   border:'rgba(63,185,80,.25)',
+     activeBg:'rgba(63,185,80,.14)', activeBorder:'#3fb950', activeColor:'#3fb950'},
+    {v:'false_negative', icon:'⚠️', t:'漏判（该报没报）', sub:'实际违规，AI 没识别出来',
+     bg:'rgba(248,81,73,.04)',   border:'rgba(248,81,73,.25)',
+     activeBg:'rgba(248,81,73,.14)', activeBorder:'#f85149', activeColor:'#f85149'}
+  ], '');
+
+  document.getElementById('auditFbNote').value='';
+  document.getElementById('auditFbSubmitBtn').disabled=false;
+  document.getElementById('auditFbSubmitBtn').textContent='提交反馈';
+
+  document.getElementById('auditFbModal').style.display='flex';
+  try { window.tracker && window.tracker.feature('audit_feedback_modal_open', {type: isOverall?'overall':'rule_hit'}, null, 'ai_audit'); } catch(_){}
+}
+
+function hideAuditFeedbackModal(){
+  var m=document.getElementById('auditFbModal');
+  if(m) m.style.display='none';
+  _currentFbSnap=null;
+  _currentFbRow=null;
+}
+
+// 提交"判错了"反馈
+function auditFeedbackSubmitBad(){
+  var snap=_currentFbSnap||{};
+  var errorType=_getRadioValue('.audit-fb-radio-group[data-name="error_type"]');
+  var note=(document.getElementById('auditFbNote').value||'').trim().slice(0,200);
+
+  if(!errorType){ alert('请选择「哪里错了」');return; }
+
+  // 根据 error_type 自动推导用户期望判定（供 AI 学习池使用）
+  // - false_positive（误杀）：用户认为应通过
+  // - false_negative（漏判）：用户认为应拒审
+  var verdict='';
+  if(errorType==='false_positive') verdict='should_pass';
+  else if(errorType==='false_negative') verdict='should_reject';
+
+  // 整体反馈需要把原文带上
+  if(snap.feedback_type==='overall'){
+    var t=(document.getElementById('auditFbOverallText').value||'').trim();
+    if(!t){ alert('请粘贴您认为判得不准的那段原文');return; }
+    snap.text=t.slice(0,2000);
+  }
+
+  var submitBtn=document.getElementById('auditFbSubmitBtn');
+  submitBtn.disabled=true;
+  submitBtn.textContent='提交中...';
+
+  submitAuditFeedback({
+    feedback_type: snap.feedback_type==='overall'?'overall':'rule_hit',
+    verdict_user: verdict,
+    error_type: errorType,
+    user_note: note,
+    snapshot: snap
+  }).then(function(ok){
+    if(ok){
+      submitBtn.textContent='✅ 已提交';
+      // 锁定原 row
+      if(_currentFbRow){
+        _currentFbRow.querySelectorAll('button').forEach(function(b){b.disabled=true;b.style.opacity='0.5';b.style.cursor='default';});
+        var goodBtn=_currentFbRow.querySelector('.audit-fb-bad');
+        if(goodBtn) goodBtn.textContent='🚩 已反馈，谢谢！';
+      }
+      setTimeout(hideAuditFeedbackModal, 700);
+    } else {
+      submitBtn.disabled=false;
+      submitBtn.textContent='重新提交';
+      alert('提交失败，请稍后再试');
+    }
+  });
+}
+
+// 提交反馈到后端 + 同时打埋点
+function submitAuditFeedback(payload){
+  // 1) 埋点（聚合统计走 tracker）
+  try {
+    if(window.tracker){
+      var ev = (payload.verdict_user==='accept_ai')
+        ? 'audit_feedback_good'
+        : ('audit_feedback_bad_'+(payload.error_type||'unknown'));
+      window.tracker.feature(ev, {
+        type: payload.feedback_type,
+        rule_version: (payload.snapshot && payload.snapshot.rule_version) || '',
+        rule_ids: ((payload.snapshot && payload.snapshot.hits)||[]).map(function(h){return h.id;}).join(',').slice(0,60),
+        verdict: payload.verdict_user||'',
+        note_len: (payload.user_note||'').length
+      }, null, 'ai_audit');
+    }
+  } catch(_){}
+
+  // 2) 详情写入 /api/audit_feedback（用于人工审核 + AI few-shot 学习）
+  return fetch('/api/audit_feedback', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      ts: Date.now(),
+      feedback_type: payload.feedback_type,
+      verdict_user: payload.verdict_user,
+      error_type: payload.error_type,
+      user_note: payload.user_note,
+      snapshot: payload.snapshot,
+      ua: navigator.userAgent.slice(0,200),
+      page: location.pathname
+    })
+  }).then(function(r){return r.ok;}).catch(function(){return false;});
 }
 
 // 强制清缓存并重新加载最新版本

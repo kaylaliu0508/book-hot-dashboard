@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 预审反馈管理后台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',sans-serif;background:#0d1117;color:#c9d1d9;padding:18px;min-height:100vh}
+h1{font-size:18px;color:#f0f6fc;margin-bottom:4px}
+.sub{font-size:12px;color:#8b949e;margin-bottom:14px}
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;background:#161b22;border:1px solid #21262d;border-radius:8px}
+.top input,.top select,.top button{font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#c9d1d9;outline:none}
+.top button{cursor:pointer;background:#21262d}
+.top button.primary{background:#1f6feb;border-color:#1f6feb;color:#fff;font-weight:600}
+.top button:hover{background:#30363d}
+.top button.primary:hover{background:#388bfd}
+.stat-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.stat{flex:1;min-width:120px;background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px 12px}
+.stat .v{font-size:20px;font-weight:700;color:#f0f6fc}
+.stat .l{font-size:11px;color:#8b949e;margin-top:2px}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:12px;align-items:start}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+.panel{background:#161b22;border:1px solid #21262d;border-radius:8px;overflow:hidden}
+.panel h2{font-size:13px;color:#f0f6fc;padding:10px 14px;border-bottom:1px solid #21262d;background:#0d1117;display:flex;justify-content:space-between;align-items:center}
+.panel .body{max-height:calc(100vh - 300px);overflow-y:auto}
+.item{padding:10px 14px;border-bottom:1px solid #21262d;cursor:pointer;transition:.15s}
+.item:hover{background:rgba(255,255,255,.02)}
+.item.active{background:rgba(31,111,235,.08);border-left:3px solid #1f6feb;padding-left:11px}
+.item .meta{font-size:10px;color:#484f58;margin-bottom:4px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.tag{padding:1px 6px;border-radius:3px;background:#21262d;color:#8b949e;font-size:10px}
+.tag.fp{background:rgba(248,81,73,.15);color:#ff8a94}
+.tag.fn{background:rgba(255,212,59,.15);color:#ffd43b}
+.tag.bf{background:rgba(124,58,237,.15);color:#c4b5fd}
+.tag.adopted{background:rgba(63,185,80,.15);color:#3fb950}
+.tag.rejected{background:rgba(139,148,158,.2);color:#8b949e}
+.tag.new{background:rgba(31,111,235,.15);color:#58a6ff}
+.tag.overall{background:rgba(217,119,6,.15);color:#fdcb6e}
+.item .text{font-size:12px;color:#c9d1d9;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .note{font-size:10.5px;color:#8b949e;margin-top:4px;font-style:italic}
+.empty{padding:30px;text-align:center;color:#484f58;font-size:13px}
+.detail{padding:14px}
+.detail .full-text{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:10px 12px;font-size:12.5px;line-height:1.6;color:#c9d1d9;max-height:200px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.detail .field{margin-top:10px;font-size:11.5px}
+.detail .field .l{color:#8b949e;margin-bottom:3px;font-weight:600}
+.detail .field .v{color:#c9d1d9;background:#0d1117;border:1px solid #21262d;border-radius:5px;padding:6px 8px}
+.hits{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.hit{font-size:10.5px;padding:2px 7px;border-radius:10px;background:rgba(248,81,73,.1);color:#ff8a94;border:1px solid rgba(248,81,73,.2)}
+.actions textarea{width:100%;padding:8px 10px;border:1px solid #30363d;border-radius:5px;background:#0d1117;color:#c9d1d9;font-size:11.5px;font-family:inherit;resize:vertical;outline:none;min-height:50px;margin-top:10px}
+.actions-row{display:flex;gap:8px;margin-top:10px}
+.actions-row button{flex:1;padding:8px 10px;border-radius:6px;border:none;font-size:12px;font-weight:600;cursor:pointer}
+.btn-adopt{background:#3fb950;color:#fff}
+.btn-adopt:hover{background:#2ea043}
+.btn-reject{background:#21262d;color:#8b949e;border:1px solid #30363d}
+.btn-reject:hover{background:#30363d}
+.gate{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.gate .box{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:30px 28px;width:340px;text-align:center}
+.gate input{width:100%;padding:10px;border:1px solid #30363d;border-radius:6px;background:#0d1117;color:#c9d1d9;font-size:14px;outline:none;margin:14px 0}
+.gate button{width:100%;padding:10px;border-radius:6px;border:none;background:#1f6feb;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 16px;font-size:12px;color:#c9d1d9;z-index:99;display:none}
+.toast.show{display:block}
+.pool-item{padding:8px 12px;border-bottom:1px solid #21262d;font-size:11.5px}
+.pool-item .pool-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;color:#c9d1d9}
+.pool-item .pool-meta{font-size:10px;color:#8b949e;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="gate" id="gate" style="display:none">
+<div class="box">
+<h1>🔐 管理员登录</h1>
+<p class="sub" style="margin-top:6px">输入管理员 Token 进入后台</p>
+<input type="password" id="tokenInput" placeholder="请输入管理员 Token" autocomplete="off" onkeydown="if(event.key==='Enter')saveToken()">
+<button onclick="saveToken()">进入后台</button>
+</div>
+</div>
+
+<div id="main" style="display:none">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+  <span style="display:inline-block;padding:3px 10px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-size:10px;font-weight:600;letter-spacing:.5px">📮 AI 预审反馈板块</span>
+  <span style="font-size:10px;color:#484f58">/admin/audit-feedback</span>
+</div>
+<h1>🛠 AI 预审 · 用户反馈管理</h1>
+<p class="sub">用户在 AI 预审 tab 提交的「判错了」反馈都汇总在这里。一键采纳后，AI 复审下次会把这些样本作为参考，让相同/同义案例判得更准。</p>
+<div class="top">
+<label style="font-size:11px;color:#8b949e">状态：<select id="filterStatus" onchange="loadList()"><option value="new">待处理</option><option value="">全部</option><option value="adopted">已采纳</option><option value="rejected">已拒绝</option></select></label>
+<label style="font-size:11px;color:#8b949e">类型：<select id="filterErrorType" onchange="loadList()"><option value="">全部</option><option value="false_positive">误杀</option><option value="false_negative">漏判</option></select></label>
+<button onclick="loadList()">🔄 刷新</button>
+<button class="primary" onclick="togglePool()" id="poolBtn">📚 查看 AI 学习池</button>
+<button onclick="logout()" style="margin-left:auto">登出</button>
+</div>
+<div class="stat-bar" id="statBar"></div>
+<div class="grid">
+<div class="panel"><h2>反馈列表 <span id="listCount" style="font-size:11px;color:#8b949e;font-weight:400"></span></h2><div class="body" id="listBody"><div class="empty">加载中...</div></div></div>
+<div class="panel" id="rightPanel"><h2 id="detailTitle">详情</h2><div class="body" id="detailBody"><div class="empty">从左侧选择一条反馈</div></div></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="./app.js"></script>
+</body>
+</html>
