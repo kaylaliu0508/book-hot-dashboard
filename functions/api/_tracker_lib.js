@@ -96,19 +96,30 @@ export async function persistEvent(env, body) {
       }
     }
 
-    // 📚 ISBN 查询专项统计（book_extract tab 的 isbn_query 事件）
-    if (tab === 'book_extract' && name === 'isbn_query' && body.meta && body.meta.isbn) {
-      const isbn = String(body.meta.isbn).slice(0, 20).replace(/[^0-9xX]/g, '');
-      if (isbn.length >= 10) {
-        const title = body.meta.title ? String(body.meta.title).slice(0, 80) : '';
-        // 当日 map
-        const dayKeyName = `isbn:${date}`;
-        const dayMap = (await KV.get(dayKeyName, 'json')) || {};
-        if (!dayMap[isbn]) dayMap[isbn] = { count: 0, title: '', lastTs: 0 };
-        dayMap[isbn].count += 1;
-        dayMap[isbn].lastTs = ts;
-        if (title) dayMap[isbn].title = title;
-        await KV.put(dayKeyName, JSON.stringify(dayMap), opt);
+    // 📚 ISBN 查询专项统计（book_extract tab 的 isbn_query 事件 + select_hub tab 的 select_pool_toggle 事件）
+    const isbnCollectTabs = {
+      book_extract: 'isbn_query',
+      select_hub: 'select_pool_toggle',
+    };
+    const isbnEventName = isbnCollectTabs[tab];
+    if (isbnEventName && name === isbnEventName && body.meta && body.meta.isbn) {
+      // 选品池 toggle 只统计 add 动作，remove 不计入
+      const action = body.meta.action || '';
+      if (tab === 'select_hub' && action !== 'add') {
+        // skip
+      } else {
+        const isbn = String(body.meta.isbn).slice(0, 20).replace(/[^0-9xX]/g, '');
+        if (isbn.length >= 10) {
+          const title = body.meta.title ? String(body.meta.title).slice(0, 80) : '';
+          // 当日 map
+          const dayKeyName = `isbn:${date}`;
+          const dayMap = (await KV.get(dayKeyName, 'json')) || {};
+          if (!dayMap[isbn]) dayMap[isbn] = { count: 0, title: '', lastTs: 0 };
+          dayMap[isbn].count += 1;
+          dayMap[isbn].lastTs = ts;
+          if (title) dayMap[isbn].title = title;
+          await KV.put(dayKeyName, JSON.stringify(dayMap), opt);
+        }
       }
     }
   }
