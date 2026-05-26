@@ -1043,6 +1043,26 @@ function renderWeekRhythm() {
 }
 
 // ==================== 典型跑量书拆解（精简版 · 仅最新 2 期展示）====================
+// 计算某 ISBN/书名在 ADQ 榜上连续上榜的周数（从最新一周往前数）
+function computeBookStreak(isbn, title) {
+  if (typeof WEEK_RANK_LIST === 'undefined') return 0;
+  // 从 currentWeekIndex 起往前（数组中是倒序：[0]=最新）
+  let streak = 0;
+  for (let i = currentWeekIndex; i < WEEK_RANK_LIST.length; i++) {
+    const items = WEEK_RANK_LIST[i]?.data?.lists?.adq_hot?.items || [];
+    let match = false;
+    for (const it of items) {
+      if (isbn && String(it.isbn || '') === String(isbn)) { match = true; break; }
+      if (title && it.title && (it.title.includes(title.split('+')[0].trim()) || title.includes(it.title))) {
+        match = true; break;
+      }
+    }
+    if (match) streak++;
+    else break;
+  }
+  return streak;
+}
+
 function renderHotBookBreakdown() {
   const panel = document.getElementById('hub-block-hot-insight');
   const sideNav = document.querySelector('#hubSideNav .rsn-item[data-target="hub-block-hot-insight"]');
@@ -1056,12 +1076,20 @@ function renderHotBookBreakdown() {
     const cat = b.cat || '童书';
     const cover = b.image || bookCover({title:b.title, isbn:b.isbn, top_cat:cat});
     const personaText = (typeof b.persona === 'string') ? b.persona : (b.persona && b.persona.core) || '';
+    // 计算霸榜周数（>=2 周才显示徽章）
+    const streak = computeBookStreak(b.isbn, b.title);
+    const streakBadge = streak >= 2
+      ? `<span class="streak-badge" title="该书已连续 ${streak} 周上 ADQ 热投榜">🔥 霸榜 ${streak} 周</span>`
+      : '';
     return `
     <div class="hot-card hot-card-slim">
       <div class="hot-head">
         <img class="hot-cover" src="${cover}" alt="${b.title}" onerror="this.src='${bookCover({title:b.title, isbn:b.isbn, top_cat:cat})}'"/>
         <div class="hot-meta">
-          <span class="role-tag ${b.roleClass}">${b.role}</span>
+          <div class="hot-tags-row">
+            <span class="role-tag ${b.roleClass}">${b.role}</span>
+            ${streakBadge}
+          </div>
           <h3>${b.title}</h3>
           <div class="hot-isbn">📕 ${b.isbn}</div>
         </div>
@@ -1079,6 +1107,7 @@ function renderHotBookBreakdown() {
       </div>
 
       ${b.creativeCore ? `<div class="hot-line hot-line-creative"><span class="hl-tag">📹 创意核心</span><span class="hl-text">${escapeHtml(b.creativeCore)}</span></div>` : ''}
+      ${b.creativeWarning ? `<div class="hot-line hot-line-warning"><span class="hl-text">${escapeHtml(b.creativeWarning)}</span></div>` : ''}
       ${personaText ? `<div class="hot-line hot-line-persona"><span class="hl-tag">👥 核心人群</span><span class="hl-text">${escapeHtml(personaText)}</span></div>` : ''}
 
       <div class="hot-selling-slim">

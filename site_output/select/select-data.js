@@ -394,7 +394,7 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'📊', label:'日销售额', val:'60-80W', cls:'hot'},
       {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
     ],
-    creativeCore:'妈妈实拍立体书开箱 + 孩子翻页惊喜表情，主打"知识 + 礼物"双属性',
+    creativeCore:'爷爷奶奶送六一礼物 + 孩子翻页惊喜表情 + 沉浸式产品力展示，主打"知识认知提升 + 代际送礼"双属性',
     persona:'3-8 岁孩子的妈妈 + 爷爷奶奶（代际购买）',
     sellingPoints:[
       {icon:'🎨', label:'形式', val:'立体翻页，礼物质感强'},
@@ -403,7 +403,7 @@ const HOT_BOOK_BREAKDOWN = [
     ]
   },
   {
-    role:'#2 社科·文化民俗',
+    role:'#2 社科·家居生活',
     roleClass:'opportunity',
     title:'家相',
     isbn:'9787806537039',
@@ -414,11 +414,12 @@ const HOT_BOOK_BREAKDOWN = [
       {icon:'📊', label:'日销售额', val:'10-20W'},
       {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
     ],
-    creativeCore:'「家中这 5 个位置摆错全家运势不顺」悬念开场，传统文化 + 家居布局',
-    persona:'30-55 岁家庭主理人 + 关注传统文化的中老年',
+    creativeCore:'居家空间布局技巧切入：「家中这 5 个位置怎么摆，住得更舒适」实拍开箱 + 翻页讲解，传递实用居家整理 + 中式家居美学',
+    creativeWarning:'⚠️ 创意必须围绕「居家整理 / 收纳 / 中式家居美学」展开，不可涉及封建迷信、风水命理、玄学等违规表述',
+    persona:'30-55 岁家庭主理人 + 关注中式生活美学的中老年',
     sellingPoints:[
-      {icon:'🏠', label:'切口', val:'家居 + 命理双兴趣交集'},
-      {icon:'💸', label:'转化', val:'低客单 + 高悬念冲转化 12-16%'},
+      {icon:'🏠', label:'切口', val:'居家整理 + 中式生活美学双兴趣'},
+      {icon:'💸', label:'转化', val:'低客单 + 实用切入冲转化 12-16%'},
       {icon:'🎁', label:'送礼', val:'适合送父母/长辈，实用有面子'}
     ]
   },

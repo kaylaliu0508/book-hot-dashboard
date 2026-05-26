@@ -1095,6 +1095,48 @@ body.is-embedded .hub-search-bar { top: 48px; }
 .hot-line-persona { background: #f0f9ff; border-left: 3px solid #3b82f6; }
 .hot-line-persona .hl-tag { background: #3b82f6; color: #fff; }
 
+/* 创意合规警示语 */
+.hot-line-warning {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-left: 3px solid #ef4444;
+  color: #991b1b;
+  font-size: 11px;
+  padding: 6px 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-top: -4px;
+}
+.hot-line-warning .hl-text { color: #991b1b; }
+
+/* 跑量书 hot-meta 顶部标签行（角色 + 霸榜徽章并排） */
+.hot-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 999px;
+  letter-spacing: .2px;
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35);
+  white-space: nowrap;
+  animation: streak-pulse 2.4s ease-in-out infinite;
+}
+@keyframes streak-pulse {
+  0%, 100% { box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35); }
+  50% { box-shadow: 0 2px 10px rgba(245, 158, 11, 0.6); }
+}
+
 /* 卖点紧凑列表（3 项） */
 .hot-selling-slim {
   display: flex;
