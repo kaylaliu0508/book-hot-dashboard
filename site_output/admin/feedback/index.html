@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图图智能体 · 问题反馈记录</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+.header{background:linear-gradient(135deg,#FF6B35,#FF9A3C);padding:16px 24px;display:flex;align-items:center;gap:12px}
+.header h1{font-size:17px;font-weight:700;color:#fff}
+.header small{font-size:12px;color:rgba(255,255,255,.8)}
+.toolbar{padding:12px 24px;background:#161b22;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.toolbar select,.toolbar input{background:#21262d;border:1px solid #30363d;color:#e6edf3;padding:6px 12px;border-radius:8px;font-size:13px;outline:none}
+.toolbar button{background:linear-gradient(135deg,#FF6B35,#FF9A3C);border:none;color:#fff;padding:6px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600}
+.container{padding:20px 24px;max-width:1000px;margin:0 auto}
+.stats{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.stat-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:12px 18px;flex:1;min-width:120px}
+.stat-card .num{font-size:24px;font-weight:700;color:#FF9A3C}
+.stat-card .label{font-size:11px;color:#8b949e;margin-top:2px}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px;transition:.2s}
+.item:hover{border-color:#FF9A3C}
+.item-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.tag{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.tag-产品功能{background:#1d3a6e;color:#79b4f5}
+.tag-审核规则{background:#1e3a2a;color:#56d364}
+.tag-投放问题{background:#3a2d00;color:#f7c948}
+.tag-数据报表{background:#2a1d3a;color:#c084fc}
+.tag-其他问题{background:#2a2a2a;color:#8b949e}
+.item-time{font-size:11px;color:#8b949e;margin-left:auto}
+.item-content{font-size:14px;color:#e6edf3;line-height:1.6;margin-bottom:8px;white-space:pre-wrap;word-break:break-word}
+.item-contact{font-size:12px;color:#8b949e}
+.item-contact span{color:#FF9A3C}
+.empty{text-align:center;padding:60px 0;color:#8b949e;font-size:14px}
+.login-box{max-width:360px;margin:80px auto;background:#161b22;border:1px solid #30363d;border-radius:16px;padding:32px}
+.login-box h2{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center}
+.login-box input{width:100%;background:#21262d;border:1px solid #30363d;color:#e6edf3;padding:10px 14px;border-radius:10px;font-size:14px;outline:none;margin-bottom:12px}
+.login-box input:focus{border-color:#FF6B35}
+.login-box button{width:100%;background:linear-gradient(135deg,#FF6B35,#FF9A3C);border:none;color:#fff;padding:11px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+#app{display:none}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-box">
+  <h2>🔐 管理员登录</h2>
+  <input type="password" id="adminToken" placeholder="请输入邀请码或管理员 Token" onkeydown="if(event.key==='Enter')doLogin()">
+  <button onclick="doLogin()">进入后台</button>
+</div>
+
+<div id="app">
+  <div class="header">
+    <div>
+      <h1>🐰 图图智能体 · 问题反馈记录</h1>
+      <small id="lastRefresh">加载中...</small>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <select id="dateSelect" onchange="loadFeedbacks()"><option value="">今天</option></select>
+    <button onclick="loadFeedbacks()">🔄 刷新</button>
+    <span id="totalCount" style="font-size:12px;color:#8b949e;margin-left:auto"></span>
+  </div>
+
+  <div class="container">
+    <div class="stats" id="statsBar"></div>
+    <div class="list" id="feedbackList"><div class="empty">加载中...</div></div>
+  </div>
+</div>
+
+<script>
+const API = '/api/feedback';
+let authToken = '';
+
+function doLogin() {
+  const val = document.getElementById('adminToken').value.trim();
+  if (!val) { alert('请输入邀请码'); return; }
+  authToken = val;
+  // 尝试请求
+  fetch(API + '?limit=1', { headers: { 'X-Invite-Code': authToken, 'X-Admin-Token': authToken } })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok !== false) {
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        initDates(d.dates || []);
+        renderFeedbacks(d.items || [], d.total || 0);
+      } else {
+        alert('验证失败，请检查邀请码');
+      }
+    })
+    .catch(() => alert('请求失败，请检查网络'));
+}
+
+function initDates(dates) {
+  const sel = document.getElementById('dateSelect');
+  sel.innerHTML = '';
+  const today = new Date().toLocaleDateString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'');
+  const todayKey = today; // e.g. 20260526 - will be handled by API default
+  (dates.length ? dates : ['']).forEach((d, i) => {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d ? (d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)) : '今天';
+    if (i === 0) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function loadFeedbacks() {
+  const date = document.getElementById('dateSelect').value;
+  const url = API + (date ? '?date='+date : '') + '&limit=200';
+  fetch(url, { headers: { 'X-Invite-Code': authToken, 'X-Admin-Token': authToken } })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok === false) { alert('加载失败：' + (d.detail||'')); return; }
+      renderFeedbacks(d.items || [], d.total || 0);
+    })
+    .catch(() => alert('加载失败，请检查网络'));
+}
+
+const TYPE_COLORS = {'产品功能':'tag-产品功能','审核规则':'tag-审核规则','投放问题':'tag-投放问题','数据报表':'tag-数据报表','其他问题':'tag-其他问题'};
+
+function renderFeedbacks(items, total) {
+  document.getElementById('lastRefresh').textContent = '最后更新：' + new Date().toLocaleTimeString('zh-CN');
+  document.getElementById('totalCount').textContent = '共 ' + total + ' 条';
+
+  // 统计
+  const counts = {};
+  items.forEach(it => { counts[it.type] = (counts[it.type]||0)+1; });
+  const statsBar = document.getElementById('statsBar');
+  statsBar.innerHTML = '<div class="stat-card"><div class="num">'+items.length+'</div><div class="label">今日反馈</div></div>' +
+    Object.entries(counts).map(([t,n]) => `<div class="stat-card"><div class="num">${n}</div><div class="label">${t}</div></div>`).join('');
+
+  const list = document.getElementById('feedbackList');
+  if (!items.length) { list.innerHTML = '<div class="empty">暂无反馈记录</div>'; return; }
+
+  list.innerHTML = items.map(it => {
+    const tagCls = TYPE_COLORS[it.type] || 'tag-其他问题';
+    const time = it.created_at ? new Date(it.created_at).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+    const contact = it.contact ? `<div class="item-contact">联系方式：<span>${escHtml(it.contact)}</span></div>` : '';
+    return `<div class="item">
+      <div class="item-head">
+        <span class="tag ${tagCls}">${escHtml(it.type)}</span>
+        <span class="item-time">${time}</span>
+      </div>
+      <div class="item-content">${escHtml(it.content)}</div>
+      ${contact}
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
