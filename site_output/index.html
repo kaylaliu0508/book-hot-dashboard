@@ -448,10 +448,10 @@ function go(id,el){
   }
   // 埋点：切 tab
   try{
-    var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','pselect':'select_hub','pai':'ai_assistant'};
-    var t=TAB_MAP[id];
-    if(t&&window.tracker)window.tracker.setTab(t);
-  }catch(e){}
+     var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','p6':'image_copy_gen','pselect':'select_hub','pai':'ai_assistant'};
+     var t=TAB_MAP[id];
+     if(t&&window.tracker)window.tracker.setTab(t);
+   }catch(e){}
   // 切到创意生产相关 tab 时主动 refresh 选品池队列条
   if((id==='p4'||id==='p6') && window.CreativeInbox && typeof window.CreativeInbox.refresh==='function'){
     try{ window.CreativeInbox.refresh(); }catch(e){}
@@ -2993,6 +2993,11 @@ var isbnBookInfo=null;
 async function autoLookupISBN(){
   var isbn=document.getElementById('isbnInput').value.trim().replace(/[-\s]/g,'');
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
+
+  // 📊 ISBN 查询埋点（输入 ISBN 离开输入框，触发自动识别 = 一次用户查询行为）
+  //    用相同的 name='isbn_query' 让后端 _tracker_lib.js 计入 isbn:book_extract:{date} Top
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'book_extract'); } catch(_){}
+
   var status=document.getElementById('isbnLookupStatus');
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
@@ -3098,6 +3103,11 @@ async function runIsbnCollect(force){
   var title=document.getElementById('bookTitleInput').value.trim();
   if(!isbn){alert('请输入ISBN编号（必填）');document.getElementById('isbnInput').focus();return;}
   if(!/^\d{10,13}$/.test(isbn)){alert('ISBN格式不正确，应为10或13位数字');return;}
+
+  // 📊 ISBN 查询埋点（用于 /stats/ 的「ISBN Top 查询书目」聚合）
+  //    后端 _tracker_lib.js 识别规则：tab=book_extract + name=isbn_query + meta.isbn → 计入 isbn:book_extract:{date}
+  //    此处先发一次"开始查询"事件（含输入 ISBN，title 可能此刻还未识别，留空也 OK）
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'book_extract'); } catch(_){}
 
   // 如果没有书名，先尝试通过 ISBN 查询自动补全
   if(!title){
@@ -3952,6 +3962,11 @@ function adCleanName(name,author,publisher){
 async function adAutoLookup(){
   var isbn=document.getElementById('adIsbnInput').value.trim().replace(/[-\s]/g,'');
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
+
+  // 📊 ISBN 查询埋点 - 图片文案生成 tab
+  //    后端 _tracker_lib.js: image_copy_gen + isbn_query → isbn:image_copy_gen:{date} Top
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'image_copy_gen'); } catch(_){}
+
   var status=document.getElementById('adLookupStatus');
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
@@ -4000,6 +4015,9 @@ async function runAdGen(force){
   var title=document.getElementById('adBookTitleInput').value.trim();
   if(!isbn){isbnToast('请输入ISBN编号（必填）');document.getElementById('adIsbnInput').focus();return;}
   if(!/^\d{10,13}$/.test(isbn)){isbnToast('ISBN格式不正确，应为10或13位数字');return;}
+
+  // 📊 ISBN 查询埋点（点击「生成图片文案」= 一次正式查询）
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'image_copy_gen'); } catch(_){}
 
   // 自动识别书名（如未填）
   if(!title){

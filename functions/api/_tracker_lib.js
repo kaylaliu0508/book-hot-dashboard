@@ -97,11 +97,13 @@ export async function persistEvent(env, body) {
     }
 
     // 📚 ISBN 专项统计（分来源独立统计）
-    // book_extract/isbn_query → isbn:book_extract:{date}
+    // book_extract/isbn_query      → isbn:book_extract:{date}
     // select_hub/select_pool_toggle(add) → isbn:select_hub:{date}
+    // image_copy_gen/isbn_query    → isbn:image_copy_gen:{date}
     const isbnCollectTabs = {
       book_extract: 'isbn_query',
       select_hub: 'select_pool_toggle',
+      image_copy_gen: 'isbn_query',
     };
     const isbnEventName = isbnCollectTabs[tab];
     if (isbnEventName && name === isbnEventName && body.meta && body.meta.isbn) {
@@ -238,8 +240,8 @@ export async function aggregateStats(env, range, tabFilter) {
     result.tabs[tab] = tabAgg;
   }
 
-  // 📚 ISBN 分来源 Top 聚合（isbn:book_extract:{date} / isbn:select_hub:{date}）
-  const isbnSources = ['book_extract', 'select_hub'];
+  // 📚 ISBN 分来源 Top 聚合（isbn:book_extract / isbn:select_hub / isbn:image_copy_gen）
+  const isbnSources = ['book_extract', 'select_hub', 'image_copy_gen'];
   const isbnResult = {};
   for (const src of isbnSources) {
     const agg = {};
