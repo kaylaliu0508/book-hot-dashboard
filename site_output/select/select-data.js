@@ -456,7 +456,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       roleClass:'opportunity',
       title:'66 篇英语故事记 2100 词',
       isbn:'9787521335156',
-      image:'rank-images/image1375.jpg',
+      image:'rank-images/image1377.jpg',
       cat:'教辅',
       stats:[
         {icon:'💰', label:'客单', val:'¥399'},
@@ -478,8 +478,8 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'📊', label:'日销售额', val:'10-20W'},
         {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
       ],
-      persona:'8-14 岁孩子的妈妈（关注课外阅读 + 家庭情感教育）',
-      creativeCore:'帝王 + 漫画 + 家书 三元素叠加；漫画形态降低阅读门槛；¥39.9 适配课外阅读日常采购，以"家书"载体连接亲子话题'
+      persona:'8-14 岁孩子的妈妈（关注孩子成长教育）',
+      creativeCore:'打教育解决方案信息差，主打逆袭翻盘 — 帝王智慧切入，提高孩子为人处事和情商；漫画形态降低阅读门槛，¥39.9 适配课外阅读日常采购'
     }
   ]
 };
