@@ -3126,11 +3126,37 @@ async function runIsbnCollect(force){
     try{
       searchResults=await webSearchBook(confirmedTitle,isbn);
       if(searchResults.length>0){
-        // 统计各权威源命中条数，便于直观判断检索质量
-        var srcCnt={};for(var _si=0;_si<searchResults.length;_si++){var _s=searchResults[_si].src;srcCnt[_s]=(srcCnt[_s]||0)+1;}
+        // 按平台分组列出每条真实来源（标题 + 可点击链接），让用户看到检索到了什么
         var srcLabelTxt={dangdang:'当当',jd_self:'京东自营',jd_book:'京东读书',douban:'豆瓣',publisher:'出版社官网',editor:'编辑推荐',toc:'目录',review:'书评'};
-        var srcSummary=Object.keys(srcCnt).map(function(k){return (srcLabelTxt[k]||k)+'×'+srcCnt[k];}).join('｜');
-        body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p><p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p><p style="color:#8b949e;font-size:11px;margin-top:4px">📡 来源分布：'+srcSummary+'</p>';
+        var grouped={};
+        for(var _si=0;_si<searchResults.length;_si++){
+          var _sr=searchResults[_si];
+          var _k=_sr.src||'other';
+          (grouped[_k]=grouped[_k]||[]).push(_sr);
+        }
+        // 按原 query 权重顺序展示
+        var srcOrder=['dangdang','jd_self','publisher','jd_book','douban','toc','editor','review'];
+        var srcListHtml='';
+        for(var _oi=0;_oi<srcOrder.length;_oi++){
+          var _key=srcOrder[_oi];if(!grouped[_key]) continue;
+          var _items=grouped[_key];
+          srcListHtml+='<div style="margin-top:6px"><span style="display:inline-block;background:#1f2937;color:#58a6ff;padding:1px 8px;border-radius:10px;font-size:11px;margin-right:6px">'+(srcLabelTxt[_key]||_key)+' '+_items.length+' 条</span>';
+          srcListHtml+='<ul style="margin:4px 0 0 18px;padding:0;font-size:11px;color:#8b949e;line-height:1.7">';
+          for(var _ii=0;_ii<_items.length;_ii++){
+            var _it=_items[_ii];
+            var _ttl=(_it.title||'(无标题)').replace(/</g,'&lt;').substring(0,80);
+            if(_it.link){
+              srcListHtml+='<li><a href="'+_it.link+'" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none" title="'+_it.link+'">'+_ttl+'</a></li>';
+            }else{
+              srcListHtml+='<li>'+_ttl+'</li>';
+            }
+          }
+          srcListHtml+='</ul></div>';
+        }
+        body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p>'
+          +'<p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>'
+          +'<details style="margin-top:6px" open><summary style="cursor:pointer;color:#8b949e;font-size:11px">📡 检索到的真实来源（点击折叠）</summary>'
+          +'<div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:8px 10px;margin-top:4px;max-height:280px;overflow-y:auto">'+srcListHtml+'</div></details>';
         ptxt.textContent='第3步：基于联网数据生成报告...';
       }else{
         searchFailReason='无结果';
