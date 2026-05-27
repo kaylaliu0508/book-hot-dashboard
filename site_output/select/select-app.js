@@ -1018,8 +1018,8 @@ function renderWeekRhythm() {
     // 品类标签列
     const prioCls = row.priority.toLowerCase(); // p0 / p1 / p2
     // ★ 优化方向三：每行品类标签列底部增加「查看对应书单」链接
-    //   推荐书单含 童书/健康/社科 三大品类，教辅暂无，回退到"全部推荐"
-    const recKey = ['童书','健康','社科'].indexOf(row.cat) >= 0 ? row.cat : 'all';
+    //   推荐书单含 教辅/童书/健康/社科 四大品类，每个都有独立 panel
+    const recKey = ['教辅','童书','健康','社科'].indexOf(row.cat) >= 0 ? row.cat : 'all';
     const jumpLabel = recKey === 'all' ? '全部书单' : (row.cat + '书单');
     html += `
       <div class="wr-cat-head ${row.colorClass}">
@@ -1947,7 +1947,7 @@ document.addEventListener('click', e => {
       '童书': 'hub-block-rec-child',
       '健康': 'hub-block-rec-health',
       '社科': 'hub-block-rec-social',
-      '教辅': 'hub-block-rec-intro',
+      '教辅': 'hub-block-rec-edu',
       'all':  'hub-block-rec-intro'
     };
     const targetId = panelMap[recKey] || 'hub-block-rec-intro';
