@@ -1142,15 +1142,9 @@ function renderHotBookBreakdown() {
         }).join('')}
       </div>
 
+      ${personaText ? `<div class="hot-line hot-line-persona"><span class="hl-tag">👥 目标人群</span><span class="hl-text">${escapeHtml(personaText)}</span></div>` : ''}
       ${b.creativeCore ? `<div class="hot-line hot-line-creative"><span class="hl-tag">📹 创意核心</span><span class="hl-text">${escapeHtml(b.creativeCore)}</span></div>` : ''}
       ${b.creativeWarning ? `<div class="hot-line hot-line-warning"><span class="hl-text">${escapeHtml(b.creativeWarning)}</span></div>` : ''}
-      ${personaText ? `<div class="hot-line hot-line-persona"><span class="hl-tag">👥 核心人群</span><span class="hl-text">${escapeHtml(personaText)}</span></div>` : ''}
-
-      <div class="hot-selling-slim">
-        ${b.sellingPoints.map(p => `
-          <div class="ssi"><span class="ssi-ic">${p.icon}</span><span class="ssi-lb">${p.label}</span><span class="ssi-vl">${escapeHtml(p.val)}</span></div>
-        `).join('')}
-      </div>
     </div>`;
   }).join('') + `</div>`;
   document.getElementById('hotBookBreakdown').innerHTML = html;

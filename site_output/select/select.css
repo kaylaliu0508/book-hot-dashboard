@@ -1148,14 +1148,16 @@ body.is-embedded .hub-search-bar { top: 48px; }
 .hot-line-creative {
   background: #fff7ed;
   border-left: 3px solid #f97316;
-  /* 给创意核心固定最小高度，3 张卡片此行对齐 */
-  min-height: 56px;
+  /* 创意核心承载亮点+卖点融合，最小 64px */
+  min-height: 64px;
+  margin-top: auto;  /* 推到卡片底部，3 卡底对齐 */
 }
 .hot-line-creative .hl-tag { background: #f97316; color: #fff; }
 .hot-line-persona {
   background: #f0f9ff;
   border-left: 3px solid #3b82f6;
-  min-height: 40px;
+  /* 目标人群也承载场景信息，最小 56px */
+  min-height: 56px;
 }
 .hot-line-persona .hl-tag { background: #3b82f6; color: #fff; }
 
