@@ -3263,6 +3263,21 @@ async function runIsbnCollect(force){
         }
         body.innerHTML='<p style="color:#58a6ff">✅ 已确认图书：'+verifyResult+'</p>'
           +'<p style="color:#3fb950;margin-top:8px">🌐 联网搜索到 '+searchResults.length+' 条相关信息，正在生成报告...</p>'
+          +(function(){
+            // 新书识别：出版日期是未来 / 近 60 天内 → 给明确提示，避免用户误以为系统有 bug
+            try{
+              var pd=isbnBookInfo&&isbnBookInfo.date;
+              if(!pd) return '';
+              var pdMs=Date.parse(pd.replace(/-/g,'/'));
+              if(isNaN(pdMs)) return '';
+              var diffDay=(pdMs-Date.now())/86400000;
+              if(diffDay>-60){ // 未来或上市 < 60 天
+                var when=diffDay>0?('上市日期 '+pd+'，距今还有 '+Math.ceil(diffDay)+' 天'):('上市日期 '+pd+'，刚上市 '+Math.ceil(-diffDay)+' 天');
+                return '<p style="background:#3a2e0a;border-left:3px solid #f0b429;color:#f0b429;font-size:11px;padding:6px 10px;margin-top:4px;border-radius:0 4px 4px 0">📅 这是新书：'+when+'。全网通常还没有目录、前言、金句、书评等二手内容，所以这些维度可能为空。报告将基于 ISBN 国内库的官方简介 + AI 推演的人群/卖点输出。</p>';
+              }
+              return '';
+            }catch(e){return '';}
+          })()
           +'<details style="margin-top:6px" open><summary style="cursor:pointer;color:#8b949e;font-size:11px">📡 检索到的真实来源（点击折叠）</summary>'
           +'<div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:8px 10px;margin-top:4px;max-height:320px;overflow-y:auto">'+srcListHtml+'</div></details>';
         ptxt.textContent='第3步：基于联网数据生成报告...';
