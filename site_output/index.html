@@ -3613,12 +3613,13 @@ try{
 SCRIPT_CURRENT_MENU={menu:menu,duration:duration,bookContent:bookContent,audience:audience,tones:tones};
 document.getElementById('scriptLoading').style.display='none';
 document.getElementById('scriptGenBtn').disabled=false;
-scriptRenderMenu();
+scriptRenderMenu({scroll:true,toast:'✅ 已生成 '+menu.chunks.length+' 段 × 4 候选'});
 scriptAnalyzeAudit(bookContent);
 }
 
-// 渲染分块菜单
-function scriptRenderMenu(){
+// 渲染分块菜单（opts: {scroll, toast}）
+function scriptRenderMenu(opts){
+opts=opts||{};
 if(!SCRIPT_CURRENT_MENU)return;
 var menu=SCRIPT_CURRENT_MENU.menu, duration=SCRIPT_CURRENT_MENU.duration;
 var container=document.getElementById('scriptCards');
@@ -3639,7 +3640,7 @@ menu.chunks.forEach(function(c,ci){
   var chipsHtml='<div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;background:#0d1117">';
   (c.candidates||[]).forEach(function(cd,idx){
     var isOn=idx===c._selected;
-    chipsHtml+='<span onclick="scriptSelectCandidate('+ci+','+idx+')" style="padding:5px 12px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid '+(isOn?'#e63946':'#30363d')+';background:'+(isOn?'#e63946':'#21262d')+';color:'+(isOn?'#fff':'#8b949e')+';font-weight:'+(isOn?'600':'400')+'">候选'+(idx+1)+'·'+(cd.tone_name||cd.tone||'')+'</span>';
+    chipsHtml+='<span onclick="scriptSelectCandidate(event,'+ci+','+idx+')" style="padding:5px 12px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid '+(isOn?'#e63946':'#30363d')+';background:'+(isOn?'#e63946':'#21262d')+';color:'+(isOn?'#fff':'#8b949e')+';font-weight:'+(isOn?'600':'400')+'">候选'+(idx+1)+'·'+(cd.tone_name||cd.tone||'')+'</span>';
   });
   chipsHtml+='</div>';
   // 当前候选正文
@@ -3658,15 +3659,43 @@ menu.chunks.forEach(function(c,ci){
 });
 document.getElementById('scriptOutput').style.display='block';
 scriptUpdatePreview();
-document.getElementById('scriptOutput').scrollIntoView({behavior:'smooth'});
-isbnToast('✅ 已生成 '+menu.chunks.length+' 段 × 4 候选');
+if(opts.scroll) document.getElementById('scriptOutput').scrollIntoView({behavior:'smooth'});
+if(opts.toast) isbnToast(opts.toast);
 }
 
-// 选中某 chunk 的某候选
-function scriptSelectCandidate(chunkIdx,cndIdx){
+// 选中某 chunk 的某候选：阻止默认+不滚动+只局部更新该 chunk 的高亮+正文+预览
+function scriptSelectCandidate(ev,chunkIdx,cndIdx){
+  if(ev && ev.preventDefault) ev.preventDefault();
   if(!SCRIPT_CURRENT_MENU)return;
-  SCRIPT_CURRENT_MENU.menu.chunks[chunkIdx]._selected=cndIdx;
-  scriptRenderMenu();
+  var chunk=SCRIPT_CURRENT_MENU.menu.chunks[chunkIdx];
+  if(!chunk) return;
+  if(chunk._selected===cndIdx){scriptUpdatePreview();return;}
+  chunk._selected=cndIdx;
+  // 仅更新该 chunk 卡片，不重渲整体（避免任何 reflow 引起跳动）
+  var card=document.querySelector('#scriptCards [data-chunk-idx="'+chunkIdx+'"]');
+  if(!card){scriptRenderMenu({scroll:false});return;}
+  // 更新 chip 高亮
+  var chips=card.querySelectorAll('span[onclick^="scriptSelectCandidate"]');
+  chips.forEach(function(ch,i){
+    var isOn=i===cndIdx;
+    ch.style.background=isOn?'#e63946':'#21262d';
+    ch.style.color=isOn?'#fff':'#8b949e';
+    ch.style.borderColor=isOn?'#e63946':'#30363d';
+    ch.style.fontWeight=isOn?'600':'400';
+  });
+  // 更新正文+字数状态
+  var sel=chunk.candidates&&chunk.candidates[cndIdx]||{};
+  var safeText=(sel.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var bodyDiv=card.querySelector('div[style*="line-height:2"]');
+  if(bodyDiv) bodyDiv.innerHTML=safeText;
+  var wc=(sel.text||'').replace(/\s/g,'').length;
+  var inRange=wc>=chunk.minW&&wc<=chunk.maxW;
+  var statusColor=inRange?'#3fb950':(wc<chunk.minW?'#fdcb6e':'#f85149');
+  var statusText=inRange?('✅ '+wc+' 字'):(wc<chunk.minW?('⚠️ '+wc+' 字 偏短'):('⚠️ '+wc+' 字 偏长'));
+  var statusDiv=card.querySelector('div[style*="font-weight:600"][style*="font-size:11px"]');
+  if(statusDiv){statusDiv.textContent=statusText;statusDiv.style.color=statusColor;}
+  // 更新底部组合预览
+  scriptUpdatePreview();
 }
 
 // 实时拼接预览
@@ -3756,7 +3785,7 @@ async function scriptRegenerateChunk(chunkIdx,btn){
     arr.forEach(function(cd){cd.text=scriptCleanCandidate(cd.text);});
     chunk.candidates=arr.slice(0,4);
     chunk._selected=0;
-    scriptRenderMenu();
+    scriptRenderMenu({scroll:false});
     isbnToast('✅ 已换一批');
   }catch(e){
     btn.disabled=false;btn.textContent=oldText;
