@@ -254,7 +254,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面5: 口播脚本 ==================== -->
 <div class="ct pg" id="pg-p5">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
-<p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（时长可选 30秒～5分钟）</p>
+<p class="subtitle">粘贴图书内容 → AI 生成「分块脚本菜单」，每段 4 个候选，自由组合</p>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
 ⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
 </div>
@@ -289,14 +289,14 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </div>
 <div id="scriptDurationHint" style="font-size:10.5px;color:#8b949e;margin-bottom:14px;padding:6px 10px;background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.15);border-radius:6px">90秒：≈ 405–450 字 · 钩子+痛点共鸣+2-3 个内容点+价值锚+行动号召（详细带货）</div>
 
-<label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">口播风格 <span style="color:#484f58;font-weight:400">（可多选）</span></label>
+<label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">全局语气倾向 <span style="color:#484f58;font-weight:400">（可选，留空则每块自动给出 4 种语气候选）</span></label>
 <div id="scriptStyleChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-<span class="qt scp on" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="全部" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">全部生成</span>
-<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="信息差揭秘" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🔓 信息差揭秘</span>
-<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="稀缺紧迫" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">⏰ 稀缺紧迫</span>
-<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="知识干货" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💎 知识干货</span>
-<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="情感共鸣" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💗 情感共鸣</span>
-<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',true)" data-value="颠覆认知" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🤯 颠覆认知</span>
+<span class="qt scp on" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="auto" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">不限（4 种语气候选）</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="info_gap" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🔓 信息差揭秘</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="scarcity" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">⏰ 稀缺紧迫</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="knowledge" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💎 知识干货</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="emotion" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💗 情感共鸣</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptStyleChips',false)" data-value="mindblown" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🤯 颠覆认知</span>
 </div>
 
 <div style="display:flex;justify-content:center;gap:10px">
@@ -307,13 +307,22 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 <div id="scriptOutput" style="display:none">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-<h3 style="font-size:15px;color:#f0f6fc">🎬 生成结果</h3>
+<h3 style="font-size:15px;color:#f0f6fc">🎬 分块脚本菜单</h3>
 <div style="display:flex;gap:6px">
-<button onclick="scriptCopyAll()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制全部</button>
+<button onclick="scriptCopyAll()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📋 复制组合</button>
 <button onclick="scriptExportMd()" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer">📄 导出MD</button>
 </div>
 </div>
+<!-- 分块菜单容器 -->
 <div id="scriptCards"></div>
+<!-- 实时预览区 -->
+<div id="scriptPreviewBox" style="margin-top:14px;background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:14px;display:none">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div style="font-size:13px;color:#f0f6fc;font-weight:600">✨ 已组合脚本（实时预览）</div>
+    <div id="scriptPreviewMeta" style="font-size:11px;color:#8b949e"></div>
+  </div>
+  <div id="scriptPreviewText" style="font-size:12.5px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word;max-height:340px;overflow-y:auto;padding:8px;background:#161b22;border-radius:6px"></div>
+</div>
 <div id="scriptAuditSection" style="display:none;margin-top:16px">
 <div style="background:rgba(253,203,110,0.06);border:1px solid rgba(253,203,110,0.15);border-radius:10px;padding:16px">
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span style="font-size:16px">🛡️</span><h3 style="font-size:14px;color:#f0f6fc">该书品类审核注意事项</h3></div>
@@ -3447,26 +3456,158 @@ function scriptOnDurationChange(){
 // 字数统计
 (function(){var ta=document.getElementById('scriptBookContent');if(ta)ta.addEventListener('input',function(){document.getElementById('scriptCharCount').textContent=ta.value.length;});})();
 
-// chip选择
+// chip选择（风格 chip 改为单选）
 function scriptChipClick(el,containerId,isMulti){
 var container=document.getElementById(containerId);
 var chips=container.querySelectorAll('.scp');
 if(isMulti){
   if(el.dataset.value==='全部'){for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');el.classList.add('on');}
-  else{container.querySelector('[data-value="全部"]').classList.remove('on');el.classList.toggle('on');if(!container.querySelector('.scp.on'))container.querySelector('[data-value="全部"]').classList.add('on');}
+  else{var allChip=container.querySelector('[data-value="全部"]');if(allChip)allChip.classList.remove('on');el.classList.toggle('on');if(!container.querySelector('.scp.on')&&allChip)allChip.classList.add('on');}
 }else{for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');el.classList.add('on');}
 }
 
-function scriptBuildPrompt(bookContent,audience,type,duration){
-var d=duration||SCRIPT_DURATIONS[2]; // 默认 90 秒
-return '你是一位顶尖的图书类短视频口播脚本创作专家。你深谙爆款脚本的底层逻辑，擅长用口语化、有节奏感的表达吸引观众并促成购买。\n\n## 🔥 跑量素材实战话术（优先级最高）\n\n### 跑量脚本黄金结构\n1. 生活场景提问开场（3-5秒）\n2. 权威引述过渡\n3. 核心内容展开（占60-70%篇幅）\n4. 情感升华\n5. 紧迫收尾\n\n### 跑量开场句式\n- "XX更好，还是XX更好？大部分人都不知道这两种XX的区别"\n- "XX可以XX吗？天天XX和天天XX的人，身体会有哪些差别？"\n- "适合中老年的XX不是XX，也不是XX，而是家里不起眼的它"\n\n### 跑量内容展开句式\n- 食材绝配："为什么XX和XX是绝配？为什么XX要放XX？为什么XX要配XX？"\n- 四季买菜："春天应该买什么菜？夏天应该买什么菜？如果你不懂，那你就是稀里糊涂乱买"\n- 同类对比："同样买500块钱的菜，有些人买的都是补品，有些人买的都是糟粕"\n- 数字锚定："里面有一千多个食补技巧、200多个食物健康知识"\n- 图文搭配："每个XX都配了详细的图文，一看就会，一学就懂"\n\n### 跑量情感升华句式\n- "如果再让我回到40岁，什么车子、房子、票子我一个都不要，我就逼着自己把这本书看完"\n- "一家人我觉得至少要有三个人看过这本书"\n- "不论你长得多漂亮、学历有多高，相信我，你都不知道一个健康的身体有多重要"\n\n### 跑量收尾句式\n- "价格不贵，但很值。趁现在还能找到，赶紧带一本回去"\n- "这个东西不贵，就几十块钱。你差的不是钱，你差的是这个决心"\n- "简直就是你的私人XX顾问，让家人的每一天都充满XX"\n\n### 句式库（开场/过渡/价值锚定/收尾）\n- 开场："你知道XX吗？""你从来不XX，所以你总是XX""这就是大家苦苦寻找的XX"\n- 过渡："我跟你讲，这里面写的真的太好了""书里面写的清清楚楚"\n- 价值锚定："全书XX页，收录了XX种方法""图文搭配，一看就会"\n- 情感："有用的书才是好书""把它放在家里，关键时刻必将派上大用场"\n- 收尾："感兴趣的话可以看看""有需要的赶紧入手一本"\n\n## 去AI味规则\n禁用：首先/其次/最后、众所周知、值得一提、本书、此外、综上所述、在当今社会、让我们一起\n必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用"你"对话\n\n## 审核合规红线\n【绝对禁用】最好/最佳/第一/唯一/顶级/万能/国家级/权威认证\n【禁用医疗词】治疗/治愈/根治/疗效/预防生病/排毒养颜/降血糖/降血压\n【禁用承诺】保证有效/100%/立竿见影/XX天见效/看完就能XX\n【禁用恐慌】出大事了/紧急通知/震惊/50岁以上必看/不买后悔一辈子\n【禁用诱导】不知道你做了多大好事才刷到/能量低的人刷不到\n【禁用稀缺】仅剩XX本/只剩/马上下架/库存不多/限量\n【禁用迷信】转运/改命/占卜/风水/万年历/生辰八字/大运流年/命里缺啥/出生时辰落地\n【禁用背书】专家推荐/教育部推荐/新课改推荐（无授权）/N岁营养师/86岁老中医（虚构高龄专家）\n【禁用伪科学】每天必须吃X/N吃N不吃/K糖期/必须禁止吃某物（指令性饮食断言）\n【禁用虚构故事】村里有个奇怪现象/这里有个不为人知的秘密/久病在床的人都没有（无事实依据噱头）\n【禁用仿新闻】晚间播报/记者获悉/央视报道/权威发布/官方通报（仿新闻形式素材）\n【禁用K12学科】少儿编程课/核桃编程/口算PK/学科辅导（K12学科类培训不支持推广）\n【禁用分数承诺】从X分提到X分/提分X分/X分以上/再做题就简单多了（学习产品具体分数承诺）\n\n## 当前任务\n创作【'+type.name+'】风格的口播脚本，目标时长 **'+d.label+'**。\n风格结构（参考）：'+type.structure+'\n时长结构（必须遵守）：'+d.structure+'\n\n## 目标受众\n'+audience+'\n\n## 图书内容\n'+bookContent+'\n\n## 硬性要求\n1. **字数严格控制在 '+d.minWords+'–'+d.maxWords+' 字之间**（按 4.5 字/秒朗读速度对应 '+d.label+'）。少于下限或超过上限都属于失败。\n2. 节奏与节制：'+d.pace+'\n3. 内容点数量：约 '+d.points+' 个核心点（从书中提取真实内容）\n4. 优先套用跑量句式\n5. 60%篇幅讲书中具体内容\n6. 完全口语化\n7. 融入真实内容，禁止编造\n8. 通过广告法+腾讯审核\n9. 结尾自然行动号召\n10. 去AI味\n11. 语气词≥3个\n12. 长短句交替\n13. 【素材差异化】每篇脚本必须选取书中不同的内容片段、不同的案例、不同的人物/故事来展开。严禁多篇脚本引用相同的例子或段落。如果书中有多个章节/知识点/人物故事，每篇脚本聚焦不同的章节或知识点\n\n## 输出格式\n直接输出完整口播脚本，用空行分段。不加标签、不加标题、不加解释。一气呵成。**字数务必落在 '+d.minWords+'–'+d.maxWords+' 之间**。';
+// ==================== 分块脚本菜单 ====================
+// 7 档时长各自的 chunk 结构（按字数比例切分）；每个 chunk 4 个候选语气
+var SCRIPT_CHUNK_PLAN={
+  30:[
+    {id:'hook',  name:'开头钩子',     pct:0.30, hint:'3-5秒抓眼球'},
+    {id:'point', name:'单一爆点',     pct:0.50, hint:'最强一招打透'},
+    {id:'cta',   name:'行动号召',     pct:0.20, hint:'催促行动'}
+  ],
+  60:[
+    {id:'hook',  name:'开头钩子',     pct:0.20, hint:'3-5秒抓眼球'},
+    {id:'point', name:'2 个内容点',   pct:0.55, hint:'核心信息'},
+    {id:'anchor',name:'价值锚定',     pct:0.13, hint:'放大价值'},
+    {id:'cta',   name:'行动号召',     pct:0.12, hint:'催促行动'}
+  ],
+  90:[
+    {id:'hook',  name:'开头钩子',     pct:0.12, hint:'生活场景提问'},
+    {id:'pain',  name:'痛点共鸣',     pct:0.20, hint:'戳到他'},
+    {id:'point', name:'2-3 个内容点', pct:0.50, hint:'书中真实内容'},
+    {id:'cta',   name:'行动号召',     pct:0.18, hint:'价值锚+催促'}
+  ],
+  120:[
+    {id:'hook',  name:'开头钩子',     pct:0.10, hint:'生活场景提问'},
+    {id:'pain',  name:'痛点共鸣',     pct:0.15, hint:'戳到他'},
+    {id:'point', name:'3 个内容点',   pct:0.45, hint:'书中真实内容'},
+    {id:'emo',   name:'情感升华',     pct:0.15, hint:'打动他'},
+    {id:'cta',   name:'价值锚+行动号召',pct:0.15,hint:'催促行动'}
+  ],
+  180:[
+    {id:'hook',  name:'开头钩子',     pct:0.08, hint:'生活场景提问'},
+    {id:'pain',  name:'痛点深挖',     pct:0.15, hint:'让他坐不住'},
+    {id:'point', name:'5 个内容点+案例',pct:0.50,hint:'故事化展开'},
+    {id:'emo',   name:'情感升华',     pct:0.12, hint:'高潮共鸣'},
+    {id:'anchor',name:'价值锚定',     pct:0.08, hint:'放大价值'},
+    {id:'cta',   name:'行动号召',     pct:0.07, hint:'催促行动'}
+  ],
+  240:[
+    {id:'hook',  name:'开头钩子',     pct:0.07, hint:'生活场景提问'},
+    {id:'pain',  name:'痛点深挖+对比',pct:0.15, hint:'让他坐不住'},
+    {id:'point', name:'5-6 个内容点+多案例',pct:0.55,hint:'故事化展开'},
+    {id:'emo',   name:'情感升华',     pct:0.10, hint:'高潮共鸣'},
+    {id:'anchor',name:'价值锚定',     pct:0.07, hint:'放大价值'},
+    {id:'cta',   name:'行动号召',     pct:0.06, hint:'催促行动'}
+  ],
+  300:[
+    {id:'hook',  name:'开场钩子',     pct:0.06, hint:'生活场景提问'},
+    {id:'bg',    name:'背景铺垫',     pct:0.10, hint:'引入主题'},
+    {id:'pain',  name:'痛点深挖',     pct:0.12, hint:'让他坐不住'},
+    {id:'point', name:'6-7 个内容点+完整案例',pct:0.50,hint:'故事化展开'},
+    {id:'turn',  name:'转折/反差',    pct:0.08, hint:'制造意外'},
+    {id:'emo',   name:'情感升华',     pct:0.08, hint:'高潮共鸣'},
+    {id:'anchor',name:'价值锚定',     pct:0.04, hint:'放大价值'},
+    {id:'cta',   name:'行动号召',     pct:0.02, hint:'催促行动'}
+  ]
+};
+// 每个 chunk 4 个候选的 tone（语气）配置
+var CHUNK_TONES=[
+  {id:'info_gap', name:'信息差',  emoji:'🔓'},
+  {id:'knowledge',name:'干货',    emoji:'💎'},
+  {id:'emotion',  name:'情感',    emoji:'💗'},
+  {id:'mindblown',name:'颠覆',    emoji:'🤯'}
+];
+// 当用户选择全局语气倾向时，每个 chunk 仍生成 4 个候选，但 4 个全围绕该语气做小幅变化
+function scriptResolveChunkTones(globalTone){
+  if(!globalTone || globalTone==='auto') return CHUNK_TONES.slice();
+  var base=CHUNK_TONES.find(function(t){return t.id===globalTone;}) || CHUNK_TONES[0];
+  return [
+    {id:base.id+'_v1', name:base.name+'·标准', emoji:base.emoji},
+    {id:base.id+'_v2', name:base.name+'·更口语',emoji:base.emoji},
+    {id:base.id+'_v3', name:base.name+'·更短促',emoji:base.emoji},
+    {id:base.id+'_v4', name:base.name+'·更具体',emoji:base.emoji}
+  ];
+}
+// 共用基础规则段（去 AI 味 + 审核合规红线 + 跑量句式库），所有调用都用这段
+var SCRIPT_BASE_RULES='## 🔥 跑量素材实战话术（参考库，可灵活借用）\n开场套路：生活场景提问/对比悬念/反常识反问；过渡：\"我跟你讲\"\"书里写得清清楚楚\"；价值锚定：具体页数/章节数/方法数+图文搭配；情感升华：\"一家人至少要有一个人看过\"\"我宁可放弃XX也要看完\"；收尾：\"价格不贵但很值\"\"差的不是钱是这个决心\"。\n\n## 去AI味（必须）\n禁用：首先/其次/最后、众所周知、值得一提、本书、综上所述、在当今社会、让我们一起。必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用\"你\"对话。\n\n## 审核合规红线（违规直接重写）\n绝对禁用：最好/最佳/第一/唯一/顶级/万能/国家级/权威认证；禁用医疗词：治疗/治愈/根治/疗效/排毒养颜/降血糖；禁用承诺：保证有效/100%/立竿见影/X天见效；禁用恐慌：出大事了/震惊/不买后悔一辈子；禁用诱导：能量低的人刷不到；禁用稀缺：仅剩X本/马上下架/限量；禁用迷信：转运/改命/风水/生辰八字；禁用背书：专家推荐/教育部推荐（无授权）；禁用伪科学：每天必须吃X/N吃N不吃；禁用虚构故事：村里有个奇怪现象/久病在床的人都没有；禁用仿新闻：晚间播报/记者获悉/央视报道；禁用K12学科课程；禁用提分承诺。';
+
+// 构建分块菜单 prompt（一次调用，输出严格 JSON）
+function scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones){
+  var dur=duration;
+  var totalMin=dur.minWords, totalMax=dur.maxWords;
+  // 给每个 chunk 计算字数区间
+  var chunkSpec=chunks.map(function(c){
+    var avg=(totalMin+totalMax)/2;
+    var target=Math.round(avg*c.pct);
+    var minW=Math.max(8,Math.round(target*0.8));
+    var maxW=Math.round(target*1.2);
+    return Object.assign({},c,{target:target,minW:minW,maxW:maxW});
+  });
+  var chunkListMd=chunkSpec.map(function(c,i){return (i+1)+'. **'+c.name+'**（约 '+c.target+' 字 · '+c.minW+'-'+c.maxW+' 字 · '+c.hint+'）';}).join('\n');
+  var toneListMd=tones.map(function(t,i){return (i+1)+'. **'+t.name+'**（'+t.emoji+'）';}).join('\n');
+  return '你是一位顶尖的图书短视频口播脚本专家。这次任务是为同一本书生成「分块脚本菜单」，让用户能像点菜一样自由组合。\n\n'
+    +SCRIPT_BASE_RULES
+    +'\n\n## 当前任务\n目标时长：**'+dur.label+'** （总字数 '+totalMin+'-'+totalMax+'，按 4.5 字/秒口播）\n目标受众：'+audience+'\n\n### 必须输出的 chunk 结构（按顺序）\n'+chunkListMd
+    +'\n\n### 每个 chunk 必须输出的 4 种语气候选\n'+toneListMd
+    +'\n\n## 图书内容（所有 chunk 必须取材于此，禁止编造）\n'+bookContent
+    +'\n\n## 硬性要求\n1. 共 '+chunkSpec.length+' 个 chunk，每个 chunk 必须给 4 个候选（对应上面 4 种语气），共 '+(chunkSpec.length*4)+' 段文案。\n'
+    +'2. 每个候选的字数严格落在该 chunk 的字数区间内（重要！多了少了都失败）。\n'
+    +'3. 同一 chunk 的 4 个候选必须**取材自书中不同的细节/案例/章节/句式**，避免雷同。\n'
+    +'4. 4 个候选拼成完整脚本时（任选其一），整体节奏自然、上下衔接顺畅、口语化。\n'
+    +'5. 严禁编造书中没有的内容；严禁踩审核红线（详见上方）。\n'
+    +'6. 所有候选都不要带标题/序号/前缀，只输出文案正文。\n'
+    +'\n## 输出格式（严格 JSON，不要 markdown 代码块包裹，不要任何解释）\n'
+    +'{\n  "chunks": [\n'
+    +chunkSpec.map(function(c){return '    { "id":"'+c.id+'", "name":"'+c.name+'", "target":'+c.target+', "minW":'+c.minW+', "maxW":'+c.maxW+', "candidates": [\n'
+        +tones.map(function(t){return '      { "tone":"'+t.id+'", "tone_name":"'+t.name+'", "text":"<文案正文，'+c.minW+'-'+c.maxW+' 字>" }';}).join(',\n')
+        +'\n    ] }';}).join(',\n')
+    +'\n  ]\n}';
 }
 
 async function scriptCallAI(prompt, maxTokens){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。**严格遵守用户给出的字数区间，不允许超出或低于该区间。**'},{role:'user',content:prompt}],temperature:0.82,max_tokens:maxTokens||4096})});
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。**严格遵守用户给出的字数区间，不允许超出或低于该区间。**当用户要求 JSON 输出时，只输出合法 JSON，不带任何 markdown 代码块包裹，不带任何前后解释文字。'},{role:'user',content:prompt}],temperature:0.85,max_tokens:maxTokens||4096})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
 var data=await response.json();return data.choices[0].message.content.trim();
 }
+
+// 解析 LLM 返回的 JSON（带容错：去除 ```json 包裹/末尾 ```）
+function scriptParseChunksJson(raw){
+  if(!raw) return null;
+  var s=raw.trim();
+  // 去掉 ``` 包裹
+  s=s.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
+  // 找第一个 { 到最后一个 }
+  var i1=s.indexOf('{'), i2=s.lastIndexOf('}');
+  if(i1<0||i2<0||i2<=i1) return null;
+  s=s.substring(i1,i2+1);
+  try{return JSON.parse(s);}catch(e){console.warn('chunks JSON 解析失败',e,s.substring(0,200));return null;}
+}
+
+// 把候选文案做合规清洗
+function scriptCleanCandidate(text){
+  if(!text) return text;
+  try{
+    var v=auditOneCopy(text);
+    if(v && v.length>0){
+      var c=generateCompliantCopy(text,v);
+      if(c && c.length>5) return c;
+    }
+  }catch(e){}
+  return text;
+}
+
+// 全局缓存当前菜单（用于换一批/复制/导出）
+var SCRIPT_CURRENT_MENU=null;
 
 async function scriptGenerate(){
 var ta=document.getElementById('scriptBookContent');
@@ -3476,76 +3617,185 @@ if(bookContent.length<30){isbnToast('内容太少，至少30字');return;}
 var audienceEl=document.querySelector('#scriptAudienceChips .scp.on');
 var audience=audienceEl?audienceEl.dataset.value:'通用人群';
 var duration=scriptGetDuration();
-var selectedStyles=[];
-var allChip=document.querySelector('#scriptStyleChips [data-value="全部"]');
-if(allChip&&allChip.classList.contains('on')){selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});}
-else{var activeChips=document.querySelectorAll('#scriptStyleChips .scp.on');activeChips.forEach(function(c){var name=c.dataset.value;var m=SCRIPT_TYPES.find(function(t){return t.name.indexOf(name.slice(0,2))>=0;});if(m)selectedStyles.push(m.id);});}
-if(selectedStyles.length===0)selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});
+var globalToneEl=document.querySelector('#scriptStyleChips .scp.on');
+var globalTone=globalToneEl?globalToneEl.dataset.value:'auto';
+var chunks=SCRIPT_CHUNK_PLAN[duration.seconds]||SCRIPT_CHUNK_PLAN[90];
+var tones=scriptResolveChunkTones(globalTone);
 
 document.getElementById('scriptLoading').style.display='block';
 document.getElementById('scriptOutput').style.display='none';
 document.getElementById('scriptGenBtn').disabled=true;
 var loadingText=document.getElementById('scriptLoadingText');
-var results=[];
-var usedExamples=[];
+loadingText.textContent='正在生成 '+duration.label+' 分块菜单（共 '+chunks.length+' 段 × 4 候选 = '+(chunks.length*4)+' 条文案）...';
 
-for(var i=0;i<selectedStyles.length;i++){
-var sid=selectedStyles[i];var type=SCRIPT_TYPES.find(function(t){return t.id===sid;});
-loadingText.textContent='正在生成 '+type.emoji+' '+type.name+'（'+(i+1)+'/'+selectedStyles.length+'）· 目标 '+duration.label+'...';
-try{var prompt=scriptBuildPrompt(bookContent,audience,type,duration);
-if(usedExamples.length>0){prompt+='\n\n## ⚠️ 素材差异化要求\n前面的脚本已经使用了以下案例/人物/片段，本篇必须选取完全不同的内容展开：\n- '+usedExamples.join('\n- ')+'\n\n请从书中选取其他章节、其他知识点、其他人物故事来创作，确保和前面的脚本没有重复素材。';}
-var script=await scriptCallAI(prompt, duration.maxTokens);
-// === 前置审核：用页面3完整审核规则校验，自动删除违规词 ===
-var scriptViolations=auditOneCopy(script);
-if(scriptViolations.length>0){
-  var cleaned=generateCompliantCopy(script,scriptViolations);
-  if(cleaned && cleaned.length>100){script=cleaned;}
+var menu=null;
+try{
+  var prompt=scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones);
+  var raw=await scriptCallAI(prompt, Math.min(8000, duration.maxTokens*2));
+  menu=scriptParseChunksJson(raw);
+  if(!menu||!menu.chunks||!menu.chunks.length){throw new Error('返回格式异常，请重试');}
+  // 候选合规清洗
+  menu.chunks.forEach(function(c){if(c.candidates)c.candidates.forEach(function(cd){cd.text=scriptCleanCandidate(cd.text);});});
+}catch(e){
+  document.getElementById('scriptLoading').style.display='none';
+  document.getElementById('scriptGenBtn').disabled=false;
+  isbnToast('⚠️ 生成失败：'+e.message);
+  return;
 }
-results.push({typeId:sid,script:script,duration:duration});
-var examples=script.match(/[""「]([^""」]{4,20})[""」]/g);if(examples){usedExamples=usedExamples.concat(examples.slice(0,3).map(function(e){return e.replace(/[""「」]/g,'');}));}
-if(usedExamples.length>12)usedExamples=usedExamples.slice(-8);
-}
-catch(e){results.push({typeId:sid,script:'⚠️ 生成失败：'+e.message,error:true,duration:duration});}
-}
+
+SCRIPT_CURRENT_MENU={menu:menu,duration:duration,bookContent:bookContent,audience:audience,tones:tones};
 document.getElementById('scriptLoading').style.display='none';
 document.getElementById('scriptGenBtn').disabled=false;
-scriptRenderResults(results);
+scriptRenderMenu();
 scriptAnalyzeAudit(bookContent);
 }
 
-function scriptRenderResults(results){
-var container=document.getElementById('scriptCards');container.innerHTML='';
-results.forEach(function(r,idx){
-var type=SCRIPT_TYPES.find(function(t){return t.id===r.typeId;});
-var wc=r.script.replace(/\s/g,'').length;var rt=Math.ceil(wc/4.5);
-var safe=r.script.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-// 目标 vs 实际
-var dInfo='';
-if(r.duration && !r.error){
-  var d=r.duration;
-  var inRange = wc>=d.minWords && wc<=d.maxWords;
-  var deviationPct = Math.round((wc - (d.minWords+d.maxWords)/2) / ((d.minWords+d.maxWords)/2) * 100);
-  var statusBg = inRange ? 'rgba(63,185,80,.15)' : (Math.abs(deviationPct)<=15 ? 'rgba(253,203,110,.15)' : 'rgba(248,81,73,.15)');
-  var statusColor = inRange ? '#3fb950' : (Math.abs(deviationPct)<=15 ? '#fdcb6e' : '#f85149');
-  var statusText = inRange ? '✅ 达标' : (deviationPct>0 ? '⚠️ 偏长 +'+deviationPct+'%' : '⚠️ 偏短 '+deviationPct+'%');
-  dInfo = '<span style="padding:2px 6px;background:rgba(88,166,255,.12);border-radius:3px;color:#58a6ff;font-size:10px;font-weight:600">🎯 '+d.label+'</span>'
-        + '<span style="padding:2px 6px;background:'+statusBg+';border-radius:3px;color:'+statusColor+';font-size:10px;font-weight:600">'+statusText+'</span>';
-}
-var card=document.createElement('div');
-card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:12px;overflow:hidden';
-card.dataset.raw=r.script;
-card.innerHTML='<div onclick="this.parentElement.classList.toggle(\'expanded\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid #21262d"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">'+type.emoji+'</span><div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+type.name+'</div><div style="font-size:10px;color:#484f58">'+type.desc+'</div></div></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end">'+dInfo+'<span style="padding:2px 6px;background:rgba(230,57,70,.15);border-radius:3px;color:#e63946;font-size:10px;font-weight:600">'+wc+'字</span><span style="font-size:10px;color:#484f58">≈'+rt+'s</span><span style="color:#484f58;font-size:10px">▼</span></div></div><div class="script-body" style="display:'+(idx===0?'block':'none')+';padding:16px;font-size:12px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safe+'</div><div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #21262d;background:#0d1117"><div style="font-size:10px;color:#484f58">💡 '+type.tips+'</div><button onclick="scriptCopyOne(this)" style="padding:4px 12px;border-radius:6px;border:none;background:#e63946;color:#fff;font-size:11px;cursor:pointer">复制</button></div>';
-card.querySelector('[onclick]').addEventListener('click',function(){var body=this.parentElement.querySelector('.script-body');body.style.display=body.style.display==='none'?'block':'none';});
-container.appendChild(card);
+// 渲染分块菜单
+function scriptRenderMenu(){
+if(!SCRIPT_CURRENT_MENU)return;
+var menu=SCRIPT_CURRENT_MENU.menu, duration=SCRIPT_CURRENT_MENU.duration;
+var container=document.getElementById('scriptCards');
+container.innerHTML='';
+menu.chunks.forEach(function(c,ci){
+  c._selected=(typeof c._selected==='number'?c._selected:0); // 默认选第 1 个候选
+  var card=document.createElement('div');
+  card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:12px;overflow:hidden';
+  card.dataset.chunkIdx=ci;
+  // header
+  var hdr='<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #21262d">'
+    +'<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#e63946;color:#fff;font-size:11px;font-weight:700">'+(ci+1)+'</span>'
+    +'<div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+c.name+'</div>'
+    +'<div style="font-size:10px;color:#8b949e">目标 '+c.target+' 字 · 区间 '+c.minW+'–'+c.maxW+'</div></div></div>'
+    +'<button onclick="scriptRegenerateChunk('+ci+',this)" style="padding:4px 10px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;cursor:pointer">🔄 换一批</button>'
+    +'</div>';
+  // 候选 chip 行
+  var chipsHtml='<div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;background:#0d1117">';
+  (c.candidates||[]).forEach(function(cd,idx){
+    var isOn=idx===c._selected;
+    chipsHtml+='<span onclick="scriptSelectCandidate('+ci+','+idx+')" style="padding:5px 12px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid '+(isOn?'#e63946':'#30363d')+';background:'+(isOn?'#e63946':'#21262d')+';color:'+(isOn?'#fff':'#8b949e')+';font-weight:'+(isOn?'600':'400')+'">候选'+(idx+1)+'·'+(cd.tone_name||cd.tone||'')+'</span>';
+  });
+  chipsHtml+='</div>';
+  // 当前候选正文
+  var sel=c.candidates&&c.candidates[c._selected]||{};
+  var safeText=(sel.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var wc=(sel.text||'').replace(/\s/g,'').length;
+  var inRange=wc>=c.minW&&wc<=c.maxW;
+  var statusColor=inRange?'#3fb950':(wc<c.minW?'#fdcb6e':'#f85149');
+  var statusText=inRange?('✅ '+wc+' 字'):(wc<c.minW?('⚠️ '+wc+' 字 偏短'):('⚠️ '+wc+' 字 偏长'));
+  var body='<div style="padding:14px 16px;font-size:12.5px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safeText+'</div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 16px;border-top:1px solid #21262d;background:#0d1117">'
+    +'<div style="font-size:11px;color:'+statusColor+';font-weight:600">'+statusText+'</div>'
+    +'<button onclick="scriptCopyChunk('+ci+',this)" style="padding:4px 12px;border-radius:6px;border:none;background:#1f6feb;color:#fff;font-size:11px;cursor:pointer">复制本段</button></div>';
+  card.innerHTML=hdr+chipsHtml+body;
+  container.appendChild(card);
 });
 document.getElementById('scriptOutput').style.display='block';
+scriptUpdatePreview();
 document.getElementById('scriptOutput').scrollIntoView({behavior:'smooth'});
-isbnToast('✅ 已生成 '+results.length+' 个版本');
+isbnToast('✅ 已生成 '+menu.chunks.length+' 段 × 4 候选');
 }
 
-function scriptCopyOne(btn){var raw=btn.closest('[data-raw]').dataset.raw;navigator.clipboard.writeText(raw).then(function(){btn.textContent='已复制 ✓';btn.style.background='#00cec9';setTimeout(function(){btn.textContent='复制';btn.style.background='#e63946';},1500);});}
-function scriptCopyAll(){var cards=document.getElementById('scriptCards').children;var all='';for(var i=0;i<cards.length;i++){var type=SCRIPT_TYPES.find(function(t){return t.id;});all+=cards[i].dataset.raw+'\n\n---\n\n';}navigator.clipboard.writeText(all).then(function(){isbnToast('✅ 已复制全部');});}
-function scriptExportMd(){var cards=document.getElementById('scriptCards').children;var md='# 图书口播脚本\n\n生成时间：'+new Date().toLocaleString('zh-CN')+'\n\n---\n\n';for(var i=0;i<cards.length;i++){md+='## '+SCRIPT_TYPES[i].emoji+' '+SCRIPT_TYPES[i].name+'\n\n'+cards[i].dataset.raw+'\n\n---\n\n';}var blob=new Blob([md],{type:'text/markdown;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='口播脚本_'+new Date().toISOString().slice(0,10)+'.md';a.click();isbnToast('📄 已导出');}
+// 选中某 chunk 的某候选
+function scriptSelectCandidate(chunkIdx,cndIdx){
+  if(!SCRIPT_CURRENT_MENU)return;
+  SCRIPT_CURRENT_MENU.menu.chunks[chunkIdx]._selected=cndIdx;
+  scriptRenderMenu();
+}
+
+// 实时拼接预览
+function scriptBuildAssembledText(){
+  if(!SCRIPT_CURRENT_MENU)return '';
+  return SCRIPT_CURRENT_MENU.menu.chunks.map(function(c){
+    var sel=c.candidates&&c.candidates[c._selected||0];
+    return sel?(sel.text||''):'';
+  }).filter(Boolean).join('\n\n');
+}
+function scriptUpdatePreview(){
+  var box=document.getElementById('scriptPreviewBox');
+  var txt=document.getElementById('scriptPreviewText');
+  var meta=document.getElementById('scriptPreviewMeta');
+  if(!box||!txt||!meta||!SCRIPT_CURRENT_MENU){if(box)box.style.display='none';return;}
+  var t=scriptBuildAssembledText();
+  if(!t){box.style.display='none';return;}
+  var d=SCRIPT_CURRENT_MENU.duration;
+  var wc=t.replace(/\s/g,'').length;
+  var rt=Math.ceil(wc/4.5);
+  var inRange=wc>=d.minWords&&wc<=d.maxWords;
+  var color=inRange?'#3fb950':'#f85149';
+  meta.innerHTML='<span style="color:'+color+';font-weight:600">'+wc+' 字 ≈ '+rt+'秒</span> <span style="color:#484f58">/ 目标 '+d.minWords+'–'+d.maxWords+' 字</span>';
+  txt.textContent=t;
+  box.style.display='block';
+}
+
+// 复制单段
+function scriptCopyChunk(chunkIdx,btn){
+  if(!SCRIPT_CURRENT_MENU)return;
+  var c=SCRIPT_CURRENT_MENU.menu.chunks[chunkIdx];
+  var sel=c.candidates&&c.candidates[c._selected||0];
+  if(!sel)return;
+  navigator.clipboard.writeText(sel.text||'').then(function(){btn.textContent='已复制 ✓';btn.style.background='#00cec9';setTimeout(function(){btn.textContent='复制本段';btn.style.background='#1f6feb';},1500);});
+}
+
+// 复制组合（已选）
+function scriptCopyAll(){
+  var t=scriptBuildAssembledText();
+  if(!t){isbnToast('暂无内容可复制');return;}
+  navigator.clipboard.writeText(t).then(function(){isbnToast('✅ 已复制组合脚本');});
+}
+
+// 导出 MD（包含已选 + 所有候选作为参考）
+function scriptExportMd(){
+  if(!SCRIPT_CURRENT_MENU){isbnToast('暂无内容可导出');return;}
+  var menu=SCRIPT_CURRENT_MENU.menu, dur=SCRIPT_CURRENT_MENU.duration;
+  var assembled=scriptBuildAssembledText();
+  var md='# 图书口播脚本（'+dur.label+'）\n\n生成时间：'+new Date().toLocaleString('zh-CN')+'\n\n## ✨ 已组合脚本（推荐采用）\n\n'+assembled+'\n\n---\n\n## 🧩 全部候选（备选库）\n\n';
+  menu.chunks.forEach(function(c,ci){
+    md+='### '+(ci+1)+'. '+c.name+'（目标 '+c.target+' 字）\n\n';
+    (c.candidates||[]).forEach(function(cd,idx){
+      var marker=idx===c._selected?'⭐ ':'';
+      md+='**'+marker+'候选'+(idx+1)+'·'+(cd.tone_name||'')+'**：'+(cd.text||'')+'\n\n';
+    });
+    md+='\n';
+  });
+  var blob=new Blob([md],{type:'text/markdown;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='口播脚本_'+dur.label+'_'+new Date().toISOString().slice(0,10)+'.md';a.click();isbnToast('📄 已导出');
+}
+
+// 单 chunk 重新生成 4 个候选
+async function scriptRegenerateChunk(chunkIdx,btn){
+  if(!SCRIPT_CURRENT_MENU){return;}
+  var ctx=SCRIPT_CURRENT_MENU;
+  var chunk=ctx.menu.chunks[chunkIdx];
+  if(!chunk)return;
+  var oldText=btn.textContent;
+  btn.disabled=true;btn.textContent='生成中...';
+  try{
+    // 收集其他 chunk 已选内容作为上下文，避免重复素材
+    var siblings=ctx.menu.chunks.map(function(c,i){
+      if(i===chunkIdx) return null;
+      var sel=c.candidates&&c.candidates[c._selected||0];
+      return sel?('【'+c.name+'】'+(sel.text||'').substring(0,80)):null;
+    }).filter(Boolean).join('\n');
+    var promptOne='你是图书短视频口播专家。请只为「'+chunk.name+'」这个段落重新生成 4 个候选文案。\n\n'+SCRIPT_BASE_RULES
+      +'\n\n## 上下文：本段是 '+ctx.duration.label+' 完整脚本中的第 '+(chunkIdx+1)+' 段，作用是「'+chunk.hint+'」。'
+      +'\n\n## 受众\n'+ctx.audience
+      +'\n\n## 图书内容\n'+ctx.bookContent
+      +(siblings?'\n\n## 同脚本其他已选段（避免素材重复）\n'+siblings:'')
+      +'\n\n## 硬性要求\n1. 输出 4 个候选，每个候选字数严格在 '+chunk.minW+'-'+chunk.maxW+' 字之间。\n2. 4 个候选用 4 种不同语气/角度（信息差/干货/情感/颠覆 或 标准/口语/短促/具体）。\n3. 取材自书中不同细节，避免雷同。\n4. 严禁编造书中没有的内容，严禁踩审核红线。\n'
+      +'\n## 输出格式（严格 JSON，无 markdown 包裹）\n{ "candidates": [ { "tone":"<tone_id>", "tone_name":"<tone 中文名>", "text":"<文案>" }, ... 共 4 个 ] }';
+    var raw=await scriptCallAI(promptOne, 2048);
+    var parsed=scriptParseChunksJson(raw);
+    var arr=parsed&&parsed.candidates;
+    if(!arr||!arr.length){throw new Error('返回格式异常');}
+    arr.forEach(function(cd){cd.text=scriptCleanCandidate(cd.text);});
+    chunk.candidates=arr.slice(0,4);
+    chunk._selected=0;
+    scriptRenderMenu();
+    isbnToast('✅ 已换一批');
+  }catch(e){
+    btn.disabled=false;btn.textContent=oldText;
+    isbnToast('⚠️ 重新生成失败：'+e.message);
+  }
+}
 
 async function scriptAnalyzeAudit(bookContent){
 var section=document.getElementById('scriptAuditSection');
