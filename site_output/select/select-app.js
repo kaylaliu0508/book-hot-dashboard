@@ -293,7 +293,8 @@ function getRecommendBooks() {
   if (typeof RECOMMEND_BOOKS === 'undefined') return [];
   const result = [];
   let rank = 1;
-  const orderedSheets = ['童书推荐书单', '健康推荐书单', '社科推荐书单'];
+  // 顺序：童书 → 教辅 → 健康 → 社科（与左侧栏分组一致）
+  const orderedSheets = ['童书推荐书单', '教辅推荐书单', '健康推荐书单', '社科推荐书单'];
   for (const sheetName of orderedSheets) {
     const list = RECOMMEND_BOOKS[sheetName] || [];
     const topCat = sheetName.replace('推荐书单', '');
@@ -301,7 +302,9 @@ function getRecommendBooks() {
       rank: rank++,
       title: b.title, isbn: b.isbn, author: b.author, publisher: b.publisher,
       cat: topCat, top_cat: topCat, image: b.image,
-      ams_status: b.ams_status, date: b.recommend_date
+      ams_status: b.ams_status,
+      recommend_time: b.recommend_time,  // 推荐投放时间（6月/Q1/Q2 等）
+      platform: b.platform                  // 平台（京东/当当 等）
     }));
   }
   return result;
@@ -392,8 +395,9 @@ const RANK_COLUMNS = {
       {key:'title', label:'书名', cls:'col-title'},
       {key:'author', label:'作者', cls:'col-cat'},
       {key:'publisher', label:'出版社', cls:'col-cat'},
-      {key:'isbn', label:'ISBN', cls:''},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'ams_status', label:'AMS准入', cls:''},
+      {key:'recommend_time', label:'推荐投放时间', cls:'col-rec-time'},
       {key:'action', label:'操作', cls:'col-action'}
     ]
   }
@@ -506,6 +510,15 @@ function renderRankCell(item, col, listName) {
     if (text === '准入' || text.includes('全流量')) cls = 'ams-ok';
     else if (text.includes('禁止')) cls = 'ams-ban';
     return `<span class="ams-cell ${cls}">${escapeHtml(text)}</span>`;
+  }
+  if (col.key === 'recommend_time') {
+    if (!v) return '-';
+    const t = String(v).trim();
+    // 颜色按时间维度区分：6月/当月→绿、Q1/Q2→蓝
+    let cls = 'rec-time-cell';
+    if (/月/.test(t)) cls += ' is-month';
+    else if (/Q[1-4]/i.test(t)) cls += ' is-quarter';
+    return `<span class="${cls}">${escapeHtml(t)}</span>`;
   }
   if (col.key === 'action') {
     const inPool = pool.some(p => p.title === item.title);
@@ -1179,6 +1192,7 @@ function renderHub() {
   safeRender(() => renderRanking('potential',   'rankBodyPotential'), '潜力爆品');
   safeRender(() => renderRanking('forecast',    'rankBodyForecast'),  '预测爆品');
   safeRender(() => renderRecommend('童书', 'recBodyChild'),  '童书推荐');
+  safeRender(() => renderRecommend('教辅', 'recBodyEdu'),    '教辅推荐');
   safeRender(() => renderRecommend('健康', 'recBodyHealth'), '健康推荐');
   safeRender(() => renderRecommend('社科', 'recBodySocial'), '社科推荐');
   safeRender(() => renderCatShareBar(),          '类目占比');
@@ -1214,6 +1228,7 @@ function syncHubSideCount() {
   // 推荐书单数量
   const all = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
   set('rsnCountChild', all.filter(b => b.top_cat === '童书').length);
+  set('rsnCountEdu', all.filter(b => b.top_cat === '教辅').length);
   set('rsnCountHealth', all.filter(b => b.top_cat === '健康').length);
   set('rsnCountSocial', all.filter(b => b.top_cat === '社科').length);
 }
@@ -1331,6 +1346,7 @@ function collectHubSearchPool() {
   // 2) 精选书单（3 类）
   const REC_META = [
     { cat: '童书', listName: '童书推荐',   anchor: 'hub-block-rec-child',  bodyId: 'recBodyChild' },
+    { cat: '教辅', listName: '教辅推荐',   anchor: 'hub-block-rec-edu',    bodyId: 'recBodyEdu' },
     { cat: '健康', listName: '健康推荐',   anchor: 'hub-block-rec-health', bodyId: 'recBodyHealth' },
     { cat: '社科', listName: '社科推荐',   anchor: 'hub-block-rec-social', bodyId: 'recBodySocial' },
   ];
@@ -1690,6 +1706,7 @@ function syncRecSideCount() {
   const all = (typeof getRecommendBooks === 'function') ? getRecommendBooks() : [];
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('rsnCountChild', all.filter(b => b.top_cat === '童书').length);
+  set('rsnCountEdu', all.filter(b => b.top_cat === '教辅').length);
   set('rsnCountHealth', all.filter(b => b.top_cat === '健康').length);
   set('rsnCountSocial', all.filter(b => b.top_cat === '社科').length);
 }
