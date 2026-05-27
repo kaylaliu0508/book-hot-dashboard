@@ -380,56 +380,112 @@ const WEEK_RHYTHM = {
   ]
 };
 
-// ==================== 本周 ADQ Top3 跑量书洞察（5/25 周 · 精简版）====================
+// ==================== ADQ Top3 跑量书洞察（按周次组织 · 仅最新两期展示）====================
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
-const HOT_BOOK_BREAKDOWN = [
-  {
-    role:'#1 童书·立体书',
-    roleClass:'basic',
-    title:'我们的中国立体书 + 环游世界立体书',
-    isbn:'9787555717119',
-    image:'rank-images/image233.jpg',
-    cat:'童书',
-    stats:[
-      {icon:'💰', label:'客单', val:'¥89-159'},
-      {icon:'📊', label:'日销售额', val:'60-80W', cls:'hot'},
-      {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
-    ],
-    persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（六一/暑期送礼共振）',
-    creativeCore:'六一送礼场景 + 孩子翻立体页惊喜表情 + 沉浸式知识科普；¥89-159 礼物质感卡位节日价位带'
-  },
-  {
-    role:'#2 社科·家居生活',
-    roleClass:'opportunity',
-    title:'家相',
-    isbn:'9787806537039',
-    image:'rank-images/image1694.jpg',
-    cat:'社科',
-    stats:[
-      {icon:'💰', label:'客单', val:'¥48'},
-      {icon:'📊', label:'日销售额', val:'10-20W'},
-      {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
-    ],
-    persona:'30-55 岁家庭主理人 + 关注中式生活美学的中老年（送父母/长辈）',
-    creativeCore:'居家空间布局技巧切入：「家中这 5 个位置怎么摆」实拍翻页讲解 + 中式家居美学；¥48 低客单 + 实用切入冲转化 12-16%',
-    creativeWarning:'⚠️ 不可涉及封建迷信'
-  },
-  {
-    role:'#3 教辅·会考冲刺',
-    roleClass:'basic',
-    title:'备战生地会考一本通 + 秒记初中小四门',
-    isbn:'97875501958998',
-    image:'rank-images/image1695.jpg',
-    cat:'教辅',
-    stats:[
-      {icon:'💰', label:'客单', val:'¥399-499'},
-      {icon:'📊', label:'日销售额', val:'10-20W'},
-      {icon:'💎', label:'链路', val:'小程序直购溢价', cls:'hot'}
-    ],
-    persona:'初二家长（生地会考冲刺刚需 · 6 月底前必考）',
-    creativeCore:'主打初二家长人群，「生地开卷考试推荐带进考场」紧迫切入 → 一本通 + 秒记法解决 4 门零碎；¥399-499 组套小程序直购链路溢价'
-  }
-];
+// key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
+const HOT_BOOK_BREAKDOWN_BY_WEEK = {
+  // ===== 5/25 周（最新）=====
+  '2026-05-25': [
+    {
+      role:'#1 童书·立体书',
+      roleClass:'basic',
+      title:'我们的中国立体书 + 环游世界立体书',
+      isbn:'9787555717119',
+      image:'rank-images/image233.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥89-159'},
+        {icon:'📊', label:'日销售额', val:'60-80W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
+      ],
+      persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（六一/暑期送礼共振）',
+      creativeCore:'六一送礼场景 + 孩子翻立体页惊喜表情 + 沉浸式知识科普；¥89-159 礼物质感卡位节日价位带'
+    },
+    {
+      role:'#2 社科·家居生活',
+      roleClass:'opportunity',
+      title:'家相',
+      isbn:'9787806537039',
+      image:'rank-images/image1694.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥48'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
+      ],
+      persona:'中小老板 + 职场人士（关注办公室/工位布置带来的状态加成）',
+      creativeCore:'列举老板/职场办公室的布置摆放建议：工位朝向、办公桌物品摆放、绿植/装饰位等实用技巧 → 翻页讲解 + 中式家居美学；¥48 低客单冲转化 12-16%',
+      creativeWarning:'⚠️ 不可涉及封建迷信'
+    },
+    {
+      role:'#3 教辅·会考冲刺',
+      roleClass:'basic',
+      title:'备战生地会考一本通 + 秒记初中小四门',
+      isbn:'97875501958998',
+      image:'rank-images/image1695.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥399-499'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'💎', label:'链路', val:'小程序直购溢价', cls:'hot'}
+      ],
+      persona:'初二家长（生地会考冲刺刚需 · 6 月底前必考）',
+      creativeCore:'主打初二家长人群，「生地开卷考试推荐带进考场」紧迫切入 → 一本通 + 秒记法解决 4 门零碎；¥399-499 组套小程序直购链路溢价'
+    }
+  ],
+
+  // ===== 5/18 周（上一期）=====
+  '2026-05-18': [
+    {
+      role:'#1 童书·立体书',
+      roleClass:'basic',
+      title:'我们的中国立体书 + 环游世界立体书',
+      isbn:'9787555717119',
+      image:'rank-images/image233.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥89-159'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'7.5-8.5%', cls:'hot'}
+      ],
+      persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（节日送礼共振）',
+      creativeCore:'妈妈实拍立体书开箱 + 孩子翻页惊喜表情 + 知识科普沉浸式演示；¥89-159 礼物质感卡位节日价位带'
+    },
+    {
+      role:'#2 教辅·暑期英语',
+      roleClass:'opportunity',
+      title:'66 篇英语故事记 2100 词',
+      isbn:'9787521335156',
+      image:'rank-images/image1375.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥399'},
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'💎', label:'链路', val:'小程序直购溢价', cls:'hot'}
+      ],
+      persona:'10-15 岁孩子的妈妈（小升初/初中阶段，关注暑期英语成体系学习）',
+      creativeCore:'用故事载体讲解词汇，弱化机械记忆；2100 词覆盖初中常用，暑期 60 天每日 1 篇节奏轻；¥399 多本组套适配长周期学习'
+    },
+    {
+      role:'#3 童书·历史人文',
+      roleClass:'opportunity',
+      title:'漫画帝王家书',
+      isbn:'9787515366692',
+      image:'rank-images/image237.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥39.9'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
+      ],
+      persona:'8-14 岁孩子的妈妈（关注课外阅读 + 家庭情感教育）',
+      creativeCore:'帝王 + 漫画 + 家书 三元素叠加；漫画形态降低阅读门槛；¥39.9 适配课外阅读日常采购，以"家书"载体连接亲子话题'
+    }
+  ]
+};
+
+// 兼容旧引用（默认指向最新一周）
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-05-25'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {

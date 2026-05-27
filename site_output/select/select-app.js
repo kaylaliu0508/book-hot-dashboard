@@ -1108,7 +1108,22 @@ function renderHotBookBreakdown() {
   if (sideNav) sideNav.style.display = visible ? '' : 'none';
   if (!visible) return;
 
-  const html = `<div class="bd-grid-3">` + HOT_BOOK_BREAKDOWN.map(b => {
+  // 根据当前周次取对应跑量书数据；fallback 顺序：按周 map → 兼容旧 const → 空数组
+  const curIso = (typeof WEEK_RANK_LIST !== 'undefined' && WEEK_RANK_LIST[currentWeekIndex])
+    ? WEEK_RANK_LIST[currentWeekIndex].iso : null;
+  let books = [];
+  if (typeof HOT_BOOK_BREAKDOWN_BY_WEEK !== 'undefined' && curIso && HOT_BOOK_BREAKDOWN_BY_WEEK[curIso]) {
+    books = HOT_BOOK_BREAKDOWN_BY_WEEK[curIso];
+  } else if (typeof HOT_BOOK_BREAKDOWN !== 'undefined') {
+    books = HOT_BOOK_BREAKDOWN;
+  }
+
+  if (!books.length) {
+    document.getElementById('hotBookBreakdown').innerHTML = `<div class="pool-empty"><p style="color:#9ca3af;font-size:13px;">本期跑量书洞察待补充</p></div>`;
+    return;
+  }
+
+  const html = `<div class="bd-grid-3">` + books.map(b => {
     const cat = b.cat || '童书';
     const cover = b.image || bookCover({title:b.title, isbn:b.isbn, top_cat:cat});
     const personaText = (typeof b.persona === 'string') ? b.persona : (b.persona && b.persona.core) || '';
