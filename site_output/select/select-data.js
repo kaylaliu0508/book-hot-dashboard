@@ -399,7 +399,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'🎯', label:'转化', val:'7.8-8.8%', cls:'hot'}
       ],
       persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（六一/暑期送礼共振）',
-      creativeCore:'六一送礼场景 + 孩子翻立体页惊喜表情 + 沉浸式知识科普；¥89-159 礼物质感卡位节日价位带'
+      creativeCore:'六一送礼场景切入 — 孩子翻立体页惊喜表情 + 沉浸式知识科普；礼物质感卡位节日价位带（送礼场景可强调 ¥89-159 客单）'
     },
     {
       role:'#2 社科·家居生活',
@@ -414,7 +414,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'🎯', label:'转化', val:'12.8-16.8%', cls:'hot'}
       ],
       persona:'中小老板 + 职场人士（关注办公室/工位布置带来的状态加成）',
-      creativeCore:'列举老板/职场办公室的布置摆放建议：工位朝向、办公桌物品摆放、绿植/装饰位等实用技巧 → 翻页讲解 + 中式家居美学；¥48 低客单冲转化 12-16%',
+      creativeCore:'列举老板/职场办公室的布置摆放建议：工位朝向、办公桌物品摆放、绿植/装饰位等实用技巧 → 翻页讲解 + 中式家居美学',
       creativeWarning:'⚠️ 不可涉及封建迷信'
     },
     {
@@ -430,7 +430,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'💎', label:'链路', val:'小程序直购溢价', cls:'hot'}
       ],
       persona:'初二家长（生地会考冲刺刚需 · 6 月底前必考）',
-      creativeCore:'主打初二家长人群，「生地开卷考试推荐带进考场」紧迫切入 → 一本通 + 秒记法解决 4 门零碎；¥399-499 组套小程序直购链路溢价'
+      creativeCore:'主打初二家长人群，「生地开卷考试推荐带进考场」紧迫切入 → 一本通 + 秒记法解决 4 门零碎，组套适配长周期复习'
     }
   ],
 
@@ -449,14 +449,14 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'🎯', label:'转化', val:'7.5-8.5%', cls:'hot'}
       ],
       persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（节日送礼共振）',
-      creativeCore:'妈妈实拍立体书开箱 + 孩子翻页惊喜表情 + 知识科普沉浸式演示；¥89-159 礼物质感卡位节日价位带'
+      creativeCore:'妈妈实拍立体书开箱 + 孩子翻页惊喜表情 + 知识科普沉浸式演示；礼物质感卡位节日价位带（送礼场景可强调 ¥89-159 客单）'
     },
     {
       role:'#2 教辅·暑期英语',
       roleClass:'opportunity',
       title:'66 篇英语故事记 2100 词',
       isbn:'9787521335156',
-      image:'rank-images/image1377.jpg',
+      image:'rank-images/_missing_english_2100.jpg',
       cat:'教辅',
       stats:[
         {icon:'💰', label:'客单', val:'¥399'},
@@ -464,7 +464,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'💎', label:'链路', val:'小程序直购溢价', cls:'hot'}
       ],
       persona:'10-15 岁孩子的妈妈（小升初/初中阶段，关注暑期英语成体系学习）',
-      creativeCore:'用故事载体讲解词汇，弱化机械记忆；2100 词覆盖初中常用，暑期 60 天每日 1 篇节奏轻；¥399 多本组套适配长周期学习'
+      creativeCore:'用故事载体讲解词汇，弱化机械记忆 → 2100 词覆盖初中常用，暑期 60 天每日 1 篇节奏轻量'
     },
     {
       role:'#3 童书·历史人文',
@@ -479,7 +479,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
       ],
       persona:'8-14 岁孩子的妈妈（关注孩子成长教育）',
-      creativeCore:'打教育解决方案信息差，主打逆袭翻盘 — 帝王智慧切入，提高孩子为人处事和情商；漫画形态降低阅读门槛，¥39.9 适配课外阅读日常采购'
+      creativeCore:'打教育解决方案信息差，主打逆袭翻盘 — 帝王智慧切入，提高孩子为人处事和情商；漫画形态降低阅读门槛'
     }
   ]
 };
