@@ -293,8 +293,8 @@ function getRecommendBooks() {
   if (typeof RECOMMEND_BOOKS === 'undefined') return [];
   const result = [];
   let rank = 1;
-  // 顺序：童书 → 教辅 → 健康 → 社科（与左侧栏分组一致）
-  const orderedSheets = ['童书推荐书单', '教辅推荐书单', '健康推荐书单', '社科推荐书单'];
+  // 顺序：教辅 → 童书 → 健康 → 社科（教辅放童书前，与左侧栏分组一致）
+  const orderedSheets = ['教辅推荐书单', '童书推荐书单', '健康推荐书单', '社科推荐书单'];
   for (const sheetName of orderedSheets) {
     const list = RECOMMEND_BOOKS[sheetName] || [];
     const topCat = sheetName.replace('推荐书单', '');
@@ -397,6 +397,20 @@ const RANK_COLUMNS = {
       {key:'publisher', label:'出版社', cls:'col-cat'},
       {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'ams_status', label:'AMS准入', cls:''},
+      {key:'recommend_time', label:'推荐投放时间', cls:'col-rec-time'},
+      {key:'action', label:'操作', cls:'col-action'}
+    ]
+  },
+  // 教辅 / 童书：不展示 AMS 准入列（用户要求）
+  recommend_no_ams: {
+    style: 'cyan',
+    cols: [
+      {key:'rank', label:'#', cls:'col-rank'},
+      {key:'image', label:'商品图片', cls:'col-image'},
+      {key:'title', label:'书名', cls:'col-title'},
+      {key:'author', label:'作者', cls:'col-cat'},
+      {key:'publisher', label:'出版社', cls:'col-cat'},
+      {key:'isbn', label:'ISBN', cls:'col-isbn'},
       {key:'recommend_time', label:'推荐投放时间', cls:'col-rec-time'},
       {key:'action', label:'操作', cls:'col-action'}
     ]
@@ -633,6 +647,13 @@ function updateRecCount() {
 }
 
 // ==================== 推荐书单（选品板块）====================
+// 按品类返回对应的列配置：教辅/童书 不显示 AMS；健康/社科 显示 AMS
+function getRecommendCfg(cat) {
+  return (cat === '教辅' || cat === '童书')
+    ? RANK_COLUMNS.recommend_no_ams
+    : RANK_COLUMNS.recommend;
+}
+
 function renderRecommend(recKey, bodyId) {
   recKey = recKey || 'all';
   bodyId = bodyId || 'recBody';
@@ -640,7 +661,6 @@ function renderRecommend(recKey, bodyId) {
   if (!body) return;
   
   const all = getRecommendBooks();
-  const cfg = RANK_COLUMNS.recommend;
   
   if (recKey === 'all') {
     const groups = {};
@@ -649,7 +669,8 @@ function renderRecommend(recKey, bodyId) {
       if (!groups[c]) groups[c] = [];
       groups[c].push(it);
     });
-    const order = ['童书','健康','社科','教辅','其他'];
+    // 顺序：教辅放童书前
+    const order = ['教辅','童书','健康','社科','其他'];
     let html = `
       <div class="rank-header-bar">
         <div class="icon">📋</div>
@@ -661,6 +682,7 @@ function renderRecommend(recKey, bodyId) {
       </div>`;
     for (const cat of order) {
       if (!groups[cat] || !groups[cat].length) continue;
+      const cfg = getRecommendCfg(cat);
       html += `
         <div class="rec-group">
           <div class="rec-group-title cat-${cat}">
@@ -681,13 +703,14 @@ function renderRecommend(recKey, bodyId) {
   
   // 按单一品类显示
   const filtered = all.filter(b => b.top_cat === recKey);
+  const cfg = getRecommendCfg(recKey);
   const catIcon = {童书:'🧸', 健康:'🌿', 社科:'🏛', 教辅:'📖'}[recKey] || '📚';
   body.innerHTML = `
     <div class="rank-header-bar">
       <div class="icon">${catIcon}</div>
       <div class="info">
         <div class="name">${recKey}推荐书单（去年同期全网精选）</div>
-        <div class="subtitle">来源于全网去年当月销量/销售额榜单数据 · ${recKey}赛道精选 · 已过 AMS 准入</div>
+        <div class="subtitle">来源于全网去年当月销量/销售额榜单数据 · ${recKey}赛道精选${(recKey==='健康'||recKey==='社科')?' · 已过 AMS 准入':''}</div>
       </div>
       <div class="meta">共 ${filtered.length} 本</div>
     </div>
@@ -1191,8 +1214,8 @@ function renderHub() {
   safeRender(() => renderRanking('weixinshop',  'rankBodyShop'),      '微信小店');
   safeRender(() => renderRanking('potential',   'rankBodyPotential'), '潜力爆品');
   safeRender(() => renderRanking('forecast',    'rankBodyForecast'),  '预测爆品');
-  safeRender(() => renderRecommend('童书', 'recBodyChild'),  '童书推荐');
   safeRender(() => renderRecommend('教辅', 'recBodyEdu'),    '教辅推荐');
+  safeRender(() => renderRecommend('童书', 'recBodyChild'),  '童书推荐');
   safeRender(() => renderRecommend('健康', 'recBodyHealth'), '健康推荐');
   safeRender(() => renderRecommend('社科', 'recBodySocial'), '社科推荐');
   safeRender(() => renderCatShareBar(),          '类目占比');
@@ -1345,8 +1368,8 @@ function collectHubSearchPool() {
   }
   // 2) 精选书单（3 类）
   const REC_META = [
-    { cat: '童书', listName: '童书推荐',   anchor: 'hub-block-rec-child',  bodyId: 'recBodyChild' },
     { cat: '教辅', listName: '教辅推荐',   anchor: 'hub-block-rec-edu',    bodyId: 'recBodyEdu' },
+    { cat: '童书', listName: '童书推荐',   anchor: 'hub-block-rec-child',  bodyId: 'recBodyChild' },
     { cat: '健康', listName: '健康推荐',   anchor: 'hub-block-rec-health', bodyId: 'recBodyHealth' },
     { cat: '社科', listName: '社科推荐',   anchor: 'hub-block-rec-social', bodyId: 'recBodySocial' },
   ];

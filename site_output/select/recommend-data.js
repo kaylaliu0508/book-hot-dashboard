@@ -534,16 +534,6 @@ const RECOMMEND_BOOKS = {
       "rank": 7
     },
     {
-      "title": "扣子开发AIAgent智能体应用(人工智能技术从书)",
-      "author": "宋立桓，王东健，陈铭毅，程东升",
-      "publisher": "清华大学出版社",
-      "image": "book-images/recbook_image4.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787302692188",
-      "rank": 8
-    },
-    {
       "title": "智能涌现:AI时代的思考与探索",
       "author": "张亚勤",
       "publisher": "中信出版社。",
@@ -551,7 +541,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787521774412",
-      "rank": 9
+      "rank": 8
     },
     {
       "title": "OpenClaw AI助理一本通",
@@ -561,7 +551,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787122503312",
-      "rank": 10
+      "rank": 9
     },
     {
       "title": "手把手教你养“龙虾”从零开始驾驭OpenClaw",
@@ -571,7 +561,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787516932391",
-      "rank": 11
+      "rank": 10
     },
     {
       "title": "玩爆你的龙虾  最强 OpenClaw",
@@ -580,7 +570,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "需补充进口备案文号",
       "recommend_time": "Q1",
       "isbn": "9786267889022",
-      "rank": 12
+      "rank": 11
     },
     {
       "platform": "淘宝",
@@ -591,18 +581,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787522935324",
-      "rank": 13
-    },
-    {
-      "platform": "抖音",
-      "title": "豆包AI创富手册",
-      "author": "云岫",
-      "publisher": "北方妇女儿童出版社",
-      "image": "book-images/recbook_image10.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787581301139",
-      "rank": 14
+      "rank": 12
     },
     {
       "title": "AI赚钱攻略",
@@ -612,48 +591,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787547752807",
-      "rank": 15
-    },
-    {
-      "title": "成为AI高手：人人都能上手的智能体实战指南",
-      "author": "唐舰长",
-      "publisher": "电子工业出版社",
-      "image": "book-images/recbook_image12.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787121513848",
-      "rank": 16
-    },
-    {
-      "platform": "京东",
-      "title": "豆包AI赚钱手册",
-      "author": "秋叶",
-      "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_image69.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787115691842",
-      "rank": 17
-    },
-    {
-      "title": "豆包高效办公:AI10倍提升工作效率的方法与技巧",
-      "author": "沈亲淦;云中江树;蓝衣剑客",
-      "publisher": "机械工业出版社",
-      "image": "book-images/recbook_image70.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787111777021",
-      "rank": 18
-    },
-    {
-      "title": "用扣子（Coze）搭建AI Agent （零基础，实战版）――给普通人的智能体入门书",
-      "author": "罗健",
-      "publisher": "电子工业出版社",
-      "image": "book-images/recbook_image71.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787121513077",
-      "rank": 19
+      "rank": 13
     },
     {
       "title": "富爸爸穷爸爸(新版)",
@@ -663,7 +601,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787220114045",
-      "rank": 20
+      "rank": 14
     },
     {
       "title": "给孩子的人工智能",
@@ -673,7 +611,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787516841624",
-      "rank": 21
+      "rank": 15
     },
     {
       "title": "智能简史：进化、AI与人脑的突破",
@@ -683,7 +621,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787500181699",
-      "rank": 22
+      "rank": 16
     },
     {
       "title": "DeepSeek从入门到精通",
@@ -693,7 +631,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787301361504",
-      "rank": 23
+      "rank": 17
     },
     {
       "title": "漫画AI",
@@ -703,7 +641,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787550056589",
-      "rank": 24
+      "rank": 18
     },
     {
       "title": "AI工程大模型应用开发实战",
@@ -713,7 +651,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787115686398",
-      "rank": 25
+      "rank": 19
     },
     {
       "title": "智人之上一一从石器时代到AI时代的信息网络简史",
@@ -723,18 +661,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787521768527",
-      "rank": 26
-    },
-    {
-      "platform": "抖音",
-      "title": "豆包AI赚钱手册",
-      "author": "秋叶",
-      "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_image79.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787115691842",
-      "rank": 27
+      "rank": 20
     },
     {
       "title": "一人公司:AI时代赚钱新方向",
@@ -744,17 +671,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787513951944",
-      "rank": 28
-    },
-    {
-      "title": "AI提效手册",
-      "author": "秋叶  ，刘晓阳",
-      "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_image81.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787807741053",
-      "rank": 29
+      "rank": 21
     },
     {
       "title": "用ai赚钱",
@@ -764,17 +681,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787559499158",
-      "rank": 30
-    },
-    {
-      "title": "豆包高效办公",
-      "author": "沈亲淦,云中江树,蓝衣剑客",
-      "publisher": "机械工业出版社",
-      "image": "book-images/recbook_image83.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787111777021",
-      "rank": 31
+      "rank": 22
     },
     {
       "title": "玩“赚”AI",
@@ -784,7 +691,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787547753835",
-      "rank": 32
+      "rank": 23
     },
     {
       "title": "快速玩转DeepSeek 7天从新手到高手",
@@ -794,7 +701,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787513949507",
-      "rank": 33
+      "rank": 24
     },
     {
       "title": "用AI赚钱 普通人的新财库",
@@ -804,17 +711,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787521015775",
-      "rank": 34
-    },
-    {
-      "title": "AI+抖音",
-      "author": "梦联",
-      "publisher": "中国摄影出版社",
-      "image": "book-images/recbook_image87.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787522933122",
-      "rank": 35
+      "rank": 25
     },
     {
       "title": "从0到1用AI赚钱",
@@ -824,16 +721,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787513948944",
-      "rank": 36
-    },
-    {
-      "title": "豆包AI时代创富",
-      "author": "李天舒",
-      "publisher": "电子工业出版社",
-      "image": "book-images/recbook_image89.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "rank": 37
+      "rank": 26
     },
     {
       "title": "零基础玩转AI赚钱36招",
@@ -843,7 +731,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787523423110",
-      "rank": 38
+      "rank": 27
     },
     {
       "title": "DeepSeek实用操作指南书",
@@ -853,7 +741,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787513949163",
-      "rank": 39
+      "rank": 28
     },
     {
       "title": "StatQuest 图解机器学习（全彩）",
@@ -862,7 +750,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787121497643",
-      "rank": 40
+      "rank": 29
     },
     {
       "title": "人工智能",
@@ -872,7 +760,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787302686750",
-      "rank": 41
+      "rank": 30
     },
     {
       "title": "AI职场神器：高效办公实战手册",
@@ -882,7 +770,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787122491954",
-      "rank": 42
+      "rank": 31
     },
     {
       "title": "零基础DeepSeek从入门到精通",
@@ -892,7 +780,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787558593697",
-      "rank": 43
+      "rank": 32
     },
     {
       "title": "人人都能学AI",
@@ -902,7 +790,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787558593697",
-      "rank": 44
+      "rank": 33
     },
     {
       "title": "用ai赚钱",
@@ -912,17 +800,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787559499158",
-      "rank": 45
-    },
-    {
-      "platform": "天猫",
-      "title": "豆包AI时代创富",
-      "author": "李天舒",
-      "publisher": "电子工业出版社",
-      "image": "book-images/recbook_image97.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "rank": 46
+      "rank": 34
     },
     {
       "title": "小学生秒懂新科技和AI人工智能",
@@ -932,7 +810,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787557597870",
-      "rank": 47
+      "rank": 35
     },
     {
       "title": "从0到1用AI赚钱",
@@ -942,26 +820,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787513948944",
-      "rank": 48
-    },
-    {
-      "title": "豆包AI赚钱手册",
-      "author": "秋叶",
-      "publisher": "人民邮电出版社有限公司",
-      "image": "book-images/recbook_image69.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "isbn": "9787115691842",
-      "rank": 49
-    },
-    {
-      "title": "豆包从入门到精通",
-      "author": "苏小文  ， 乔剑",
-      "publisher": "机械工业出版社",
-      "image": "book-images/recbook_image100.jpg",
-      "ams_status": "微信不可投，仅能支持优量汇",
-      "recommend_time": "Q1",
-      "rank": 50
+      "rank": 36
     },
     {
       "title": "DeepSeek实用操作指南书",
@@ -971,7 +830,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787513949163",
-      "rank": 51
+      "rank": 37
     },
     {
       "title": "一人公司:AI时代赚钱新方向",
@@ -981,7 +840,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787513951944",
-      "rank": 52
+      "rank": 38
     },
     {
       "title": "AI时代安全导航",
@@ -991,7 +850,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787524801467",
-      "rank": 53
+      "rank": 39
     },
     {
       "title": "DeepSeek实用操作指南",
@@ -1001,7 +860,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投，DeepSeek需提黑词加白",
       "recommend_time": "Q1",
       "isbn": "9787301361504",
-      "rank": 54
+      "rank": 40
     },
     {
       "title": "懒商：AI赋能下的财富密码",
@@ -1011,20 +870,10 @@ const RECOMMEND_BOOKS = {
       "ams_status": "全流量可投",
       "recommend_time": "Q1",
       "isbn": "9787507563351",
-      "rank": 55
+      "rank": 41
     }
   ],
   "健康推荐书单": [
-    {
-      "title": "祛湿三步走：疏肝健脾养肾",
-      "author": "许庆友",
-      "publisher": "民主与建设出版社",
-      "image": "book-images/recbook_image104.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787513946247",
-      "rank": 1
-    },
     {
       "title": "二十四节气养生药茶",
       "author": "王晨",
@@ -1033,27 +882,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787515224536",
-      "rank": 2
-    },
-    {
-      "title": "清热解毒：夏季热病调养方",
-      "author": "谢克友",
-      "publisher": "华龄出版社",
-      "image": "book-images/recbook_image106.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787516926875",
-      "rank": 3
-    },
-    {
-      "title": "本草一味祛心火",
-      "author": "余瀛鳌、陈思燕",
-      "publisher": "中国中医药出版社",
-      "image": "book-images/recbook_image107.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787513267894",
-      "rank": 4
+      "rank": 1
     },
     {
       "title": "美食课（夏季版）",
@@ -1063,16 +892,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787535979828",
-      "rank": 5
-    },
-    {
-      "title": "祛寒湿热瘀无毒一身轻",
-      "author": "汉竹",
-      "publisher": "江苏凤凰科学技术出版社",
-      "image": "book-images/recbook_image109.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 6
+      "rank": 2
     },
     {
       "title": "舌尖上的中国",
@@ -1082,7 +902,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787511371898",
-      "rank": 7
+      "rank": 3
     },
     {
       "title": "百吃不厌的能量果蔬汁",
@@ -1091,17 +911,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787543682078",
-      "rank": 8
-    },
-    {
-      "title": "百病一方灵",
-      "author": "刘文华、贾冬",
-      "publisher": "辽宁科学技术出版社",
-      "image": "book-images/recbook_image112.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787538170153",
-      "rank": 9
+      "rank": 4
     },
     {
       "title": "全身穴位一找就准",
@@ -1111,16 +921,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787572713576",
-      "rank": 10
-    },
-    {
-      "title": "千古甄选遗方",
-      "publisher": "吉林科学技术出版社",
-      "image": "book-images/recbook_image114.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787574428812",
-      "rank": 11
+      "rank": 5
     },
     {
       "title": "养生豆浆米糊果蔬汁一本全",
@@ -1130,7 +931,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787229060718",
-      "rank": 12
+      "rank": 6
     },
     {
       "title": "1500种中草药野外识别彩色图鉴",
@@ -1140,7 +941,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787122302977",
-      "rank": 13
+      "rank": 7
     },
     {
       "title": "四季蒸菜",
@@ -1150,17 +951,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787571902742",
-      "rank": 14
-    },
-    {
-      "title": "零基础学中医",
-      "author": "马可迅",
-      "publisher": "江苏凤凰科学技术出版社",
-      "image": "book-images/recbook_image118.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "9787571324261",
-      "rank": 15
+      "rank": 8
     },
     {
       "title": "老年人饮食营养一本通",
@@ -1170,7 +961,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787122351098",
-      "rank": 16
+      "rank": 9
     },
     {
       "title": "中老年人必知的365个养生法",
@@ -1180,7 +971,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787122250087",
-      "rank": 17
+      "rank": 10
     },
     {
       "title": "吃土:强健肠道、提升免疫的整体健康革命",
@@ -1190,7 +981,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787559611680",
-      "rank": 18
+      "rank": 11
     },
     {
       "title": "精选家常菜",
@@ -1200,7 +991,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787518424412",
-      "rank": 19
+      "rank": 12
     },
     {
       "title": "中草药全图鉴",
@@ -1210,7 +1001,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787553742601",
-      "rank": 20
+      "rank": 13
     },
     {
       "title": "阳台种菜种花种香草",
@@ -1220,7 +1011,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787550258433",
-      "rank": 21
+      "rank": 14
     },
     {
       "title": "零基础学养花",
@@ -1230,7 +1021,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787571321727",
-      "rank": 22
+      "rank": 15
     },
     {
       "title": "四书五经 精装",
@@ -1239,7 +1030,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787545136852",
-      "rank": 23
+      "rank": 16
     },
     {
       "title": "怀孕一天一页",
@@ -1249,7 +1040,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787553785622",
-      "rank": 24
+      "rank": 17
     },
     {
       "title": "老子道德经解-禅解儒道丛书",
@@ -1258,7 +1049,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787540340018",
-      "rank": 25
+      "rank": 18
     },
     {
       "title": "吕祖秘注道德经心传",
@@ -1267,7 +1058,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787516929339",
-      "rank": 26
+      "rank": 19
     },
     {
       "title": "孝经诵读本",
@@ -1276,17 +1067,7 @@ const RECOMMEND_BOOKS = {
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
       "isbn": "9787507560046",
-      "rank": 27
-    },
-    {
-      "platform": "京东",
-      "title": "空腹力",
-      "author": "（日）石原结实   译者:安忆",
-      "publisher": "天津科学技术出版社",
-      "image": "book-images/recbook_image131.jpg",
-      "ams_status": "减肥类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 28
+      "rank": 20
     },
     {
       "title": "漫画讲透黄帝内经",
@@ -1295,7 +1076,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image132.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 29
+      "rank": 21
     },
     {
       "title": "身体重置",
@@ -1304,7 +1085,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image133.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 30
+      "rank": 22
     },
     {
       "title": "控糖革命",
@@ -1313,7 +1094,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image134.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 31
+      "rank": 23
     },
     {
       "title": "《本草纲目》节气养生年历",
@@ -1322,16 +1103,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image135.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 32
-    },
-    {
-      "title": "空腹的神奇自愈力",
-      "author": "(日)船濑俊介  译者:李萌",
-      "publisher": "天津科学技术出版社",
-      "image": "book-images/recbook_image136.jpg",
-      "ams_status": "减肥类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 33
+      "rank": 24
     },
     {
       "title": "预防衰老   从50岁开始",
@@ -1340,7 +1112,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image137.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 34
+      "rank": 25
     },
     {
       "title": "救命!逆转和预防致命疾病的科学饮食",
@@ -1349,7 +1121,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image138.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 35
+      "rank": 26
     },
     {
       "title": "黄帝内经全集(全译图解版)",
@@ -1358,7 +1130,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image139.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 36
+      "rank": 27
     },
     {
       "title": "血糖控制一本就够",
@@ -1367,7 +1139,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image140.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 37
+      "rank": 28
     },
     {
       "platform": "抖音",
@@ -1377,7 +1149,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image141.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 38
+      "rank": 29
     },
     {
       "title": "中医养身妙招",
@@ -1386,7 +1158,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image142.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 39
+      "rank": 30
     },
     {
       "title": "实用中草药图谱与手册应用",
@@ -1395,34 +1167,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image143.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 40
-    },
-    {
-      "title": "性心理学",
-      "author": "霭理士 译者:  潘光旦",
-      "publisher": "广东旅游出版社",
-      "image": "book-images/recbook_image144.jpg",
-      "ams_status": "性相关书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 41
-    },
-    {
-      "title": "李少波真气运行法（第三3版）",
-      "author": "李少波   李天晓",
-      "publisher": "中国中医药出版社",
-      "image": "book-images/recbook_image145.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 42
-    },
-    {
-      "title": "民间实用祖传秘方：彩图版",
-      "author": "郭号，周芳",
-      "publisher": "天津科学技术出版社",
-      "image": "book-images/recbook_image146.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 43
+      "rank": 31
     },
     {
       "title": "漫画讲透黄帝内经",
@@ -1431,7 +1176,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image147.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 44
+      "rank": 32
     },
     {
       "title": "饮食术：减糖生活",
@@ -1440,16 +1185,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image148.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 45
-    },
-    {
-      "title": "华佗妙方大全",
-      "author": "苑百松",
-      "publisher": "黑龙江科学技术出版社",
-      "image": "book-images/recbook_image149.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 46
+      "rank": 33
     },
     {
       "title": "别让慢病找上你",
@@ -1458,18 +1194,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image150.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 47
-    },
-    {
-      "platform": "淘宝",
-      "title": "徒手按摩治百病",
-      "author": "马寅中",
-      "publisher": "中国织纺出版社",
-      "image": "book-images/recbook_image151.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "isbn": "4/15更新为不支持",
-      "rank": 48
+      "rank": 34
     },
     {
       "title": "保健小妙招",
@@ -1478,7 +1203,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image152.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 49
+      "rank": 35
     },
     {
       "title": "黄帝内经",
@@ -1487,43 +1212,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image153.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 50
-    },
-    {
-      "title": "图解金氏五行升降",
-      "author": "金超杰",
-      "publisher": "世界图书出版有限公司",
-      "image": "book-images/recbook_image154.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 51
-    },
-    {
-      "title": "特效中药方全集干货",
-      "author": "张玉苹   焦明耀",
-      "publisher": "中国纺织出版社",
-      "image": "book-images/recbook_image155.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 52
-    },
-    {
-      "title": "梅花医案",
-      "author": "骆杰伟, 孟晓嵘, 黄昉萌, 编著",
-      "publisher": "福建科学技术出版社",
-      "image": "book-images/recbook_image156.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 53
-    },
-    {
-      "title": "中国秘方全书(第3版)",
-      "author": "周洪范",
-      "publisher": "科技文献出版社",
-      "image": "book-images/recbook_image157.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 54
+      "rank": 36
     },
     {
       "title": "腿脚有病看这本就够",
@@ -1532,7 +1221,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image158.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 55
+      "rank": 37
     },
     {
       "title": "保健小妙招",
@@ -1541,16 +1230,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image159.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 56
-    },
-    {
-      "title": "刺血治病一本通",
-      "author": "刘柏林",
-      "publisher": "国文出版社",
-      "image": "book-images/recbook_image160.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 57
+      "rank": 38
     },
     {
       "platform": "天猫",
@@ -1560,7 +1240,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image161.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 58
+      "rank": 39
     },
     {
       "title": "抗炎食物",
@@ -1569,7 +1249,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image162.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 59
+      "rank": 40
     },
     {
       "title": "《本草纲目》节气养生年历",
@@ -1578,7 +1258,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image135.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 60
+      "rank": 41
     },
     {
       "title": "黄帝内经",
@@ -1587,7 +1267,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image163.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 61
+      "rank": 42
     },
     {
       "title": "漫画讲透黄帝内经",
@@ -1596,7 +1276,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image132.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 62
+      "rank": 43
     },
     {
       "title": "智慧生活-3秒精准取穴",
@@ -1605,16 +1285,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image164.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 63
-    },
-    {
-      "title": "调脾养肺小儿安",
-      "author": "陈秀珍",
-      "publisher": "江苏凤凰科学技术出版社",
-      "image": "book-images/recbook_image165.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 64
+      "rank": 44
     },
     {
       "title": "黄帝内经",
@@ -1623,7 +1294,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image166.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 65
+      "rank": 45
     },
     {
       "title": "这书能让你戒烟",
@@ -1632,16 +1303,7 @@ const RECOMMEND_BOOKS = {
       "image": "book-images/recbook_image167.jpg",
       "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
       "recommend_time": "Q2",
-      "rank": 66
-    },
-    {
-      "title": "赤脚土方",
-      "author": "孔祥涛",
-      "publisher": "辽宁科学技术出版社",
-      "image": "book-images/recbook_image168.jpg",
-      "ams_status": "医疗类书籍禁止投放",
-      "recommend_time": "Q2",
-      "rank": 67
+      "rank": 46
     }
   ]
 };

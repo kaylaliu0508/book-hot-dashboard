@@ -181,18 +181,18 @@ if(window.self !== window.top){
     <!-- 分组 3：当月推荐书单（去年同期全网榜单精选）-->
     <div class="rsn-group rsn-group-rec">
       <a class="rsn-group-title rsn-group-link" href="#hub-block-rec-intro" data-target="hub-block-rec-intro">⭐ 当月推荐书单<span class="rsn-group-tip">月维度 · 去年同期全网榜单精选</span></a>
-      <a class="rsn-item" href="#hub-block-rec-child" data-target="hub-block-rec-child" data-jump-rec="童书">
-        <span class="rsn-icon">🧸</span>
-        <div class="rsn-body">
-          <div class="rsn-name">童书推荐</div>
-          <div class="rsn-desc">心理/成长/青春期 <span class="rsn-count" id="rsnCountChild">--</span></div>
-        </div>
-      </a>
       <a class="rsn-item" href="#hub-block-rec-edu" data-target="hub-block-rec-edu" data-jump-rec="教辅">
         <span class="rsn-icon">📖</span>
         <div class="rsn-body">
           <div class="rsn-name">教辅推荐</div>
           <div class="rsn-desc">期末/暑期/新学期 <span class="rsn-count" id="rsnCountEdu">--</span></div>
+        </div>
+      </a>
+      <a class="rsn-item" href="#hub-block-rec-child" data-target="hub-block-rec-child" data-jump-rec="童书">
+        <span class="rsn-icon">🧸</span>
+        <div class="rsn-body">
+          <div class="rsn-name">童书推荐</div>
+          <div class="rsn-desc">心理/成长/青春期 <span class="rsn-count" id="rsnCountChild">--</span></div>
         </div>
       </a>
       <a class="rsn-item" href="#hub-block-rec-health" data-target="hub-block-rec-health" data-jump-rec="健康">
@@ -360,19 +360,7 @@ if(window.self !== window.top){
     </div>
   </div>
 
-  <!-- 3.1 童书推荐 -->
-  <div class="panel" id="hub-block-rec-child">
-    <div class="panel-title">
-      <span class="dot"></span>🧸 童书推荐<span class="badge-rec">精选</span>
-      <span class="extra">心理情绪 · 成长教育 · 青春期</span>
-    </div>
-    <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRecByCat('童书')" data-track="select_export_rec" data-track-cat="童书" data-track-tab="select_hub">📥 导出 ISBN</button>
-    </div>
-    <div id="recBodyChild"></div>
-  </div>
-
-  <!-- 3.2 教辅推荐 -->
+  <!-- 3.1 教辅推荐（教辅放童书前）-->
   <div class="panel" id="hub-block-rec-edu">
     <div class="panel-title">
       <span class="dot"></span>📖 教辅推荐<span class="badge-rec">精选</span>
@@ -382,6 +370,18 @@ if(window.self !== window.top){
       <button class="toolbar-btn success" onclick="exportRecByCat('教辅')" data-track="select_export_rec" data-track-cat="教辅" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="recBodyEdu"></div>
+  </div>
+
+  <!-- 3.2 童书推荐 -->
+  <div class="panel" id="hub-block-rec-child">
+    <div class="panel-title">
+      <span class="dot"></span>🧸 童书推荐<span class="badge-rec">精选</span>
+      <span class="extra">心理情绪 · 成长教育 · 青春期</span>
+    </div>
+    <div class="toolbar" style="justify-content:flex-end;">
+      <button class="toolbar-btn success" onclick="exportRecByCat('童书')" data-track="select_export_rec" data-track-cat="童书" data-track-tab="select_hub">📥 导出 ISBN</button>
+    </div>
+    <div id="recBodyChild"></div>
   </div>
 
   <!-- 3.3 健康推荐 -->
@@ -400,7 +400,7 @@ if(window.self !== window.top){
   <div class="panel" id="hub-block-rec-social">
     <div class="panel-title">
       <span class="dot"></span>🏛 社科推荐<span class="badge-rec">精选</span>
-      <span class="extra">AI · 管理 · 历史 · 文学 · 励志</span>
+      <span class="extra">AI · 管理 · 历史 · 文学 · 励志（已过滤 AMS 禁投）</span>
     </div>
     <div class="toolbar" style="justify-content:flex-end;">
       <button class="toolbar-btn success" onclick="exportRecByCat('社科')" data-track="select_export_rec" data-track-cat="社科" data-track-tab="select_hub">📥 导出 ISBN</button>
