@@ -254,7 +254,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面5: 口播脚本 ==================== -->
 <div class="ct pg" id="pg-p5">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
-<p class="subtitle">粘贴图书内容 → AI 生成「分块脚本菜单」，每段 4 个候选，自由组合</p>
+<p class="subtitle">粘贴图书内容 → AI 同时生成「开头 / 中间 / 结尾」3 段 × 4 候选，自由组合实时预览</p>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
 ⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
 </div>
@@ -3467,60 +3467,27 @@ if(isMulti){
 }
 
 // ==================== 分块脚本菜单 ====================
-// 7 档时长各自的 chunk 结构（按字数比例切分）；每个 chunk 4 个候选语气
+// 固定 3 模块：开头 / 中间 / 结尾。每模块 4 候选。
+// 不同时长档位通过「字数比例」+「中间段任务说明」控制信息密度
 var SCRIPT_CHUNK_PLAN={
-  30:[
-    {id:'hook',  name:'开头钩子',     pct:0.30, hint:'3-5秒抓眼球'},
-    {id:'point', name:'单一爆点',     pct:0.50, hint:'最强一招打透'},
-    {id:'cta',   name:'行动号召',     pct:0.20, hint:'催促行动'}
-  ],
-  60:[
-    {id:'hook',  name:'开头钩子',     pct:0.20, hint:'3-5秒抓眼球'},
-    {id:'point', name:'2 个内容点',   pct:0.55, hint:'核心信息'},
-    {id:'anchor',name:'价值锚定',     pct:0.13, hint:'放大价值'},
-    {id:'cta',   name:'行动号召',     pct:0.12, hint:'催促行动'}
-  ],
-  90:[
-    {id:'hook',  name:'开头钩子',     pct:0.12, hint:'生活场景提问'},
-    {id:'pain',  name:'痛点共鸣',     pct:0.20, hint:'戳到他'},
-    {id:'point', name:'2-3 个内容点', pct:0.50, hint:'书中真实内容'},
-    {id:'cta',   name:'行动号召',     pct:0.18, hint:'价值锚+催促'}
-  ],
-  120:[
-    {id:'hook',  name:'开头钩子',     pct:0.10, hint:'生活场景提问'},
-    {id:'pain',  name:'痛点共鸣',     pct:0.15, hint:'戳到他'},
-    {id:'point', name:'3 个内容点',   pct:0.45, hint:'书中真实内容'},
-    {id:'emo',   name:'情感升华',     pct:0.15, hint:'打动他'},
-    {id:'cta',   name:'价值锚+行动号召',pct:0.15,hint:'催促行动'}
-  ],
-  180:[
-    {id:'hook',  name:'开头钩子',     pct:0.08, hint:'生活场景提问'},
-    {id:'pain',  name:'痛点深挖',     pct:0.15, hint:'让他坐不住'},
-    {id:'point', name:'5 个内容点+案例',pct:0.50,hint:'故事化展开'},
-    {id:'emo',   name:'情感升华',     pct:0.12, hint:'高潮共鸣'},
-    {id:'anchor',name:'价值锚定',     pct:0.08, hint:'放大价值'},
-    {id:'cta',   name:'行动号召',     pct:0.07, hint:'催促行动'}
-  ],
-  240:[
-    {id:'hook',  name:'开头钩子',     pct:0.07, hint:'生活场景提问'},
-    {id:'pain',  name:'痛点深挖+对比',pct:0.15, hint:'让他坐不住'},
-    {id:'point', name:'5-6 个内容点+多案例',pct:0.55,hint:'故事化展开'},
-    {id:'emo',   name:'情感升华',     pct:0.10, hint:'高潮共鸣'},
-    {id:'anchor',name:'价值锚定',     pct:0.07, hint:'放大价值'},
-    {id:'cta',   name:'行动号召',     pct:0.06, hint:'催促行动'}
-  ],
-  300:[
-    {id:'hook',  name:'开场钩子',     pct:0.06, hint:'生活场景提问'},
-    {id:'bg',    name:'背景铺垫',     pct:0.10, hint:'引入主题'},
-    {id:'pain',  name:'痛点深挖',     pct:0.12, hint:'让他坐不住'},
-    {id:'point', name:'6-7 个内容点+完整案例',pct:0.50,hint:'故事化展开'},
-    {id:'turn',  name:'转折/反差',    pct:0.08, hint:'制造意外'},
-    {id:'emo',   name:'情感升华',     pct:0.08, hint:'高潮共鸣'},
-    {id:'anchor',name:'价值锚定',     pct:0.04, hint:'放大价值'},
-    {id:'cta',   name:'行动号召',     pct:0.02, hint:'催促行动'}
-  ]
+  30: {hookPct:0.30, midPct:0.50, endPct:0.20, midTask:'用 1 句话讲清最强一招'},
+  60: {hookPct:0.22, midPct:0.58, endPct:0.20, midTask:'2 个核心内容点 + 简短价值锚'},
+  90: {hookPct:0.16, midPct:0.62, endPct:0.22, midTask:'痛点共鸣 + 2-3 个核心内容点 + 价值锚'},
+  120:{hookPct:0.13, midPct:0.65, endPct:0.22, midTask:'痛点共鸣 + 3 个内容点 + 情感升华 + 价值锚'},
+  180:{hookPct:0.10, midPct:0.72, endPct:0.18, midTask:'痛点深挖 + 5 个内容点配案例 + 情感升华 + 价值锚'},
+  240:{hookPct:0.08, midPct:0.76, endPct:0.16, midTask:'痛点深挖+对比 + 5-6 个内容点配多案例 + 情感升华 + 价值锚'},
+  300:{hookPct:0.07, midPct:0.80, endPct:0.13, midTask:'背景铺垫 + 痛点深挖 + 6-7 个内容点配完整案例 + 转折反差 + 情感升华 + 价值锚'}
 };
-// 每个 chunk 4 个候选的 tone（语气）配置
+// 把档位换成 3 段固定结构（提供给生成函数和渲染函数）
+function scriptResolveChunks(seconds){
+  var p=SCRIPT_CHUNK_PLAN[seconds]||SCRIPT_CHUNK_PLAN[90];
+  return [
+    {id:'hook', name:'① 开头', pct:p.hookPct, hint:'3-5 秒钩住注意力'},
+    {id:'mid',  name:'② 中间', pct:p.midPct,  hint:p.midTask},
+    {id:'end',  name:'③ 结尾', pct:p.endPct,  hint:'价值锚定 + 行动号召'}
+  ];
+}
+// 每个模块 4 个候选的 tone（语气）
 var CHUNK_TONES=[
   {id:'info_gap', name:'信息差',  emoji:'🔓'},
   {id:'knowledge',name:'干货',    emoji:'💎'},
@@ -3619,7 +3586,7 @@ var audience=audienceEl?audienceEl.dataset.value:'通用人群';
 var duration=scriptGetDuration();
 var globalToneEl=document.querySelector('#scriptStyleChips .scp.on');
 var globalTone=globalToneEl?globalToneEl.dataset.value:'auto';
-var chunks=SCRIPT_CHUNK_PLAN[duration.seconds]||SCRIPT_CHUNK_PLAN[90];
+var chunks=scriptResolveChunks(duration.seconds);
 var tones=scriptResolveChunkTones(globalTone);
 
 document.getElementById('scriptLoading').style.display='block';
