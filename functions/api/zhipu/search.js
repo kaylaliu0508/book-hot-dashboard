@@ -14,7 +14,7 @@ const UPSTREAM = 'https://open.bigmodel.cn/api/paas/v4/tools';
 const MAX_BODY_BYTES = 32 * 1024;
 
 const rateMap = new Map();
-const RATE_LIMIT = 20;
+const RATE_LIMIT = 50;
 const RATE_WINDOW_MS = 60 * 1000;
 
 function rateLimited(ip) {
