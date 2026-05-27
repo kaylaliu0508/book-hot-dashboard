@@ -1,7 +1,8 @@
 {
-  "version": "2026-summer-tags-v11-new-videos-time-node-p1-clean-2-freq89-patched-combo-fix-user-rename-scene-rename",
-  "updated_at": "2026-05-07",
-  "data_note": "基于已采集的暑期创意视频进行五维度拆解，频率=该标签出现的相对热度 | 2026-05-07: 原 pain 标签中性化（合规调整）",
+  "version": "summer-tags-v20260527",
+  "updated_at": "2026-05-27",
+  "data_note": "基于本批 50 个暑期创意视频做五维度拆解，频率 = 该标签在 50 条素材中出现次数",
+  "total_sample_videos": 53,
   "dimensions": [
     {
       "id": "pain",
@@ -47,1627 +48,1318 @@
   "tag_library": {
     "pain": [
       {
-        "tag": "志愿规划",
-        "freq": 13,
+        "tag": "陪伴有限",
+        "freq": 20,
         "videos": [
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53ric54aafbyab77gztjur7cqe32falxsa",
-          "0b53tmcqqaafmiai7yokajur7gyebcnqkcca",
-          "0bc35uaayaaanyagpqoq6nurv3iebtwqadca",
-          "0bc3fmctcaafvyapj5osa5ur4kyegevqkmka",
-          "0bc3q4c5waafreaojs7od5ur7bye3odqlw2a",
-          "0bc3quciaaaeouafrmojgrur5bieqccqjaca",
-          "0bc3vqdnuaagkiannohnq5urzlae3kwanwsa",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "家长想了解的志愿填报和考情信息。视频常讲高考志愿、新版考情、家长圈常聊的话题。",
-        "examples": [
-          "高考志愿这些事家长要先了解",
-          "26年新版印刷已上架",
-          "中考流程图一张看懂"
-        ],
-        "applicable_categories": [
-          "高考志愿填报书",
-          "真题模拟卷",
-          "作文热点素材库"
-        ]
-      },
-      {
-        "tag": "考试备考",
-        "freq": 11,
-        "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53keczuaafdmad",
-          "0b53m4amkaaa6yaa",
-          "0b53qub4oaadsman",
-          "0bc354an4aaajmak",
-          "0bc36yb2caadcaam",
-          "0bc3fmctcaafvyapj5osa5ur4kyegevqkmka",
-          "0bc3gidcoaag2aap",
-          "0bc3vyb42aadcmap"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "家长最关心的孩子成绩提升。视频讲考前查考点温故、重点题型、备考方向等直接服务分数的内容。",
-        "examples": [
-          "考前查考点温故清单",
-          "历年真题分类汇编",
-          "考点速查手册"
-        ],
-        "applicable_categories": [
-          "单科备考卷",
-          "考点速查手册",
-          "真题解析书"
-        ]
-      },
-      {
-        "tag": "孩子社交",
-        "freq": 2,
-        "videos": [
-          "0b53i4afoaaa4aao",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "孩子在学校和同学的相处问题：不合群、被同学冷落、太内向。视频给家长一套应对方法。",
-        "warning": "⚠️ 注意：素材中不要出现校园霸凌、暴力冲突等敏感题材，聚焦正面社交引导。",
+        "explain": "父母工作忙、爷爷奶奶带娃缺方法、暑假孩子在家无人陪等场景痛点。视频常打温情共读牌。",
         "examples": [
-          "孩子在学校被同学排挤怎么办",
-          "帮孩子练习清晰表达",
-          "识别朋友的几个信号"
+          "让孩子足不出户看世界",
+          "爷爷奶奶送的六一礼物",
+          "根本不用你催孩子自己读"
         ],
         "applicable_categories": [
-          "反欺凌话术书",
-          "儿童社交力课",
-          "心理自助绘本"
+          "自主阅读图书",
+          "亲子共读绘本",
+          "隔代赠礼图书"
         ]
       },
       {
         "tag": "时间节点",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★★★",
-        "explain": "家长在高考、暑假、开学等关键时间节点前需要关注相关信息。视频常围绕这些节点做内容提醒。",
-        "examples": [
-          "暑假前后的学习节点提醒",
-          "本批次产品的发货安排说明",
-          "开学前可以做的几件准备"
-        ],
-        "applicable_categories": [
-          "考前备考卷",
-          "暑期规划手册",
-          "限量套装教辅"
-        ]
-      },
-      {
-        "tag": "育儿话题",
-        "freq": 9,
+        "freq": 19,
         "videos": [
-          "0b53gaaemaaazmah",
-          "0b53i4afoaaa4aao",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53imahiaaavuam",
-          "0b53nabioaacoqao",
-          "0b53qqbcuaacrqai",
-          "0b53viagoaaapmak",
-          "0bc32eaduaaahqao",
-          "0bc3z4dd4aagsmab"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "家长\"不知道该怎么做\"的日常难题。视频围绕立规则、管手机、亲戚带娃等高频话题展开。",
+        "summer_link": "★★★★★",
+        "explain": "6月初六一儿童节、6-8月暑假等具体节点驱动家长决策。视频常用节日倒计时/限时礼物钩子。",
         "examples": [
-          "暑假孩子在家怎么安排时间",
-          "亲戚带娃的边界在哪里",
-          "家长该不该给孩子定规则"
+          "六一只送孩子一种礼物就是这套",
+          "儿童节马上到了赶紧选礼物",
+          "抓住六一暑期套装"
         ],
         "applicable_categories": [
-          "家庭教育方法课",
-          "亲子沟通书",
-          "儿童成长心理书"
+          "儿童节礼物图书",
+          "暑期套装",
+          "季节性教辅"
         ]
       },
       {
         "tag": "课外积累少",
-        "freq": 14,
+        "freq": 18,
         "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0b53pyaeaaaapuai",
-          "0b53qqajcaaa5qai2f27ufurxbaesgcabeka",
-          "0b53qub4oaadsman",
-          "0b53vmaegaaahyah",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc36yb2caadcaam",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3fmctcaafvyapj5osa5ur4kyegevqkmka",
-          "0bc3raac6aaa2eanbfbd6burvcaef6eaal2a",
-          "0bc3sibauaaccmao7xpiwjurreqebkjaecsa",
-          "0bc3weafoaaa74ai6cho4nurvmiek6yqav2a"
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "家长希望孩子课外阅读更广、知识面更全。视频用百科、历史、地理类内容回应这个需求。",
+        "explain": "孩子课外知识储备不足、阅读量少、作文没话写等。视频常用数字堆叠展示书本信息密度。",
         "examples": [
-          "出游前先看一本地理百科",
-          "课本以外的知识合集",
-          "常被忽略的历史小知识"
+          "100个知识点3大震撼立体",
+          "52个翻翻页藏着",
+          "完整成语学习闭环"
         ],
         "applicable_categories": [
-          "中国地理百科",
-          "少儿科普套装",
-          "世界历史绘本"
-        ]
-      },
-      {
-        "tag": "时代新趋势",
-        "freq": 1,
-        "videos": [
-          "0b53u4ag2aaarqan"
-        ],
-        "summer_link": "★★",
-        "explain": "家长关心新一年的职业、行业、教育趋势变化。视频带家长用新视角看家庭教育。",
-        "examples": [
-          "行业在变家长怎么应对",
-          "新趋势下的家庭教育思路",
-          "26年家长关注的话题"
-        ],
-        "applicable_categories": [
-          "观念更新书",
-          "家长成长课",
-          "亲子共读深度书"
-        ]
-      },
-      {
-        "tag": "作文素材",
-        "freq": 26,
-        "videos": [
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53gaaemaaazmah",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53jqaocaaaeyao",
-          "0b53qub4oaadsman",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53ric54aafbyab77gztjur7cqe32falxsa",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53t4avkaabcuam",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53tmcqqaafmiai7yokajur7gyebcnqkcca",
-          "0bc32mc7eaafsaaf",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc35uaayaaanyagpqoq6nurv3iebtwqadca",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3q4c5waafreaojs7od5ur7bye3odqlw2a",
-          "0bc3quciaaaeouafrmojgrur5bieqccqjaca",
-          "0bc3raac6aaa2eanbfbd6burvcaef6eaal2a",
-          "0bc3vqdnuaagkiannohnq5urzlae3kwanwsa",
-          "0bc3vyb42aadcmap",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka",
-          "0bc3z4dd4aagsmab"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "中高考作文没话可写、没素材可用。视频给家长看范文合集、借势话题整理、写作方法书。",
-        "examples": [
-          "考场作文常用素材合集",
-          "高考作文借势话题梳理",
-          "范文阅读笔记参考"
-        ],
-        "applicable_categories": [
-          "作文热点素材库",
-          "满分作文范文集",
-          "写作方法书"
-        ]
-      },
-      {
-        "tag": "不敢表达",
-        "freq": 1,
-        "videos": [
-          "0bc374dhkaags4ao"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子不敢拒绝、总迁就别人的性格特征。视频教家长怎么引导孩子表达自己、守住边界。",
-        "examples": [
-          "帮孩子学会说不",
-          "让孩子敢于表达自己想法",
-          "建立健康人际边界"
-        ],
-        "applicable_categories": [
-          "儿童心理自助书",
-          "自信力养成课",
-          "家庭边界感绘本"
+          "科普百科套书",
+          "成语故事书",
+          "作文素材库"
         ]
       },
       {
         "tag": "单科入门",
-        "freq": 13,
+        "freq": 15,
         "videos": [
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53jqaocaaaeyao",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0b53qeagwaaa2maj",
-          "0b53vub2iaad2eajqj6f6jurtlieuswqhjca",
-          "0bc33aagwaaao4ad",
-          "0bc3diddeaag6qamat7aavurygqeginammsa",
-          "0bc3duc2waafmuac",
-          "0bc3duc2waafmuaciuhecjur6hievmoqlk2a",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3keadcaaaseah",
-          "0bc3oecqmaafvyam"
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "某门课基础不牢、入门有障碍（如数学/物理/英语）。视频讲单科入门方法、基础题思路。",
+        "explain": "语文/数学/英语单科零基础或入门期，家长想找方法快速建立学科基础。",
         "examples": [
-          "单科入门怎么补",
-          "学科入门的方法整理",
-          "基础不扎实从哪里开始"
+          "小学常用画图模型",
+          "一图秒懂小学英语语法",
+          "拼音平板按一下就会读"
         ],
         "applicable_categories": [
-          "数学/物理/化学单科提升书",
-          "学科思维启蒙课",
-          "单科备考教辅"
+          "学科启蒙教辅",
+          "方法论方法书",
+          "单科练习册"
         ]
       },
       {
-        "tag": "陪伴有限",
-        "freq": 1,
+        "tag": "育儿话题",
+        "freq": 10,
         "videos": [
-          "0b53viagoaaapmak"
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "家长工作忙、陪孩子时间有限。视频给暑假可以一起做的事、亲子共读书目等方案。",
+        "explain": "家长在孩子教育方法、习惯养成、亲子关系处理等育儿话题上的具体疑问。",
         "examples": [
-          "暑假和孩子可以一起做的事",
-          "亲子共读的几本书",
-          "一起做的家庭活动"
+          "管理孩子手机好用的方法就是不管",
+          "遗传矮不等于孩子矮",
+          "脑科学育儿方案"
         ],
         "applicable_categories": [
-          "亲子共读绘本",
-          "暑期游学攻略",
-          "家庭亲子活动书"
+          "家庭教育书",
+          "育儿方法论书",
+          "亲子心理书"
+        ]
+      },
+      {
+        "tag": "考试备考",
+        "freq": 7,
+        "videos": [
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0"
+        ],
+        "summer_link": "★★★★★",
+        "explain": "中考/高考前夕的备考冲刺、高频考点串讲、模考冲分等强应试场景。",
+        "examples": [
+          "新版七上历史必背口诀",
+          "5年201次高频考点",
+          "等积模型中考几何必备"
+        ],
+        "applicable_categories": [
+          "真题模拟卷",
+          "考点速记书",
+          "学霸笔记"
+        ]
+      },
+      {
+        "tag": "时代新趋势",
+        "freq": 6,
+        "videos": [
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0",
+          "ads_svp_video__0bc3siad6aaazqamhyig7nvbveqeh6jaap2a_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "2026年新时代趋势、AI变革、阶层固化等宏观焦虑性话题。",
+        "examples": [
+          "2026年新时代",
+          "让无数人后背发凉",
+          "普通人如何跟上趋势"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "家长成长课",
+          "时代趋势书"
         ]
       },
       {
         "tag": "幼小衔接",
-        "freq": 10,
+        "freq": 5,
         "videos": [
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0b53vub2iaad2eajqj6f6jurtlieuswqhjca",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc3aualgaaaqaaguuhogvurubiewmcqbm2a",
-          "0bc3oecqmaafvyamit6qgfur64ieazyqkbsa",
-          "0bc3weafoaaa74ai6cho4nurvmiek6yqav2a",
-          "0bc3wudnwaaguqaa6dpm3rurznie3o2qnw2a"
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "孩子上小学前的准备：识字、拼音、写字、习惯。视频教家长怎么在家里一步步引导。",
+        "explain": "幼升小、小升初、初升高等学段衔接期，家长对预科教辅需求集中爆发。",
         "examples": [
-          "上小学前要会的几件事",
-          "识字启蒙从哪里开始",
-          "拼音练习的步骤"
+          "完整的拼音平板",
+          "暑假预备四年级",
+          "2-6年级全适用"
         ],
         "applicable_categories": [
-          "识字启蒙卡片书",
-          "幼小衔接教辅",
-          "拼音/写字练习本"
+          "幼小衔接发声书",
+          "学科预备教辅",
+          "年级跨越练习册"
+        ]
+      },
+      {
+        "tag": "孩子社交",
+        "freq": 3,
+        "videos": [
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "孩子在校园被孤立、不会交朋友、缺乏社交技巧等场景。",
+        "examples": [
+          "当孩子被孤立的时候",
+          "不必去讨好别人",
+          "远离消耗你的人"
+        ],
+        "applicable_categories": [
+          "儿童心理书",
+          "情商培养绘本",
+          "话术指导手册"
+        ],
+        "warning": "⚠️ 注意：素材中不要出现校园霸凌、暴力冲突等敏感题材，聚焦正面社交引导。"
+      },
+      {
+        "tag": "志愿规划",
+        "freq": 1,
+        "videos": [
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "中高考升学规划、才艺培养路径、兴趣班选择等长期规划痛点。",
+        "examples": [
+          "一线城市有眼光的家长",
+          "才艺规划很重要",
+          "升学路径要早规划"
+        ],
+        "applicable_categories": [
+          "志愿填报指南",
+          "升学规划书",
+          "才艺培养手册"
         ]
       }
     ],
     "effect": [
       {
-        "tag": "应试提分",
-        "freq": 22,
+        "tag": "识字启蒙",
+        "freq": 26,
         "videos": [
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53keczuaafdmad",
-          "0b53m4amkaaa6yaa",
-          "0b53qub4oaadsman",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53ric54aafbyab77gztjur7cqe32falxsa",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53tmcqqaafmiai7yokajur7gyebcnqkcca",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc354an4aaajmak",
-          "0bc35uaayaaanyagpqoq6nurv3iebtwqadca",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3quciaaaeouafrmojgrur5bieqccqjaca",
-          "0bc3vqdnuaagkiannohnq5urzlae3kwanwsa",
-          "0bc3vyb42aadcmap",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
-        "summer_link": "★★★★★",
-        "explain": "视频把书或课包装成\"直接服务考试分数\"，强调真题量、考点全、备考方向清晰。",
+        "summer_link": "★★★★",
+        "explain": "低龄孩子识字、拼音、看图说话等启蒙类成果，画面常表现孩子主动指字朗读。",
         "examples": [
-          "历年真题分类整理",
-          "考点速查手册",
-          "考前查考点温故清单"
+          "完整的拼音平板按一下就会读",
+          "声母韵母全有了",
+          "中英对照逐句阅读"
         ],
         "applicable_categories": [
-          "真题套卷",
-          "考点速查手册",
-          "密封模拟卷"
-        ]
-      },
-      {
-        "tag": "育儿方法",
-        "freq": 8,
-        "videos": [
-          "0b53gaaemaaazmah",
-          "0b53i4afoaaa4aao",
-          "0b53imahiaaavuam",
-          "0b53nabioaacoqao",
-          "0b53qqbcuaacrqai",
-          "0b53viagoaaapmak",
-          "0bc32eaduaaahqao",
-          "0bc3z4dd4aagsmab"
-        ],
-        "summer_link": "★★★",
-        "explain": "视频主打\"教家长一套立刻能用的带娃办法\"，比如沟通句式、行为引导、规则设立。",
-        "examples": [
-          "帮孩子学会清晰表达",
-          "亲子沟通的几个步骤",
-          "建立家庭规则的方法"
-        ],
-        "applicable_categories": [
-          "家庭教育方法课",
-          "儿童重心理的家长书",
-          "亲子沟通技巧书"
+          "拼音启蒙书",
+          "识字大书",
+          "双语启蒙绘本"
         ]
       },
       {
         "tag": "知识拓宽",
-        "freq": 8,
+        "freq": 25,
         "videos": [
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53imahiaaavuam",
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0b53mab4caadc4ao",
-          "0b53qqajcaaa5qai2f27ufurxbaesgcabeka",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc3raac6aaa2eanbfbd6burvcaef6eaal2a",
-          "0bc3sibauaaccmao"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "视频把书包装成\"一本顶多本\"，覆盖天文地理历史动物等多学科，适合课外拓展。",
+        "summer_link": "★★★★★",
+        "explain": "读完书孩子能拓展课本以外的知识面，地理/历史/科普等百科类核心承诺。",
         "examples": [
-          "多学科一站式百科",
-          "课本延伸阅读合集",
-          "科普绘本入门书单"
+          "让孩子足不出户看世界",
+          "100个知识点全覆盖",
+          "从常见到冷门神奇物种"
         ],
         "applicable_categories": [
-          "少儿百科全书",
-          "课外拓展套装",
-          "学科延伸读物"
-        ]
-      },
-      {
-        "tag": "读写提升",
-        "freq": 9,
-        "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53jqaocaaaeyao",
-          "0b53qub4oaadsman",
-          "0b53t4avkaabcuam",
-          "0b53vmaegaaahyah",
-          "0bc32mc7eaafsaaf",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3vyb42aadcmap"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频讲阅读和写作集中训练期计划，比如每周读一本、每日积累词汇，家长能看到清晰进度。",
-        "examples": [
-          "每周一本经典名著",
-          "每日积累词汇方法",
-          "写作集中训练期分阶段计划"
-        ],
-        "applicable_categories": [
-          "分级阅读课",
-          "写作集中训练期营",
-          "经典名著精读书"
-        ]
-      },
-      {
-        "tag": "观念更新",
-        "freq": 2,
-        "videos": [
-          "0b53u4ag2aaarqan",
-          "0bc33aagwaaao4ad"
-        ],
-        "summer_link": "★★",
-        "explain": "视频不卖技巧卖\"观念\"，针对愿意静下来听家庭教育深度话题的家长。",
-        "examples": [
-          "家长视角的家庭教育书",
-          "26年家庭教育新思路",
-          "家长共读深度书目"
-        ],
-        "applicable_categories": [
-          "家长认知书",
-          "深度亲子共读书",
-          "行业趋势解读书"
-        ]
-      },
-      {
-        "tag": "识字启蒙",
-        "freq": 12,
-        "videos": [
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0b53vub2iaad2eajqj6f6jurtlieuswqhjca",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc3aualgaaaqaaguuhogvurubiewmcqbm2a",
-          "0bc3oecqmaafvyam",
-          "0bc3oecqmaafvyamit6qgfur64ieazyqkbsa",
-          "0bc3weafoaaa74ai6cho4nurvmiek6yqav2a",
-          "0bc3wudnwaaguqaa6dpm3rurznie3o2qnw2a",
-          "0bc3xqbhcaacl4ab"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频讲学前识字方法：认字卡、撕贴书、配套拼音，目标是上小学前打好识字基础。",
-        "examples": [
-          "常用字+成语+组词一本通",
-          "撕贴互动式识字",
-          "从零基础到入门的识字路径"
-        ],
-        "applicable_categories": [
-          "识字卡片书",
-          "幼小衔接识字课",
-          "拼音识字一体书"
-        ]
-      },
-      {
-        "tag": "英语学习",
-        "freq": 15,
-        "videos": [
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53qeagwaaa2maj",
-          "0b53qqajcaaa5qai2f27ufurxbaesgcabeka",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
-          "0b53vub2iaad2eajqj6f6jurtlieuswqhjca",
-          "0b53waaf2aaarman",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc3diddeaag6qamat7aavurygqeginammsa",
-          "0bc3duc2waafmuac",
-          "0bc3keadcaaaseah"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频针对英语补课家长或中考前夕（6月）：高频词分类、晨读短文、简单句式入门。",
-        "examples": [
-          "中考高频词分类清单",
-          "英语晨读短文集",
-          "简单句式入门练习"
-        ],
-        "applicable_categories": [
-          "中考高频词书",
-          "英语晨读美文",
-          "简单句式入门书"
+          "科普百科套书",
+          "地理立体书",
+          "历史趣味书"
         ]
       },
       {
         "tag": "方法拆解",
-        "freq": 7,
+        "freq": 16,
         "videos": [
-          "0b53gaaemaaazmah",
-          "0b53keczuaafdmad",
-          "0b53vmaegaaahyah",
-          "0bc32eaduaaahqao",
-          "0bc33aagwaaao4ad",
-          "0bc374dhkaags4ao",
-          "0bc3keadcaaaseah"
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "视频把抽象学科拆成可落地的方法步骤，让基础不牢的孩子有一个可复制的学习路径。",
+        "explain": "提供具体可复制的学习方法/解题模型/记忆口诀等，给家长'交付确定性'。",
         "examples": [
-          "把抽象知识拆成步骤",
-          "学科入门方法整理",
-          "可复制的学习路径"
+          "等积模型30秒讲清",
+          "母题学习法",
+          "一图秒懂9大词类5大句型"
         ],
         "applicable_categories": [
-          "学科方法书",
-          "思维导图学习书",
-          "单科提升教辅"
+          "方法论方法书",
+          "思维训练教辅",
+          "考点速记书"
+        ]
+      },
+      {
+        "tag": "观念更新",
+        "freq": 13,
+        "videos": [
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0",
+          "ads_svp_video__0bc3siad6aaazqamhyig7nvbveqeh6jaap2a_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "家长自身认知/教育观念的迭代，长视频/演讲类素材的高频效果。",
+        "examples": [
+          "让普通家庭孩子开悟逆袭",
+          "管理孩子手机就是不管",
+          "抓住关键期"
+        ],
+        "applicable_categories": [
+          "家庭教育书",
+          "认知付费课程",
+          "家长成长课"
+        ]
+      },
+      {
+        "tag": "应试提分",
+        "freq": 10,
+        "videos": [
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0"
+        ],
+        "summer_link": "★★★★★",
+        "explain": "主打分数提升的硬效果，常配合学霸案例、年级前三、必背考点等承诺。",
+        "examples": [
+          "数学垫底→年级前三",
+          "5年201次高频考点",
+          "中考几何必备"
+        ],
+        "applicable_categories": [
+          "真题模拟卷",
+          "学霸笔记",
+          "提分专项练"
+        ]
+      },
+      {
+        "tag": "育儿方法",
+        "freq": 7,
+        "videos": [
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "给到家长具体可操作的育儿方法/话术，常配合双人对比剧呈现。",
+        "examples": [
+          "高情商妈妈这样说",
+          "脑科学育儿方案",
+          "完整应对话术"
+        ],
+        "applicable_categories": [
+          "育儿方法论书",
+          "亲子心理书",
+          "家庭教育课"
+        ]
+      },
+      {
+        "tag": "终身学习",
+        "freq": 3,
+        "videos": [
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "强调家长自身和孩子的长期学习习惯/能力的塑造。",
+        "examples": [
+          "专属古文学习方案",
+          "深度家庭教育16年",
+          "完整提分方案"
+        ],
+        "applicable_categories": [
+          "家长成长课",
+          "学科方法课",
+          "认知付费课程"
         ]
       },
       {
         "tag": "心理健康",
         "freq": 3,
         "videos": [
-          "0b53i4afoaaa4aao",
-          "0b53nabioaacoqao",
-          "0b53qqbcuaacrqai"
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0"
         ],
         "summer_link": "★★★",
-        "explain": "视频主打帮孩子建立自信、识别情绪、学会边界感，面向重视心理建设的家长。",
+        "explain": "针对孩子情绪、社交、自我认同的心理建设效果。",
         "examples": [
-          "帮孩子建立自信表达",
-          "引导孩子识别情绪",
-          "家庭中的边界感练习"
+          "不必去讨好别人",
+          "远离消耗你的人",
+          "正面社交引导"
         ],
         "applicable_categories": [
-          "儿童心理自助书",
-          "情绪管理绘本",
-          "家庭教育心理课"
+          "儿童心理书",
+          "情商培养绘本",
+          "心理健康手册"
         ]
       },
       {
-        "tag": "游学预习",
-        "freq": 4,
-        "videos": [
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0bc3raac6aaa2eanbfbd6burvcaef6eaal2a",
-          "0bc3sibauaaccmao",
-          "0bc3sibauaaccmao7xpiwjurreqebkjaecsa"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "视频把书或课包装成\"出游前的预习资料\"或\"路上能翻的百科\"，和亲子游场景绑定。",
-        "examples": [
-          "出游前预习地理百科",
-          "走到哪学到哪的几本书",
-          "亲子游学路线参考"
-        ],
-        "applicable_categories": [
-          "地理百科",
-          "游学攻略书",
-          "历史人文绘本"
-        ]
-      },
-      {
-        "tag": "考前心态",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★★",
-        "explain": "视频关注考前家庭氛围和孩子心态：家长怎么陪、查分后的情绪、家书/鼓励类内容。",
-        "examples": [
-          "考前心态调整方法",
-          "家庭支持氛围的营造",
-          "考前N天家长可以做的事"
-        ],
-        "applicable_categories": [
-          "考前心理调节书",
-          "家长陪考手册",
-          "励志家信读物"
-        ]
-      },
-      {
-        "tag": "终身学习",
+        "tag": "英语学习",
         "freq": 2,
         "videos": [
-          "0b53u4ag2aaarqan",
-          "0bc3z4dd4aagsmab"
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0"
         ],
-        "summer_link": "★★★",
-        "explain": "视频不讲快速见效，讲\"把读书变成长期习惯\"，适合愿意陪孩子共读的家长。",
+        "summer_link": "★★★★",
+        "explain": "英语单词、语法、双语阅读、口语等英语学科类专项效果承诺。",
         "examples": [
-          "每周固定阅读时间",
-          "把读书变成日常",
-          "家长共读书单"
+          "中英对照双语阅读",
+          "秒懂9大词类5大句型",
+          "暑假突击英语"
         ],
         "applicable_categories": [
-          "长期精读书单",
-          "习惯养成打卡书",
-          "家长共读书目"
+          "双语启蒙绘本",
+          "英语语法书",
+          "暑期英语集训"
         ]
       }
     ],
     "user": [
       {
-        "tag": "高中生家长",
-        "freq": 6,
-        "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53m4amkaaa6yaa",
-          "0b53qub4oaadsman",
-          "0bc354an4aaajmak",
-          "0bc3gidcoaag2aap",
-          "0bc3vyb42aadcmap"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "孩子正在读高中的家长，决策金额高、信息需求重，暑假 7-8 月是集中决策期。",
-        "examples": [
-          "高考志愿填报参考",
-          "26年高考新变化",
-          "高中生家长关注的话题"
-        ],
-        "applicable_categories": [
-          "高考志愿填报书",
-          "高考真题模拟卷",
-          "高考作文素材库"
-        ]
-      },
-      {
-        "tag": "初中生家长",
-        "freq": 9,
-        "videos": [
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53keczuaafdmad",
-          "0b53mab4caadc4ao",
-          "0b53qqajcaaa5qai2f27ufurxbaesgcabeka",
-          "0b53uyadiaaak4ae",
-          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
-          "0bc32mc7eaafsaaf",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "孩子正在读初中的家长，关注中考前夕（6月）和初升高衔接，刷题书和心态书都是重点。",
-        "examples": [
-          "中考前夕（6月）安排参考",
-          "初中作文素材合集",
-          "初升高衔接要点"
-        ],
-        "applicable_categories": [
-          "中考真题卷",
-          "中考作文素材书",
-          "单科备考教辅"
-        ]
-      },
-      {
         "tag": "小学生家长",
-        "freq": 14,
+        "freq": 37,
         "videos": [
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0b53qqajcaaa5qai",
-          "0b53vub2iaad2eajqj6f6jurtlieuswqhjca",
-          "0b53waaf2aaarman",
-          "0bc33aagwaaao4ad",
-          "0bc3aualgaaaqaaguuhogvurubiewmcqbm2a",
-          "0bc3oecqmaafvyam",
-          "0bc3sibauaaccmao7xpiwjurreqebkjaecsa",
-          "0bc3weafoaaa74ai6cho4nurvmiek6yqav2a",
-          "0bc3wudnwaaguqaa6dpm3rurznie3o2qnw2a"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "孩子正在读小学的家长，童书、百科、教辅的主力买家，对阅读量和知识广度敏感。",
+        "summer_link": "★★★★★",
+        "explain": "孩子在 6-12 岁阶段，关注幼小衔接、学科入门、阅读启蒙的核心家长群。",
         "examples": [
-          "小学课外阅读书单",
-          "暑假出门旅行推荐读物",
-          "小学X年级阅读参考"
+          "小学常用画图模型",
+          "2-6年级全适用",
+          "小学英语语法秒懂"
         ],
         "applicable_categories": [
-          "小学课外阅读套装",
-          "少儿百科书",
-          "分级阅读绘本"
-        ]
-      },
-      {
-        "tag": "英语补课家长",
-        "freq": 6,
-        "videos": [
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53qeagwaaa2maj",
-          "0b53waaf2aaarman",
-          "0bc3diddeaag6qamat7aavurygqeginammsa",
-          "0bc3duc2waafmuac",
-          "0bc3keadcaaaseah"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子英语基础不扎实、需要补的家长，视频推荐高频词、晨读、简单句式类书。",
-        "examples": [
-          "中考英语高频词清单",
-          "英语晨读短文集",
-          "简单句入门练习"
-        ],
-        "applicable_categories": [
-          "英语高频词书",
-          "英语晨读美文",
-          "中考英语备考卷"
-        ]
-      },
-      {
-        "tag": "幼儿园家长",
-        "freq": 6,
-        "videos": [
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0bc3aualgaaaqaaguuhogvurubiewmcqbm2a",
-          "0bc3oecqmaafvyamit6qgfur64ieazyqkbsa",
-          "0bc3weafoaaa74ai6cho4nurvmiek6yqav2a",
-          "0bc3wudnwaaguqaa6dpm3rurznie3o2qnw2a"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子还没上小学的家长（3-6 岁），幼小衔接、识字启蒙是核心需求。",
-        "examples": [
-          "上小学前要会的几件事",
-          "识字启蒙的步骤",
-          "学前习惯养成方法"
-        ],
-        "applicable_categories": [
-          "识字启蒙卡片书",
-          "幼小衔接教辅",
-          "学前习惯养成书"
+          "小学教辅",
+          "儿童科普套书",
+          "小学方法论书"
         ]
       },
       {
         "tag": "教育型妈妈",
-        "freq": 16,
+        "freq": 25,
         "videos": [
-          "0b53eycnsaaeuqaa",
-          "0b53gaaemaaazmah",
-          "0b53i4afoaaa4aao",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53keczuaafdmad",
-          "0b53m4amkaaa6yaa",
-          "0b53nabioaacoqao",
-          "0b53qqbcuaacrqai",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53u4ag2aaarqan",
-          "0b53u4ag2aaarqan6cpi5zurvjyenwtqa3ka",
-          "0bc32eaduaaahqao",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3yqar4aabo4aiiaf2vburxraed3cachsa",
-          "0bc3z4dd4aagsmab",
-          "0bc3z4dd4aagsmabk47b7rurztyeh3hqmpsa"
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "全年龄段都在关注教育的妈妈群体，对家长共鸣类和实用方法类内容反应好。",
+        "summer_link": "★★★★★",
+        "explain": "重视教育投入、爱学习育儿方法、愿意为方法课/优质图书付费的妈妈群体。",
         "examples": [
-          "暑假带娃必读书单",
-          "我家暑假在读的书",
-          "适合亲子共读的好书"
+          "学霸妈妈都在偷偷送",
+          "教育型妈妈在看",
+          "你家孩子六一儿童节"
         ],
         "applicable_categories": [
-          "家庭教育方法书",
-          "亲子共读书单",
-          "暑假阅读推荐"
+          "精品图书",
+          "家长成长课",
+          "学霸方法书"
         ]
       },
       {
-        "tag": "下沉地区家长",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★",
-        "explain": "三四线城市或农村家庭家长，关心孩子的教育路径，对普通家庭话题共鸣高。",
+        "tag": "幼儿园家长",
+        "freq": 16,
+        "videos": [
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "孩子在 3-6 岁阶段，关注启蒙绘本、习惯养成、亲子共读的家长群。",
         "examples": [
-          "普通家庭孩子的成长路径",
-          "小县城孩子读什么书",
-          "家庭教育的几个共识"
+          "拼音平板幼小衔接",
+          "100+物种动物百科",
+          "蝴蝶立体绘本"
         ],
         "applicable_categories": [
-          "家庭教育通识书",
-          "家长自我成长课",
-          "励志成长读物"
+          "启蒙绘本",
+          "幼小衔接教辅",
+          "儿童立体书"
         ]
       },
       {
         "tag": "重心理的家长",
-        "freq": 3,
+        "freq": 10,
         "videos": [
-          "0b53i4afoaaa4aao",
-          "0b53nabioaacoqao",
-          "0b53qqbcuaacrqai"
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "更看重孩子性格和心理健康的家长，对科学育儿方法和情绪管理类内容信任度高。",
+        "explain": "关注孩子心理健康、社交能力、情绪管理的家长群，常追深度育儿/心理读物。",
         "examples": [
-          "科学育儿方法分享",
-          "帮孩子建立自信表达",
-          "引导孩子识别情绪"
+          "高情商妈妈这样引导",
+          "反霸凌500句",
+          "脑科学育儿方案"
         ],
         "applicable_categories": [
-          "儿童重心理的家长书",
-          "家庭教育心理课",
-          "情绪管理绘本"
+          "儿童心理书",
+          "育儿方法论书",
+          "情商培养绘本"
         ]
       },
       {
-        "tag": "暑假带娃出游",
+        "tag": "初中生家长",
         "freq": 6,
         "videos": [
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3fmctcaafvyapj5osa5ur4kyegevqkmka",
-          "0bc3sibauaaccmao",
-          "0bc3sibauaaccmao7xpiwjurreqebkjaecsa"
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0"
         ],
-        "summer_link": "★★★★★",
-        "explain": "暑假计划带孩子出门的家长，对地理百科、游学攻略、研学类内容关注度高。",
+        "summer_link": "★★★★",
+        "explain": "孩子在 12-15 岁阶段，关注中考备考、学科冲刺、应试方法的家长群。",
         "examples": [
-          "出游前先看的地理百科",
-          "亲子游学路线参考",
-          "走到哪学到哪的几本书"
+          "七年级历史必背口诀",
+          "5年201次高频考点",
+          "数形结合解题"
         ],
         "applicable_categories": [
-          "地理百科",
-          "亲子游学攻略",
-          "历史人文绘本"
+          "中考教辅",
+          "初中方法论",
+          "历年真题"
         ]
       },
       {
-        "tag": "中高考作文家长",
-        "freq": 23,
+        "tag": "下沉地区家长",
+        "freq": 4,
         "videos": [
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53jqaocaaaeyao",
-          "0b53qub4oaadsman",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53ric54aafbyab77gztjur7cqe32falxsa",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53t4avkaabcuam",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53tmcqqaafmiai7yokajur7gyebcnqkcca",
-          "0bc32mc7eaafsaaf",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc35uaayaaanyagpqoq6nurv3iebtwqadca",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3q4c5waafreaojs7od5ur7bye3odqlw2a",
-          "0bc3quciaaaeouafrmojgrur5bieqccqjaca",
-          "0bc3vqdnuaagkiannohnq5urzlae3kwanwsa",
-          "0bc3vyb42aadcmap",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka"
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3siad6aaazqamhyig7nvbveqeh6jaap2a_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0"
         ],
-        "summer_link": "★★★★★",
-        "explain": "孩子在备考中高考作文的家长，需要热点素材、范文、写作方法三类内容。",
+        "summer_link": "★★★",
+        "explain": "二三四线城市家长，对一线/精英家长教育方式有向上看的心理。",
         "examples": [
-          "高考作文借势话题梳理",
-          "考场作文常用素材",
-          "写作方法分阶段练习"
+          "一线城市有眼光的家长",
+          "学霸妈妈都在偷偷送",
+          "都是普通家庭的孩子"
         ],
         "applicable_categories": [
-          "作文热点素材库",
-          "满分作文范文集",
-          "写作方法书"
+          "性价比教辅",
+          "通用百科套书",
+          "平价方法课"
+        ]
+      },
+      {
+        "tag": "英语补课家长",
+        "freq": 2,
+        "videos": [
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "特别重视孩子英语学科的家长，常在暑假报英语集训或买英语启蒙书。",
+        "examples": [
+          "中英对照双语阅读",
+          "秒懂英语语法",
+          "暑假突击英语"
+        ],
+        "applicable_categories": [
+          "双语启蒙绘本",
+          "英语语法书",
+          "暑期英语集训"
         ]
       }
     ],
     "scene": [
       {
-        "tag": "高考前夕（6-8月）",
-        "freq": 6,
-        "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53m4amkaaa6yaa",
-          "0b53qub4oaadsman",
-          "0bc354an4aaajmak",
-          "0bc3gidcoaag2aap",
-          "0bc3vyb42aadcmap"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "高考冲线到查分到志愿填报这段时间，家长搜索量和决策意愿都高。",
-        "examples": [
-          "高考前的查考点温故",
-          "志愿填报参考",
-          "26年新版资料"
-        ],
-        "applicable_categories": [
-          "高考真题模拟卷",
-          "高考志愿填报书",
-          "高考作文素材库"
-        ]
-      },
-      {
         "tag": "暑假在家",
-        "freq": 15,
+        "freq": 36,
         "videos": [
-          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
-          "0b533abesaacgyalzomj5jurrwaejhmaeska",
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b533qcg2aaek4ahq2hl3nur7xaenxoai3ka",
-          "0b535qadaaaasuanha7ksnurx3aegdwaamca",
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53eycnsaaeuqaa",
-          "0b53gaaemaaazmah",
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
         "summer_link": "★★★★★",
-        "explain": "孩子放暑假在家不出门，家长有大段时间陪伴和挑书。",
+        "explain": "6-8月孩子放假在家，长时段无人陪伴、需要自主学习内容的家庭场景。",
         "examples": [
-          "暑假在家阅读安排",
-          "每周一本书的计划",
-          "暑期居家学习参考"
+          "让孩子足不出户看世界",
+          "暑假预备四年级",
+          "暑假在家自主学习"
         ],
         "applicable_categories": [
-          "暑期阅读书单",
-          "课外拓展百科",
-          "分级阅读绘本"
-        ]
-      },
-      {
-        "tag": "暑假出门旅行",
-        "freq": 6,
-        "videos": [
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53qqajcaaa5qai2f27ufurxbaesgcabeka",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3fmctcaafvyapj5osa5ur4kyegevqkmka",
-          "0bc3raac6aaa2eanbfbd6burvcaef6eaal2a",
-          "0bc3sibauaaccmao"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "暑期带孩子出游、研学、自驾，地理百科和游学攻略类需求高。",
-        "examples": [
-          "出游前先看的地理百科",
-          "亲子游学路线",
-          "走到哪学到哪的几本书"
-        ],
-        "applicable_categories": [
-          "中国地理百科",
-          "亲子游学攻略",
-          "历史人文绘本"
+          "自主阅读图书",
+          "暑期套装",
+          "居家学习教辅"
         ]
       },
       {
         "tag": "陪孩子聊天时",
-        "freq": 5,
+        "freq": 17,
         "videos": [
-          "0b53gaaemaaazmah",
-          "0b53imahiaaavuam",
-          "0b53viagoaaapmak",
-          "0bc32eaduaaahqao",
-          "0bc3z4dd4aagsmab"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
         "summer_link": "★★★★",
-        "explain": "家长跟孩子相处变多，聊到成长、社交、坏习惯等家庭话题。",
+        "explain": "亲子互动场景，家长和孩子共读、聊天、互动时图书自然嵌入。",
         "examples": [
-          "孩子的社交话题怎么聊",
-          "亲子相处的边界",
-          "一起讨论的家庭话题"
+          "亲子共读《我们的中国》",
+          "爷爷奶奶送的礼物",
+          "孩子主动说想去长城"
         ],
         "applicable_categories": [
-          "家庭教育方法书",
-          "儿童重心理的家长书",
-          "亲子沟通技巧书"
-        ]
-      },
-      {
-        "tag": "升学衔接期",
-        "freq": 2,
-        "videos": [
-          "0b533abesaacgyalzomj5jurrwaejhmaeska",
-          "0bc3aualgaaaqaaguuhogvurubiewmcqbm2a"
-        ],
-        "summer_link": "★★★★",
-        "explain": "幼升小、小升初、初升高三个衔接节点，家长希望暑假把节奏跟上。",
-        "examples": [
-          "幼升小衔接清单",
-          "小升初准备方向",
-          "分级阅读路径参考"
-        ],
-        "applicable_categories": [
-          "幼小衔接教辅",
-          "小升初备考卷",
-          "分级阅读绘本"
-        ]
-      },
-      {
-        "tag": "碎片时间快速看",
-        "freq": 15,
-        "videos": [
-          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
-          "0b533ibbuaac5eabxjwee5urrwqedlnaegsa",
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53bec72aafcqag6mhaxbur6cie7ueql7ka",
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53heakaaaanqaplbwg4ruruoieua4qbica",
-          "0b53imahiaaavuam",
-          "0b53imahiaaavuamtcwvrvuruqyeorbqa5ca",
-          "0b53jqaocaaaeyao",
-          "0b53m4amkaaa6yaa",
-          "0b53nadvuaahbyaehhpudnur22aeljuaowsa",
-          "0b53qeagwaaa2maj"
-        ],
-        "summer_link": "★★★",
-        "explain": "通勤、等车、午休等几分钟就能看完的小段视频，覆盖广。",
-        "examples": [
-          "通勤时段可以看的内容",
-          "每天X分钟的积累",
-          "小段视频里的知识点"
-        ],
-        "applicable_categories": [
-          "口袋工具书",
-          "速查手册",
-          "图解知识书"
-        ]
-      },
-      {
-        "tag": "中考前夕（6月）",
-        "freq": 13,
-        "videos": [
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53keczuaafdmad",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53ric54aafbyab77gztjur7cqe32falxsa",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3quciaaaeouafrmojgrur5bieqccqjaca",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka"
-        ],
-        "summer_link": "★★★★",
-        "explain": "中考前后这一个月，家长集中关注刷题书、作文素材和心态调节内容。",
-        "examples": [
-          "中考前的复习安排",
-          "初中作文素材合集",
-          "中考前夕（6月）方向参考"
-        ],
-        "applicable_categories": [
-          "中考真题卷",
-          "中考作文素材书",
-          "单科备考教辅"
-        ]
-      },
-      {
-        "tag": "写作集中训练期",
-        "freq": 8,
-        "videos": [
-          "0b535ycz2aaf6ian",
-          "0b53jqaocaaaeyao",
-          "0b53qub4oaadsman",
-          "0b53t4avkaabcuam",
-          "0bc32mc7eaafsaaf",
-          "0bc36yb2caadcaam",
-          "0bc3gidcoaag2aap",
-          "0bc3vyb42aadcmap"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "暑假是练作文的黄金期，范文合集、素材积累、方法步骤都好用。",
-        "examples": [
-          "写作素材分类整理",
-          "作文方法分阶段练习",
-          "范文阅读笔记参考"
-        ],
-        "applicable_categories": [
-          "写作方法书",
-          "满分作文范文集",
-          "作文素材库"
-        ]
-      },
-      {
-        "tag": "暑假突击学英语",
-        "freq": 6,
-        "videos": [
-          "0b53ema74aab3yaaahmpgrurwiye7yrqd7sa",
-          "0b53qeagwaaa2maj",
-          "0b53waaf2aaarman",
-          "0bc3diddeaag6qamat7aavurygqeginammsa",
-          "0bc3duc2waafmuac",
-          "0bc3keadcaaaseah"
-        ],
-        "summer_link": "★★★★",
-        "explain": "暑假集中给孩子补英语，高频词、简单句、晨读短文需求集中。",
-        "examples": [
-          "中考英语高频词清单",
-          "英语晨读短文集",
-          "简单句入门练习"
-        ],
-        "applicable_categories": [
-          "英语高频词书",
-          "英语晨读美文",
-          "英语简单句式书"
+          "亲子共读绘本",
+          "立体科普书",
+          "儿童故事书"
         ]
       },
       {
         "tag": "晚上闲暇深度看",
-        "freq": 15,
+        "freq": 10,
         "videos": [
-          "0b533qcg2aaek4ahq2hl3nur7xaenxoai3ka",
-          "0b535qadaaaasuanha7ksnurx3aegdwaamca",
-          "0b53eycnsaaeuqaa",
-          "0b53gaaemaaazmah",
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53i4afoaaa4aao",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53keczuaafdmad",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53u4ag2aaarqan",
-          "0b53u4ag2aaarqan6cpi5zurvjyenwtqa3ka",
-          "0bc374dhkaags4ao",
-          "0bc374dhkaags4ao4ypnyjur37yeox7qm5ka",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3iqaakaaaeaanxyxn3zururaeavcaabka"
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
         ],
-        "summer_link": "★★",
-        "explain": "家长晚上有完整时间看长视频，适合家庭教育、观念更新这类深度内容。",
+        "summer_link": "★★★★",
+        "explain": "夜间家长有大段时间深度收看长视频、做认知付费决策的窗口。",
         "examples": [
-          "26年家庭教育新趋势",
-          "晚上能静下来看的话题",
-          "家长共读深度书目"
+          "晚上躺着看深度演讲",
+          "让普通家庭孩子开悟逆袭",
+          "深耕家庭教育16年"
         ],
         "applicable_categories": [
-          "家长认知书",
-          "深度家庭教育书",
-          "时代趋势解读书"
+          "家长成长课",
+          "认知付费课程",
+          "深度育儿书"
+        ]
+      },
+      {
+        "tag": "升学衔接期",
+        "freq": 7,
+        "videos": [
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "幼升小/小升初/初升高等学段衔接的暑假，家长突击预科冲刺。",
+        "examples": [
+          "暑假预备四年级",
+          "小升初拼音突击",
+          "初升高数学衔接"
+        ],
+        "applicable_categories": [
+          "学科衔接教辅",
+          "预备年级练习册",
+          "暑期集训课"
+        ]
+      },
+      {
+        "tag": "碎片时间快速看",
+        "freq": 3,
+        "videos": [
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3siad6aaazqamhyig7nvbveqeh6jaap2a_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "通勤、午休等碎片时段，家长刷短视频即决策下单的高频场景。",
+        "examples": [
+          "23秒动物世界立体翻书",
+          "30秒讲完一道难题",
+          "碎片时间完播"
+        ],
+        "applicable_categories": [
+          "短视频转化品",
+          "快闪展示型图书",
+          "硬货型教辅"
+        ]
+      },
+      {
+        "tag": "写作集中训练期",
+        "freq": 2,
+        "videos": [
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "暑假语文集中训练阶段，家长找作文素材、字词积累、写作方法。",
+        "examples": [
+          "小学常用画图模型",
+          "成语四步法学习",
+          "作文素材合集"
+        ],
+        "applicable_categories": [
+          "作文素材库",
+          "成语故事书",
+          "写作方法书"
+        ]
+      },
+      {
+        "tag": "暑假突击学英语",
+        "freq": 2,
+        "videos": [
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "6-8月家长安排孩子英语集中突击的窗口，常配套买英语启蒙读物。",
+        "examples": [
+          "暑假突击英语",
+          "中英对照阅读",
+          "暑期英语集训"
+        ],
+        "applicable_categories": [
+          "双语启蒙绘本",
+          "英语语法书",
+          "暑期英语集训"
+        ]
+      },
+      {
+        "tag": "暑假出门旅行",
+        "freq": 1,
+        "videos": [
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "暑假亲子出游场景，家长想为路上/景点准备配套图书。",
+        "examples": [
+          "户外蝴蝶立体绘本",
+          "出门带的中国地图",
+          "路上看百科书"
+        ],
+        "applicable_categories": [
+          "旅行配套绘本",
+          "地理立体书",
+          "便携百科书"
         ]
       }
     ],
     "marketing": [
       {
-        "tag": "权威背书",
-        "freq": 8,
-        "videos": [
-          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0b53uyamgaaa3qanaei4mjurxjqeyotabq2a",
-          "0b53vmaegaaahyah",
-          "0b53wmcacaaecqaj",
-          "0bc354an4aaajmak",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3raac6aaa2ean"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频把图书和出版社、电视台、行业协会等公信力机构挂钩，让家长觉得选品靠谱。",
-        "warning": "⚠️ 使用前提：必须已获得相关机构的正式授权或合作协议，未经授权不得使用机构名称/logo。",
-        "examples": [
-          "出版社联合出品",
-          "协会推荐书目",
-          "媒体合作图书"
-        ],
-        "applicable_categories": [
-          "权威机构出版教辅",
-          "媒体推荐童书",
-          "电视台合作图书"
-        ]
-      },
-      {
-        "tag": "情景剧",
-        "freq": 4,
-        "videos": [
-          "0b53i4afoaaa4aao",
-          "0b53jqaocaaaeyao",
-          "0b53qqajcaaa5qai",
-          "0bc36yb2caadcaam"
-        ],
-        "summer_link": "★★★★",
-        "explain": "前几秒用一段戏剧化对话切入主题：孩子和同学的日常对话、家长和孩子吵架、反向金句。",
-        "examples": [
-          "孩子在学校的对话场景",
-          "家庭沟通的反差对话",
-          "日常对话切入话题"
-        ],
-        "applicable_categories": [
-          "反欺凌话术书",
-          "家庭教育绘本",
-          "儿童社交力课"
-        ]
-      },
-      {
         "tag": "实物翻书",
-        "freq": 4,
+        "freq": 25,
         "videos": [
-          "0b53qqbcuaacrqai",
-          "0b53tmcqqaafmiai7yokajur7gyebcnqkcca",
-          "0bc374dhkaags4ao",
-          "0bc3vqdnuaagkiannohnq5urzlae3kwanwsa"
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
         ],
         "summer_link": "★★★★★",
-        "explain": "视频里大量翻书镜头：厚度、内页、目录都拍清楚，让家长充分了解实物。",
+        "explain": "桌面静物+翻书特写是图书行业的真实感锚点，几乎所有教辅/科普品类必备。",
         "examples": [
-          "翻书展示内页",
-          "一本厚书的内容预览",
-          "桌面静物展示书籍"
+          "翻开立体丛林书",
+          "钢笔逐条画线",
+          "52个翻翻页藏着惊喜"
         ],
         "applicable_categories": [
-          "百科厚书",
-          "教辅真题套装",
-          "工具型图书"
+          "教辅类图书",
+          "立体科普书",
+          "成语方法书"
         ]
       },
       {
         "tag": "数字堆叠",
-        "freq": 5,
+        "freq": 15,
         "videos": [
-          "0b53m4amkaaa6yaa",
-          "0b53uyadiaaak4ae",
-          "0bc3duc2waafmuac",
-          "0bc3oecqmaafvyam",
-          "0bc3vyb42aadcmap"
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53mmagwaaaeiafxjyeajvbuyyennrqa22a_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53zaaduaaarmajwaanm5urxsaehleaaosa_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3amagaaaaimaixmqopfvbuayemabqayca_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3tyadsaaa2yahnvaeivvbvhqehgpaaoka_f0"
         ],
-        "summer_link": "★★★",
-        "explain": "视频用大数字体现分量：N套真题、N个知识点、N页漫画，让家长快速判断容量。",
+        "summer_link": "★★★★",
+        "explain": "用具体数字（100知识点/52翻翻页/5年201次）量化内容厚度，让价值可视化。",
         "examples": [
-          "一本含N个知识点",
-          "一本抵几本的容量",
-          "N天完成阅读计划"
+          "100个知识点3大震撼立体",
+          "52个翻翻页藏着",
+          "5年考201次"
         ],
         "applicable_categories": [
-          "大容量教辅",
-          "全覆盖百科套装",
-          "刷题真题卷"
+          "科普百科套书",
+          "真题考点书",
+          "方法论方法书"
         ]
       },
       {
         "tag": "时效提示",
-        "freq": 4,
+        "freq": 11,
         "videos": [
-          "0b53m4amkaaa6yaa",
-          "0b53u4ag2aaarqan",
-          "0bc354an4aaajmak",
-          "0bc3vyb42aadcmap"
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3bqaoqaaa4iakrnijufvbudae5agab2ca_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0"
         ],
         "summer_link": "★★★★★",
-        "explain": "视频用版本号、印次、批次强调\"新版本\"，如26年X月新印刷版、本批次本周内发货。",
+        "explain": "六一儿童节、暑假倒计时、新版印刷等时效性表达推动家长冲动下单。",
         "examples": [
-          "26年新印刷版",
-          "本批次本周内发货",
-          "26年新趋势版本"
+          "六一只送孩子一种礼物",
+          "儿童节马上到了",
+          "2026新版印刷已上架"
         ],
         "applicable_categories": [
+          "节日礼物图书",
           "新版教辅",
-          "新季度模拟卷",
-          "更新版认知书"
-        ]
-      },
-      {
-        "tag": "长视频叙事",
-        "freq": 20,
-        "videos": [
-          "0b533qcg2aaek4ahq2hl3nur7xaenxoai3ka",
-          "0b535qadaaaasuanha7ksnurx3aegdwaamca",
-          "0b53eycnsaaeuqaa",
-          "0b53gaaemaaazmah",
-          "0b53gaaemaaazmahwkmnjnurumaeiyyaarsa",
-          "0b53i4afoaaa4aao",
-          "0b53i4afoaaa4aaoylspmburwryek5dqav2a",
-          "0b53keczuaafdmad",
-          "0b53lmbd4aac44apwy7qhrurqwyehznqepsa",
-          "0b53u4ag2aaarqan",
-          "0b53u4ag2aaarqan6cpi5zurvjyenwtqa3ka",
-          "0bc374dhkaags4ao",
-          "0bc374dhkaags4ao4ypnyjur37yeox7qm5ka",
-          "0bc3e4abmaaai4aemmcf2zurujyecytqafsa",
-          "0bc3iqaakaaaeaanxyxn3zururaeavcaabka",
-          "0bc3keadcaaaseah",
-          "0bc3uac6kaafbqadbu7hjvur7iae4wqalzka",
-          "0bc3xedscaah5uak477xq5urzoieeg4qoika",
-          "0bc3z4dd4aagsmab",
-          "0bc3z4dd4aagsmabk47b7rurztyeh3hqmpsa"
-        ],
-        "summer_link": "★★",
-        "explain": "3-5分钟长视频一层层铺垫情绪，结尾再给出图书或课程作为解决方案。",
-        "examples": [
-          "行业变化下的家长选择",
-          "时代背景中的家庭教育",
-          "长视频展开的家长话题"
-        ],
-        "applicable_categories": [
-          "家长认知书",
-          "深度家庭教育书",
-          "成长励志读物"
-        ]
-      },
-      {
-        "tag": "借势话题",
-        "freq": 14,
-        "videos": [
-          "0b535ycy4aafqaafft6yxbur73qer3xaldsa",
-          "0b535ycz2aaf6ian",
-          "0b535ycz2aaf6ianuvpnkjur73qetxxalhka",
-          "0b53gmacyaaamiac4e7gvfurumyefqzqalca",
-          "0b53imahiaaavuam",
-          "0b53nabioaacoqao",
-          "0b53qub4oaadsman",
-          "0b53qub4oaadsmancxw52nurtbiey6cqhr2a",
-          "0b53rmacuaaajqape2hbjzurvcyefkfqaksa",
-          "0b53t4avkaabcuamiut2yntbxhyekwpqcvka",
-          "0bc32mc7eaafsaafmxxfqnur7uye6ljql4sa",
-          "0bc36yb2caadcaam",
-          "0bc3vyb42aadcmap",
-          "0bc3vyb42aadcmapkv7lcburtlqezwxahtka"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "视频把网络热点和图书内容绑定，比如用一个热门话题引出作文写作方向。",
-        "examples": [
-          "借势话题对应作文方向",
-          "近期话题作文角度",
-          "热点延伸阅读"
-        ],
-        "applicable_categories": [
-          "作文热点素材库",
-          "时政考点速查书",
-          "借势话题解读书"
-        ]
-      },
-      {
-        "tag": "反向开场",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★",
-        "explain": "视频用一句打破家长惯性思维的话开场，比如\"养女儿要建立自主性\"、传统观念要更新。",
-        "examples": [
-          "养孩子要建立自主性",
-          "传统家教思路的更新",
-          "家庭沟通的新角度"
-        ],
-        "applicable_categories": [
-          "家庭教育反思书",
-          "自主性养育书",
-          "家长共读深度书"
-        ]
-      },
-      {
-        "tag": "限时优惠",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★★",
-        "explain": "视频结尾给套装价、买赠、限量礼包等明确优惠点，给家长明确选择理由。",
-        "examples": [
-          "暑期套装价",
-          "本批次内附赠资料",
-          "套装决策送配套手册"
-        ],
-        "applicable_categories": [
-          "套装教辅",
-          "赠品联动童书",
-          "限量版图书"
-        ]
-      },
-      {
-        "tag": "家长共鸣",
-        "freq": 4,
-        "videos": [
-          "0b53eycnsaaeuqaa",
-          "0b53i4afoaaa4aao",
-          "0b53m4amkaaa6yaa",
-          "0b53u4ag2aaarqan"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频用\"我家孩子也这样\"\"我家暑假就读这本\"的家长自述视角，增加认同感。",
-        "examples": [
-          "我家暑假在读这本",
-          "家长视角的使用感",
-          "同年级家长的选择"
-        ],
-        "applicable_categories": [
-          "家长口碑书",
-          "亲子共读书单",
-          "实用育儿书"
-        ]
-      },
-      {
-        "tag": "实景开场",
-        "freq": 1,
-        "videos": [
-          "0bc3raac6aaa2ean"
-        ],
-        "summer_link": "★★★★",
-        "explain": "视频用旅游、城市、自然等实景开场开场，代入感强，再自然过渡到图书推荐。",
-        "examples": [
-          "城市/自然实景开场",
-          "出游路上场景化展示",
-          "风景画面引入图书"
-        ],
-        "applicable_categories": [
-          "地理百科",
-          "游学攻略书",
-          "自然科普绘本"
+          "暑期套装"
         ]
       },
       {
         "tag": "课堂场景",
-        "freq": 4,
+        "freq": 10,
         "videos": [
-          "0b5334ccgaae6iacsn7vwvtb5xyeeppqii2a",
-          "0b53w4cpqaaeyqajor7n2zur5nye7c3qj6ca",
-          "0bc35uaayaaanyagpqoq6nurv3iebtwqadca",
-          "0bc3duc2waafmuaciuhecjur6hievmoqlk2a"
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b53nadvuaahbyaehhpudnur22aeljuaowsa_f0",
+          "ads_svp_video__0b53yyajkaaaaiaov7ig6fvbxrqesxdabfka_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0",
+          "ads_svp_video__0bc3oudvcaahoyapg27vcbury5iekf2qouka_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "视频用教室、黑板、课程PPT、老师出镜等元素，体现专业感和课程感。",
+        "summer_link": "★★★",
+        "explain": "白板/黑板/教辅笔记等课堂感拍摄，让知识直给类内容更专业可信。",
         "examples": [
-          "老师在地图前讲课",
-          "教室+黑板课堂氛围",
-          "课程ppt配老师讲解"
+          "白板数学垫底到前三",
+          "黑底数学动画",
+          "课堂母题学习法"
         ],
         "applicable_categories": [
-          "名师课程书",
-          "课堂笔记书",
-          "学科方法课"
+          "数学思维训练",
+          "真题模拟卷",
+          "方法论教辅"
+        ]
+      },
+      {
+        "tag": "权威背书",
+        "freq": 9,
+        "videos": [
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
+          "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0",
+          "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "专家/IP老师/明星代言/演讲嘉宾等权威信息源，降低家长决策成本。",
+        "examples": [
+          "金龟子代言",
+          "庄重老师古文IP",
+          "混子哥让孩子放手机"
+        ],
+        "applicable_categories": [
+          "IP代言图书",
+          "专家方法课",
+          "名师方法论书"
+        ],
+        "warning": "⚠️ 使用前提：必须已获得相关机构/明星的正式授权或合作协议，未经授权不得使用其名称/logo。"
+      },
+      {
+        "tag": "情景剧",
+        "freq": 9,
+        "videos": [
+          "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b536yajgaaasaah4kyklnvbv5qesp3abe2a_f0",
+          "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
+          "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "AI生成或真人演绎的家庭情景剧（亲子/隔代/对比剧）让家长产生强代入感。",
+        "examples": [
+          "爷爷奶奶送礼物",
+          "普通vs高情商妈妈",
+          "气球生日派对"
+        ],
+        "applicable_categories": [
+          "儿童节礼物图书",
+          "育儿方法书",
+          "亲子共读绘本"
+        ]
+      },
+      {
+        "tag": "家长共鸣",
+        "freq": 8,
+        "videos": [
+          "ads_svp_video__0b53i4afoaaa4aaoylspmburwryek5dqav2a_f0",
+          "ads_svp_video__0b53iuaf6aaaiyakhjikkrvburiel5cqax2a_f0",
+          "ads_svp_video__0b53muabiaaalmae72qmhfvbuziecrsqafca_f0",
+          "ads_svp_video__0b53oual4aaaiqaplbimajvbu5iexz2qbpsa_f0",
+          "ads_svp_video__0bc32aackaaawqanssaoijvbvuaeexiaajka_f0",
+          "ads_svp_video__0bc374dhkaags4ao4ypnyjur37yeox7qm5ka_f0",
+          "ads_svp_video__0bc3puaq2aabgmacr3qnmvvbw7iebv6qcdka_f0",
+          "ads_svp_video__0bc3waam4aaaw4ak7iiocrvbvmaez2yabtsa_f0"
+        ],
+        "summer_link": "★★★★",
+        "explain": "通过同辈对标、阶层共鸣、孩子自己说等隐性社交背书让家长产生从众心理。",
+        "examples": [
+          "学霸妈妈都在偷偷送",
+          "一线城市有眼光的家长",
+          "都是普通家庭的孩子"
+        ],
+        "applicable_categories": [
+          "精品教辅",
+          "学霸方法书",
+          "通用图书"
+        ]
+      },
+      {
+        "tag": "实景开场",
+        "freq": 7,
+        "videos": [
+          "ads_svp_video__0b534uahyaaaraalfmalq5vbvzieptsqa7ca_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53tqafqaaaquainwakkvvbvhaelcoaawca_f0",
+          "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
+          "ads_svp_video__0bc3keak2aaaveah3daouzvbuuievviqblka_f0",
+          "ads_svp_video__0bc3siad6aaazqamhyig7nvbveqeh6jaap2a_f0",
+          "ads_svp_video__0bc3xmaaiaaaguadqqqiczvbvoyeas5qabca_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "用真实生活场景（雪乡/户外/路人采访）开场建立可信度，再切到产品。",
+        "examples": [
+          "东北雪乡有多冷",
+          "户外草地小女孩",
+          "暑假预备四年级路人采访"
+        ],
+        "applicable_categories": [
+          "地理立体书",
+          "儿童绘本",
+          "暑期预科教辅"
+        ]
+      },
+      {
+        "tag": "长视频叙事",
+        "freq": 6,
+        "videos": [
+          "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0",
+          "ads_svp_video__0bc3iqaakaaaeaanxyxn3zururaeavcaabka_f0",
+          "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "3分钟以上演讲/对话剧场，适合家庭教育、认知付费、深度育儿话题。",
+        "examples": [
+          "让普通家庭孩子开悟逆袭",
+          "深耕家庭教育16年",
+          "管理孩子手机长视频"
+        ],
+        "applicable_categories": [
+          "家长成长课",
+          "认知付费课程",
+          "深度育儿书"
+        ]
+      },
+      {
+        "tag": "反向开场",
+        "freq": 4,
+        "videos": [
+          "ads_svp_video__0b534qaaeaaalqaoobagbzvbvzaealsaaasa_f0",
+          "ads_svp_video__0b53gedc4aagayaf5ahognurymiefyyqmlsa_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3kudr4aah6qalu47wx5uryviedzkqohsa_f0"
+        ],
+        "summer_link": "★★★",
+        "explain": "反常识金句或反向法则（不管/不死记）打破家长既有认知，激发讨论度。",
+        "examples": [
+          "管理手机就是不管",
+          "不需要死记硬背",
+          "小学成绩差先别急"
+        ],
+        "applicable_categories": [
+          "育儿方法书",
+          "学科方法课",
+          "家庭教育书"
         ]
       },
       {
         "tag": "悬念开场",
-        "freq": 1,
+        "freq": 2,
         "videos": [
-          "0b53gaaemaaazmah"
+          "ads_svp_video__0b53n4ac2aaaweai747mtburu3yefvxqalka_f0",
+          "ads_svp_video__0b53pqaewaaawaanflyf4rvbu7aejn6aas2a_f0"
         ],
-        "summer_link": "★★★★",
-        "explain": "视频前3秒抛一个问题或反常识点，让家长愿意看下去，提升完播率。",
+        "summer_link": "★★",
+        "explain": "用悬念问句或反差话术（X大谎言/让人后背发凉）抓前3秒停留。",
         "examples": [
-          "XX的别名是什么",
-          "一个家长不熟的常识",
-          "X个你可能不知道的事"
+          "三大谎言戳破",
+          "让无数人后背发凉",
+          "凭什么让孩子放手机"
         ],
         "applicable_categories": [
-          "百科悬念书",
-          "历史冷知识书",
-          "家庭教育话题书"
-        ]
-      },
-      {
-        "tag": "榜单背书",
-        "freq": 0,
-        "videos": [],
-        "summer_link": "★★★",
-        "explain": "视频强调新品发售、热销榜、家长推荐等社会证明，降低家长决策成本。",
-        "examples": [
-          "26年新版上市",
-          "本季度上线的新品",
-          "近期热销图书参考"
-        ],
-        "applicable_categories": [
-          "新品教辅",
-          "密封卷",
-          "热销榜图书"
+          "认知付费课程",
+          "家长成长课",
+          "深度育儿书"
         ]
       }
     ]
-  },
-  "cross_analysis": {
-    "combos_by_category": [
-      {
-        "category": "📕 高考备考类",
-        "scene_brief": "5-6月备考+暑期预订两波流量，覆盖密封卷/高频考点卷/作文素材等",
-        "color": "#ff5f6d",
-        "items": [
-          {
-            "combo": "志愿规划 + 高中生家长 + 高考前夕（6-8月） + 权威背书 + 应试提分",
-            "playbook": "钩子讲志愿规划 → 实物展示新版 → 权威机构盖章 → 限时购买"
-          },
-          {
-            "combo": "时间节点 + 高中生家长 + 高考前夕（6-8月） + 时效提示 + 数字堆叠",
-            "playbook": "限时发货话术 → 数据背书 → 大礼包钩子 → 24小时预订"
-          },
-          {
-            "combo": "作文素材 + 高中生家长 + 写作集中训练期 + 借势话题 + 实物翻书",
-            "playbook": "热梗钩子 → 翻书展示新版 → '选择新版'时效话术 → 套装下单"
-          }
-        ]
-      },
-      {
-        "category": "📗 童书/科普类",
-        "scene_brief": "暑假带娃出游+游学场景，名人IP+实物展示双管齐下",
-        "color": "#22d3ee",
-        "items": [
-          {
-            "combo": "课外积累少 + 小学生家长 + 暑假出门旅行 + 实景开场 + 知识拓宽",
-            "playbook": "出游场景共鸣 → 翻书展示多板块 → 名人/出版社背书 → 暑期套装价"
-          },
-          {
-            "combo": "陪伴有限 + 教育型妈妈 + 暑假带娃出游 + 名人代言 + 实物翻书",
-            "playbook": "明星亲子画面 → 翻书展示 → '我自家孩子也读' → 套装下单"
-          }
-        ]
-      },
-      {
-        "category": "📘 家长教育/认知类",
-        "scene_brief": "晚上闲暇深度看时段，长视频叙事+认知付费转化",
-        "color": "#a78bfa",
-        "items": [
-          {
-            "combo": "育儿话题 + 教育型妈妈 + 陪孩子聊天时 + 长视频叙事 + 观念更新",
-            "playbook": "情景剧/演讲渲染情绪 → 长视频深度种草 → 认知付费/书单转化"
-          },
-          {
-            "combo": "孩子社交 + 教育型妈妈 + 陪孩子聊天时 + 名人代言 + 育儿方法",
-            "playbook": "情景剧场切入 → 专家观点权威背书 → 重心理的家长书单 → 限时优惠"
-          }
-        ]
-      },
-      {
-        "category": "📙 教辅/学科专项类",
-        "scene_brief": "暑期预习+衔接需求，数据卖点+老师IP",
-        "color": "#ffb547",
-        "items": [
-          {
-            "combo": "单科入门 + 初中生家长 + 暑假在家 + 课堂场景 + 应试提分",
-            "playbook": "老师真人讲解 → 方法论拆解 → 真题对照 → 课程报名"
-          },
-          {
-            "combo": "幼小衔接 + 幼儿园家长 + 升学衔接期 + 实物翻书 + 识字启蒙",
-            "playbook": "互动学习演示 → 名人IP背书 → 数据卖点 → 暑期套装"
-          },
-          {
-            "combo": "英语补课家长 + 英语补课家长 + 暑假突击学英语 + 实物翻书 + 英语学习",
-            "playbook": "时间承诺钩子 → 翻书展示词汇 → 中英对照 → 暑期套装"
-          }
-        ]
-      }
-    ]
-  },
-  "key_insights_grouped": [
-    {
-      "stage": "前段 · 开场钩子",
-      "icon": "🎬",
-      "color": "#ff5f6d",
-      "items": [
-        {
-          "title": "悬念问句开场显著拉升完播率",
-          "detail": "'为什么''到底''是什么'等问句式 hook 在前3秒吸引注意，建议固化为模板"
-        },
-        {
-          "title": "反向开场建立讨论度",
-          "detail": "'拼的不是XX是志愿规划''带出来的孩子幸福感最高'等反常识金句，建立用户'我也这样'的共鸣"
-        },
-        {
-          "title": "明星/专家IP同框瞬间锁定信任",
-          "detail": "陈数/曾仕强/李玫瑾/月亮姐姐等出镜，前3秒即建立决策置信度"
-        }
-      ]
-    },
-    {
-      "stage": "中段 · 痛点铺陈与卖点亮相",
-      "icon": "📚",
-      "color": "#5b9eff",
-      "items": [
-        {
-          "title": "实物翻书是图书行业的'真实感'锚点",
-          "detail": "高频出现于教辅类素材；没有翻书展示的视频几乎都是话题型长视频，2 选 1 建议"
-        },
-        {
-          "title": "数据卖点强化决策置信度",
-          "detail": "'72套真题''200+知识点''1000字+近1000成语'等量化数字，让内容厚度可视化"
-        },
-        {
-          "title": "情景剧场+专家访谈是话题型素材主力打法",
-          "detail": "操场社交/查分喜悦/亲子共读等真实场景+权威观点，让产品自然嵌入家庭话题"
-        }
-      ]
-    },
-    {
-      "stage": "后段 · 转化收口",
-      "icon": "🎯",
-      "color": "#4ade80",
-      "items": [
-        {
-          "title": "限时优惠+套装价全部出现",
-          "detail": "全部样本结尾都有转化钩子，没有'只种草不转化'的内容；暑期套装+赠品是必备组合"
-        },
-        {
-          "title": "时效性表达是高转化收口要素",
-          "detail": "'26年4月新印刷''5月1号才发货''选择新版'等时效话术，建立时效参考"
-        },
-        {
-          "title": "暑期场景化（出游/亲子/衔接）潜力赛道",
-          "detail": "目前主要靠'高考备考'，建议补'暑假托管''游学''返校前规划'等具体场景钩子"
-        }
-      ]
-    }
-  ],
-  "total_sample_videos": 89
+  }
 }
