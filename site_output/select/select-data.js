@@ -252,10 +252,10 @@ const NODES_PERSONA = [
 //   3. 部分单元格跨多周（span 字段），表示该方向贯穿整月
 const WEEK_RHYTHM = {
   weeks: [
-    { key:'W1', name:'六一儿童节 · 暑期预热', date:'6.1-6.7' },
-    { key:'W2', name:'高考 · 暑期预热',       date:'6.7-6.13' },
-    { key:'W3', name:'端午节 · 暑期核心放量期',     date:'6.14-6.21' },
-    { key:'W4', name:'期末 + 暑期稳定期', date:'6.22-6.30' }
+    { key:'W1', summer:'暑期预热',         festival:'六一儿童节', date:'6.1-6.7' },
+    { key:'W2', summer:'暑期预热',         festival:'高考',       date:'6.7-6.13' },
+    { key:'W3', summer:'暑期核心放量期',   festival:'端午节',     date:'6.14-6.21' },
+    { key:'W4', summer:'期末 + 暑期稳定期', festival:'',           date:'6.22-6.30' }
   ],
   rows: [
     {
@@ -460,7 +460,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       roleClass:'opportunity',
       title:'66 篇英语故事记 2100 词',
       isbn:'9787521335156',
-      image:'rank-images/_missing_english_2100.jpg',
+      image:'rank-images/image_english_2100.jpg',
       cat:'教辅',
       stats:[
         {icon:'💰', label:'客单', val:'¥399'},

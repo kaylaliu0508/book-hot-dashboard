@@ -343,9 +343,11 @@ a { color: inherit; text-decoration: none; }
 .week-rhythm { display: grid; grid-template-columns: 110px repeat(4, 1fr); gap: 8px; background: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; }
 .wr-head-row, .wr-row { display: contents; }
 .wr-corner { background: linear-gradient(135deg, #1e293b, #334155); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; }
-.wr-week-head { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border-radius: 8px; padding: 10px 12px; text-align: center; }
+.wr-week-head { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border-radius: 8px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 76px; }
+.wr-week-head .wr-wk-summer { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; line-height: 1.3; }
+.wr-week-head .wr-wk-festival { font-size: 11.5px; font-weight: 600; opacity: 0.92; margin-top: 3px; padding: 1px 7px; background: rgba(255,255,255,0.18); border-radius: 8px; line-height: 1.3; }
+.wr-week-head .wr-wk-date { font-size: 10.5px; opacity: 0.85; margin-top: 4px; letter-spacing: 0.2px; }
 .wr-week-head .wr-wk { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 3px; }
-.wr-week-head .wr-wk-date { font-size: 11px; opacity: 0.9; }
 .wr-week-head .wr-wk-tag { display: inline-block; margin-top: 4px; background: rgba(255,255,255,0.22); padding: 1px 6px; border-radius: 8px; font-size: 10px; }
 
 .wr-cat-head { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 6px; gap: 4px; }

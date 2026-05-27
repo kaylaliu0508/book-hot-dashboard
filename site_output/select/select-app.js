@@ -1008,7 +1008,8 @@ function renderWeekRhythm() {
     <div class="wr-corner">📅 选品节奏</div>
   ` + weeks.map(w => `
     <div class="wr-week-head">
-      <div class="wr-wk">${w.key} · ${w.name}</div>
+      <div class="wr-wk-summer">${w.key} · ${w.summer || w.name || ''}</div>
+      ${w.festival ? `<div class="wr-wk-festival">${w.festival}</div>` : ''}
       <div class="wr-wk-date">${w.date}</div>
     </div>
   `).join('');
