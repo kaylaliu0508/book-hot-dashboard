@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>📊 站点数据看板 - 图书灵感中心</title>
-<script>window.__STATS_ENDPOINT__='/api/stats';</script>
+<script>window.__STATS_ENDPOINT__='/api/stats';window.__STATS_PAGE_VERSION__='v2026-05-27-r2-full-text';</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -102,8 +105,12 @@ h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
   <!-- 📮 AI 预审反馈板块 -->
   <div class="section" id="auditFbSection">
     <h2>📮 AI 预审反馈
-      <span style="color:#8b949e;font-size:11px;font-weight:400;margin-left:6px">用户在 AI 预审 tab 提交的判定准确性反馈</span>
-      <span id="auditFbRange" style="margin-left:auto;font-size:10px;color:#8b949e;background:#0d1117;padding:2px 8px;border-radius:10px;border:1px solid #21262d">最近 30 天</span>
+      <span style="color:#8b949e;font-size:11px;font-weight:400;margin-left:6px">用户在 AI 预审 tab 提交的判定准确性反馈 · 含完整原文 + 命中规则</span>
+      <span style="margin-left:auto;display:inline-flex;gap:6px;align-items:center">
+        <span id="auditFbVerBadge" style="font-size:10px;color:#3fb950;background:rgba(63,185,80,.1);padding:2px 7px;border-radius:10px;border:1px solid rgba(63,185,80,.3)">v2026-05-27-r2 · 不脱敏</span>
+        <button onclick="reloadAuditFb()" style="font-size:10.5px;color:#58a6ff;background:#0d1117;padding:2px 9px;border-radius:10px;border:1px solid #21262d;cursor:pointer">🔄 刷新</button>
+        <span id="auditFbRange" style="font-size:10px;color:#8b949e;background:#0d1117;padding:2px 8px;border-radius:10px;border:1px solid #21262d">最近 30 天</span>
+      </span>
     </h2>
 
     <!-- 6 个核心指标卡片 -->
@@ -446,7 +453,9 @@ var auditFbTrendChart = null;
 function loadAndRenderAuditFb(){
   var sec = document.getElementById('auditFbSection');
   if (!sec) return;
-  fetch('/api/audit_feedback_stats?days=30', { credentials:'omit' })
+  // 加时间戳 cache-bust，确保不会拿到 Cloudflare/浏览器旧缓存
+  var url = '/api/audit_feedback_stats?days=30&_t=' + Date.now();
+  fetch(url, { credentials:'omit', cache:'no-store' })
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(j){
       if (!j || !j.ok) return;
@@ -456,6 +465,13 @@ function loadAndRenderAuditFb(){
       renderAuditFbRecent(j.recent || []);
     })
     .catch(function(){});
+}
+
+// 提供给「🔄 刷新」按钮调用，附带视觉反馈
+function reloadAuditFb(){
+  var box = document.getElementById('auditFbRecentTable');
+  if (box) box.innerHTML = '<div style="text-align:center;color:#484f58;font-size:12px;padding:20px 0">⏳ 正在拉取最新数据…</div>';
+  loadAndRenderAuditFb();
 }
 
 function renderAuditFbCards(s){
