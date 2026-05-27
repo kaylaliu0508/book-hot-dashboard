@@ -2821,22 +2821,29 @@ var ZHIPU_SEARCH={apiUrl:'/api/zhipu/search'};
 
 // 联网搜索图书信息
 async function webSearchBook(bookTitle,isbn){
+  // 8 条 query 定点覆盖权威平台（上限 8 次智谱调用，避免超额）
   var queries=[
-    bookTitle+' 豆瓣 内容简介 目录',
-    bookTitle+' 作者 出版社 书评 精彩书摘',
-    'ISBN '+isbn+' '+bookTitle+' 读后感 核心内容'
+    {q:'site:dangdang.com '+bookTitle+' '+isbn,                 src:'dangdang', weight:10}, // 当当详情页（出版社官方简介+目录）
+    {q:'site:jd.com '+bookTitle+' '+isbn+' 图书',                src:'jd',       weight:10}, // 京东详情页
+    {q:'site:douban.com '+bookTitle+' '+isbn,                    src:'douban',   weight:9},  // 豆瓣书目（简介+标签+评论）
+    {q:bookTitle+' '+isbn+' 编辑推荐 试读 内容简介',              src:'editor',   weight:7},  // 编辑推荐/试读
+    {q:bookTitle+' '+isbn+' 目录 章节',                          src:'toc',      weight:8},  // 目录定向
+    {q:bookTitle+' '+isbn+' 书评 读后感 评价',                   src:'review',   weight:6},  // 书评
+    {q:bookTitle+' 微信公众号 推荐 '+isbn,                       src:'wechat',   weight:5},  // 公众号书评
+    {q:bookTitle+' 小红书 笔记 '+isbn,                           src:'xhs',      weight:4}   // 小红书种草
   ];
+  // 并行调用所有 query，提速（CF Workers 单请求并发上限 6，这里 8 条用 Promise.all 也能跑）
   var allResults=[];
-  for(var i=0;i<queries.length;i++){
-    try{
-      var resp=await fetch(ZHIPU_SEARCH.apiUrl,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'web-search-pro',stream:false,messages:[{role:'user',content:queries[i]}]})
-      });
-      if(!resp.ok) continue;
-      var data=await resp.json();
-      // 提取搜索结果
+  await Promise.all(queries.map(function(qi,i){
+    return fetch(ZHIPU_SEARCH.apiUrl,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({request_id:'isbn_search_'+Date.now()+'_'+i,tool:'web-search-pro',stream:false,messages:[{role:'user',content:qi.q}]})
+    }).then(function(resp){
+      if(!resp.ok) return null;
+      return resp.json();
+    }).then(function(data){
+      if(!data) return;
       var choices=data.choices||[];
       for(var j=0;j<choices.length;j++){
         var msg=choices[j].message||{};
@@ -2847,20 +2854,30 @@ async function webSearchBook(bookTitle,isbn){
           for(var m=0;m<sr.length;m++){
             var item=sr[m];
             if(item.content && item.content.length>50){
-              allResults.push({title:item.title||'',content:item.content.substring(0,800),link:item.link||''});
+              allResults.push({
+                title:item.title||'',
+                content:item.content.substring(0,800),
+                link:item.link||'',
+                src:qi.src,
+                weight:qi.weight
+              });
             }
           }
         }
       }
-    }catch(e){console.log('搜索请求'+i+'失败:',e);}
-  }
-  // 去重并拼接
+    }).catch(function(e){console.log('搜索'+qi.src+'失败:',e);});
+  }));
+  // 去重（按 link，没 link 退化到 title）+ 取每条最高权重
   var seen={};var unique=[];
   for(var i=0;i<allResults.length;i++){
-    var key=allResults[i].title;
-    if(!seen[key]){seen[key]=true;unique.push(allResults[i]);}
+    var key=allResults[i].link||allResults[i].title;
+    if(!key) continue;
+    if(!seen[key]){seen[key]=allResults[i];unique.push(allResults[i]);}
+    else if(allResults[i].weight>seen[key].weight){seen[key].weight=allResults[i].weight;}
   }
-  return unique.slice(0,10); // 最多取10条搜索结果
+  // 按权重降序（权威源优先喂给 LLM），最多 15 条（比之前 10 条略放宽，因为来源更多元了）
+  unique.sort(function(a,b){return b.weight-a.weight;});
+  return unique.slice(0,15);
 }
 function isbnSysPrompt(){return '你是图书广告营销素材采集专家。你的任务是为一本图书产出一份可直接用于投放的营销采集报告。\n\n## 🎯 核心分区原则（必须严格区分两类维度）\n\n本报告分为 **A 类 事实区** 和 **B 类 AI 延伸区**，两类维度遵循完全不同的规则：\n\n### 🔒 A 类 事实区（维度 0、3、4、5、6）—— 严禁编造\n适用维度：基础信息、官方简介、目录、前言/序言、金句摘录\n规则：\n1. 只能输出你**能精确引用**或**来自联网搜索结果**的内容\n2. 严禁基于书名/主题脑补，严禁用同类书内容替代\n3. 不确定 → **整个维度跳过**（不输出该 h2 标题）\n4. 不允许"可能""大致""通常""相关内容包括"等模糊词\n\n## 🚨 书目同一性铁律（A 类所有内容必须 100% 来源于这本书）\n本次任务**有且只有目标书目这一本书**，由【书名 + ISBN】双重锚定，缺一不可。下列情况都视为**严重错误**，必须整段删除：\n- ❌ 用**同名书**的内容（不同出版社/不同版本/不同年份的同名书）\n- ❌ 用**同作者其他书**的目录/简介/金句填充\n- ❌ 用**同系列其他分册**的内容\n- ❌ 用**同主题热销书**的内容冒充（典型反例：用《最新中考作文全攻略》的目录冒充《26版热考话题人民日报里的中考作文热点素材》——这两本是不同书，绝对禁止混用）\n- ❌ 用**前几版/旧版**的内容冒充新版\n\n**自检流程**：每输出一条 A 类内容（章节名、简介段、金句、评价），都必须自问：\n1. 这条内容明确出现在【目标书名 + 目标 ISBN】唯一对应的那本书里吗？\n2. 联网搜索结果里有没有这条原文？哪条来源？来源页 ISBN 是不是匹配？\n3. 如果把这条贴到豆瓣/当当对应 ISBN 的页面去对照，会被对上吗？\n任何一条存疑 → **整段删除**，宁缺毋滥，绝不冒险。\n\n### 💡 B 类 AI 延伸区（维度 1、2）—— 允许 AI 推理延伸\n适用维度：目标用户人群、投放人群×卖点\n规则：\n1. **必须输出**，即使是冷门书/新书也要基于书名+品类+作者经验**合理推演**\n2. 推演时结合：书名关键词、所属品类、出版社定位、作者风格、目标读者画像\n3. 每个延伸维度顶部加一句提示：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4. 内容要具体、可投放，不要套话\n\n## 📐 输出维度详细要求\n\n### 0. 图书基础信息确认 【A 类·事实】\n仅输出能确认的字段（书名、作者、出版社、出版时间、ISBN、页数、定价）。不确认的不写。\n| 项目 | 内容 |\n\n### 1. 目标用户人群 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n7 列表头，至少 8 条，最多 15 条：\n| 人群标签 | 年龄段 | 身份 | 地域偏好 | 兴趣关键词 | 核心痛点 | 购买动机 |\n要求：人群标签 4-6 字；痛点和动机要具体可触达，不要"提升自我"这种空话。\n\n### 2. 投放人群 × 产品卖点 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4 列表头，至少 8 条，最多 15 条：\n| 投放人群 | 卖点标签（4字） | 卖点说明（一句话讲清能解决什么问题） | 适配场景 |\n\n### 3. 官方内容简介 【A 类·事实】\n直接输出简介原文 + 来源标注。不能精确引用 → **跳过整个维度**。\n\n### 4. 完整目录 【A 类·事实】\n章节+子节完整列出。记不清真实目录 → **跳过整个维度，绝不能编**。\n\n### 5. 前言/序言原文 【A 类·事实】\n全文或关键段落。不能精确引用 → **跳过整个维度**。\n\n### 6. 书中核心内容摘录 【A 类·事实】\n核心观点 / 方法论 / 关键数据 / 金句 / 核心概念，每条标出处。只能凭印象大致总结 → **跳过整个维度**。\n\n## 输出格式\n直接输出 HTML 片段（不含 html/head/body 标签）：\n- 每个维度用 <h2> 标题（第2维度加 class="pain-point"）\n- 内容用 <div class="card"> 包裹\n- 表格用 <table>\n- 引用用 <blockquote>，来源用 <p class="source">\n- B 类延伸维度顶部必须加 <p class="ai-extend"> 提示条\n\n## 🚫 铁律：跳过维度时绝对不许"解释为什么没有"\n当某个 A 类维度需要跳过时，**整个维度连 h2 标题都不要输出**，更不要输出任何解释性文字。\n\n**禁止输出的废话示例**（看到这类话立即扣分）：\n- ❌ "搜索结果中未提供本书的前言或序言原文。"\n- ❌ "目录信息暂未收录。"\n- ❌ "由于未找到官方简介，本维度无法展示。"\n- ❌ "本书相关金句资料缺失。"\n- ❌ "暂无可靠数据。" / "信息不足。" / "未能获取到..."\n\n**正确做法**：直接什么都不输出，让该维度从报告中完全消失。下一个有内容的维度直接接上。\n\n## ⚠️ 禁止整份报告输出"无法生成"\n即使 A 类全部跳过，B 类（维度 1 和 2）也必须基于书名/品类推演输出，**保证报告至少有人群和卖点两部分**。\n不输出：出版信息表、作者简介、全网传播数据、竞品、IP衍生、封面图、负面排查、评价数据、汇总表。';}
 function isbnCacheKey(a,b){return 'isbn_report_'+a+'_'+(b||'');}
@@ -3091,13 +3108,18 @@ async function runIsbnCollect(force){
       +'- 绝对禁止使用你记忆中类似品类（例如"让孩子爱上历史""宝藏级童书""樊登推荐书单"之类）的营销文案/推广软文来填充本书内容。\n'
       +'- 如果你对《'+confirmedTitle+'》的**具体内容、目录、金句**没有精确把握，直接跳过相关维度，**绝不能用同类书的通用文案冒充**。\n'
       +'- 下方如果提供了联网搜索结果，**你的所有具体内容必须严格来自搜索结果**，你的知识库仅用于补充你**100%确信**属于这本书的信息。';
-    // 拼入联网搜索结果
+    // 拼入联网搜索结果（按权重已排序，权威源在前）
     if(searchResults.length>0){
-      userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（请优先参考这些真实数据，这是最可靠的来源）\n';
+      // 来源平台中文名映射
+      var srcLabel={dangdang:'当当',jd:'京东',douban:'豆瓣',editor:'编辑推荐',toc:'目录搜索',review:'书评搜索',wechat:'微信公众号',xhs:'小红书'};
+      userMsg+='\n\n## 以下是联网实时搜索到的该书相关信息（按权威度排序，请优先采纳前面的来源）\n';
       for(var si=0;si<searchResults.length;si++){
-        userMsg+='\n### 来源'+(si+1)+'：'+searchResults[si].title+'\n'+searchResults[si].content+'\n';
+        var sr=searchResults[si];
+        userMsg+='\n### 来源'+(si+1)+' 【'+(srcLabel[sr.src]||sr.src||'其他')+'】：'+sr.title+'\n'
+              +(sr.link?'链接：'+sr.link+'\n':'')
+              +sr.content+'\n';
       }
-      userMsg+='\n\n请**以上述联网搜索结果为主要依据**，按维度顺序输出HTML片段。\n\n## 🚨 书目同一性核验（最重要）\n上述搜索结果可能混入了**同名/同主题/同作者的其他书**。对每一条 A 类内容（简介、目录、金句、评价），你都必须先核验：\n- 该来源页面是否明确标注了 ISBN = '+isbn+' ？\n- 是否提到了完整书名《'+confirmedTitle+'》（注意：不是简称、不是同名书）？\n- 来源的出版社/作者/年份是否与目标书目匹配？\n\n**只有完全匹配的来源才可以采用**。任何只匹配"主题相近""作者相同""书名相似"的来源都**必须舍弃**，对应维度宁可跳过也不能用。\n\n- A 类事实区（维度 0、3、4、5、6）：来源不匹配 → 跳过，不要用知识库臆补。\n- B 类 AI 延伸区（维度 1、2）：**必须输出 8-15 条**，结合搜索结果中的人群/卖点线索 + 品类经验延伸，顶部加 <p class="ai-extend">提示条</p>。';
+      userMsg+='\n\n请**以上述联网搜索结果为主要依据**，按维度顺序输出HTML片段。\n\n## 🚨 书目同一性核验（最重要）\n上述搜索结果可能混入了**同名/同主题/同作者的其他书**。对每一条 A 类内容（简介、目录、金句、评价），你都必须先核验：\n- 该来源页面是否明确标注了 ISBN = '+isbn+' ？\n- 是否提到了完整书名《'+confirmedTitle+'》（注意：不是简称、不是同名书）？\n- 来源的出版社/作者/年份是否与目标书目匹配？\n\n**优先采用**【当当】【京东】【豆瓣】这三类权威源，其他源仅做参考。\n**只有完全匹配的来源才可以采用**。任何只匹配"主题相近""作者相同""书名相似"的来源都**必须舍弃**，对应维度宁可跳过也不能用。\n\n- A 类事实区（维度 0、3、4、5、6）：来源不匹配 → 跳过，不要用知识库臆补。\n- B 类 AI 延伸区（维度 1、2）：**必须输出 8-15 条**，结合搜索结果中的人群/卖点线索 + 品类经验延伸，顶部加 <p class="ai-extend">提示条</p>。';
     }else{
       userMsg+='\n\n## ⚠️ 重要：本次联网搜索未拿到结果（'+(searchFailReason||'无结果')+'）\n这意味着你**没有这本书的实时网页信息**可参考。请遵守以下铁律：\n\n### 🔒 A 类 事实区（维度 0、3、4、5、6）：保守跳过\n「内容简介」「目录」「前言/序言」「金句摘录」——除非你**确切知道**《'+confirmedTitle+'》这本书的具体内容（注意：是**这本**，不是同名、同主题、同作者的其它书），否则**整个维度跳过**，不要输出该 h2 标题。绝对禁止用"本书介绍了..."占位。\n\n### 💡 B 类 AI 延伸区（维度 1、2）：必须输出\n即使没有联网结果，你**也必须**基于书名《'+confirmedTitle+'》、ISBN 前缀（出版社）、品类经验，推演出：\n- 维度1 目标用户人群：8-15 条，7 列完整（人群标签/年龄段/身份/地域/兴趣/痛点/动机）\n- 维度2 投放人群×卖点：8-15 条，4 列完整（投放人群/卖点标签/卖点说明/适配场景）\n两个维度顶部都必须加 <p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n\n### 兜底\n宁可整份报告只有维度 1 和 维度 2，也**绝不允许整份报告输出"无法生成"**。请按维度顺序输出 HTML 片段。';
     }
