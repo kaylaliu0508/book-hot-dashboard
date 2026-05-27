@@ -251,7 +251,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面5: 口播脚本 ==================== -->
 <div class="ct pg" id="pg-p5">
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">🎬 口播脚本生成器</h2>
-<p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（约2分钟/篇）</p>
+<p class="subtitle">粘贴图书内容 → AI自动生成5种风格的口播脚本（时长可选 30秒～5分钟）</p>
 <div style="background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#8b949e;line-height:1.6">
 ⚠️ <strong style="color:#fdcb6e">免责声明</strong>：本工具生成的口播脚本及审核建议仅供参考，不构成投放指导。实际素材合规性请以腾讯广告平台审核规范为准。
 </div>
@@ -273,6 +273,18 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="Z世代：18-25岁，追求潮流、个性、自我成长" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">Z世代</span>
 <span class="qt scp" onclick="scriptChipClick(this,'scriptAudienceChips',false)" data-value="新锐白领：高收入年轻白领，追求品质" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">新锐白领</span>
 </div>
+
+<label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">口播时长 <span style="color:#484f58;font-weight:400">（决定字数与节奏）</span></label>
+<div id="scriptDurationChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="30" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">30秒</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="60" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">60秒</span>
+<span class="qt scp on" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="90" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">90秒（推荐）</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="120" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">2分钟</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="180" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">3分钟</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="240" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">4分钟</span>
+<span class="qt scp" onclick="scriptChipClick(this,'scriptDurationChips',false);scriptOnDurationChange()" data-value="300" style="padding:6px 12px;border-radius:16px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">5分钟</span>
+</div>
+<div id="scriptDurationHint" style="font-size:10.5px;color:#8b949e;margin-bottom:14px;padding:6px 10px;background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.15);border-radius:6px">90秒：≈ 405–450 字 · 钩子+痛点共鸣+2-3 个内容点+价值锚+行动号召（详细带货）</div>
 
 <label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">口播风格 <span style="color:#484f58;font-weight:400">（可多选）</span></label>
 <div id="scriptStyleChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
@@ -3125,6 +3137,56 @@ var SCRIPT_TYPES=[
 {id:'mindblown',name:'颠覆认知型',emoji:'🤯',desc:'颠覆常识炸裂三观',tips:'拍摄：开场睁大眼睛+夸张但真诚',structure:'【颠覆开场】→【炸裂知识点】→【价值锚定】→【行动号召】'}
 ];
 
+// 口播时长配置：按 4.5 字/秒估算，每档对应字数区间、结构提示、节奏要求、token 预算
+var SCRIPT_DURATIONS=[
+{seconds:30,  label:'30秒',   minWords:135,  maxWords:150,
+ structure:'【钩子3-5秒】→【1 个最强爆点】→【行动号召】',
+ pace:'极致短句爆破，开门见山，无废话过渡',
+ points:1, maxTokens:1024,
+ hint:'≈ 135–150 字 · 单一爆点直击，信息流秒级抓眼'},
+{seconds:60,  label:'60秒',   minWords:270,  maxWords:300,
+ structure:'【钩子】→【2 个内容点】→【价值锚】→【行动号召】',
+ pace:'短句为主，节奏紧凑，每句不超过 15 字',
+ points:2, maxTokens:1024,
+ hint:'≈ 270–300 字 · 主流短视频投放黄金时长'},
+{seconds:90,  label:'90秒',   minWords:405,  maxWords:450,
+ structure:'【钩子】→【痛点共鸣】→【2-3 个内容点】→【价值锚】→【行动号召】',
+ pace:'长短句交替，2-3 个金句，可有 1 个具体案例',
+ points:3, maxTokens:2048,
+ hint:'≈ 405–450 字 · 详细带货，最常用'},
+{seconds:120, label:'2分钟',  minWords:540,  maxWords:600,
+ structure:'【钩子】→【痛点共鸣】→【3 个内容点】→【情感升华】→【价值锚】→【行动号召】',
+ pace:'长短句交替，可融入 1-2 个生活场景案例',
+ points:3, maxTokens:2048,
+ hint:'≈ 540–600 字 · 中型种草视频'},
+{seconds:180, label:'3分钟',  minWords:810,  maxWords:900,
+ structure:'【钩子】→【痛点深挖】→【5 个内容点 + 案例】→【情感升华】→【价值锚】→【行动号召】',
+ pace:'故事化叙述，2-3 个案例展开，节奏有起伏',
+ points:5, maxTokens:4096,
+ hint:'≈ 810–900 字 · 深度种草'},
+{seconds:240, label:'4分钟',  minWords:1080, maxWords:1200,
+ structure:'【钩子】→【痛点深挖+对比】→【5-6 个内容点 + 多案例】→【情感升华】→【价值锚】→【行动号召】',
+ pace:'故事化叙述，多案例展开，可有 2-3 处情感停顿',
+ points:6, maxTokens:4096,
+ hint:'≈ 1080–1200 字 · 长内容视频号'},
+{seconds:300, label:'5分钟',  minWords:1350, maxWords:1500,
+ structure:'【开场钩子】→【背景铺垫】→【痛点深挖】→【6-7 个内容点+完整案例】→【转折/反差】→【情感升华】→【价值锚】→【行动号召】',
+ pace:'完整故事化结构，起承转合分明，深度讲书',
+ points:7, maxTokens:6000,
+ hint:'≈ 1350–1500 字 · 深度讲书，完整故事'}
+];
+function scriptGetDuration(){
+  var sel=document.querySelector('#scriptDurationChips .scp.on');
+  var sec=sel?parseInt(sel.dataset.value,10):90;
+  return SCRIPT_DURATIONS.find(function(d){return d.seconds===sec;}) || SCRIPT_DURATIONS[2];
+}
+function scriptOnDurationChange(){
+  var d=scriptGetDuration();
+  var hint=document.getElementById('scriptDurationHint');
+  if(hint) hint.innerHTML=d.label+'：'+d.hint+' · 结构：'+d.structure;
+}
+
+
 // 字数统计
 (function(){var ta=document.getElementById('scriptBookContent');if(ta)ta.addEventListener('input',function(){document.getElementById('scriptCharCount').textContent=ta.value.length;});})();
 
@@ -3138,12 +3200,13 @@ if(isMulti){
 }else{for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');el.classList.add('on');}
 }
 
-function scriptBuildPrompt(bookContent,audience,type){
-return '你是一位顶尖的图书类短视频口播脚本创作专家。你深谙爆款脚本的底层逻辑，擅长用口语化、有节奏感的表达吸引观众并促成购买。\n\n## 🔥 跑量素材实战话术（优先级最高）\n\n### 跑量脚本黄金结构\n1. 生活场景提问开场（3-5秒）\n2. 权威引述过渡\n3. 核心内容展开（占60-70%篇幅）\n4. 情感升华\n5. 紧迫收尾\n\n### 跑量开场句式\n- "XX更好，还是XX更好？大部分人都不知道这两种XX的区别"\n- "XX可以XX吗？天天XX和天天XX的人，身体会有哪些差别？"\n- "适合中老年的XX不是XX，也不是XX，而是家里不起眼的它"\n\n### 跑量内容展开句式\n- 食材绝配："为什么XX和XX是绝配？为什么XX要放XX？为什么XX要配XX？"\n- 四季买菜："春天应该买什么菜？夏天应该买什么菜？如果你不懂，那你就是稀里糊涂乱买"\n- 同类对比："同样买500块钱的菜，有些人买的都是补品，有些人买的都是糟粕"\n- 数字锚定："里面有一千多个食补技巧、200多个食物健康知识"\n- 图文搭配："每个XX都配了详细的图文，一看就会，一学就懂"\n\n### 跑量情感升华句式\n- "如果再让我回到40岁，什么车子、房子、票子我一个都不要，我就逼着自己把这本书看完"\n- "一家人我觉得至少要有三个人看过这本书"\n- "不论你长得多漂亮、学历有多高，相信我，你都不知道一个健康的身体有多重要"\n\n### 跑量收尾句式\n- "价格不贵，但很值。趁现在还能找到，赶紧带一本回去"\n- "这个东西不贵，就几十块钱。你差的不是钱，你差的是这个决心"\n- "简直就是你的私人XX顾问，让家人的每一天都充满XX"\n\n### 句式库（开场/过渡/价值锚定/收尾）\n- 开场："你知道XX吗？""你从来不XX，所以你总是XX""这就是大家苦苦寻找的XX"\n- 过渡："我跟你讲，这里面写的真的太好了""书里面写的清清楚楚"\n- 价值锚定："全书XX页，收录了XX种方法""图文搭配，一看就会"\n- 情感："有用的书才是好书""把它放在家里，关键时刻必将派上大用场"\n- 收尾："感兴趣的话可以看看""有需要的赶紧入手一本"\n\n## 去AI味规则\n禁用：首先/其次/最后、众所周知、值得一提、本书、此外、综上所述、在当今社会、让我们一起\n必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用"你"对话\n\n## 审核合规红线\n【绝对禁用】最好/最佳/第一/唯一/顶级/万能/国家级/权威认证\n【禁用医疗词】治疗/治愈/根治/疗效/预防生病/排毒养颜/降血糖/降血压\n【禁用承诺】保证有效/100%/立竿见影/XX天见效/看完就能XX\n【禁用恐慌】出大事了/紧急通知/震惊/50岁以上必看/不买后悔一辈子\n【禁用诱导】不知道你做了多大好事才刷到/能量低的人刷不到\n【禁用稀缺】仅剩XX本/只剩/马上下架/库存不多/限量\n【禁用迷信】转运/改命/占卜/风水/万年历/生辰八字/大运流年/命里缺啥/出生时辰落地\n【禁用背书】专家推荐/教育部推荐/新课改推荐（无授权）/N岁营养师/86岁老中医（虚构高龄专家）\n【禁用伪科学】每天必须吃X/N吃N不吃/K糖期/必须禁止吃某物（指令性饮食断言）\n【禁用虚构故事】村里有个奇怪现象/这里有个不为人知的秘密/久病在床的人都没有（无事实依据噱头）\n【禁用仿新闻】晚间播报/记者获悉/央视报道/权威发布/官方通报（仿新闻形式素材）\n【禁用K12学科】少儿编程课/核桃编程/口算PK/学科辅导（K12学科类培训不支持推广）\n【禁用分数承诺】从X分提到X分/提分X分/X分以上/再做题就简单多了（学习产品具体分数承诺）\n\n## 当前任务\n创作【'+type.name+'】风格的口播脚本。结构：'+type.structure+'\n\n## 目标受众\n'+audience+'\n\n## 图书内容\n'+bookContent+'\n\n## 硬性要求\n1. 字数450-550字（约2分钟）\n2. 优先套用跑量句式\n3. 60%篇幅讲书中具体内容\n4. 完全口语化\n5. 融入真实内容，禁止编造\n6. 通过广告法+腾讯审核\n7. 结尾自然行动号召\n8. 去AI味\n9. 语气词≥3个\n10. 长短句交替\n11. 【素材差异化】每篇脚本必须选取书中不同的内容片段、不同的案例、不同的人物/故事来展开。严禁多篇脚本引用相同的例子或段落。如果书中有多个章节/知识点/人物故事，每篇脚本聚焦不同的章节或知识点\n\n## 输出格式\n直接输出完整口播脚本，用空行分段。不加标签、不加标题、不加解释。一气呵成。';
+function scriptBuildPrompt(bookContent,audience,type,duration){
+var d=duration||SCRIPT_DURATIONS[2]; // 默认 90 秒
+return '你是一位顶尖的图书类短视频口播脚本创作专家。你深谙爆款脚本的底层逻辑，擅长用口语化、有节奏感的表达吸引观众并促成购买。\n\n## 🔥 跑量素材实战话术（优先级最高）\n\n### 跑量脚本黄金结构\n1. 生活场景提问开场（3-5秒）\n2. 权威引述过渡\n3. 核心内容展开（占60-70%篇幅）\n4. 情感升华\n5. 紧迫收尾\n\n### 跑量开场句式\n- "XX更好，还是XX更好？大部分人都不知道这两种XX的区别"\n- "XX可以XX吗？天天XX和天天XX的人，身体会有哪些差别？"\n- "适合中老年的XX不是XX，也不是XX，而是家里不起眼的它"\n\n### 跑量内容展开句式\n- 食材绝配："为什么XX和XX是绝配？为什么XX要放XX？为什么XX要配XX？"\n- 四季买菜："春天应该买什么菜？夏天应该买什么菜？如果你不懂，那你就是稀里糊涂乱买"\n- 同类对比："同样买500块钱的菜，有些人买的都是补品，有些人买的都是糟粕"\n- 数字锚定："里面有一千多个食补技巧、200多个食物健康知识"\n- 图文搭配："每个XX都配了详细的图文，一看就会，一学就懂"\n\n### 跑量情感升华句式\n- "如果再让我回到40岁，什么车子、房子、票子我一个都不要，我就逼着自己把这本书看完"\n- "一家人我觉得至少要有三个人看过这本书"\n- "不论你长得多漂亮、学历有多高，相信我，你都不知道一个健康的身体有多重要"\n\n### 跑量收尾句式\n- "价格不贵，但很值。趁现在还能找到，赶紧带一本回去"\n- "这个东西不贵，就几十块钱。你差的不是钱，你差的是这个决心"\n- "简直就是你的私人XX顾问，让家人的每一天都充满XX"\n\n### 句式库（开场/过渡/价值锚定/收尾）\n- 开场："你知道XX吗？""你从来不XX，所以你总是XX""这就是大家苦苦寻找的XX"\n- 过渡："我跟你讲，这里面写的真的太好了""书里面写的清清楚楚"\n- 价值锚定："全书XX页，收录了XX种方法""图文搭配，一看就会"\n- 情感："有用的书才是好书""把它放在家里，关键时刻必将派上大用场"\n- 收尾："感兴趣的话可以看看""有需要的赶紧入手一本"\n\n## 去AI味规则\n禁用：首先/其次/最后、众所周知、值得一提、本书、此外、综上所述、在当今社会、让我们一起\n必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用"你"对话\n\n## 审核合规红线\n【绝对禁用】最好/最佳/第一/唯一/顶级/万能/国家级/权威认证\n【禁用医疗词】治疗/治愈/根治/疗效/预防生病/排毒养颜/降血糖/降血压\n【禁用承诺】保证有效/100%/立竿见影/XX天见效/看完就能XX\n【禁用恐慌】出大事了/紧急通知/震惊/50岁以上必看/不买后悔一辈子\n【禁用诱导】不知道你做了多大好事才刷到/能量低的人刷不到\n【禁用稀缺】仅剩XX本/只剩/马上下架/库存不多/限量\n【禁用迷信】转运/改命/占卜/风水/万年历/生辰八字/大运流年/命里缺啥/出生时辰落地\n【禁用背书】专家推荐/教育部推荐/新课改推荐（无授权）/N岁营养师/86岁老中医（虚构高龄专家）\n【禁用伪科学】每天必须吃X/N吃N不吃/K糖期/必须禁止吃某物（指令性饮食断言）\n【禁用虚构故事】村里有个奇怪现象/这里有个不为人知的秘密/久病在床的人都没有（无事实依据噱头）\n【禁用仿新闻】晚间播报/记者获悉/央视报道/权威发布/官方通报（仿新闻形式素材）\n【禁用K12学科】少儿编程课/核桃编程/口算PK/学科辅导（K12学科类培训不支持推广）\n【禁用分数承诺】从X分提到X分/提分X分/X分以上/再做题就简单多了（学习产品具体分数承诺）\n\n## 当前任务\n创作【'+type.name+'】风格的口播脚本，目标时长 **'+d.label+'**。\n风格结构（参考）：'+type.structure+'\n时长结构（必须遵守）：'+d.structure+'\n\n## 目标受众\n'+audience+'\n\n## 图书内容\n'+bookContent+'\n\n## 硬性要求\n1. **字数严格控制在 '+d.minWords+'–'+d.maxWords+' 字之间**（按 4.5 字/秒朗读速度对应 '+d.label+'）。少于下限或超过上限都属于失败。\n2. 节奏与节制：'+d.pace+'\n3. 内容点数量：约 '+d.points+' 个核心点（从书中提取真实内容）\n4. 优先套用跑量句式\n5. 60%篇幅讲书中具体内容\n6. 完全口语化\n7. 融入真实内容，禁止编造\n8. 通过广告法+腾讯审核\n9. 结尾自然行动号召\n10. 去AI味\n11. 语气词≥3个\n12. 长短句交替\n13. 【素材差异化】每篇脚本必须选取书中不同的内容片段、不同的案例、不同的人物/故事来展开。严禁多篇脚本引用相同的例子或段落。如果书中有多个章节/知识点/人物故事，每篇脚本聚焦不同的章节或知识点\n\n## 输出格式\n直接输出完整口播脚本，用空行分段。不加标签、不加标题、不加解释。一气呵成。**字数务必落在 '+d.minWords+'–'+d.maxWords+' 之间**。';
 }
 
-async function scriptCallAI(prompt){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。'},{role:'user',content:prompt}],temperature:0.82,max_tokens:4096})});
+async function scriptCallAI(prompt, maxTokens){
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。脚本必须写完整不能截断。**严格遵守用户给出的字数区间，不允许超出或低于该区间。**'},{role:'user',content:prompt}],temperature:0.82,max_tokens:maxTokens||4096})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
 var data=await response.json();return data.choices[0].message.content.trim();
 }
@@ -3155,6 +3218,7 @@ if(!bookContent){isbnToast('请先粘贴图书内容');ta.focus();return;}
 if(bookContent.length<30){isbnToast('内容太少，至少30字');return;}
 var audienceEl=document.querySelector('#scriptAudienceChips .scp.on');
 var audience=audienceEl?audienceEl.dataset.value:'通用人群';
+var duration=scriptGetDuration();
 var selectedStyles=[];
 var allChip=document.querySelector('#scriptStyleChips [data-value="全部"]');
 if(allChip&&allChip.classList.contains('on')){selectedStyles=SCRIPT_TYPES.map(function(t){return t.id;});}
@@ -3170,21 +3234,21 @@ var usedExamples=[];
 
 for(var i=0;i<selectedStyles.length;i++){
 var sid=selectedStyles[i];var type=SCRIPT_TYPES.find(function(t){return t.id===sid;});
-loadingText.textContent='正在生成 '+type.emoji+' '+type.name+'（'+(i+1)+'/'+selectedStyles.length+'）...';
-try{var prompt=scriptBuildPrompt(bookContent,audience,type);
+loadingText.textContent='正在生成 '+type.emoji+' '+type.name+'（'+(i+1)+'/'+selectedStyles.length+'）· 目标 '+duration.label+'...';
+try{var prompt=scriptBuildPrompt(bookContent,audience,type,duration);
 if(usedExamples.length>0){prompt+='\n\n## ⚠️ 素材差异化要求\n前面的脚本已经使用了以下案例/人物/片段，本篇必须选取完全不同的内容展开：\n- '+usedExamples.join('\n- ')+'\n\n请从书中选取其他章节、其他知识点、其他人物故事来创作，确保和前面的脚本没有重复素材。';}
-var script=await scriptCallAI(prompt);
+var script=await scriptCallAI(prompt, duration.maxTokens);
 // === 前置审核：用页面3完整审核规则校验，自动删除违规词 ===
 var scriptViolations=auditOneCopy(script);
 if(scriptViolations.length>0){
   var cleaned=generateCompliantCopy(script,scriptViolations);
   if(cleaned && cleaned.length>100){script=cleaned;}
 }
-results.push({typeId:sid,script:script});
+results.push({typeId:sid,script:script,duration:duration});
 var examples=script.match(/[""「]([^""」]{4,20})[""」]/g);if(examples){usedExamples=usedExamples.concat(examples.slice(0,3).map(function(e){return e.replace(/[""「」]/g,'');}));}
 if(usedExamples.length>12)usedExamples=usedExamples.slice(-8);
 }
-catch(e){results.push({typeId:sid,script:'⚠️ 生成失败：'+e.message,error:true});}
+catch(e){results.push({typeId:sid,script:'⚠️ 生成失败：'+e.message,error:true,duration:duration});}
 }
 document.getElementById('scriptLoading').style.display='none';
 document.getElementById('scriptGenBtn').disabled=false;
@@ -3198,10 +3262,22 @@ results.forEach(function(r,idx){
 var type=SCRIPT_TYPES.find(function(t){return t.id===r.typeId;});
 var wc=r.script.replace(/\s/g,'').length;var rt=Math.ceil(wc/4.5);
 var safe=r.script.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// 目标 vs 实际
+var dInfo='';
+if(r.duration && !r.error){
+  var d=r.duration;
+  var inRange = wc>=d.minWords && wc<=d.maxWords;
+  var deviationPct = Math.round((wc - (d.minWords+d.maxWords)/2) / ((d.minWords+d.maxWords)/2) * 100);
+  var statusBg = inRange ? 'rgba(63,185,80,.15)' : (Math.abs(deviationPct)<=15 ? 'rgba(253,203,110,.15)' : 'rgba(248,81,73,.15)');
+  var statusColor = inRange ? '#3fb950' : (Math.abs(deviationPct)<=15 ? '#fdcb6e' : '#f85149');
+  var statusText = inRange ? '✅ 达标' : (deviationPct>0 ? '⚠️ 偏长 +'+deviationPct+'%' : '⚠️ 偏短 '+deviationPct+'%');
+  dInfo = '<span style="padding:2px 6px;background:rgba(88,166,255,.12);border-radius:3px;color:#58a6ff;font-size:10px;font-weight:600">🎯 '+d.label+'</span>'
+        + '<span style="padding:2px 6px;background:'+statusBg+';border-radius:3px;color:'+statusColor+';font-size:10px;font-weight:600">'+statusText+'</span>';
+}
 var card=document.createElement('div');
 card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:12px;overflow:hidden';
 card.dataset.raw=r.script;
-card.innerHTML='<div onclick="this.parentElement.classList.toggle(\'expanded\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid #21262d"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">'+type.emoji+'</span><div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+type.name+'</div><div style="font-size:10px;color:#484f58">'+type.desc+'</div></div></div><div style="display:flex;align-items:center;gap:12px"><span style="padding:2px 6px;background:rgba(230,57,70,.15);border-radius:3px;color:#e63946;font-size:10px;font-weight:600">'+wc+'字</span><span style="font-size:10px;color:#484f58">≈'+rt+'s</span><span style="color:#484f58;font-size:10px">▼</span></div></div><div class="script-body" style="display:'+(idx===0?'block':'none')+';padding:16px;font-size:12px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safe+'</div><div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #21262d;background:#0d1117"><div style="font-size:10px;color:#484f58">💡 '+type.tips+'</div><button onclick="scriptCopyOne(this)" style="padding:4px 12px;border-radius:6px;border:none;background:#e63946;color:#fff;font-size:11px;cursor:pointer">复制</button></div>';
+card.innerHTML='<div onclick="this.parentElement.classList.toggle(\'expanded\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid #21262d"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">'+type.emoji+'</span><div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+type.name+'</div><div style="font-size:10px;color:#484f58">'+type.desc+'</div></div></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end">'+dInfo+'<span style="padding:2px 6px;background:rgba(230,57,70,.15);border-radius:3px;color:#e63946;font-size:10px;font-weight:600">'+wc+'字</span><span style="font-size:10px;color:#484f58">≈'+rt+'s</span><span style="color:#484f58;font-size:10px">▼</span></div></div><div class="script-body" style="display:'+(idx===0?'block':'none')+';padding:16px;font-size:12px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safe+'</div><div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #21262d;background:#0d1117"><div style="font-size:10px;color:#484f58">💡 '+type.tips+'</div><button onclick="scriptCopyOne(this)" style="padding:4px 12px;border-radius:6px;border:none;background:#e63946;color:#fff;font-size:11px;cursor:pointer">复制</button></div>';
 card.querySelector('[onclick]').addEventListener('click',function(){var body=this.parentElement.querySelector('.script-body');body.style.display=body.style.display==='none'?'block':'none';});
 container.appendChild(card);
 });
