@@ -3627,34 +3627,42 @@ container.innerHTML='';
 menu.chunks.forEach(function(c,ci){
   c._selected=(typeof c._selected==='number'?c._selected:0); // 默认选第 1 个候选
   var card=document.createElement('div');
-  card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:12px;overflow:hidden';
+  card.style.cssText='background:#161b22;border:1px solid #21262d;border-radius:10px;margin-bottom:14px;overflow:hidden';
   card.dataset.chunkIdx=ci;
   // header
   var hdr='<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #21262d">'
     +'<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#e63946;color:#fff;font-size:11px;font-weight:700">'+(ci+1)+'</span>'
     +'<div><div style="font-size:13px;font-weight:600;color:#f0f6fc">'+c.name+'</div>'
-    +'<div style="font-size:10px;color:#8b949e">目标 '+c.target+' 字 · 区间 '+c.minW+'–'+c.maxW+'</div></div></div>'
+    +'<div style="font-size:10px;color:#8b949e">目标 '+c.target+' 字 · 区间 '+c.minW+'–'+c.maxW+' · '+(c.hint||'')+'</div></div></div>'
     +'<button onclick="scriptRegenerateChunk('+ci+',this)" style="padding:4px 10px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;cursor:pointer">🔄 换一批</button>'
     +'</div>';
-  // 候选 chip 行
-  var chipsHtml='<div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;background:#0d1117">';
+  // 4 候选并列展示（响应式：>=900px 4 列，>=560px 2 列，否则 1 列）
+  var gridHtml='<div class="cand-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;padding:12px">';
   (c.candidates||[]).forEach(function(cd,idx){
     var isOn=idx===c._selected;
-    chipsHtml+='<span onclick="scriptSelectCandidate(event,'+ci+','+idx+')" style="padding:5px 12px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid '+(isOn?'#e63946':'#30363d')+';background:'+(isOn?'#e63946':'#21262d')+';color:'+(isOn?'#fff':'#8b949e')+';font-weight:'+(isOn?'600':'400')+'">候选'+(idx+1)+'·'+(cd.tone_name||cd.tone||'')+'</span>';
+    var safeText=(cd.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    var wc=(cd.text||'').replace(/\s/g,'').length;
+    var inRange=wc>=c.minW&&wc<=c.maxW;
+    var statusColor=inRange?'#3fb950':(wc<c.minW?'#fdcb6e':'#f85149');
+    var statusIcon=inRange?'✅':(wc<c.minW?'⚠️':'⚠️');
+    var statusText=inRange?(wc+' 字'):(wc<c.minW?(wc+' 字 · 偏短'):(wc+' 字 · 偏长'));
+    var label='候选'+(idx+1)+' · '+(cd.tone_name||cd.tone||'');
+    var border=isOn?'2px solid #e63946':'1px solid #30363d';
+    var bg=isOn?'rgba(230,57,70,0.06)':'#0d1117';
+    var ringShadow=isOn?'box-shadow:0 0 0 1px rgba(230,57,70,0.4);':'';
+    gridHtml+='<div data-cand-idx="'+idx+'" onclick="scriptSelectCandidate(event,'+ci+','+idx+')" '
+      +'style="position:relative;border:'+border+';'+ringShadow+'background:'+bg+';border-radius:8px;padding:10px 12px 36px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;min-height:140px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      +'<span style="font-size:11px;font-weight:600;color:'+(isOn?'#e63946':'#8b949e')+'">'+(isOn?'● ':'○ ')+label+'</span>'
+      +'<span style="font-size:10px;color:'+statusColor+';font-weight:600">'+statusIcon+' '+statusText+'</span>'
+      +'</div>'
+      +'<div style="font-size:12.5px;line-height:1.85;color:#c9d1d9;white-space:pre-wrap;word-break:break-word;flex:1">'+safeText+'</div>'
+      +'<button onclick="event.stopPropagation();scriptCopyCandidate('+ci+','+idx+',this)" '
+      +'style="position:absolute;right:8px;bottom:8px;padding:3px 10px;border-radius:5px;border:1px solid #30363d;background:#161b22;color:#8b949e;font-size:10px;cursor:pointer">复制</button>'
+      +'</div>';
   });
-  chipsHtml+='</div>';
-  // 当前候选正文
-  var sel=c.candidates&&c.candidates[c._selected]||{};
-  var safeText=(sel.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var wc=(sel.text||'').replace(/\s/g,'').length;
-  var inRange=wc>=c.minW&&wc<=c.maxW;
-  var statusColor=inRange?'#3fb950':(wc<c.minW?'#fdcb6e':'#f85149');
-  var statusText=inRange?('✅ '+wc+' 字'):(wc<c.minW?('⚠️ '+wc+' 字 偏短'):('⚠️ '+wc+' 字 偏长'));
-  var body='<div style="padding:14px 16px;font-size:12.5px;line-height:2;color:#c9d1d9;white-space:pre-wrap;word-break:break-word">'+safeText+'</div>'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 16px;border-top:1px solid #21262d;background:#0d1117">'
-    +'<div style="font-size:11px;color:'+statusColor+';font-weight:600">'+statusText+'</div>'
-    +'<button onclick="scriptCopyChunk('+ci+',this)" style="padding:4px 12px;border-radius:6px;border:none;background:#1f6feb;color:#fff;font-size:11px;cursor:pointer">复制本段</button></div>';
-  card.innerHTML=hdr+chipsHtml+body;
+  gridHtml+='</div>';
+  card.innerHTML=hdr+gridHtml;
   container.appendChild(card);
 });
 document.getElementById('scriptOutput').style.display='block';
@@ -3663,7 +3671,7 @@ if(opts.scroll) document.getElementById('scriptOutput').scrollIntoView({behavior
 if(opts.toast) isbnToast(opts.toast);
 }
 
-// 选中某 chunk 的某候选：阻止默认+不滚动+只局部更新该 chunk 的高亮+正文+预览
+// 选中某 chunk 的某候选：阻止默认+不滚动+只局部更新该 chunk 的高亮+预览
 function scriptSelectCandidate(ev,chunkIdx,cndIdx){
   if(ev && ev.preventDefault) ev.preventDefault();
   if(!SCRIPT_CURRENT_MENU)return;
@@ -3671,31 +3679,28 @@ function scriptSelectCandidate(ev,chunkIdx,cndIdx){
   if(!chunk) return;
   if(chunk._selected===cndIdx){scriptUpdatePreview();return;}
   chunk._selected=cndIdx;
-  // 仅更新该 chunk 卡片，不重渲整体（避免任何 reflow 引起跳动）
+  // 仅更新该 chunk 卡片内 4 个候选框的高亮（不动其他卡片，不动正文）
   var card=document.querySelector('#scriptCards [data-chunk-idx="'+chunkIdx+'"]');
   if(!card){scriptRenderMenu({scroll:false});return;}
-  // 更新 chip 高亮
-  var chips=card.querySelectorAll('span[onclick^="scriptSelectCandidate"]');
-  chips.forEach(function(ch,i){
-    var isOn=i===cndIdx;
-    ch.style.background=isOn?'#e63946':'#21262d';
-    ch.style.color=isOn?'#fff':'#8b949e';
-    ch.style.borderColor=isOn?'#e63946':'#30363d';
-    ch.style.fontWeight=isOn?'600':'400';
+  var boxes=card.querySelectorAll('[data-cand-idx]');
+  boxes.forEach(function(box,i){
+    var on=i===cndIdx;
+    box.style.border=on?'2px solid #e63946':'1px solid #30363d';
+    box.style.background=on?'rgba(230,57,70,0.06)':'#0d1117';
+    box.style.boxShadow=on?'0 0 0 1px rgba(230,57,70,0.4)':'';
+    var label=box.querySelector('span:first-child');
+    if(label){label.style.color=on?'#e63946':'#8b949e';label.textContent=(on?'● ':'○ ')+label.textContent.replace(/^[●○]\s*/,'');}
   });
-  // 更新正文+字数状态
-  var sel=chunk.candidates&&chunk.candidates[cndIdx]||{};
-  var safeText=(sel.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var bodyDiv=card.querySelector('div[style*="line-height:2"]');
-  if(bodyDiv) bodyDiv.innerHTML=safeText;
-  var wc=(sel.text||'').replace(/\s/g,'').length;
-  var inRange=wc>=chunk.minW&&wc<=chunk.maxW;
-  var statusColor=inRange?'#3fb950':(wc<chunk.minW?'#fdcb6e':'#f85149');
-  var statusText=inRange?('✅ '+wc+' 字'):(wc<chunk.minW?('⚠️ '+wc+' 字 偏短'):('⚠️ '+wc+' 字 偏长'));
-  var statusDiv=card.querySelector('div[style*="font-weight:600"][style*="font-size:11px"]');
-  if(statusDiv){statusDiv.textContent=statusText;statusDiv.style.color=statusColor;}
-  // 更新底部组合预览
   scriptUpdatePreview();
+}
+
+// 复制单个候选（不切换选中）
+function scriptCopyCandidate(chunkIdx,cndIdx,btn){
+  if(!SCRIPT_CURRENT_MENU)return;
+  var chunk=SCRIPT_CURRENT_MENU.menu.chunks[chunkIdx];
+  var sel=chunk&&chunk.candidates&&chunk.candidates[cndIdx];
+  if(!sel)return;
+  navigator.clipboard.writeText(sel.text||'').then(function(){var old=btn.textContent;btn.textContent='已复制 ✓';btn.style.color='#3fb950';setTimeout(function(){btn.textContent=old;btn.style.color='#8b949e';},1200);});
 }
 
 // 实时拼接预览
