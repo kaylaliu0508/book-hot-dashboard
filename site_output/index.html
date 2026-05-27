@@ -52,6 +52,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 .ft a{color:#484f58}
 </style>
 <script src="/assets/creative-inbox.js" defer></script>
+<script src="/data/script_samples.js"></script>
 </head>
 <body>
 
@@ -262,7 +263,18 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div style="background:#161b22;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid #21262d">
 <label style="display:block;font-size:12px;color:#8b949e;margin-bottom:6px;font-weight:600">图书内容 <span style="color:#484f58;font-weight:400">（粘贴简介、目录、精彩片段等，越丰富脚本越好）</span></label>
 <textarea id="scriptBookContent" placeholder="把图书的内容粘贴到这里...&#10;&#10;可以包含：&#10;· 图书简介 / 内容提要&#10;· 目录结构&#10;· 精彩段落 / 金句摘录&#10;· 作者简介&#10;· 读者评价" style="width:100%;min-height:160px;padding:12px;border:2px solid #30363d;border-radius:8px;font-size:12px;outline:none;background:#0d1117;color:#c9d1d9;resize:vertical;font-family:inherit;line-height:1.7"></textarea>
-<div style="text-align:right;font-size:11px;color:#484f58;margin-top:4px"><span id="scriptCharCount">0</span> 字</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+  <div id="scriptCategoryBadge" style="display:flex;align-items:center;gap:4px;font-size:11px;color:#8b949e">
+    <span style="color:#484f58">品类：</span>
+    <span class="qt cat-chip on" onclick="scriptSelectCategory(this,'auto')" data-cat="auto" style="padding:3px 10px;border-radius:12px;background:#21262d;color:#c9d1d9;font-size:11px;cursor:pointer;border:1px solid transparent">🤖 自动识别</span>
+    <span class="qt cat-chip" onclick="scriptSelectCategory(this,'教辅')" data-cat="教辅" style="padding:3px 10px;border-radius:12px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">📚 教辅</span>
+    <span class="qt cat-chip" onclick="scriptSelectCategory(this,'童书')" data-cat="童书" style="padding:3px 10px;border-radius:12px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🧒 童书</span>
+    <span class="qt cat-chip" onclick="scriptSelectCategory(this,'社科')" data-cat="社科" style="padding:3px 10px;border-radius:12px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">🌐 社科</span>
+    <span class="qt cat-chip" onclick="scriptSelectCategory(this,'健康')" data-cat="健康" style="padding:3px 10px;border-radius:12px;background:#21262d;color:#8b949e;font-size:11px;cursor:pointer;border:1px solid transparent">💊 健康</span>
+    <span id="scriptCategoryHint" style="margin-left:6px;color:#3fb950;font-size:10.5px"></span>
+  </div>
+  <div style="text-align:right;font-size:11px;color:#484f58"><span id="scriptCharCount">0</span> 字</div>
+</div>
 
 <label style="display:block;font-size:12px;color:#8b949e;margin:12px 0 6px;font-weight:600">目标受众</label>
 <div id="scriptAudienceChips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
@@ -3453,8 +3465,72 @@ function scriptOnDurationChange(){
 }
 
 
-// 字数统计
-(function(){var ta=document.getElementById('scriptBookContent');if(ta)ta.addEventListener('input',function(){document.getElementById('scriptCharCount').textContent=ta.value.length;});})();
+// 字数统计 + 自动品类识别
+(function(){
+  var ta=document.getElementById('scriptBookContent');
+  if(!ta) return;
+  ta.addEventListener('input',function(){
+    document.getElementById('scriptCharCount').textContent=ta.value.length;
+    scriptAutoDetectCategory(ta.value);
+  });
+})();
+
+// ==================== 品类识别 ====================
+// SCRIPT_CURRENT_CATEGORY: 'auto'（自动） / '教辅' / '童书' / '社科' / '健康'
+var SCRIPT_CURRENT_CATEGORY='auto';
+// auto 模式下的实际识别结果
+var SCRIPT_DETECTED_CATEGORY=null;
+
+// 关键词规则：命中即归类（按命中数最多者归类）
+var SCRIPT_CATEGORY_RULES={
+  教辅:['高考','中考','小升初','真题','押题','速查','作文素材','答题卡','开卷','闭卷','课改','学科','试卷','分卷','考点','道法','文综','理综','模考','一模','二模','文化常识','背诵','复习'],
+  童书:['绘本','儿童','亲子','启蒙','3-8岁','3到8岁','3~8岁','反霸凌','感恩','童话','幼儿','小学生','少儿','低龄','睡前故事','漫画书','看图','拼音','识字','注音'],
+  健康:['养生','食疗','食补','中医','节气','二十四节气','赤脚医生','降压','血糖','血脂','调理','针灸','艾灸','中老年','补气','补血','滋阴','壮阳','汤','炖','食材','药膳'],
+  社科:['认知','人工智能','AGI','创业','管理','财经','投资','理财','哲学','历史','社会','心理','逆袭','觉醒','底层逻辑','商业','格局','思维','人脉','人性']
+};
+function scriptDetectCategoryByRules(text){
+  if(!text||text.length<15) return null;
+  var t=text.toLowerCase();
+  var scores={};
+  Object.keys(SCRIPT_CATEGORY_RULES).forEach(function(cat){
+    var kws=SCRIPT_CATEGORY_RULES[cat];
+    var hit=0;
+    kws.forEach(function(kw){if(t.indexOf(kw.toLowerCase())>=0)hit++;});
+    if(hit>0) scores[cat]=hit;
+  });
+  var keys=Object.keys(scores);
+  if(!keys.length) return null;
+  keys.sort(function(a,b){return scores[b]-scores[a];});
+  return {cat:keys[0],hits:scores[keys[0]]};
+}
+function scriptAutoDetectCategory(text){
+  if(SCRIPT_CURRENT_CATEGORY!=='auto') return;
+  var hint=document.getElementById('scriptCategoryHint');
+  var r=scriptDetectCategoryByRules(text);
+  SCRIPT_DETECTED_CATEGORY=r?r.cat:null;
+  if(hint){
+    if(r) hint.textContent='→ 识别为「'+r.cat+'」（命中 '+r.hits+' 个关键词）';
+    else hint.textContent=text.length>20?'→ 未识别到特定品类，使用通用框架':'';
+  }
+}
+function scriptSelectCategory(el,cat){
+  var chips=document.querySelectorAll('#scriptCategoryBadge .cat-chip');
+  chips.forEach(function(c){c.classList.remove('on');c.style.background='#21262d';c.style.color='#8b949e';c.style.borderColor='transparent';});
+  el.classList.add('on');el.style.background='#e63946';el.style.color='#fff';el.style.borderColor='#e63946';
+  SCRIPT_CURRENT_CATEGORY=cat;
+  var hint=document.getElementById('scriptCategoryHint');
+  if(cat==='auto'){
+    var ta=document.getElementById('scriptBookContent');
+    scriptAutoDetectCategory(ta?ta.value:'');
+  }else{
+    if(hint) hint.textContent='→ 手动指定「'+cat+'」品类框架';
+  }
+}
+// 当前最终生效的品类（auto 模式取识别结果，否则取手选）
+function scriptResolveActiveCategory(){
+  if(SCRIPT_CURRENT_CATEGORY==='auto') return SCRIPT_DETECTED_CATEGORY||null;
+  return SCRIPT_CURRENT_CATEGORY;
+}
 
 // chip选择（风格 chip 改为单选）
 function scriptChipClick(el,containerId,isMulti){
@@ -3509,7 +3585,7 @@ function scriptResolveChunkTones(globalTone){
 var SCRIPT_BASE_RULES='## 🔥 跑量素材实战话术（参考库，可灵活借用）\n开场套路：生活场景提问/对比悬念/反常识反问；过渡：\"我跟你讲\"\"书里写得清清楚楚\"；价值锚定：具体页数/章节数/方法数+图文搭配；情感升华：\"一家人至少要有一个人看过\"\"我宁可放弃XX也要看完\"；收尾：\"价格不贵但很值\"\"差的不是钱是这个决心\"。\n\n## 去AI味（必须）\n禁用：首先/其次/最后、众所周知、值得一提、本书、综上所述、在当今社会、让我们一起。必须：语气词≥3个（真的/说实话/我跟你讲）、短句爆破、具体数字、用\"你\"对话。\n\n## 审核合规红线（违规直接重写）\n绝对禁用：最好/最佳/第一/唯一/顶级/万能/国家级/权威认证；禁用医疗词：治疗/治愈/根治/疗效/排毒养颜/降血糖；禁用承诺：保证有效/100%/立竿见影/X天见效；禁用恐慌：出大事了/震惊/不买后悔一辈子；禁用诱导：能量低的人刷不到；禁用稀缺：仅剩X本/马上下架/限量；禁用迷信：转运/改命/风水/生辰八字；禁用背书：专家推荐/教育部推荐（无授权）；禁用伪科学：每天必须吃X/N吃N不吃；禁用虚构故事：村里有个奇怪现象/久病在床的人都没有；禁用仿新闻：晚间播报/记者获悉/央视报道；禁用K12学科课程；禁用提分承诺。';
 
 // 构建分块菜单 prompt（一次调用，输出严格 JSON）
-function scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones){
+function scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones,category){
   var dur=duration;
   var totalMin=dur.minWords, totalMax=dur.maxWords;
   // 给每个 chunk 计算字数区间
@@ -3522,9 +3598,39 @@ function scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones){
   });
   var chunkListMd=chunkSpec.map(function(c,i){return (i+1)+'. **'+c.name+'**（约 '+c.target+' 字 · '+c.minW+'-'+c.maxW+' 字 · '+c.hint+'）';}).join('\n');
   var toneListMd=tones.map(function(t,i){return (i+1)+'. **'+t.name+'**（'+t.emoji+'）';}).join('\n');
+
+  // === 品类 few-shot 注入 ===
+  var fewShotBlock='';
+  if(category && window.SCRIPT_COMMON_PATTERNS && window.SCRIPT_COMMON_PATTERNS[category]){
+    var pat=window.SCRIPT_COMMON_PATTERNS[category];
+    fewShotBlock+='\n\n## 🎯 【'+category+'】品类爆款脚本框架（请严格借鉴此结构和句式）\n'+pat;
+    // 选 2 篇该品类样本（按当前书内容关键词加权，否则取前 2）
+    var samples=(window.SCRIPT_SAMPLES&&window.SCRIPT_SAMPLES[category])||[];
+    if(samples.length){
+      // 简单加权：候选样本的 skeleton/raw 与图书内容字符重合度（取前 200 字）
+      var bc=(bookContent||'').substring(0,500);
+      var scored=samples.map(function(s){
+        var skel=s.skeleton||'';
+        var score=0;
+        // 用品类共性关键词命中加权
+        var kws=(SCRIPT_CATEGORY_RULES[category]||[]).slice(0,15);
+        kws.forEach(function(kw){if((s.raw||'').indexOf(kw)>=0 && bc.indexOf(kw)>=0) score++;});
+        return {s:s,score:score};
+      });
+      scored.sort(function(a,b){return b.score-a.score;});
+      var picked=scored.slice(0,2).map(function(x){return x.s;});
+      fewShotBlock+='\n\n## 📖 同品类历史爆款样本（请仿照其开场套路、过渡句式、信息密度、催单方式）\n';
+      picked.forEach(function(s,i){
+        fewShotBlock+='\n### 样本'+(i+1)+'：'+s.book+'\n**结构骨架**：'+(s.skeleton||'')+'\n**脚本原文**：\n'+(s.raw||'')+'\n';
+      });
+      fewShotBlock+='\n请仿照上述样本的钩子套路、金句风格、信息密度，但要从下面的新书内容中提取素材，不能照抄案例。';
+    }
+  }
+
   return '你是一位顶尖的图书短视频口播脚本专家。这次任务是为同一本书生成「分块脚本菜单」，让用户能像点菜一样自由组合。\n\n'
     +SCRIPT_BASE_RULES
-    +'\n\n## 当前任务\n目标时长：**'+dur.label+'** （总字数 '+totalMin+'-'+totalMax+'，按 4.5 字/秒口播）\n目标受众：'+audience+'\n\n### 必须输出的 chunk 结构（按顺序）\n'+chunkListMd
+    +fewShotBlock
+    +'\n\n## 当前任务\n目标时长：**'+dur.label+'** （总字数 '+totalMin+'-'+totalMax+'，按 4.5 字/秒口播）\n目标受众：'+audience+(category?'\n图书品类：**'+category+'**（请严格采用上方该品类的爆款框架和句式）':'')+'\n\n### 必须输出的 chunk 结构（按顺序）\n'+chunkListMd
     +'\n\n### 每个 chunk 必须输出的 4 种语气候选\n'+toneListMd
     +'\n\n## 图书内容（所有 chunk 必须取材于此，禁止编造）\n'+bookContent
     +'\n\n## 硬性要求\n1. 共 '+chunkSpec.length+' 个 chunk，每个 chunk 必须给 4 个候选（对应上面 4 种语气），共 '+(chunkSpec.length*4)+' 段文案。\n'
@@ -3588,16 +3694,19 @@ var globalToneEl=document.querySelector('#scriptStyleChips .scp.on');
 var globalTone=globalToneEl?globalToneEl.dataset.value:'auto';
 var chunks=scriptResolveChunks(duration.seconds);
 var tones=scriptResolveChunkTones(globalTone);
+// 解析当前生效品类（auto 模式下用规则识别结果；否则用手选）
+scriptAutoDetectCategory(bookContent);
+var activeCategory=scriptResolveActiveCategory();
 
 document.getElementById('scriptLoading').style.display='block';
 document.getElementById('scriptOutput').style.display='none';
 document.getElementById('scriptGenBtn').disabled=true;
 var loadingText=document.getElementById('scriptLoadingText');
-loadingText.textContent='正在生成 '+duration.label+' 分块菜单（共 '+chunks.length+' 段 × 4 候选 = '+(chunks.length*4)+' 条文案）...';
+loadingText.textContent='正在生成 '+duration.label+' 分块菜单'+(activeCategory?'（采用「'+activeCategory+'」品类框架）':'')+'（共 '+chunks.length+' 段 × 4 候选 = '+(chunks.length*4)+' 条文案）...';
 
 var menu=null;
 try{
-  var prompt=scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones);
+  var prompt=scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones,activeCategory);
   var raw=await scriptCallAI(prompt, Math.min(8000, duration.maxTokens*2));
   menu=scriptParseChunksJson(raw);
   if(!menu||!menu.chunks||!menu.chunks.length){throw new Error('返回格式异常，请重试');}
@@ -3610,7 +3719,7 @@ try{
   return;
 }
 
-SCRIPT_CURRENT_MENU={menu:menu,duration:duration,bookContent:bookContent,audience:audience,tones:tones};
+SCRIPT_CURRENT_MENU={menu:menu,duration:duration,bookContent:bookContent,audience:audience,tones:tones,category:activeCategory};
 document.getElementById('scriptLoading').style.display='none';
 document.getElementById('scriptGenBtn').disabled=false;
 scriptRenderMenu({scroll:true,toast:'✅ 已生成 '+menu.chunks.length+' 段 × 4 候选'});
@@ -3776,7 +3885,13 @@ async function scriptRegenerateChunk(chunkIdx,btn){
       var sel=c.candidates&&c.candidates[c._selected||0];
       return sel?('【'+c.name+'】'+(sel.text||'').substring(0,80)):null;
     }).filter(Boolean).join('\n');
+    // 品类 few-shot（精简版：仅注入 common_pattern，不重复贴样本，避免 token 浪费）
+    var catBlock='';
+    if(ctx.category && window.SCRIPT_COMMON_PATTERNS && window.SCRIPT_COMMON_PATTERNS[ctx.category]){
+      catBlock='\n\n## 🎯 【'+ctx.category+'】品类爆款框架（请严格借鉴）\n'+window.SCRIPT_COMMON_PATTERNS[ctx.category];
+    }
     var promptOne='你是图书短视频口播专家。请只为「'+chunk.name+'」这个段落重新生成 4 个候选文案。\n\n'+SCRIPT_BASE_RULES
+      +catBlock
       +'\n\n## 上下文：本段是 '+ctx.duration.label+' 完整脚本中的第 '+(chunkIdx+1)+' 段，作用是「'+chunk.hint+'」。'
       +'\n\n## 受众\n'+ctx.audience
       +'\n\n## 图书内容\n'+ctx.bookContent
