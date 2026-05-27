@@ -14,9 +14,11 @@
  *   - rejected       已拒绝 计数
  *   - byDate         按日期分布 [{date, total, good, bad}]
  *   - byRule         Top 10 命中规则误杀/漏判分布 [{rule_id, cat, fp, fn}]
- *   - recent         最近 10 条匿名记录 [{ts, error_type, status, hit_cat, note_excerpt}]
+ *   - recent         最近 10 条记录 [{ts, error_type, status, text, hits, user_note, ...}]
  *
- * 不暴露：原文 text, ua, page, hits.matched 等敏感字段
+ * 注：根据运营需求，recent 不脱敏 —— 完整返回用户原文 text 与所有命中规则 hits（含 matched），
+ *     便于在 /stats/ 直接定位漏判/误杀对应的 AI 审核规则。
+ *     仍不暴露 ua / page 等环境字段。
  *
  * 默认看最近 30 天。
  */
@@ -81,10 +83,9 @@ export const onRequestGet = async ({ request, env }) => {
       else if (it.error_type === 'false_negative') byRuleMap[rid].fn++;
     }
 
-    // recent（脱敏）
+    // recent（不脱敏：返回完整原文 + 所有命中规则）
     if (recent.length < RECENT_LIMIT) {
       const hitCat = (it.hits && it.hits[0] && it.hits[0].cat) || '';
-      const noteEx = it.user_note ? String(it.user_note).slice(0, 60) : '';
       recent.push({
         ts: it.ts,
         date: it.date,
@@ -92,10 +93,13 @@ export const onRequestGet = async ({ request, env }) => {
         verdict_user: isGood ? 'accept_ai' : it.verdict_user || '',
         error_type: it.error_type || '',
         status: it.status || 'new',
-        hit_cat: hitCat,
+        hit_cat: hitCat, // 兼容老前端
+        hits: Array.isArray(it.hits) ? it.hits : [],
+        text: it.text || '', // 用户输入完整原文
+        text_status: it.text_status || '',
         rule_version: it.rule_version || '',
         ai_recheck: !!it.ai_recheck,
-        note_excerpt: noteEx,
+        user_note: it.user_note || '',
       });
     }
   }

@@ -124,8 +124,8 @@ h1{font-size:22px;color:#f0f6fc;margin-bottom:6px}
     <!-- 最近 10 条反馈记录 -->
     <div style="background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div style="font-size:12px;color:#8b949e;font-weight:600">📋 最近 10 条反馈记录（脱敏）</div>
-        <a href="/admin/audit-feedback/" target="_blank" style="font-size:10.5px;color:#58a6ff;text-decoration:none">前往管理后台 →</a>
+        <div style="font-size:12px;color:#8b949e;font-weight:600">📋 最近 10 条反馈记录（含用户原文 + 命中规则全量）</div>
+        <span style="font-size:10.5px;color:#484f58">点击「展开」可查看完整原文</span>
       </div>
       <div id="auditFbRecentTable"></div>
     </div>
@@ -553,28 +553,76 @@ function renderAuditFbRecent(items){
     var p=function(n){return n<10?'0'+n:n;};
     return (d.getMonth()+1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
   }
-  var html = '<table style="width:100%;font-size:11.5px;border-collapse:collapse">'
+  // 渲染命中规则（全量）：每条 cat + matched
+  function renderHits(hits, fallbackCat){
+    if (!hits || !hits.length) {
+      return fallbackCat ? '<span style="color:#c9d1d9">'+escapeStatsHtml(fallbackCat)+'</span>' : '<span style="color:#484f58">—</span>';
+    }
+    return hits.map(function(h){
+      var cat = escapeStatsHtml(h.cat||'');
+      var matched = h.matched ? '<span style="color:#fdcb6e;font-size:10.5px">「'+escapeStatsHtml(h.matched)+'」</span>' : '';
+      var level = h.level ? '<span style="color:#8b949e;font-size:9.5px;margin-left:4px">['+escapeStatsHtml(h.level)+']</span>' : '';
+      return '<div style="margin-bottom:3px;line-height:1.5"><span style="color:#c9d1d9;font-weight:500">'+cat+'</span>'+level+' '+matched+'</div>';
+    }).join('');
+  }
+  // 用户原文（可折叠展开）
+  function renderText(text){
+    if (!text) return '<span style="color:#484f58">—</span>';
+    var safe = escapeStatsHtml(text);
+    var SHORT_LEN = 80;
+    if (text.length <= SHORT_LEN) {
+      return '<div style="color:#c9d1d9;line-height:1.5;white-space:pre-wrap;word-break:break-word">'+safe+'</div>';
+    }
+    var shortHtml = escapeStatsHtml(text.slice(0, SHORT_LEN)) + '…';
+    var id = 'afb_txt_' + Math.random().toString(36).slice(2,8);
+    return ''
+      + '<div id="'+id+'_short" style="color:#c9d1d9;line-height:1.5">'+shortHtml
+        + ' <a href="javascript:void(0)" onclick="toggleAuditFbText(\''+id+'\',1)" style="color:#58a6ff;font-size:10.5px;text-decoration:none">展开 ▼</a>'
+      + '</div>'
+      + '<div id="'+id+'_full" style="display:none;color:#c9d1d9;line-height:1.55;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;background:#010409;border:1px solid #21262d;border-radius:6px;padding:8px;margin-top:2px">'
+        + safe
+        + '<div style="margin-top:6px"><a href="javascript:void(0)" onclick="toggleAuditFbText(\''+id+'\',0)" style="color:#58a6ff;font-size:10.5px;text-decoration:none">收起 ▲</a></div>'
+      + '</div>';
+  }
+  var html = '<table style="width:100%;font-size:11.5px;border-collapse:collapse;table-layout:fixed">'
+    + '<colgroup>'
+    +   '<col style="width:78px">'
+    +   '<col style="width:88px">'
+    +   '<col>'
+    +   '<col style="width:230px">'
+    +   '<col style="width:78px">'
+    + '</colgroup>'
     + '<thead><tr>'
     + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">时间</th>'
     + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">反馈类型</th>'
-    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">命中规则</th>'
-    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">用户备注</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">用户输入原文</th>'
+    + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">命中规则（全量）</th>'
     + '<th style="text-align:left;color:#8b949e;font-weight:500;padding:7px 8px;border-bottom:1px solid #21262d">处理状态</th>'
     + '</tr></thead><tbody>';
   items.forEach(function(it){
     var et = it.verdict_user==='accept_ai' ? ETAGS[''] : (ETAGS[it.error_type]||'-');
     var st = STAGS[it.status] || '-';
-    var note = it.note_excerpt ? escapeStatsHtml(it.note_excerpt) : '<span style="color:#484f58">—</span>';
+    var noteRow = it.user_note
+      ? '<div style="margin-top:5px;padding:4px 7px;background:rgba(88,166,255,.06);border-left:2px solid #58a6ff;border-radius:0 4px 4px 0;font-size:10.5px;color:#8b949e">📝 备注：'+escapeStatsHtml(it.user_note)+'</div>'
+      : '';
     html += '<tr>'
-      + '<td style="padding:7px 8px;color:#8b949e;border-bottom:1px solid #161b22">'+fmtTime(it.ts)+'</td>'
-      + '<td style="padding:7px 8px;border-bottom:1px solid #161b22">'+et+'</td>'
-      + '<td style="padding:7px 8px;color:#c9d1d9;border-bottom:1px solid #161b22">'+(it.hit_cat?escapeStatsHtml(it.hit_cat):'<span style="color:#484f58">—</span>')+'</td>'
-      + '<td style="padding:7px 8px;color:#c9d1d9;border-bottom:1px solid #161b22;max-width:280px;word-break:break-word">'+note+'</td>'
-      + '<td style="padding:7px 8px;border-bottom:1px solid #161b22">'+st+'</td>'
+      + '<td style="padding:8px;color:#8b949e;border-bottom:1px solid #161b22;vertical-align:top">'+fmtTime(it.ts)+'</td>'
+      + '<td style="padding:8px;border-bottom:1px solid #161b22;vertical-align:top">'+et+'</td>'
+      + '<td style="padding:8px;border-bottom:1px solid #161b22;vertical-align:top">'+renderText(it.text)+noteRow+'</td>'
+      + '<td style="padding:8px;border-bottom:1px solid #161b22;vertical-align:top">'+renderHits(it.hits, it.hit_cat)+'</td>'
+      + '<td style="padding:8px;border-bottom:1px solid #161b22;vertical-align:top">'+st+'</td>'
       + '</tr>';
   });
   html += '</tbody></table>';
   box.innerHTML = html;
+}
+
+function toggleAuditFbText(id, expand){
+  var s = document.getElementById(id+'_short');
+  var f = document.getElementById(id+'_full');
+  if (!s || !f) return;
+  if (expand) { s.style.display='none'; f.style.display='block'; }
+  else { f.style.display='none'; s.style.display='block'; }
 }
 
 function escapeStatsHtml(s){
