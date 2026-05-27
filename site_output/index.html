@@ -3125,33 +3125,25 @@ async function runIsbnCollect(force){
     }
 
     var cc=0;
-    // 清洗 AI 输出里的"未查到"废话：整段 card/blockquote/p/h2 里只要命中关键词就整段删掉
+    // 清洗 AI 输出里的"未查到"废话：只在"短小空话段"上动手，绝不动 table/ul/blockquote/长 p
     function stripEmptyApology(html){
       if(!html) return html;
-      var patterns=[
-        /搜索结果中(?:未|没有)(?:提供|提及|找到|包含)[^<。]{0,40}[。.]?/g,
-        /(?:暂未|尚未|未能|没有|无法)(?:找到|获取|查到|收录|提供)[^<。]{0,40}[。.]?/g,
-        /(?:相关|本书|该书)[^<]{0,15}(?:资料|信息|内容)(?:缺失|不足|暂无|不详)[^<。]{0,30}[。.]?/g,
-        /由于[^<]{0,30}(?:未找到|无法|缺失|不足)[^<。]{0,40}[。.]?/g,
-        /信息不足[^<。]{0,20}[。.]?/g
-      ];
-      // 1. 先删整段空容器：<h2>...</h2><div class="card"><p>废话</p></div>
-      html=html.replace(/<h2[^>]*>([^<]+)<\/h2>\s*<div class="card">\s*<p[^>]*>([^<]+)<\/p>\s*<\/div>/g,function(m,title,inner){
-        for(var i=0;i<patterns.length;i++){if(patterns[i].test(inner)){patterns[i].lastIndex=0;return '';}}
-        patterns.forEach(function(p){p.lastIndex=0;});
+      var apologyKw=/(?:搜索结果中(?:未|没有)(?:提供|提及|找到|包含)|(?:暂未|尚未|未能|无法)(?:找到|获取|查到|收录|提供)|资料缺失|信息不足|暂无可靠|未能获取到|本维度无法展示|本维度暂无)/;
+      // 仅处理：<h2>标题</h2><div class="card"><p>短废话</p></div> 这种纯空话结构
+      // 条件三个全满足才删：(1)card 里只有 1 个 p；(2)p 内文本 <120 字；(3)命中废话关键词
+      html=html.replace(/<h2[^>]*>([^<]+)<\/h2>\s*<div\s+class="card"[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>\s*<\/div>/g,function(m,title,inner){
+        var textOnly=inner.replace(/<[^>]+>/g,'').trim();
+        if(textOnly.length<120 && apologyKw.test(textOnly)) return '';
         return m;
       });
-      // 2. 再清掉零散落在 p/blockquote/li 里的废话句
-      html=html.replace(/<(p|blockquote|li)([^>]*)>([\s\S]*?)<\/\1>/g,function(m,tag,attr,inner){
-        var cleaned=inner;
-        patterns.forEach(function(p){p.lastIndex=0;cleaned=cleaned.replace(p,'');});
-        if(!cleaned.replace(/\s|&nbsp;|<br\s*\/?>/g,'')) return '';
-        return '<'+tag+attr+'>'+cleaned+'</'+tag+'>';
+      // 处理：单独一段 <p>废话</p>（不在 card 里、不在 li 里），且长度 <120 字
+      html=html.replace(/<p([^>]*)>([\s\S]{0,200}?)<\/p>/g,function(m,attr,inner){
+        // 跳过 ai-extend 提示条
+        if(/ai-extend/.test(attr)) return m;
+        var textOnly=inner.replace(/<[^>]+>/g,'').trim();
+        if(textOnly.length<120 && apologyKw.test(textOnly)) return '';
+        return m;
       });
-      // 3. 清掉因为内容被删干净后变成空壳的 card
-      html=html.replace(/<div class="card">\s*<\/div>/g,'');
-      // 4. h2 标题后面如果没有 card 跟着，也删掉
-      html=html.replace(/<h2[^>]*>[^<]+<\/h2>(?=\s*(?:<h2|$))/g,'');
       return html;
     }
     var full=await callApi([{role:'system',content:isbnSysPrompt()},{role:'user',content:userMsg}],function(all,delta){
