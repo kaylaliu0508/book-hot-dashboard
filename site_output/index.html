@@ -2862,7 +2862,7 @@ async function webSearchBook(bookTitle,isbn){
   }
   return unique.slice(0,10); // 最多取10条搜索结果
 }
-function isbnSysPrompt(){return '你是图书广告营销素材采集专家。你的任务是为一本图书产出一份可直接用于投放的营销采集报告。\n\n## 🎯 核心分区原则（必须严格区分两类维度）\n\n本报告分为 **A 类 事实区** 和 **B 类 AI 延伸区**，两类维度遵循完全不同的规则：\n\n### 🔒 A 类 事实区（维度 0、3、4、5、6）—— 严禁编造\n适用维度：基础信息、官方简介、目录、前言/序言、金句摘录\n规则：\n1. 只能输出你**能精确引用**或**来自联网搜索结果**的内容\n2. 严禁基于书名/主题脑补，严禁用同类书内容替代\n3. 不确定 → **整个维度跳过**（不输出该 h2 标题）\n4. 不允许"可能""大致""通常""相关内容包括"等模糊词\n\n### 💡 B 类 AI 延伸区（维度 1、2）—— 允许 AI 推理延伸\n适用维度：目标用户人群、投放人群×卖点\n规则：\n1. **必须输出**，即使是冷门书/新书也要基于书名+品类+作者经验**合理推演**\n2. 推演时结合：书名关键词、所属品类、出版社定位、作者风格、目标读者画像\n3. 每个延伸维度顶部加一句提示：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4. 内容要具体、可投放，不要套话\n\n## 📐 输出维度详细要求\n\n### 0. 图书基础信息确认 【A 类·事实】\n仅输出能确认的字段（书名、作者、出版社、出版时间、ISBN、页数、定价）。不确认的不写。\n| 项目 | 内容 |\n\n### 1. 目标用户人群 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n9 列表头，至少 8 条，最多 15 条：\n| 人群标签 | 年龄段 | 身份 | 地域偏好 | 收入层级 | 主要媒介 | 兴趣关键词 | 核心痛点 | 购买动机 |\n要求：人群标签 4-6 字；痛点和动机要具体可触达，不要"提升自我"这种空话。\n\n### 2. 投放人群 × 产品卖点 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4 列表头，至少 8 条，最多 15 条：\n| 投放人群 | 卖点标签（4字） | 卖点说明（一句话讲清能解决什么问题） | 适配场景 |\n\n### 3. 官方内容简介 【A 类·事实】\n直接输出简介原文 + 来源标注。不能精确引用 → **跳过整个维度**。\n\n### 4. 完整目录 【A 类·事实】\n章节+子节完整列出。记不清真实目录 → **跳过整个维度，绝不能编**。\n\n### 5. 前言/序言原文 【A 类·事实】\n全文或关键段落。不能精确引用 → **跳过整个维度**。\n\n### 6. 书中核心内容摘录 【A 类·事实】\n核心观点 / 方法论 / 关键数据 / 金句 / 核心概念，每条标出处。只能凭印象大致总结 → **跳过整个维度**。\n\n## 输出格式\n直接输出 HTML 片段（不含 html/head/body 标签）：\n- 每个维度用 <h2> 标题（第2维度加 class="pain-point"）\n- 内容用 <div class="card"> 包裹\n- 表格用 <table>\n- 引用用 <blockquote>，来源用 <p class="source">\n- B 类延伸维度顶部必须加 <p class="ai-extend"> 提示条\n\n## ⚠️ 重要：禁止整份报告输出"无法生成"\n即使 A 类全部跳过，B 类（维度 1 和 2）也必须基于书名/品类推演输出，**保证报告至少有人群和卖点两部分**。\n不输出：出版信息表、作者简介、全网传播数据、竞品、IP衍生、封面图、负面排查、评价数据、汇总表。';}
+function isbnSysPrompt(){return '你是图书广告营销素材采集专家。你的任务是为一本图书产出一份可直接用于投放的营销采集报告。\n\n## 🎯 核心分区原则（必须严格区分两类维度）\n\n本报告分为 **A 类 事实区** 和 **B 类 AI 延伸区**，两类维度遵循完全不同的规则：\n\n### 🔒 A 类 事实区（维度 0、3、4、5、6）—— 严禁编造\n适用维度：基础信息、官方简介、目录、前言/序言、金句摘录\n规则：\n1. 只能输出你**能精确引用**或**来自联网搜索结果**的内容\n2. 严禁基于书名/主题脑补，严禁用同类书内容替代\n3. 不确定 → **整个维度跳过**（不输出该 h2 标题）\n4. 不允许"可能""大致""通常""相关内容包括"等模糊词\n\n### 💡 B 类 AI 延伸区（维度 1、2）—— 允许 AI 推理延伸\n适用维度：目标用户人群、投放人群×卖点\n规则：\n1. **必须输出**，即使是冷门书/新书也要基于书名+品类+作者经验**合理推演**\n2. 推演时结合：书名关键词、所属品类、出版社定位、作者风格、目标读者画像\n3. 每个延伸维度顶部加一句提示：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4. 内容要具体、可投放，不要套话\n\n## 📐 输出维度详细要求\n\n### 0. 图书基础信息确认 【A 类·事实】\n仅输出能确认的字段（书名、作者、出版社、出版时间、ISBN、页数、定价）。不确认的不写。\n| 项目 | 内容 |\n\n### 1. 目标用户人群 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n9 列表头，至少 8 条，最多 15 条：\n| 人群标签 | 年龄段 | 身份 | 地域偏好 | 收入层级 | 主要媒介 | 兴趣关键词 | 核心痛点 | 购买动机 |\n要求：人群标签 4-6 字；痛点和动机要具体可触达，不要"提升自我"这种空话。\n\n### 2. 投放人群 × 产品卖点 【B 类·AI 延伸·必须输出 8-15 条】\n顶部加：<p class="ai-extend">💡 本维度由 AI 基于品类经验延伸推演，供投放策略参考</p>\n4 列表头，至少 8 条，最多 15 条：\n| 投放人群 | 卖点标签（4字） | 卖点说明（一句话讲清能解决什么问题） | 适配场景 |\n\n### 3. 官方内容简介 【A 类·事实】\n直接输出简介原文 + 来源标注。不能精确引用 → **跳过整个维度**。\n\n### 4. 完整目录 【A 类·事实】\n章节+子节完整列出。记不清真实目录 → **跳过整个维度，绝不能编**。\n\n### 5. 前言/序言原文 【A 类·事实】\n全文或关键段落。不能精确引用 → **跳过整个维度**。\n\n### 6. 书中核心内容摘录 【A 类·事实】\n核心观点 / 方法论 / 关键数据 / 金句 / 核心概念，每条标出处。只能凭印象大致总结 → **跳过整个维度**。\n\n## 输出格式\n直接输出 HTML 片段（不含 html/head/body 标签）：\n- 每个维度用 <h2> 标题（第2维度加 class="pain-point"）\n- 内容用 <div class="card"> 包裹\n- 表格用 <table>\n- 引用用 <blockquote>，来源用 <p class="source">\n- B 类延伸维度顶部必须加 <p class="ai-extend"> 提示条\n\n## 🚫 铁律：跳过维度时绝对不许"解释为什么没有"\n当某个 A 类维度需要跳过时，**整个维度连 h2 标题都不要输出**，更不要输出任何解释性文字。\n\n**禁止输出的废话示例**（看到这类话立即扣分）：\n- ❌ "搜索结果中未提供本书的前言或序言原文。"\n- ❌ "目录信息暂未收录。"\n- ❌ "由于未找到官方简介，本维度无法展示。"\n- ❌ "本书相关金句资料缺失。"\n- ❌ "暂无可靠数据。" / "信息不足。" / "未能获取到..."\n\n**正确做法**：直接什么都不输出，让该维度从报告中完全消失。下一个有内容的维度直接接上。\n\n## ⚠️ 禁止整份报告输出"无法生成"\n即使 A 类全部跳过，B 类（维度 1 和 2）也必须基于书名/品类推演输出，**保证报告至少有人群和卖点两部分**。\n不输出：出版信息表、作者简介、全网传播数据、竞品、IP衍生、封面图、负面排查、评价数据、汇总表。';}
 function isbnCacheKey(a,b){return 'isbn_report_'+a+'_'+(b||'');}
 function isbnGetCache(a,b){try{var d=localStorage.getItem(isbnCacheKey(a,b));if(d)return JSON.parse(d);}catch(e){}return null;}
 function isbnSetCache(a,b,c){try{localStorage.setItem(isbnCacheKey(a,b),JSON.stringify({content:c,time:new Date().toLocaleString('zh-CN'),isbn:a,title:b}));}catch(e){}}
@@ -3103,6 +3103,35 @@ async function runIsbnCollect(force){
     }
 
     var cc=0;
+    // 清洗 AI 输出里的"未查到"废话：整段 card/blockquote/p/h2 里只要命中关键词就整段删掉
+    function stripEmptyApology(html){
+      if(!html) return html;
+      var patterns=[
+        /搜索结果中(?:未|没有)(?:提供|提及|找到|包含)[^<。]{0,40}[。.]?/g,
+        /(?:暂未|尚未|未能|没有|无法)(?:找到|获取|查到|收录|提供)[^<。]{0,40}[。.]?/g,
+        /(?:相关|本书|该书)[^<]{0,15}(?:资料|信息|内容)(?:缺失|不足|暂无|不详)[^<。]{0,30}[。.]?/g,
+        /由于[^<]{0,30}(?:未找到|无法|缺失|不足)[^<。]{0,40}[。.]?/g,
+        /信息不足[^<。]{0,20}[。.]?/g
+      ];
+      // 1. 先删整段空容器：<h2>...</h2><div class="card"><p>废话</p></div>
+      html=html.replace(/<h2[^>]*>([^<]+)<\/h2>\s*<div class="card">\s*<p[^>]*>([^<]+)<\/p>\s*<\/div>/g,function(m,title,inner){
+        for(var i=0;i<patterns.length;i++){if(patterns[i].test(inner)){patterns[i].lastIndex=0;return '';}}
+        patterns.forEach(function(p){p.lastIndex=0;});
+        return m;
+      });
+      // 2. 再清掉零散落在 p/blockquote/li 里的废话句
+      html=html.replace(/<(p|blockquote|li)([^>]*)>([\s\S]*?)<\/\1>/g,function(m,tag,attr,inner){
+        var cleaned=inner;
+        patterns.forEach(function(p){p.lastIndex=0;cleaned=cleaned.replace(p,'');});
+        if(!cleaned.replace(/\s|&nbsp;|<br\s*\/?>/g,'')) return '';
+        return '<'+tag+attr+'>'+cleaned+'</'+tag+'>';
+      });
+      // 3. 清掉因为内容被删干净后变成空壳的 card
+      html=html.replace(/<div class="card">\s*<\/div>/g,'');
+      // 4. h2 标题后面如果没有 card 跟着，也删掉
+      html=html.replace(/<h2[^>]*>[^<]+<\/h2>(?=\s*(?:<h2|$))/g,'');
+      return html;
+    }
     var full=await callApi([{role:'system',content:isbnSysPrompt()},{role:'user',content:userMsg}],function(all,delta){
       cc+=delta.length;
       fill.style.width=Math.min(30+cc/80,95)+'%';
@@ -3113,6 +3142,7 @@ async function runIsbnCollect(force){
       else ptxt.textContent='正在完善报告...';
       body.innerHTML=all;
     });
+    full=stripEmptyApology(full);
 
     fill.style.width='100%';ptxt.textContent='✅ 采集完成！'+full.length+' 字（已缓存）';
     body.innerHTML=full;body.dataset.rawContent=full;body.dataset.isbn=isbn;body.dataset.title=confirmedTitle||'';
