@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="app-version" content="2026-05-28-r15-abs2-ordinal-fix">
+<meta name="app-version" content="2026-05-28-r16-zuixin-version-fix">
 <title>图书灵感中心 - 2026.05.26</title>
 
 <!-- 📊 埋点 SDK（必须放在所有 onclick/onblur 之前！）
@@ -191,7 +191,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <span>🤖 启用 AI 语义复审</span>
 </label>
 <span style="font-size:10px;color:#484f58;flex:1">在正则规则之外，由 AI 从语义层面判断负向行为/虚假承诺/迷信噱头等违规话术（每次最多复审 5 条文案，限频 30 次/分钟）</span>
-<span id="aiRuleVer" title="点击强制刷新到最新规则版本" onclick="forceReloadLatest()" style="font-size:10px;color:#58a6ff;background:rgba(88,166,255,.08);padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid rgba(88,166,255,.2);user-select:none">规则版本：v2026-05-28-r15 🔄</span>
+<span id="aiRuleVer" title="点击强制刷新到最新规则版本" onclick="forceReloadLatest()" style="font-size:10px;color:#58a6ff;background:rgba(88,166,255,.08);padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid rgba(88,166,255,.2);user-select:none">规则版本：v2026-05-28-r16 🔄</span>
 </div>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
@@ -506,9 +506,14 @@ window.addEventListener('pageshow', function(e){ if(e.persisted) _applyHashTab()
 var AUDIT_RULES=[
 // ====== 一、绝对化用语（广告法第9条 + V6规则）======
 // 【调整2026-05-12】"最+内容描述词"降级为warn，与实际审核标准对齐
+// 【调整2026-05-28】"最新"豁免时间性中性用法（最新版/最新版本/最新课本/最新教材/最新政策/最新研究等）
 {id:"ABS_1",cat:"绝对化用语",level:"reject",
- re:/最(?!后|终|近|多|少|初|早|晚|大程度|低限度)\s*(好|棒|强|优|全|新|火|畅销|权威|专业|有效|佳|牛|厉害)/,
- desc:"禁止使用极限词「最+X」",
+ // 🧠 语义法：「最+X」要剔除"最新+时间性中性词"，避免误杀
+ //   ❌ 卡的：最好/最棒/最强/最全/最新潮/最新爆款（产品宣传式"最+X"）
+ //   ✅ 放过：最新版/最新版本/最新一期/最新一版/最新课本/最新教材/最新政策/最新研究/最新数据/最新动态/最新资讯/最新消息/最新进展/最新通知/最新规定/最新内容/最新资料（中性时间性表述）
+ //   实现：把"新"独立出来，加负向先行断言剔除时间性中性后缀
+ re:/最(?!后|终|近|多|少|初|早|晚|大程度|低限度)\s*(?:(?:新(?!版|版本|一期|一版|课本|教材|教科书|政策|研究|数据|动态|资讯|消息|进展|通知|规定|内容|资料|期|出版|更新))|好|棒|强|优|全|火|畅销|权威|专业|有效|佳|牛|厉害)/,
+ desc:"禁止使用极限词「最+X」（「最新版/最新课本」等时间性中性表述不计入）",
  fix:"删除「最」，改用「广受好评」「备受喜爱」「热门」等"},
 // 内容描述类"最"字词 — 图书赛道实际不卡审，降级为warn
 {id:"ABS_1A",cat:"绝对化用语-内容描述",level:"warn",
@@ -1558,10 +1563,7 @@ var AUDIT_RULES=[
  desc:"【非文案规则】推广教辅类产品，需在图片和视频封面明示产品信息（盒子、教辅、书籍、学习机、益智工具、AI智能工具APP等）",
  fix:"在外层图片/视频封面展示产品实体形象"},
 // 【头像昵称要求】
-{id:"EDU_HEAD_1",cat:"教育-头像昵称规范",level:"warn",
- re:/(XX老师|班主任|老师)/,
- desc:"【非文案规则】头像/昵称需与广告主品牌信息关联。昵称不得使用企业名称+老师/XX老师/班主任；头像不支持体现老师职业形象（除非作者本人是教师且以作者视角介绍）",
- fix:"使用企业名称或企业logo作为头像昵称"},
+// 【已删除 2026-05-28】EDU_HEAD_1 — 喂进来的只是脚本文案，不会包含昵称/头像；且"老师"是脚本中合法常见词（"语文老师告诉我"），保留只会持续误判
 // 【视频首帧焦虑标题党】
 {id:"EDU_VID_1",cat:"教育-视频首帧焦虑",level:"reject",
  re:/(你的孩子|孩子如果).{0,10}(不这么做就晚了|不买.*就晚了|不.*就完了|不.*就迟了)/,
@@ -2371,6 +2373,10 @@ function _callAIAuditInner(batch, customRulesRawText, learnedCases){
     '    第一次/第一天/第一页/第一章/第一本/第一遍/第一批/第一步/第一时间/第一反应/第一印象/第一眼/第一句/第一段/第一年/第一周/第一个（人/月/季度/学期/单元）/第一名（成绩排名也是序数表述）/第一卷/第一册/第一篇/第一节/第一课/第一关/第一手（资料/经验）/第一位（同学/学生/读者/老师/家长）\n'+
     '    判别要点：「第一 + 时间/位置/动作量词」=序数（pass）；「行业/全网/全球/排名/销量/口碑/品牌 + 第一」=绝对化排名（reject）\n'+
     '    例如「开学第一次摸底考语文全班倒数」属于"第一次"序数用法，pass；「全网第一」「行业第一」reject\n'+
+    '  • 「最新」作为时间性中性表述，指"最近一版/最近发布"，不构成产品炫耀式绝对化，应 pass：\n'+
+    '    最新版/最新版本/最新一期/最新一版/最新课本/最新教材/最新教科书/最新政策/最新研究/最新数据/最新动态/最新资讯/最新消息/最新进展/最新通知/最新规定/最新内容/最新资料/最新期/最新出版/最新更新\n'+
+    '    判别要点：「最新 + 版/版本/课本/教材/政策/研究/数据/动态」=时间性中性（pass）；「最新潮/最新黑科技/最新爆款」=产品宣传式绝对化（reject）\n'+
+    '    例如「这套书做到了1:1同步最新版课本」属于"最新版"中性表述，pass\n'+
     '  • 「完美」搭配"完美主义/完美无瑕/完美契合"等惯用词组属语义中性，pass；单独的"完美方案/完美效果"作为效果承诺则 reject\n'+
     '  • 「彻底」搭配"彻底理解/彻底搞懂/彻底学会/彻底放下/彻底告别（焦虑）"等表示"完全地"的副词用法 pass；单独的"彻底改变命运/彻底逆袭"作为效果承诺则 reject\n'+
     '  • 判别核心：看这个词是修饰具体动作/对象的中性副词（pass），还是用作产品宣传/效果承诺/排名定位（reject）\n'+
@@ -2611,7 +2617,7 @@ function applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prev
 //   - 👍 判得准 → 1 次点击即沉淀正样本
 //   - 🚩 判错了 → 弹出极简卡（错误类型 + 一句话原因）
 
-var AUDIT_RULE_VERSION='v2026-05-28-r15'; // 与页面规则版本徽章保持一致
+var AUDIT_RULE_VERSION='v2026-05-28-r16'; // 与页面规则版本徽章保持一致
 
 function _b64encJson(obj){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); } catch(e){ return ''; } }
 function _b64decJson(s){ try{ return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch(e){ return null; } }
