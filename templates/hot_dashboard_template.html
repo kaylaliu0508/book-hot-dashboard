@@ -8,6 +8,11 @@
 <meta http-equiv="Expires" content="0">
 <meta name="app-version" content="2026-05-21-r12-restore-select-and-ai-tabs">
 <title>图书灵感中心 - 2026.05.20</title>
+
+<!-- 📊 埋点 SDK（必须放在所有 onclick/onblur 之前！）
+     之前主页漏引此脚本 ⇒ window.tracker 始终 undefined ⇒ 所有 ISBN 查询/AI 预审反馈/tab 切换埋点全部静默丢失。
+     /select/、/ai/、/summer/ 子页都已正确引入；本次为主页补上。-->
+<script src="/assets/tracker.js?v=20260528a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}

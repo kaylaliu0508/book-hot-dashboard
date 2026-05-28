@@ -464,23 +464,32 @@ function go(id,el){
   }
 }
 // 根据 hash 自动切换 tab
-(function(){
+// ⚠️ 修复『从暑期专栏点 AI 营销助手要点两次才生效』：
+// 浏览器从 /summer/ 通过 <a href="/#pai"> 跳回主页时，可能命中 BFCache（back-forward cache），
+// HTML 不重新解析 → IIFE 不会再执行 → hash 已变成 #pai 但没人切 tab。
+// 解决：把 hash → tab 切换抽成函数，初始执行 + 监听 hashchange + pageshow(BFCache 恢复) 都触发。
+function _applyHashTab(){
   var h=location.hash.replace('#','');
-  // ⚠️ 用 querySelector 精确匹配 tab 按钮的 onclick，不依赖 tbs 索引。
-  // 之前用索引 map 会因为 bar-in 里 <a href="/summer/" class="tb"> 暑期专栏的插入
-  // 导致 pai 的索引错位到暑期专栏 <a>，从而：
-  //   - 高亮错加到"暑期专栏"按钮上
-  //   - iframe 虽然开始加载但用户因为视觉错位以为没切过去
-  // 看起来就是"第一次黑屏，再点一次（tab 按钮）才正常"。
   var validIds={'pselect':1,'p4':1,'p5':1,'p6':1,'p3':1,'pai':1};
   if(h && validIds[h]){
+    // 用 querySelector 精确匹配 tab 按钮的 onclick，不依赖 tbs 索引
+    // （之前用索引 map 会因为 bar-in 里 <a href="/summer/" class="tb"> 暑期专栏的插入而错位到暑期专栏 <a>）
     var btn=document.querySelector('.bar-in .tb[onclick*="go(\''+h+'\'"]');
-    go(h,btn);
-  }else{
+    // 已经是当前 tab 就不要重复 go（避免每次 hashchange 都重新跑一遍 iframe 设 src）
+    if(btn && !btn.classList.contains('on')) go(h,btn);
+    return true;
+  }
+  return false;
+}
+(function(){
+  if(!_applyHashTab()){
     // 默认 tab 也要打首屏 PV（默认进入「图书选品台」）
     try{ if(window.tracker) window.tracker.pv('select_hub'); }catch(e){}
   }
 })();
+window.addEventListener('hashchange', _applyHashTab);
+// BFCache 恢复时（从 /summer/ 后退/前进回主页常命中），HTML 不重新解析，需要手动重做 hash → tab
+window.addEventListener('pageshow', function(e){ if(e.persisted) _applyHashTab(); });
 
 // ==================== 页面3: AI预审引擎 ====================
 
