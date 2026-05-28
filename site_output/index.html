@@ -8,6 +8,12 @@
 <meta http-equiv="Expires" content="0">
 <meta name="app-version" content="2026-05-26-r14-feedback-kv-admin">
 <title>图书灵感中心 - 2026.05.26</title>
+
+<!-- 📊 埋点 SDK（必须放在所有 onclick/onblur 之前！）
+     之前主页漏引此脚本 ⇒ window.tracker 始终 undefined ⇒ 所有 ISBN 查询/AI 预审反馈/tab 切换埋点全部静默丢失。
+     /select/、/ai/、/summer/ 子页都已正确引入；本次为主页补上。
+     使用 defer 保证 DOM 解析完成后再执行，但变量挂在 window 上，async 函数运行时一定可见。 -->
+<script src="/assets/tracker.js?v=20260528a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;font-size:13px}
@@ -4321,11 +4327,18 @@ function adExportMd(){
 #pg-pai-close:hover{background:rgba(0,0,0,.7)}
 #pg-pai.on ~ #pg-pai-close, #pg-pai.on + #pg-pai-close{display:flex}
 </style>
-<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;z-index:50">
+<div id="pg-pai" class="pg" style="position:fixed;top:48px;left:0;right:0;bottom:0;padding:0;margin:0;z-index:50;background:linear-gradient(135deg,#0d1117 0%,#161b22 50%,#1a1a2e 100%)">
+  <!-- iframe 加载占位：避免 about:blank → /ai/ 切换时出现纯黑屏（/ai/ 自身是深色主题，加载完成前父容器也要先铺一层背景） -->
+  <div id="pg-pai-loading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c9d1d9;font-family:-apple-system,sans-serif;z-index:1;pointer-events:none;transition:opacity .3s">
+    <div style="width:36px;height:36px;border:3px solid rgba(255,140,66,.25);border-top-color:#ff8c42;border-radius:50%;animation:pai-spin 1s linear infinite"></div>
+    <div style="margin-top:14px;font-size:13px;color:#8b949e">正在加载 AI 营销助手...</div>
+  </div>
   <iframe id="aiAssistantFrame" src="about:blank" data-src="/ai/"
-    style="width:100%;height:100%;border:none;display:block"
+    onload="(function(f){if((f.getAttribute('src')||'')!=='about:blank'){var L=document.getElementById('pg-pai-loading');if(L){L.style.opacity='0';setTimeout(function(){L.style.display='none';},300);}}})(this)"
+    style="width:100%;height:100%;border:none;display:block;position:relative;z-index:2"
     allow="clipboard-write; clipboard-read" title="AI 营销助手"></iframe>
 </div>
+<style>@keyframes pai-spin{to{transform:rotate(360deg)}}</style>
 <button id="pg-pai-close" onclick="go('p4',document.querySelector('[data-track=tab_btn_book_extract]'))" title="关闭">✕</button>
 
 
