@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="app-version" content="2026-05-26-r14-feedback-kv-admin">
+<meta name="app-version" content="2026-05-28-r15-abs2-ordinal-fix">
 <title>图书灵感中心 - 2026.05.26</title>
 
 <!-- 📊 埋点 SDK（必须放在所有 onclick/onblur 之前！）
@@ -191,7 +191,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <span>🤖 启用 AI 语义复审</span>
 </label>
 <span style="font-size:10px;color:#484f58;flex:1">在正则规则之外，由 AI 从语义层面判断负向行为/虚假承诺/迷信噱头等违规话术（每次最多复审 5 条文案，限频 30 次/分钟）</span>
-<span id="aiRuleVer" title="点击强制刷新到最新规则版本" onclick="forceReloadLatest()" style="font-size:10px;color:#58a6ff;background:rgba(88,166,255,.08);padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid rgba(88,166,255,.2);user-select:none">规则版本：v2026-05-26-r14 🔄</span>
+<span id="aiRuleVer" title="点击强制刷新到最新规则版本" onclick="forceReloadLatest()" style="font-size:10px;color:#58a6ff;background:rgba(88,166,255,.08);padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid rgba(88,166,255,.2);user-select:none">规则版本：v2026-05-28-r15 🔄</span>
 </div>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
@@ -465,9 +465,12 @@ function go(id,el){
 }
 // 根据 hash 自动切换 tab
 // ⚠️ 修复『从暑期专栏点 AI 营销助手要点两次才生效』：
-// 浏览器从 /summer/ 通过 <a href="/#pai"> 跳回主页时，可能命中 BFCache（back-forward cache），
-// HTML 不重新解析 → IIFE 不会再执行 → hash 已变成 #pai 但没人切 tab。
-// 解决：把 hash → tab 切换抽成函数，初始执行 + 监听 hashchange + pageshow(BFCache 恢复) 都触发。
+// 1) 浏览器从 /summer/ 通过 <a href="/#pai"> 跳回主页时，可能命中 BFCache（back-forward cache），
+//    HTML 不重新解析 → IIFE 不会再执行 → hash 已变成 #pai 但没人切 tab。
+// 2) #pg-pai 元素在文档末尾(~line 4324)，本 <script>(line 433) 解析时它**还不存在**，
+//    若立即调用 go('pai') 会在 document.getElementById('pg-pai').classList.add('on') 抛
+//    'Cannot read properties of null (reading classList)' → 整段静默失败 → 第一次点击毫无反应。
+// 解决：把 hash → tab 切换抽成函数，初始执行延后到 DOMContentLoaded，并监听 hashchange + pageshow。
 function _applyHashTab(){
   var h=location.hash.replace('#','');
   var validIds={'pselect':1,'p4':1,'p5':1,'p6':1,'p3':1,'pai':1};
@@ -481,12 +484,18 @@ function _applyHashTab(){
   }
   return false;
 }
-(function(){
+// 必须等 DOM 完整解析（pg-pai 元素位于文档末尾），否则 go('pai') 会抛 null.classList 错
+function _initHashTab(){
   if(!_applyHashTab()){
     // 默认 tab 也要打首屏 PV（默认进入「图书选品台」）
     try{ if(window.tracker) window.tracker.pv('select_hub'); }catch(e){}
   }
-})();
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', _initHashTab);
+}else{
+  _initHashTab();
+}
 window.addEventListener('hashchange', _applyHashTab);
 // BFCache 恢复时（从 /summer/ 后退/前进回主页常命中），HTML 不重新解析，需要手动重做 hash → tab
 window.addEventListener('pageshow', function(e){ if(e.persisted) _applyHashTab(); });
@@ -507,8 +516,13 @@ var AUDIT_RULES=[
  desc:"「最通俗/最全面」等描述内容属性的词，图书赛道实际不卡审，建议改为「较为通俗」「内容全面」",
  fix:"改为「较为通俗」「内容较为全面」「通俗易懂」等软化表述"},
 {id:"ABS_2",cat:"绝对化用语",level:"reject",
- re:/(绝对|肯定|必须|唯一|第一|顶级|领先|极致|完美|永久|彻底|首选|顶尖|无敌|无与伦比)/,
- desc:"禁止绝对化断言",
+ // 🧠 语义法：「第一」必须靠前后文剔除"序数用法"，避免误杀
+ //   ✅ 放过（序数）：第一次/第一天/第一页/第一章/第一本/第一遍/第一批/第一步/第一时间/第一反应/第一印象/第一眼/第一句/第一段/第一年/第一周/第一个/第一名（成绩排名也是序数）/第一卷/第一册/第一篇/第一节/第一课/第一关/第一手/第一位
+ //   ❌ 卡（绝对化）：行业第一/全网第一/排名第一/销量第一/口碑第一/第一品牌/第一选择/第一信誉/单独的第一（如"争第一"）
+ //   补充：ABS_3 已独立卡「全网/全国/全球+第一」等组合，这里只需用负向断言剔除中性序数即可
+ //   同理「完美」放过"完美主义/完美无瑕"；「彻底」放过"彻底理解/搞懂/告别"等中性副词；「永久」放过"永久磁/地址/链接"；「绝对/肯定/必须」放过"绝对不/肯定句/必须面对"等正常用法
+ re:/(绝对(?![\s之]*(?:不|没有))|肯定(?!句|地?(?:回答|说|告诉|表示))|必须(?![\s]*(?:面对|考虑|知道|了解|注意|提醒|强调|意识到))|唯一|第一(?!次|天|页|章|本|遍|批|步|时间|反应|印象|眼|句|段|年|周|个|名|卷|册|篇|节|课|关|手|位)|顶级|领先|极致|完美(?!主义|无瑕|地?(?:解决|呈现|展现|契合|配合|搭配))|永久(?!磁|地址|链接|居住)|彻底(?!理解|明白|掌握|搞懂|搞明白|改变|放下|摆脱|告别|忘记|学会|搞清|弄清|搞定)|首选|顶尖|无敌|无与伦比)/,
+ desc:"禁止绝对化断言（「第一」「完美」「彻底」等需结合语境，序数/中性副词用法不计入）",
  fix:"改用「值得关注」「颇受欢迎」等委婉表述"},
 {id:"ABS_3",cat:"绝对化用语",level:"reject",
  re:/(全网|全国|全球)\s*(最|第一|独家|仅此|空前|No\.?1|Top\s*1|冠军|金牌)|(?<![一二三四五六七八九十百千万0-9个班级届的那这小])(独家|仅此|空前|No\.?1|Top\s*1)/,
@@ -2352,6 +2366,14 @@ function _callAIAuditInner(batch, customRulesRawText, learnedCases){
     '判别原则：**短文案（≤15字）只要单独满足上述任一结构，就 reject**——不需要"使用产品"主语，也不需要其它佐证。例如「拿捏做题准确率」「锁定80%正确率」「逢考必上130」「吃透2000高频词」都属于此类，必须 reject。\n'+
     '区分边界：素质教育型不可量化能力（逻辑思维、动手能力、阅读能力、识字能力、专注力、想象力、创造力）+ 提升/培养，pass。判别方法：这句话能不能用一个数字直接核实达成结果？能 → reject；不能 → pass。\n\n'+
     '## ✅ 平台已放宽支持的场景（命中任一应当 pass，不要 reject）\n'+
+    '【0. 序数/中性用法豁免（避免误杀「绝对化用语」）】\n'+
+    '  • 「第一」作为序数词使用，本质是"第 1 个"的中性表达，不构成绝对化排名宣传，应 pass：\n'+
+    '    第一次/第一天/第一页/第一章/第一本/第一遍/第一批/第一步/第一时间/第一反应/第一印象/第一眼/第一句/第一段/第一年/第一周/第一个（人/月/季度/学期/单元）/第一名（成绩排名也是序数表述）/第一卷/第一册/第一篇/第一节/第一课/第一关/第一手（资料/经验）/第一位（同学/学生/读者/老师/家长）\n'+
+    '    判别要点：「第一 + 时间/位置/动作量词」=序数（pass）；「行业/全网/全球/排名/销量/口碑/品牌 + 第一」=绝对化排名（reject）\n'+
+    '    例如「开学第一次摸底考语文全班倒数」属于"第一次"序数用法，pass；「全网第一」「行业第一」reject\n'+
+    '  • 「完美」搭配"完美主义/完美无瑕/完美契合"等惯用词组属语义中性，pass；单独的"完美方案/完美效果"作为效果承诺则 reject\n'+
+    '  • 「彻底」搭配"彻底理解/彻底搞懂/彻底学会/彻底放下/彻底告别（焦虑）"等表示"完全地"的副词用法 pass；单独的"彻底改变命运/彻底逆袭"作为效果承诺则 reject\n'+
+    '  • 判别核心：看这个词是修饰具体动作/对象的中性副词（pass），还是用作产品宣传/效果承诺/排名定位（reject）\n'+
     '【1. 分数类放宽】\n'+
     '  • 因成绩不佳引导购买商品或调整学习方法（如「数学不到95，刷母题」「英语跟不上，看这本」）\n'+
     '  • 模糊提升分数/成绩/学科能力/排名（如「高效提升成绩」「成绩蹭蹭涨」「年级前排」「冲刺985/211」「冲刺满分」）\n'+
@@ -2589,7 +2611,7 @@ function applyAIAuditResults(aiResults, copies, prevViolations, prevReject, prev
 //   - 👍 判得准 → 1 次点击即沉淀正样本
 //   - 🚩 判错了 → 弹出极简卡（错误类型 + 一句话原因）
 
-var AUDIT_RULE_VERSION='v2026-05-21-r12'; // 与页面规则版本徽章保持一致
+var AUDIT_RULE_VERSION='v2026-05-28-r15'; // 与页面规则版本徽章保持一致
 
 function _b64encJson(obj){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); } catch(e){ return ''; } }
 function _b64decJson(s){ try{ return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch(e){ return null; } }
