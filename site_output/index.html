@@ -208,7 +208,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
 <div style="flex:1;min-width:180px">
 <label style="display:block;font-size:11px;color:#8b949e;margin-bottom:4px;font-weight:600">ISBN编号 <span style="color:#f85149">*</span></label>
-<input type="text" id="isbnInput" placeholder="输入13位ISBN编号（必填）" maxlength="17" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s" onblur="autoLookupISBN()">
+<input type="text" id="isbnInput" placeholder="输入13位ISBN编号（必填）" maxlength="17" style="width:100%;padding:10px 14px;border:2px solid #30363d;border-radius:8px;font-size:13px;outline:none;background:#0d1117;color:#c9d1d9;transition:.2s" onblur="isbnLookupPromise=autoLookupISBN()">
 </div>
 <div style="flex:2;min-width:200px">
 <label style="display:block;font-size:11px;color:#8b949e;margin-bottom:4px;font-weight:600">书名 <span style="color:#484f58;font-weight:normal">（选填·系统会根据ISBN自动识别）</span></label>
@@ -3012,6 +3012,7 @@ function isbnGetCache(a,b){try{var d=localStorage.getItem(isbnCacheKey(a,b));if(
 function isbnSetCache(a,b,c){try{localStorage.setItem(isbnCacheKey(a,b),JSON.stringify({content:c,time:new Date().toLocaleString('zh-CN'),isbn:a,title:b}));}catch(e){}}
 var isbnController=null;
 var isbnBookInfo=null;
+var isbnLookupPromise=null; // autoLookupISBN 的进行中 promise；runIsbnCollect 会 await 它，避免双 fetch 撞限流
 async function autoLookupISBN(){
   var isbn=document.getElementById('isbnInput').value.trim().replace(/[-\s]/g,'');
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
@@ -3132,91 +3133,27 @@ async function runIsbnCollect(force){
   try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'book_extract'); } catch(_){}
 
   // 如果没有书名，先尝试通过 ISBN 查询自动补全
+  // ✅ 修复"两次点击才出结果"：先 await 进行中的 autoLookupISBN（onblur 触发），避免双 fetch 撞限流
   if(!title){
     var status=document.getElementById('isbnLookupStatus');
     status.style.display='block';
-    status.innerHTML='<span style="color:#8b949e">🔍 正在通过ISBN查询书名...</span>';
-    var lookedUp=false;
-    var sourceName='';
-    var sourceUrl='';
-    function cleanBookName(name,author,publisher){
-      if(!name) return '';
-      var cleaned=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
-      if(publisher){var pp=publisher.trim();if(pp)cleaned=cleaned.split(pp).join('').trim();}
-      if(author){var aa=author.trim();if(aa){cleaned=cleaned.split(aa).join('').trim();var m=aa.match(/^(.+?)(帆书|读书|团队|工作室|编著|著|编|主编|主审|译)+$/);if(m&&m[1])cleaned=cleaned.split(m[1]).join('').trim();}}
-      cleaned=cleaned.replace(/[\u4e00-\u9fa5]{0,12}(出版社|出版公司|出版集团|出版传媒|文化传媒|文化公司|有限公司)([\u4e00-\u9fa5]{0,6}图书|[\u4e00-\u9fa5]{0,6}书)?\s*$/,'').trim();
-      cleaned=cleaned.replace(/(图书|套装|精装|平装|全集|全套|选集)+\s*$/,'').trim();
-      cleaned=cleaned.replace(/\s+(著|编|主编|主审|译)\s*$/,'').trim();
-      cleaned=cleaned.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').trim();
-      cleaned=cleaned.replace(/\s+/g,' ').replace(/^[\-—:：·\s]+|[\-—:：·\s]+$/g,'').trim();
-      if(cleaned.length>40) cleaned=cleaned.substring(0,40);
-      return cleaned;
+    // 1) 如果 onblur 已经在跑识别 → 直接 await，不再重复发请求
+    if(isbnLookupPromise){
+      status.innerHTML='<span style="color:#8b949e">🔍 等待 ISBN 识别完成...</span>';
+      try{ await isbnLookupPromise; }catch(_){}
+      // 识别完成后，autoLookupISBN 已写入 isbnBookInfo + bookTitleInput
+      title=document.getElementById('bookTitleInput').value.trim();
     }
-    // ① data.isbn.work（国内主力）
-    if(!lookedUp){
-      status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
-      try{
-        var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
-        var data=await resp.json();
-        if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
-          var d=data.data;
-          title=cleanBookName(d.bookName,d.author||'',d.press||'');
-          sourceName='ISBN国内数据库 (data.isbn.work)';
-          sourceUrl='https://data.isbn.work/';
-          // 📦 把所有真实字段全部保存（重要：bookDesc 是官方简介原文）
-          isbnBookInfo={
-            title:title,
-            authors:d.author||'',
-            publisher:d.press||'',
-            date:d.pressDate||'',
-            source:sourceName,
-            sourceUrl:sourceUrl,
-            bookDesc:d.bookDesc||'',
-            pages:d.pages||'',
-            words:d.words||'',
-            format:d.format||'',
-            binding:d.binding||'',
-            price:d.price?(d.price/100).toFixed(2)+'元':'',
-            clcName:d.clcName||'',
-            edition:d.edition||'',
-            pressPlace:d.pressPlace||'',
-            language:d.language||''
-          };
-          document.getElementById('bookTitleInput').value=title;
-          var meta='';
-          if(d.author) meta+='作者：'+d.author+' ';
-          if(d.press) meta+='| 出版社：'+d.press+' ';
-          if(d.pressDate) meta+='| 出版年：'+d.pressDate;
-          status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>':'')+(d.bookDesc?'<div style="font-size:11px;color:#3fb950;margin-top:4px">📖 已获取官方简介 '+d.bookDesc.length+' 字</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
-          lookedUp=true;
-        }
-      }catch(e){}
+    // 2) 仍然没有书名（onblur 没跑或失败）→ 主动跑一次识别
+    if(!title){
+      status.innerHTML='<span style="color:#8b949e">🔍 正在通过 ISBN 查询书名...</span>';
+      isbnLookupPromise=autoLookupISBN();
+      try{ await isbnLookupPromise; }catch(_){}
+      title=document.getElementById('bookTitleInput').value.trim();
     }
-    // ② Google Books（海外备用）
-    if(!lookedUp){
-      status.innerHTML='<span style="color:#8b949e">🔍 正在查询 Google Books...</span>';
-      try{
-        var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
-        var data2=await resp2.json();
-        if(data2.totalItems>0){
-          var info=data2.items[0].volumeInfo;
-          title=info.title+(info.subtitle?' '+info.subtitle:'');
-          sourceName='Google Books';
-          sourceUrl='https://books.google.com/books?isbn='+isbn;
-          isbnBookInfo={title:title,authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:sourceName,sourceUrl:sourceUrl};
-          document.getElementById('bookTitleInput').value=title;
-          var meta2='';
-          if(info.authors&&info.authors.length) meta2+='作者：'+info.authors.join('/')+' ';
-          if(info.publisher) meta2+='| 出版社：'+info.publisher+' ';
-          if(info.publishedDate) meta2+='| 出版年：'+info.publishedDate;
-          status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div>'+(meta2?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta2+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+sourceUrl+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+sourceName+'</a></div>';
-          lookedUp=true;
-        }
-      }catch(e){}
-    }
-    // ❌ 已移除 AI 兜底（LLM 无法可靠识别 ISBN，会编造高自信的错误答案，反而误导用户）
-    if(!lookedUp){
-      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 查询不到结果</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的数据源（均未命中）：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① <a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></li><li>② <a href="https://books.google.com/books?isbn='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">Google Books</a></li></ul><div style="font-size:11px;color:#8b949e">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a></div></div>';
+    // 3) 还是拿不到 → 提示用户手填后中止
+    if(!title){
+      status.innerHTML='<div style="color:#f85149;padding:8px 0"><strong>❌ 自动识别失败</strong><div style="font-size:11px;color:#8b949e;margin-top:6px">请确认 ISBN 是否输入正确，或在上方"书名"栏手动填写后重试。</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 去豆瓣查询</a></div></div>';
       return;
     }
   }
