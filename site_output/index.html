@@ -137,8 +137,8 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- Header -->
 <div class="bar"><div class="bar-in">
 <div class="lg">📊 图书灵感中心</div>
-<button class="tb" onclick="go('pselect',this)" data-track="tab_btn_select_hub">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
-<button class="tb on" onclick="go('p4',this)" data-track="tab_btn_book_extract">图书内容提取</button>
+<button class="tb on" onclick="go('pselect',this)" data-track="tab_btn_select_hub">🛒 图书选品台<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></button>
+<button class="tb" onclick="go('p4',this)" data-track="tab_btn_book_extract">图书内容提取</button>
 <button class="tb" onclick="go('p5',this)" data-track="tab_btn_script_gen">一键生成口播脚本</button>
 <button class="tb" onclick="go('p6',this)">图片文案生成</button>
 <button class="tb" onclick="go('p3',this)" data-track="tab_btn_ai_audit">AI预审</button>
@@ -153,7 +153,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <!-- ==================== 页面2: 类目找灵感 (已下线) ==================== -->
 
 <!-- ==================== 选品工作台 ==================== -->
-<div class="ct pg" id="pg-pselect" style="padding:0">
+<div class="ct pg on" id="pg-pselect" style="padding:0">
 <iframe src="/select/" style="width:100%;height:calc(100vh - 48px);border:none;display:block" allowfullscreen loading="lazy" id="selectIframe"></iframe>
 </div>
 
@@ -200,7 +200,7 @@ tr.rl td{background:rgba(230,57,70,.02)}
 
 
 <!-- ==================== 页面4: ISBN采集 ==================== -->
-<div class="ct pg on" id="pg-p4">
+<div class="ct pg" id="pg-p4">
 <div data-creative-inbox="p4"></div>
 <h2 style="font-size:18px;color:#f0f6fc;margin-bottom:2px">📚 图书内容提取</h2>
 <p class="subtitle">输入 ISBN编号，一键检索全维度图书内容</p>
@@ -464,8 +464,8 @@ function go(id,el){
   var map={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':5};
   if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
   else{
-    // 默认 tab 也要打首屏 PV
-    try{ if(window.tracker) window.tracker.pv('book_extract'); }catch(e){}
+    // 默认 tab 也要打首屏 PV（默认进入「图书选品台」）
+    try{ if(window.tracker) window.tracker.pv('select_hub'); }catch(e){}
   }
 })();
 
