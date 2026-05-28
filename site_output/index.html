@@ -448,7 +448,7 @@ function go(id,el){
   }
   // 埋点：切 tab
   try{
-     var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','p6':'image_copy_gen','pselect':'select_hub','pai':'ai_assistant'};
+     var TAB_MAP={'p4':'book_extract','p5':'script_gen','p3':'ai_audit','p6':'ad_copy','pselect':'select_hub','pai':'ai_assistant'};
      var t=TAB_MAP[id];
      if(t&&window.tracker)window.tracker.setTab(t);
    }catch(e){}
@@ -3054,8 +3054,66 @@ async function autoLookupISBN(){
     else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
     status.innerHTML=html;
   }
+  // ① 优先：CF Function 多源代理（isbn.work → 豆瓣 → Google Books）
+  //    解决 isbn.work appKey 限流时整条链路失败的问题。
   try{
-    status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库...</span>';
+    status.innerHTML='<span style="color:#8b949e">🔍 正在查询多源图书数据库...</span>';
+    var respPxy=await fetch('/api/isbn/lookup?isbn='+isbn);
+    if(respPxy.ok){
+      var dPxy=await respPxy.json();
+      if(dPxy && dPxy.ok && dPxy.title){
+        var ftPxy=_cleanName(dPxy.title,dPxy.authors||'',dPxy.publisher||'');
+        isbnBookInfo={
+          title:ftPxy,
+          authors:dPxy.authors||'',
+          publisher:dPxy.publisher||'',
+          date:dPxy.date||'',
+          source:dPxy.source||'多源代理',
+          sourceUrl:dPxy.sourceUrl||'',
+          bookDesc:dPxy.bookDesc||'',
+          pages:dPxy.pages||'',
+          words:dPxy.words||'',
+          format:dPxy.format||'',
+          binding:dPxy.binding||'',
+          price:dPxy.price||'',
+          clcName:dPxy.clcName||'',
+          edition:dPxy.edition||'',
+          pressPlace:dPxy.pressPlace||'',
+          language:dPxy.language||''
+        };
+        document.getElementById('bookTitleInput').value=ftPxy;
+        var metaP='';
+        if(dPxy.authors) metaP+='作者：'+dPxy.authors+' ';
+        if(dPxy.publisher) metaP+='| 出版社：'+dPxy.publisher+' ';
+        if(dPxy.date) metaP+='| 出版年：'+dPxy.date;
+        var extraP='';
+        if(dPxy.pages) extraP+='📄 '+dPxy.pages+' ';
+        if(dPxy.words) extraP+='📝 '+dPxy.words+' ';
+        if(dPxy.format) extraP+='📐 '+dPxy.format+' ';
+        if(dPxy.price) extraP+='💰 '+dPxy.price+' ';
+        if(dPxy.clcName) extraP+='🏷️ '+dPxy.clcName;
+        var descP=dPxy.bookDesc?'<div style="font-size:11px;color:#3fb950;margin-top:6px;background:#0d1f12;border-left:3px solid #3fb950;padding:6px 8px;border-radius:0 4px 4px 0">📖 已获取官方简介（'+dPxy.bookDesc.length+' 字）：'+dPxy.bookDesc.substring(0,80)+(dPxy.bookDesc.length>80?'...':'')+'</div>':'';
+        // 展示尝试链路（让用户知道经过哪些源）
+        var atTxt='';
+        if(dPxy.attempted && dPxy.attempted.length){
+          var atArr=[];
+          for(var ai=0;ai<dPxy.attempted.length;ai++){var a=dPxy.attempted[ai];atArr.push((a.ok?'✅':'❌')+' '+a.source);}
+          atTxt='<div style="font-size:10px;color:#484f58;margin-top:2px">尝试链路：'+atArr.join(' → ')+'</div>';
+        }
+        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+ftPxy+'</strong></div>'
+          +(metaP?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+metaP+'</div>':'')
+          +(extraP?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+extraP+'</div>':'')
+          +descP
+          +'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+(dPxy.sourceUrl||'#')+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+(dPxy.source||'多源代理')+'</a></div>'
+          +atTxt;
+        return;
+      }
+    }
+  }catch(e){/* 代理失败 → 走下方旧的直连兜底 */}
+
+  // ② 兜底：直连 isbn.work（appKey 可能已限流，但偶尔配额恢复时仍可命中）
+  try{
+    status.innerHTML='<span style="color:#8b949e">🔍 正在查询 ISBN 国内数据库（直连）...</span>';
     var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
     var data=await resp.json();
     if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
@@ -3923,13 +3981,32 @@ async function adAutoLookup(){
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
 
   // 📊 ISBN 查询埋点 - 图片文案生成 tab
-  //    后端 _tracker_lib.js: image_copy_gen + isbn_query → isbn:image_copy_gen:{date} Top
-  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'image_copy_gen'); } catch(_){}
+  //    后端 _tracker_lib.js: ad_copy + isbn_query → isbn:ad_copy:{date} Top
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'ad_copy'); } catch(_){}
 
   var status=document.getElementById('adLookupStatus');
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   adBookInfo=null;
+  // ① 优先：CF Function 多源代理（解决 isbn.work appKey 限流问题）
+  try{
+    var rPxy=await fetch('/api/isbn/lookup?isbn='+isbn);
+    if(rPxy.ok){
+      var dPx=await rPxy.json();
+      if(dPx && dPx.ok && dPx.title){
+        var tPx=adCleanName(dPx.title,dPx.authors||'',dPx.publisher||'');
+        adBookInfo={title:tPx,authors:dPx.authors||'',publisher:dPx.publisher||'',date:dPx.date||'',source:dPx.source||'多源代理',sourceUrl:dPx.sourceUrl||''};
+        document.getElementById('adBookTitleInput').value=tPx;
+        var mPx='';
+        if(dPx.authors) mPx+='作者：'+dPx.authors+' ';
+        if(dPx.publisher) mPx+='| 出版社：'+dPx.publisher+' ';
+        if(dPx.date) mPx+='| 出版年：'+dPx.date;
+        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+tPx+'</strong></div>'+(mPx?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+mPx+'</div>':'')+'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+(dPx.sourceUrl||'#')+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+(dPx.source||'多源代理')+'</a></div>';
+        return;
+      }
+    }
+  }catch(e){}
+  // ② 兜底：直连 isbn.work
   try{
     var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
     var data=await resp.json();
@@ -3976,7 +4053,7 @@ async function runAdGen(force){
   if(!/^\d{10,13}$/.test(isbn)){isbnToast('ISBN格式不正确，应为10或13位数字');return;}
 
   // 📊 ISBN 查询埋点（点击「生成图片文案」= 一次正式查询）
-  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'image_copy_gen'); } catch(_){}
+  try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'ad_copy'); } catch(_){}
 
   // 自动识别书名（如未填）
   if(!title){
