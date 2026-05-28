@@ -460,10 +460,17 @@ function go(id,el){
 // 根据 hash 自动切换 tab
 (function(){
   var h=location.hash.replace('#','');
-  var tbs=document.querySelectorAll('.bar-in .tb');
-  var map={'pselect':0,'p4':1,'p5':2,'p6':3,'p3':4,'pai':5};
-  if(h && map[h]!==undefined){go(h,tbs[map[h]]);}
-  else{
+  // ⚠️ 用 querySelector 精确匹配 tab 按钮的 onclick，不依赖 tbs 索引。
+  // 之前用索引 map 会因为 bar-in 里 <a href="/summer/" class="tb"> 暑期专栏的插入
+  // 导致 pai 的索引错位到暑期专栏 <a>，从而：
+  //   - 高亮错加到"暑期专栏"按钮上
+  //   - iframe 虽然开始加载但用户因为视觉错位以为没切过去
+  // 看起来就是"第一次黑屏，再点一次（tab 按钮）才正常"。
+  var validIds={'pselect':1,'p4':1,'p5':1,'p6':1,'p3':1,'pai':1};
+  if(h && validIds[h]){
+    var btn=document.querySelector('.bar-in .tb[onclick*="go(\''+h+'\'"]');
+    go(h,btn);
+  }else{
     // 默认 tab 也要打首屏 PV（默认进入「图书选品台」）
     try{ if(window.tracker) window.tracker.pv('select_hub'); }catch(e){}
   }
