@@ -61,14 +61,16 @@ function fetchWithTimeout(url, opts, timeoutMs) {
     .finally(() => clearTimeout(t));
 }
 
-// ---------------- 数据源 1：data.isbn.work ----------------
+// ---------------- 数据源 1：data.isbn.work（优先级最高，给更长超时） ----------------
 async function fetchIsbnWork(isbn) {
   const url = 'https://data.isbn.work/openApi/getInfoByIsbn?isbn=' + isbn + '&appKey=ae1718d4587744b0b79f940fbef69e77';
-  const r = await fetchWithTimeout(url, { cf: { cacheTtl: 0 } });
+  // isbn.work 是国内库覆盖最广的源，给 7s 超时（比其他源多 2.5s），4 源并行整体仍 ≤ 7s
+  const r = await fetchWithTimeout(url, { cf: { cacheTtl: 0 } }, 7000);
   if (!r.ok) return { ok: false, reason: 'HTTP ' + r.status };
   const data = await r.json().catch(() => null);
   if (!data) return { ok: false, reason: 'invalid json' };
   if (data.code !== 0 || !data.data || !data.data.bookName) {
+    // 把 isbn.work 的原始 msg 透传给前端（如"未找到图书信息" / "次数不足"等）
     return { ok: false, reason: data.msg || ('code=' + data.code) };
   }
   const d = data.data;
