@@ -1213,7 +1213,7 @@ function renderDeepCats() {
   document.getElementById('deepGrid').innerHTML = html;
 }
 
-// ==================== Hub（书单中心）渲染 ====================
+// ==================== Hub（榜单中心）渲染 ====================
 // 一次性渲染所有 9 个 panel，并联动左侧栏
 function renderHub() {
   // 每个渲染独立 try，单个失败不挡其他
@@ -1244,7 +1244,7 @@ function syncHubSideCount() {
     set('rsnCountShop', wd.lists.weixinshop?.items?.length || 0);
     set('rsnCountPotential', wd.lists.potential?.items?.length || 0);
   }
-  // 书单中心 banner 周次徽章
+  // 榜单中心 banner 周次徽章
   const tag = document.getElementById('hubIntroWeekTag');
   if (tag) {
     if (wd && wd.week_label) {
@@ -1473,7 +1473,7 @@ function doHubSearch(q) {
 
 // 跳转到对应锚点 panel + 高亮匹配行
 function gotoHubSearchHit(anchorId, bodyId, isbn, title) {
-  // 确保在书单中心 section
+  // 确保在榜单中心 section
   if (!document.getElementById('section-hub')?.classList.contains('active')) {
     switchSection('hub');
   }
@@ -1628,7 +1628,7 @@ function updateRankWeekUI() {
   if (rwl && cur && cur.data && cur.data.week_label) {
     rwl.textContent = cur.data.week_label;
   }
-  // 同步书单中心 banner 的周次徽章
+  // 同步榜单中心 banner 的周次徽章
   const introTag = document.getElementById('hubIntroWeekTag');
   if (introTag && cur && cur.data && cur.data.week_label) {
     const isLatest = cur.is_current;
@@ -1930,7 +1930,7 @@ function initDecisionSummary() {
 }
 initDecisionSummary();
 
-// ==================== ★ 优化方向三：周节奏图 → 书单中心跳转 ====================
+// ==================== ★ 优化方向三：周节奏图 → 榜单中心跳转 ====================
 // 事件代理：点击 [data-wr-jump] 链接 → 切到 hub + 滚到对应品类的精选书单 panel
 document.addEventListener('click', e => {
   const link = e.target.closest('[data-wr-jump]');

@@ -3139,13 +3139,16 @@ async function autoLookupISBN(){
     else html+='<p style="font-size:10px;color:#484f58;margin-top:4px">如书名不正确，请手动修改上方书名栏</p>';
     status.innerHTML=html;
   }
-  // ① 优先：CF Function 多源代理（isbn.work → 豆瓣 → Google Books）
+  // ① 优先：CF Function 多源代理（isbn.work → 豆瓣 → 当当 → Google Books，4 源并行尝试）
   //    解决 isbn.work appKey 限流时整条链路失败的问题。
+  var proxyAttempted = null;
   try{
-    status.innerHTML='<span style="color:#8b949e">🔍 正在查询多源图书数据库...</span>';
+    status.innerHTML='<span style="color:#8b949e">🔍 正在查询多源图书数据库（ISBN国内库 / 豆瓣 / 当当 / Google Books）...</span>';
     var respPxy=await fetch('/api/isbn/lookup?isbn='+isbn);
     if(respPxy.ok){
       var dPxy=await respPxy.json();
+      // 即使本次未命中，也保存 attempted 便于失败提示精确展示
+      if(dPxy && Array.isArray(dPxy.attempted)) proxyAttempted=dPxy.attempted;
       if(dPxy && dPxy.ok && dPxy.title){
         var ftPxy=_cleanName(dPxy.title,dPxy.authors||'',dPxy.publisher||'');
         isbnBookInfo={
@@ -3254,7 +3257,28 @@ async function autoLookupISBN(){
       return;
     }
   }catch(e){}
-  status.innerHTML='<div style="color:#f0883e"><strong>⚠️ 未能自动识别书名</strong></div><div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的数据源（均未命中）：</div><ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0"><li>① <a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></li><li>② <a href="https://books.google.com/books?isbn='+isbn+'" target="_blank" style="color:#58a6ff;text-decoration:none">Google Books</a></li></ul><div style="font-size:10px;color:#8b949e;margin-top:4px">建议确认 ISBN 是否正确，或点击下方链接手动查询后填入书名栏</div><div style="display:flex;gap:8px;margin-top:8px"><a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a></div>';
+  status.innerHTML=(function(){
+    // 尝试链路：优先用 CF 多源代理返回的 attempted（4 个源真实状态），否则用兜底直连的两源
+    var sources=[];
+    if(proxyAttempted && proxyAttempted.length){
+      var labelMap={'isbn.work':'ISBN国内数据库 (data.isbn.work)','douban':'豆瓣读书','dangdang':'当当网','googleBooks':'Google Books'};
+      var urlMap={'isbn.work':'https://data.isbn.work/','douban':'https://book.douban.com/isbn/'+isbn+'/','dangdang':'http://search.dangdang.com/?key='+isbn+'&act=input','googleBooks':'https://books.google.com/books?isbn='+isbn};
+      for(var ai=0;ai<proxyAttempted.length;ai++){var a=proxyAttempted[ai];sources.push({label:a.label||labelMap[a.source]||a.source,url:urlMap[a.source]||'#',ok:!!a.ok,reason:a.reason||''});}
+    }else{
+      sources=[{label:'ISBN国内数据库 (data.isbn.work)',url:'https://data.isbn.work/',ok:false,reason:''},{label:'Google Books',url:'https://books.google.com/books?isbn='+isbn,ok:false,reason:''}];
+    }
+    var li='';
+    for(var si=0;si<sources.length;si++){var s=sources[si];li+='<li>'+(s.ok?'✅':'❌')+' <a href="'+s.url+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+s.label+'</a>'+(s.reason?' <span style="color:#6e7681">('+s.reason+')</span>':'')+'</li>';}
+    return '<div style="color:#f0883e"><strong>⚠️ 未能自动识别书名</strong></div>'
+      +'<div style="font-size:11px;color:#8b949e;margin-top:6px">📡 已查询的 '+sources.length+' 个数据源：</div>'
+      +'<ul style="font-size:11px;color:#8b949e;margin:4px 0 6px 18px;padding:0">'+li+'</ul>'
+      +'<div style="font-size:10px;color:#8b949e;margin-top:4px">建议：① 确认 ISBN 是否正确；② 点击下方任意链接手动查询后填入"书名"栏；③ 或在书名栏直接手动填写后点击「重新采集」</div>'
+      +'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
+      +'<a href="https://book.douban.com/isbn/'+isbn+'/" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">📖 豆瓣查询</a>'
+      +'<a href="http://search.dangdang.com/?key='+isbn+'&act=input" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">🛒 当当查询</a>'
+      +'<a href="https://search.jd.com/Search?keyword='+isbn+'" target="_blank" style="padding:4px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;text-decoration:none">🔵 京东查询</a>'
+      +'</div>';
+  })();
 }
 async function callApi(msgs,onChunk){
   var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
