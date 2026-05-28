@@ -3035,12 +3035,47 @@ function isbnSetCache(a,b,c){try{localStorage.setItem(isbnCacheKey(a,b),JSON.str
 var isbnController=null;
 var isbnBookInfo=null;
 var isbnLookupPromise=null; // autoLookupISBN 的进行中 promise；runIsbnCollect 会 await 它，避免双 fetch 撞限流
+
+// 📊 ISBN 查询直连埋点（不依赖 tracker.js 是否加载、不依赖 setTab 状态）
+//    历史问题：tracker.js 之前在主页漏引/晚引 → window.tracker 短路 → ISBN 永远不计入
+//    解决：直接 POST /api/track，独立链路，逻辑/参数与后端 _tracker_lib.js 严格匹配
+function __trackIsbnQuery(tab, isbn, title, stage){
+  try {
+    var uid='', sid='';
+    try{ uid = localStorage.getItem('bk_uid') || ''; }catch(_){}
+    try{ sid = sessionStorage.getItem('bk_sid') || ''; }catch(_){}
+    if (!uid){ uid = 'u_' + Date.now().toString(36) + Math.random().toString(36).slice(2,10); try{ localStorage.setItem('bk_uid', uid); }catch(_){} }
+    if (!sid){ sid = 's_' + Date.now().toString(36) + Math.random().toString(36).slice(2,10); try{ sessionStorage.setItem('bk_sid', sid); sessionStorage.setItem('bk_sid_t', String(Date.now())); }catch(_){} }
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify({
+        ts: Date.now(),
+        type: 'feature',
+        tab: tab,                  // book_extract / ad_copy
+        name: 'isbn_query',
+        meta: { isbn: isbn, title: title || '', stage: stage || 'start' },
+        uid: uid,
+        sid: sid,
+        ua: navigator.userAgent || '',
+        ref: document.referrer || '',
+        url: location.href,
+        dev: (/iPad|Tablet/i.test(navigator.userAgent)?'tablet':(/Mobi|Android|iPhone|iPod/i.test(navigator.userAgent)?'mobile':'desktop'))
+      }),
+      keepalive: true,
+      credentials: 'omit',
+      mode: 'cors'
+    }).catch(function(){});
+  } catch(_){}
+}
+
 async function autoLookupISBN(){
   var isbn=document.getElementById('isbnInput').value.trim().replace(/[-\s]/g,'');
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
 
   // 📊 ISBN 查询埋点（输入 ISBN 离开输入框，触发自动识别 = 一次用户查询行为）
-  //    用相同的 name='isbn_query' 让后端 _tracker_lib.js 计入 isbn:book_extract:{date} Top
+  //    用直连埋点保证可达，同时也尝试 tracker.feature 作为补充（无副作用）
+  __trackIsbnQuery('book_extract', isbn, '', 'lookup');
   try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'book_extract'); } catch(_){}
 
   var status=document.getElementById('isbnLookupStatus');
@@ -3209,7 +3244,8 @@ async function runIsbnCollect(force){
 
   // 📊 ISBN 查询埋点（用于 /stats/ 的「ISBN Top 查询书目」聚合）
   //    后端 _tracker_lib.js 识别规则：tab=book_extract + name=isbn_query + meta.isbn → 计入 isbn:book_extract:{date}
-  //    此处先发一次"开始查询"事件（含输入 ISBN，title 可能此刻还未识别，留空也 OK）
+  //    走直连埋点保证可达
+  __trackIsbnQuery('book_extract', isbn, title || '', 'start');
   try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'book_extract'); } catch(_){}
 
   // 如果没有书名，先尝试通过 ISBN 查询自动补全
@@ -4004,6 +4040,7 @@ async function adAutoLookup(){
 
   // 📊 ISBN 查询埋点 - 图片文案生成 tab
   //    后端 _tracker_lib.js: ad_copy + isbn_query → isbn:ad_copy:{date} Top
+  __trackIsbnQuery('ad_copy', isbn, '', 'lookup');
   try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: '', stage: 'lookup'}, null, 'ad_copy'); } catch(_){}
 
   var status=document.getElementById('adLookupStatus');
@@ -4075,6 +4112,7 @@ async function runAdGen(force){
   if(!/^\d{10,13}$/.test(isbn)){isbnToast('ISBN格式不正确，应为10或13位数字');return;}
 
   // 📊 ISBN 查询埋点（点击「生成图片文案」= 一次正式查询）
+  __trackIsbnQuery('ad_copy', isbn, title || '', 'start');
   try { window.tracker && window.tracker.feature('isbn_query', {isbn: isbn, title: title || '', force: !!force, stage: 'start'}, null, 'ad_copy'); } catch(_){}
 
   // 自动识别书名（如未填）
