@@ -143,13 +143,6 @@ if(window.self !== window.top){
           <div class="rsn-desc">销量+转化综合 <span class="rsn-count" id="rsnCountAdq">20</span></div>
         </div>
       </a>
-      <a class="rsn-item" href="#hub-block-hot-insight" data-target="hub-block-hot-insight">
-        <span class="rsn-icon">🔬</span>
-        <div class="rsn-body">
-          <div class="rsn-name">跑量书洞察</div>
-          <div class="rsn-desc">代表书数据+创意</div>
-        </div>
-      </a>
       <a class="rsn-item" href="#hub-block-rank-shop" data-target="hub-block-rank-shop" data-jump-rank="weixinshop">
         <span class="rsn-icon">💰</span>
         <div class="rsn-body">
@@ -157,11 +150,18 @@ if(window.self !== window.top){
           <div class="rsn-desc">无转化不扣费 <span class="rsn-count" id="rsnCountShop">15</span></div>
         </div>
       </a>
+      <a class="rsn-item" href="#hub-block-hot-insight" data-target="hub-block-hot-insight">
+        <span class="rsn-icon">🔬</span>
+        <div class="rsn-body">
+          <div class="rsn-name">跑量书洞察</div>
+          <div class="rsn-desc">代表书数据+创意</div>
+        </div>
+      </a>
     </div>
 
     <!-- 分组 2：潜力榜单 -->
     <div class="rsn-group rsn-group-follow">
-      <a class="rsn-group-title rsn-group-link" href="#hub-block-follow-potential" data-target="hub-block-follow-potential">💎 潜力榜单<span class="rsn-group-tip">周维度 · 别处爆/即将爆</span></a>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-follow-potential" data-target="hub-block-follow-potential">💎 潜力榜单<span class="rsn-group-tip">周维度 · 别处爆</span></a>
       <a class="rsn-item" href="#hub-block-follow-potential" data-target="hub-block-follow-potential" data-jump-follow="potential">
         <span class="rsn-icon">🌊</span>
         <div class="rsn-body">
@@ -169,18 +169,11 @@ if(window.self !== window.top){
           <div class="rsn-desc">蓝海机会 <span class="rsn-count" id="rsnCountPotential">15</span></div>
         </div>
       </a>
-      <a class="rsn-item" href="#hub-block-follow-forecast" data-target="hub-block-follow-forecast" data-jump-follow="forecast">
-        <span class="rsn-icon">🎯</span>
-        <div class="rsn-body">
-          <div class="rsn-name">预测爆品</div>
-          <div class="rsn-desc">即将爆发预判 <span class="rsn-count" id="rsnCountForecast">15</span></div>
-        </div>
-      </a>
     </div>
 
-    <!-- 分组 3：当月推荐书单（去年同期全网榜单精选）-->
+    <!-- 分组 3：未来推荐书单（去年同期全网榜单精选）-->
     <div class="rsn-group rsn-group-rec">
-      <a class="rsn-group-title rsn-group-link" href="#hub-block-rec-intro" data-target="hub-block-rec-intro">⭐ 当月推荐书单<span class="rsn-group-tip">月维度 · 去年同期全网榜单精选</span></a>
+      <a class="rsn-group-title rsn-group-link" href="#hub-block-rec-intro" data-target="hub-block-rec-intro">⭐ 未来推荐书单<span class="rsn-group-tip">月维度 · 去年同期全网榜单精选</span></a>
       <a class="rsn-item" href="#hub-block-rec-edu" data-target="hub-block-rec-edu" data-jump-rec="教辅">
         <span class="rsn-icon">📖</span>
         <div class="rsn-body">
@@ -287,16 +280,6 @@ if(window.self !== window.top){
     <div id="rankBodyAdq"></div>
   </div>
 
-  <!-- 4.2 跑量书洞察 -->
-  <div class="panel" id="hub-block-hot-insight">
-    <div class="panel-title">
-      <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
-      <span class="badge-update">📅 by 周更新</span>
-      <span class="extra">代表书的核心数据 + 创意公式 · 从下一期开始新增</span>
-    </div>
-    <div id="hotBookBreakdown"></div>
-  </div>
-
   <!-- 1.2 腾讯营销（小店版）热投榜 -->
   <div class="panel" id="hub-block-rank-shop">
     <div class="panel-title">
@@ -311,6 +294,16 @@ if(window.self !== window.top){
       <button class="toolbar-btn success" onclick="exportRankByKey('weixinshop')" data-track="select_export_rank" data-track-key="weixinshop" data-track-tab="select_hub">📥 导出 ISBN</button>
     </div>
     <div id="rankBodyShop"></div>
+  </div>
+
+  <!-- 1.3 跑量书洞察 -->
+  <div class="panel" id="hub-block-hot-insight">
+    <div class="panel-title">
+      <span class="dot"></span>🔬 跑量书洞察<span class="badge-insight">洞察</span>
+      <span class="badge-update">📅 by 周更新</span>
+      <span class="extra">代表书的核心数据 + 创意公式 · 从下一期开始新增</span>
+    </div>
+    <div id="hotBookBreakdown"></div>
   </div>
 
   <!-- 2.1 潜力爆品 -->
@@ -329,27 +322,11 @@ if(window.self !== window.top){
     <div id="rankBodyPotential"></div>
   </div>
 
-  <!-- 2.2 预测爆品 -->
-  <div class="panel" id="hub-block-follow-forecast">
-    <div class="panel-title">
-      <span class="dot"></span>🎯 预测爆品<span class="badge-rank-forecast">前瞻</span>
-      <span class="badge-update">📅 by 周更新</span>
-      <span class="extra">基于去年同期推演 · 即将爆发</span>
-    </div>
-    <div class="panel-sub-tip panel-sub-tip-forecast">
-      💡 基于<strong>去年下一周期数据推演</strong>，预判本月即将爆发的潜质书 — <strong>抢跑机会</strong>。
-    </div>
-    <div class="toolbar" style="justify-content:flex-end;">
-      <button class="toolbar-btn success" onclick="exportRankByKey('forecast')" data-track="select_export_rank" data-track-key="forecast" data-track-tab="select_hub">📥 导出 ISBN</button>
-    </div>
-    <div id="rankBodyForecast"></div>
-  </div>
-
   <!-- ========== 分组 3：精选书单 ========== -->
 
   <div class="panel" id="hub-block-rec-intro">
     <div class="panel-title">
-      <span class="dot"></span>⭐ 当月推荐书单<span class="badge-rec">精选</span>
+      <span class="dot"></span>⭐ 未来推荐书单<span class="badge-rec">精选</span>
       <span class="badge-update is-month">📅 6 月推荐书单</span>
       <a href="https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMYCNBY2vYRsOTr22OCI0?scode=AJEAIQdfAAoJ1CUM1YARQAcAYdADQ&tab=BB08J2" target="_blank" class="doc-link">
         📎 查看往期文档（Q2潜力增长图书书单）

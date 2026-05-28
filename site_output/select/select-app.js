@@ -1223,7 +1223,6 @@ function renderHub() {
   safeRender(() => renderRanking('adq_hot',     'rankBodyAdq'),       'ADQ 热投');
   safeRender(() => renderRanking('weixinshop',  'rankBodyShop'),      '微信小店');
   safeRender(() => renderRanking('potential',   'rankBodyPotential'), '潜力爆品');
-  safeRender(() => renderRanking('forecast',    'rankBodyForecast'),  '预测爆品');
   safeRender(() => renderRecommend('教辅', 'recBodyEdu'),    '教辅推荐');
   safeRender(() => renderRecommend('童书', 'recBodyChild'),  '童书推荐');
   safeRender(() => renderRecommend('健康', 'recBodyHealth'), '健康推荐');
@@ -1244,7 +1243,6 @@ function syncHubSideCount() {
     set('rsnCountAdq', wd.lists.adq_hot?.items?.length || 0);
     set('rsnCountShop', wd.lists.weixinshop?.items?.length || 0);
     set('rsnCountPotential', wd.lists.potential?.items?.length || 0);
-    set('rsnCountForecast', wd.lists.forecast?.items?.length || 0);
   }
   // 书单中心 banner 周次徽章
   const tag = document.getElementById('hubIntroWeekTag');
@@ -1355,7 +1353,6 @@ function collectHubSearchPool() {
     { key: 'adq_hot',    listName: 'ADQ 热投榜',           anchor: 'hub-block-rank-adq',       bodyId: 'rankBodyAdq' },
     { key: 'weixinshop', listName: '腾讯营销（小店版）热投榜', anchor: 'hub-block-rank-shop',      bodyId: 'rankBodyShop' },
     { key: 'potential',  listName: '潜力爆品',             anchor: 'hub-block-follow-potential',bodyId: 'rankBodyPotential' },
-    { key: 'forecast',   listName: '预测爆品',             anchor: 'hub-block-follow-forecast', bodyId: 'rankBodyForecast' },
   ];
   if (wd && wd.lists) {
     RANK_META.forEach(meta => {
@@ -1592,7 +1589,6 @@ function onRankWeekChange(idx) {
     renderRanking('adq_hot',     'rankBodyAdq');
     renderRanking('weixinshop',  'rankBodyShop');
     renderRanking('potential',   'rankBodyPotential');
-    renderRanking('forecast',    'rankBodyForecast');
     renderCatShareBar();
     renderHotBookBreakdown();  // 重判：往期周次会自动隐藏
     syncHubSideCount();
