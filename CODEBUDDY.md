@@ -89,6 +89,14 @@ repo/
 
 | 日期 | 设备 | 摘要 |
 |---|---|---|
+| 2026-05-29 | office | 推荐书单换为预测推荐书单（教辅28/童书50/社科63/健康67=208本）+ 每个品类 rank 独立从 1；xlsx 嵌入封面 230MB→4.8MB（300px JPEG q82）；提取脚本落地 `scripts/extract_predict_books.py`（commit b19f76a） |
+| 2026-05-28 | office | AI 预审 PROFANITY_2 规则上下文豁免（当妈的/做妈的/咱当妈的等家长身份称呼不再误判为粗话）（commit e7bc13c） |
+| 2026-05-28 | office | 榜单中心左导航「重点品类深度」→「重点品类选品方向」（commit 860f014） |
+| 2026-05-28 | office | ISBN 多源代理 4 源并行 + 单源 4.5s 超时（修复 hang 死，整体 ≤7s 必出结果）+ 失败提示用真实 attempted 链路渲染 + 增加豆瓣/当当/京东 一键查询按钮 + 「书单中心」→「榜单中心」（commit 2e52461 / 23a24df） |
+| 2026-05-28 | office | 节奏图精简（突出选品 + 精炼痛点）+ 跑量书洞察移到小店版热投榜后 + 当月推荐书单改名未来推荐书单 + 删除预测爆品（commit bbafecf） |
+| 2026-05-28 | office | 6 月核心洞察占比微调（教辅50/童书30/社科10/健康10）+ 7 月调整为教辅35/童书30/社科23 + Q4 调高社科健康/调低教辅；教辅深度选品 3 卡精简到 3 行结构（选品思路/核心需求/组品策略）（commit ed76534 / e59d5a1） |
+| 2026-05-27 | office | 选品池→#p4/#p6 队列接力修复（creative-inbox.js 引入 + 挂载点 + go() 切 tab 时 refresh）+ W1-W4 节奏图分两行排版（暑期阶段 + 节日）+ 5/18 #2 替换为正版英语故事 2100 词图片（commit 9125704） |
+| 2026-05-27 | office | 5/18 周跑量书洞察图片串了修复 + 5/25/18 周创意核心去除客单/链路/转化数据 + 5/18 #3 帝王家书恢复用户原版创意（commit 8d61bb9 / 8fcb5a8） |
 | 2026-05-26 | office | 书单中心新增关键词搜索框（跨7榜单+精选书单，命中行高亮5s）+ 各榜单加 by 周更新/6月推荐 备注 + 微信小店榜→腾讯营销（小店版）热投榜 + 选品池/书单中心 banner 对齐（commit 6ae6897） |
 | 2026-05-26 | office | Excel 数据更新 100 期 + 新增 ISBN 列 + 自查恢复 13 个被跳过周次（commit e7798ab） |
 | 2026-05-25 | office | 加入按钮即时反馈 + 选品池全选/多选/批量移除（commit b7acb6f） |
@@ -103,10 +111,11 @@ repo/
 
 > 切换设备前请先勾掉已完成的、补充新加的。
 
+- [ ] **PDD-CID 行动指南页面**：用户 5/29 想新建独立页面（参考截图：腾讯营销紫色横幅 + 1️⃣ 自归因接入 + 2️⃣ 投放建议 7 个维度卡 + 出价类型 A/B 双卡 + 3️⃣ 专属扶持），字体偏大版式。任务被中断，未实施。
+- [ ] **CF Pages 部署回退**：用户 5/29 在 CF 控制台手动 Rollback 到 b19f76a 那次部署（hash `7e9027dd`）。需观察后续 main 推送是否正常自动构建。
 - [ ] 暑期专栏 `/summer/` 页面体验优化
-- [ ] AI 预审规则继续打磨（当前版本：参见 `functions/api/zhipu/` 内 prompt）
+- [ ] AI 预审规则继续打磨（当前版本：参见 `functions/api/zhipu/` 内 prompt + `site_output/index.html` 内 PROFANITY_1~6 / ABS_1~2 / TIPHOOK_* / SHANYAN_* 等规则数组）
 - [ ] 限频逻辑评估（当前 30 次/分钟是否够）
-- [ ] 选品池→创意生产中心 全链路可用性回归测试
 - [ ] 跑量书洞察 next 期数据补齐后接入（用户备注：从下一期开始新增）
 - [ ] _（每次切设备前在这里加几条具体计划）_
 
@@ -151,3 +160,95 @@ git pull --rebase origin main
 - 完成一项实质性优化后，**主动让 CodeBuddy 把摘要写入第 6 节**
 - 修改 tab 相关逻辑时，**主动提醒 CodeBuddy 同步改 3 处**（见第 5 节第 1 条）
 - 部署相关问题，**告诉 CodeBuddy 我们用的是 Cloudflare Pages，不是 Vercel**
+
+---
+
+## 11. 🆕 另一台 Mac 首次接入指引（重要）
+
+> 适用场景：你在新的 Mac（家里 / 出差用）上第一次拉这个项目，让 CodeBuddy 接续办公室电脑的"大脑"。
+
+### Step 1：克隆仓库
+
+```bash
+# 在新电脑上选一个工作目录（路径可以随意，下面的目录名仅供参考）
+mkdir -p ~/CodeBuddy && cd ~/CodeBuddy
+git clone https://github.com/kaylaliu0508/book-hot-dashboard.git
+cd book-hot-dashboard
+git log --oneline -5    # 应该看到最新 commit b19f76a 或之后的
+```
+
+### Step 2：用 CodeBuddy IDE 打开这个目录
+
+直接在 CodeBuddy IDE 里 **File → Open Folder...** 选 `~/CodeBuddy/book-hot-dashboard/`。
+打开后 CodeBuddy 会自动检测到根目录的 `.codebuddy/rules/project/RULE.mdc` 并应用为项目级规则。
+
+### Step 3：开新对话第一句话直接说
+
+> **"读 CODEBUDDY.md 和 TRACKER.md，告诉我现在的项目状态、最近几次优化、待办列表。然后我们继续干活。"**
+
+CodeBuddy 会读取本文件第 1~9 节作为完整上下文，包括：
+- 项目身份卡（线上地址 / Git / 部署平台 / 默认分支）
+- 当前形态、技术栈、关键目录、关键约束
+- 最新优化历程（第 6 节，已记录到本次对话日期）
+- 当前待办（第 7 节）
+- 双设备协同 SOP（第 9 节）
+
+### Step 4：填补本机本地路径
+
+第 1 节末尾的 `本地路径（家里 Mac）` 字段还没填，第一次在新电脑跑通后告诉 CodeBuddy 把实际路径写进去（例如 `~/CodeBuddy/book-hot-dashboard`），下次切回办公室电脑能一眼看到两台机器的路径。
+
+### Step 5：日常协同（每次离开当前电脑前）
+
+```bash
+# 1) commit 当天工作
+git add -A && git commit -m "feat(xxx): 摘要"
+
+# 2) 让 CodeBuddy 把今天的优化写入 CODEBUDDY.md 第 6 节
+#    （直接说「把今天的优化记到 CODEBUDDY 第 6 节，注明设备 home/office」）
+
+# 3) 一起 push
+git add CODEBUDDY.md && git commit --amend --no-edit
+git push origin main
+```
+
+### Step 6：下次到达另一台电脑时
+
+```bash
+cd <项目路径>
+git pull --rebase origin main
+
+# 打开 CodeBuddy 新对话第一句：
+# "读 CODEBUDDY.md，看下昨天 office 的最后进度和待办，我们继续。"
+```
+
+### 🚨 不要做的事
+
+- ❌ **不要** force-push（除非两台机器同时改了同一处冲突且本机版本是对的）
+- ❌ **不要** 删除 `.codebuddy/` 目录（这里有项目规则 + automation 配置）
+- ❌ **不要** 修改 `.gitignore` 把 `CODEBUDDY.md` / `TRACKER.md` 排除（它们必须进 git）
+- ❌ **不要** 把这套规则放到 IDE 全局配置里（项目规则只对本仓库生效，其他项目不会被污染）
+
+---
+
+## 12. 关键链路速查表
+
+| 想做的事 | 去哪个文件 |
+|---|---|
+| 改主站 7 个 tab 切换 | `site_output/index.html`（`go()` 函数 + `TRACK_TAB_MAP`） |
+| 改 ISBN 内容采集 prompt | `site_output/index.html` 的 `isbnSysPrompt()` |
+| 改 ISBN 多源识别（4 源代理） | `functions/api/isbn/lookup.js` |
+| 改图片文案生成 prompt | `site_output/index.html` 的 `pageGenSysPrompt`/`adCopySysPrompt` 等 |
+| 改 AI 预审规则（100+ 条正则） | `site_output/index.html` 的 `RULES = [{id,cat,level,re,desc,fix},...]` 数组 |
+| 改 AI 预审语义层 prompt | `site_output/index.html` 的 `SEMANTIC_AUDIT_SYS_PROMPT` |
+| 改榜单中心（选品台） | `site_output/select/index.html` + `select-app.js` + `select-data.js` |
+| 改本周类目占比/月度趋势 | `site_output/select/select-data.js` 的 `MONTHS_DATA` |
+| 改跑量书洞察 | `site_output/select/select-data.js` 的 `HOT_BOOK_BREAKDOWN` |
+| 改 6 月节奏图（W1-W4） | `site_output/select/select-data.js` 的 `WEEK_RHYTHM` 的 `weeks/rows` |
+| 改预测推荐书单（4 大品类 208 本） | `site_output/select/recommend-data.js` |
+| 重新生成预测推荐书单 | `python3 scripts/extract_predict_books.py`（输入 `data/predict_recommend_2026.xlsx`） |
+| 改重点品类深度选品 | `site_output/select/select-data.js` 的 `DEEP_CATS` |
+| 改埋点白名单（新增 tab 必改） | `functions/api/_tracker_lib.js` 的 `VALID_TABS` |
+| 改埋点看板 | `site_output/stats/index.html` |
+| 改暑期专栏 | `site_output/summer/index.html` |
+| 改 AI 营销助手 | `site_output/ai/index.html` |
+| 选品池→创意生产队列 | `site_output/assets/creative-inbox.js` |
