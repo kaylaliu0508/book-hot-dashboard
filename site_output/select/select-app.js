@@ -292,14 +292,15 @@ document.addEventListener('click', e => {
 function getRecommendBooks() {
   if (typeof RECOMMEND_BOOKS === 'undefined') return [];
   const result = [];
-  let rank = 1;
   // 顺序：教辅 → 童书 → 健康 → 社科（教辅放童书前，与左侧栏分组一致）
   const orderedSheets = ['教辅推荐书单', '童书推荐书单', '健康推荐书单', '社科推荐书单'];
   for (const sheetName of orderedSheets) {
     const list = RECOMMEND_BOOKS[sheetName] || [];
     const topCat = sheetName.replace('推荐书单', '');
+    // ★ 每个品类内 rank 独立从 1 开始（不再跨品类全局累加）
+    let localRank = 1;
     list.forEach(b => result.push({
-      rank: rank++,
+      rank: b.rank || localRank++,
       title: b.title, isbn: b.isbn, author: b.author, publisher: b.publisher,
       cat: topCat, top_cat: topCat, image: b.image,
       ams_status: b.ams_status,
