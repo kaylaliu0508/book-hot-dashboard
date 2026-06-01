@@ -2947,35 +2947,57 @@ async function webSearchBook(bookTitle,isbn){
   var authorKw=(isbnBookInfo&&isbnBookInfo.authors)?(' '+isbnBookInfo.authors):'';
   var pressKw=(isbnBookInfo&&isbnBookInfo.publisher)?(' '+isbnBookInfo.publisher):'';
   // 🔑 提取书名核心关键词（用于宽松命中：长书名很难在第三方页面完整出现）
-  // 策略：去掉版次/版本/年份前缀（"26版""第三版""2024版"等），再切出 3-6 字核心短语
+  // 策略：去版次前缀 + 去电商卖点噪声后缀 + 多种分隔符切短语 + 前 N 字截短，多角度生成核心关键词
   var titleCoreKws=(function(){
     if(!bookTitle) return [];
-    var clean=bookTitle.replace(/^\d{2,4}版?[新最]?新?版?/,'').replace(/^第[一二三四五六七八九十\d]+版/,'').replace(/^\d+年?新版/,'').replace(/^[\(（].*?[\)）]/,'').trim();
+    // 去版次/版本/年份前缀
+    var clean=bookTitle
+      .replace(/^\d{2,4}版?[新最]?新?版?/,'')
+      .replace(/^第[一二三四五六七八九十\d]+版/,'')
+      .replace(/^\d+年?新版/,'')
+      .replace(/^[\(（].*?[\)）]/,'')
+      .trim();
+    // 去电商/编辑硬塞的卖点尾巴（这类标题在 ISBN 国内库常见，例：'漫画帝王家书写给孩子的成长指南教育启蒙书籍'）
+    var clean2=clean
+      .replace(/(写给|送给).*$/,'')
+      .replace(/适合.{2,20}(读|看|学|阅读|的孩子)?$/,'')
+      .replace(/(教育启蒙|启蒙书籍|成长指南|课外读物|课外阅读|内心强大).*$/,'')
+      .replace(/(套装|全套|全集|礼盒装|精装版|平装版|珍藏版|彩绘版|插画版).*$/,'')
+      .replace(/(正版|包邮|现货|赠品|新华书店|当当自营|博库|文轩).*$/,'')
+      .trim();
     var arr=[];
+    if(clean2 && clean2!==clean) arr.push(clean2); // 去尾巴的版本（命中率最高）
     if(clean) arr.push(clean);
-    // 加入去掉书名号后的全名
-    arr.push(bookTitle);
-    // 拆出更短的核心子串（按"的""里"等连接词切，取最长 3 段）
-    var subs=clean.split(/[里的之与和及]/).filter(function(s){return s.length>=3 && s.length<=12;});
-    subs.slice(-3).forEach(function(s){if(arr.indexOf(s)<0) arr.push(s);});
+    if(bookTitle && bookTitle!==clean) arr.push(bookTitle);
+    // 多分隔符切短语（书名号/空格/逗号/+/连接词）
+    var sepRe=/[里的之与和及，,、+｜|·\s「」『』《》【】\[\]]+/;
+    var subs=(clean2||clean||bookTitle).split(sepRe).filter(function(s){return s.length>=3 && s.length<=12;});
+    subs.slice(0,5).forEach(function(s){if(arr.indexOf(s)<0) arr.push(s);});
+    // 长书名兜底：取前 4 字 / 前 6 字作为最短锚点（4-6 字基本是国内书名核心词长度）
+    var src=clean2||clean||bookTitle||'';
+    if(src.length>=4){var k4=src.substring(0,4); if(arr.indexOf(k4)<0) arr.push(k4);}
+    if(src.length>=6){var k6=src.substring(0,6); if(arr.indexOf(k6)<0) arr.push(k6);}
     return arr;
   })();
+  // 🔍 query 用的"短核心书名"：长怪标题（含电商卖点的）拿不到搜索结果，用清洗后的核心词当 query 主体
+  //    若 titleCoreKws[0] 比原 bookTitle 短（说明清洗去掉了卖点尾巴），用它；否则保持原书名
+  var qTitle=(titleCoreKws[0] && titleCoreKws[0].length<bookTitle.length-3) ? titleCoreKws[0] : bookTitle;
   // pubQuery：命中 site 时用 site:，否则用宽搜索
   var pubQuery=pubInfo&&pubInfo.site
-    ? {q:'site:'+pubInfo.site+' 《'+bookTitle+'》',                    fb:pubKw+' '+bookTitle+' 新书 内容简介',         src:'publisher',weight:10, label:pubInfo.name}
-    : {q:'《'+bookTitle+'》'+pressKw+' 出版社 新书',                    fb:bookTitle+' 出版社官网 编辑推荐',              src:'publisher',weight:7,  label:'出版社官网'};
+    ? {q:'site:'+pubInfo.site+' 《'+qTitle+'》',                       fb:pubKw+' '+qTitle+' 新书 内容简介',            src:'publisher',weight:10, label:pubInfo.name}
+    : {q:'《'+qTitle+'》'+pressKw+' 出版社 新书',                       fb:qTitle+' 出版社官网 编辑推荐',                 src:'publisher',weight:7,  label:'出版社官网'};
   // 8 条 query 矩阵：每条都用《书名》强匹配（中文加书名号能精确锁定）
   var queries=[
     // —— 锚定型（2 条）：用 site: 拉权威页
-    {q:'site:dangdang.com 《'+bookTitle+'》',                          fb:'当当网 《'+bookTitle+'》'+authorKw+' 详情',     src:'dangdang', weight:10},
+    {q:'site:dangdang.com 《'+qTitle+'》',                             fb:'当当网 《'+qTitle+'》'+authorKw+' 详情',        src:'dangdang', weight:10},
     pubQuery,
     // —— 内容向（6 条）：每条聚焦一个信息维度，主搜内容关键词
-    {q:'《'+bookTitle+'》'+authorKw+' 内容简介 这本书讲了什么',           fb:'《'+bookTitle+'》'+pressKw+' 简介',           src:'intro',    weight:9},
-    {q:'《'+bookTitle+'》'+authorKw+' 目录 完整章节',                   fb:'《'+bookTitle+'》 章节目录 章 节',             src:'toc',      weight:9},
-    {q:'《'+bookTitle+'》'+authorKw+' 前言 序言 自序',                  fb:'《'+bookTitle+'》 作者自述 写作初衷',           src:'preface',  weight:8},
-    {q:'《'+bookTitle+'》'+authorKw+' 精彩书摘 金句 经典语录',           fb:'《'+bookTitle+'》 名句 摘抄',                   src:'quotes',   weight:8},
-    {q:'《'+bookTitle+'》'+authorKw+' 书评 读后感 推荐理由',             fb:'《'+bookTitle+'》 豆瓣 评论',                   src:'review',   weight:7},
-    {q:'《'+bookTitle+'》'+authorKw+' 编辑推荐 适合人群 卖点',           fb:'《'+bookTitle+'》 推荐给谁看',                  src:'editor',   weight:7}
+    {q:'《'+qTitle+'》'+authorKw+' 内容简介 这本书讲了什么',              fb:'《'+qTitle+'》'+pressKw+' 简介',              src:'intro',    weight:9},
+    {q:'《'+qTitle+'》'+authorKw+' 目录 完整章节',                      fb:'《'+qTitle+'》 章节目录 章 节',                src:'toc',      weight:9},
+    {q:'《'+qTitle+'》'+authorKw+' 前言 序言 自序',                     fb:'《'+qTitle+'》 作者自述 写作初衷',              src:'preface',  weight:8},
+    {q:'《'+qTitle+'》'+authorKw+' 精彩书摘 金句 经典语录',              fb:'《'+qTitle+'》 名句 摘抄',                     src:'quotes',   weight:8},
+    {q:'《'+qTitle+'》'+authorKw+' 书评 读后感 推荐理由',                fb:'《'+qTitle+'》 豆瓣 评论',                     src:'review',   weight:7},
+    {q:'《'+qTitle+'》'+authorKw+' 编辑推荐 适合人群 卖点',              fb:'《'+qTitle+'》 推荐给谁看',                    src:'editor',   weight:7}
   ];
 
   var allResults=[];

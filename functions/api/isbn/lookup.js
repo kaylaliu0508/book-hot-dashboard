@@ -370,8 +370,29 @@ async function handle(request, env) {
   const results = await Promise.all(SOURCE_DEFS.map(wrap));
 
   const attempted = results.map((r) => ({ source: r.name, label: r.label, ok: r.ok, reason: r.reason }));
-  // 按优先级取第一个命中的源
-  const hit = results.filter((r) => r.ok).sort((a, b) => a.priority - b.priority)[0];
+
+  // 🎯 书名质量打分：isbn.work 的 bookName 经常被电商/编辑塞进卖点关键词形成"长怪标题"
+  //    （例：'漫画帝王家书修言行练处世谋略写给孩子的成长指南教育启蒙书籍'），
+  //    这类标题 → 联网搜索 0 命中。降级它的优先级，把当当/豆瓣的干净书名顶上来。
+  function titleQualityPenalty(d) {
+    if (!d || !d.title) return 100;
+    const t = d.title;
+    let penalty = 0;
+    // 长度 > 22 字（正常实体书书名几乎不会这么长）
+    if (t.length > 22) penalty += 50;
+    if (t.length > 30) penalty += 30;
+    // 噪声关键词（电商/编辑硬塞的卖点）
+    const noiseKws = /(写给|送给|适合|培养|教育启蒙|启蒙书籍|成长指南|内心强大|书籍正版|正版包邮|新华书店|当当自营|赠品)/;
+    if (noiseKws.test(t)) penalty += 40;
+    // 含连续多个并列动词/名词（写给孩子的 X X X X）
+    if ((t.match(/[\u4e00-\u9fa5]{2,4}/g) || []).length > 8) penalty += 20;
+    return penalty;
+  }
+  // 命中源排序：(原 priority + 标题质量惩罚) 越小越优
+  const hit = results
+    .filter((r) => r.ok)
+    .map((r) => ({ ...r, score: r.priority + titleQualityPenalty(r.data) }))
+    .sort((a, b) => a.score - b.score)[0];
   if (hit && hit.data) {
     return jsonResp({ ok: true, ...hit.data, attempted }, 200, cors);
   }
