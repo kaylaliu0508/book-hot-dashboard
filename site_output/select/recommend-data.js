@@ -1,6 +1,6 @@
 // 推荐书单数据（来自《【腾讯图书】预测推荐书单 (1).xlsx》）
 // 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 独立从 1 开始
-// 生成时间: 2026-06-02 17:32:56
+// 生成时间: 2026-06-02 18:45:00（补缺 recommend_time=6月）
 
 const RECOMMEND_BOOKS = {
   "童书推荐书单": [
@@ -9,6 +9,7 @@ const RECOMMEND_BOOKS = {
       "rank": 1,
       "publisher": "陕西人民教育出版社",
       "image": "book-images/recbook_predict_童书_1.jpg",
+      "recommend_time": "6月",
       "isbn": "9787575704472"
     },
     {
@@ -16,6 +17,7 @@ const RECOMMEND_BOOKS = {
       "rank": 2,
       "publisher": "安徽少年儿童出版社",
       "image": "book-images/recbook_predict_童书_2.jpg",
+      "recommend_time": "6月",
       "isbn": "9787570818648"
     },
     {
@@ -23,6 +25,7 @@ const RECOMMEND_BOOKS = {
       "rank": 3,
       "publisher": "应急管理出版社",
       "image": "book-images/recbook_predict_童书_3.jpg",
+      "recommend_time": "6月",
       "isbn": "9787107325502"
     },
     {
@@ -30,6 +33,7 @@ const RECOMMEND_BOOKS = {
       "rank": 4,
       "publisher": "中译出版社",
       "image": "book-images/recbook_predict_童书_4.jpg",
+      "recommend_time": "6月",
       "isbn": "9787500178415"
     },
     {
@@ -771,6 +775,7 @@ const RECOMMEND_BOOKS = {
       "rank": 1,
       "publisher": "中国文联出版社",
       "image": "book-images/recbook_predict_社科_1.jpg",
+      "recommend_time": "6月",
       "isbn": "9787555286240"
     },
     {
