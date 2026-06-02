@@ -668,19 +668,19 @@ const WEEK_RANK_LIST = [
       "cat_share": [
         {
           "cat": "教辅",
-          "share": 24.1
+          "share": 31
         },
         {
           "cat": "童书",
-          "share": 2.0
+          "share": 32
         },
         {
           "cat": "健康",
-          "share": 1.1
+          "share": 18
         },
         {
           "cat": "社科",
-          "share": 2.9
+          "share": 19
         }
       ],
       "week_label": "2026-05-26 至 06-01"
