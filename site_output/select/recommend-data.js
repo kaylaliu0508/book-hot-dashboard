@@ -1,655 +1,777 @@
 // 推荐书单数据（来自《【腾讯图书】预测推荐书单 (1).xlsx》）
 // 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 独立从 1 开始
-// 生成时间: 2026-05-29 11:30:59
+// 生成时间: 2026-06-02 17:32:56
 
 const RECOMMEND_BOOKS = {
   "童书推荐书单": [
     {
-      "title": "漫画趣味文化常识启蒙书+漫画趣味小四门启蒙书",
+      "title": "桑尼有主意",
       "rank": 1,
+      "publisher": "陕西人民教育出版社",
       "image": "book-images/recbook_predict_童书_1.jpg",
-      "recommend_time": "6月",
+      "isbn": "9787575704472"
+    },
+    {
+      "title": "笑猫日记",
+      "rank": 2,
+      "publisher": "安徽少年儿童出版社",
+      "image": "book-images/recbook_predict_童书_2.jpg",
+      "isbn": "9787570818648"
+    },
+    {
+      "title": "神笔马良",
+      "rank": 3,
+      "publisher": "应急管理出版社",
+      "image": "book-images/recbook_predict_童书_3.jpg",
+      "isbn": "9787107325502"
+    },
+    {
+      "title": "漫画AI趣味物理",
+      "rank": 4,
+      "publisher": "中译出版社",
+      "image": "book-images/recbook_predict_童书_4.jpg",
       "isbn": "9787500178415"
     },
     {
+      "title": "漫画趣味文化常识启蒙书+漫画趣味小四门启蒙书",
+      "rank": 5,
+      "image": "book-images/recbook_predict_童书_5.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787570542970"
+    },
+    {
       "title": "时间管理+礼仪教养+社会情商漫画启蒙书",
-      "rank": 2,
-      "image": "book-images/recbook_predict_童书_2.jpg",
+      "rank": 6,
+      "image": "book-images/recbook_predict_童书_6.jpg",
       "recommend_time": "6月",
       "isbn": "9787549293766"
     },
     {
       "title": "儿童文学世界名著",
-      "rank": 3,
-      "image": "book-images/recbook_predict_童书_3.jpg",
+      "rank": 7,
+      "image": "book-images/recbook_predict_童书_7.jpg",
       "recommend_time": "6月",
       "isbn": "8820220913"
     },
     {
       "title": "财商启蒙",
-      "rank": 4,
-      "image": "book-images/recbook_predict_童书_4.jpg",
+      "rank": 8,
+      "image": "book-images/recbook_predict_童书_8.jpg",
       "recommend_time": "6月",
       "isbn": "9787558197321"
     },
     {
       "title": "写给孩子的古文观止",
-      "rank": 5,
-      "image": "book-images/recbook_predict_童书_5.jpg",
+      "rank": 9,
+      "image": "book-images/recbook_predict_童书_9.jpg",
       "recommend_time": "6月",
       "isbn": "9787548087045"
     },
     {
       "title": "漫画儿童经济学",
-      "rank": 6,
-      "image": "book-images/recbook_predict_童书_6.jpg",
+      "rank": 10,
+      "image": "book-images/recbook_predict_童书_10.jpg",
       "recommend_time": "6月",
       "isbn": "9787569950663"
     },
     {
       "title": "这就是数学小学数学漫画启蒙",
-      "rank": 7,
-      "image": "book-images/recbook_predict_童书_7.jpg",
+      "rank": 11,
+      "image": "book-images/recbook_predict_童书_11.jpg",
       "recommend_time": "6月",
       "isbn": "9787116122215"
     },
     {
       "title": "漫画山海经",
-      "rank": 8,
+      "rank": 12,
       "publisher": "三环出版社",
-      "image": "book-images/recbook_predict_童书_8.jpg",
+      "image": "book-images/recbook_predict_童书_12.jpg",
       "recommend_time": "6月",
       "isbn": "9787807732389"
     },
     {
       "title": "意林励志",
-      "rank": 9,
+      "rank": 13,
       "publisher": "长江出版社",
-      "image": "book-images/recbook_predict_童书_9.jpg",
+      "image": "book-images/recbook_predict_童书_13.jpg",
       "recommend_time": "6月",
       "isbn": "9787500183617"
     },
     {
       "title": "【全彩10册】3-6岁幼儿绘本儿童情绪管理",
-      "rank": 10,
+      "rank": 14,
       "author": "张芳",
       "publisher": "应急管理出版社",
-      "image": "book-images/recbook_predict_童书_10.jpg",
+      "image": "book-images/recbook_predict_童书_14.jpg",
       "recommend_time": "6月",
       "isbn": "9787523712313"
     },
     {
       "title": "我命由我不由天",
-      "rank": 11,
+      "rank": 15,
       "author": "(法)圣·埃克苏佩里著;胡跃编译",
       "publisher": "应急管理出版社",
-      "image": "book-images/recbook_predict_童书_11.jpg",
+      "image": "book-images/recbook_predict_童书_15.jpg",
       "recommend_time": "6月",
       "isbn": "9787502086572"
     },
     {
       "title": "朝花夕拾",
-      "rank": 12,
+      "rank": 16,
       "publisher": "朝华出版社",
-      "image": "book-images/recbook_predict_童书_12.jpg",
+      "image": "book-images/recbook_predict_童书_16.jpg",
       "recommend_time": "6月",
       "isbn": "9787520520072"
     },
     {
       "title": "蛤蟆先生去看心理医生",
-      "rank": 13,
+      "rank": 17,
       "author": "罗伯特・戴博德（英）",
       "publisher": "北京联合出版公司",
-      "image": "book-images/recbook_predict_童书_13.jpg",
+      "image": "book-images/recbook_predict_童书_17.jpg",
       "recommend_time": "6月",
       "isbn": "9787559652070"
     },
     {
       "title": "青春期情绪密码",
-      "rank": 14,
+      "rank": 18,
       "author": "丽莎・达穆尔（美）",
       "publisher": "湖南教育出版社",
-      "image": "book-images/recbook_predict_童书_14.jpg",
+      "image": "book-images/recbook_predict_童书_18.jpg",
       "recommend_time": "6月",
       "isbn": "9787575400978"
     },
     {
       "title": "情绪低落，怎么办？—— 青少年应对抑郁情绪指南",
-      "rank": 15,
+      "rank": 19,
       "author": "杰奎琳・B. 托纳、克莱尔・A.B. 弗里兰（美）",
       "publisher": "化学工业出版社",
-      "image": "book-images/recbook_predict_童书_15.jpg",
+      "image": "book-images/recbook_predict_童书_19.jpg",
       "recommend_time": "6月",
       "isbn": "9787122322142"
     },
     {
       "title": "做不暴躁的孩子（漫画版）",
-      "rank": 16,
+      "rank": 20,
       "author": "张琦",
       "publisher": "北方妇女儿童出版社",
-      "image": "book-images/recbook_predict_童书_16.jpg",
+      "image": "book-images/recbook_predict_童书_20.jpg",
       "recommend_time": "6月",
       "isbn": "9787558564587"
     },
     {
       "title": "和情绪做朋友：6–12 岁情绪管理书",
-      "rank": 17,
+      "rank": 21,
       "author": "琳恩・莱昂斯（美）",
       "publisher": "中国轻工业出版社",
-      "image": "book-images/recbook_predict_童书_17.jpg",
+      "image": "book-images/recbook_predict_童书_21.jpg",
       "recommend_time": "6月",
       "isbn": "9787518439674"
     },
     {
       "title": "自驱型成长：如何科学有效培养孩子的自律",
-      "rank": 18,
+      "rank": 22,
       "author": "威廉・斯蒂克斯鲁德、奈德・约翰逊（美）",
       "publisher": "北京联合出版公司",
-      "image": "book-images/recbook_predict_童书_18.jpg",
+      "image": "book-images/recbook_predict_童书_22.jpg",
       "recommend_time": "6月",
       "isbn": "9787559622561"
     },
     {
       "title": "情绪急救：应对各种日常心理伤害的策略与方法",
-      "rank": 19,
+      "rank": 23,
       "author": "盖伊・温奇（美）",
       "publisher": "北京联合出版公司",
-      "image": "book-images/recbook_predict_童书_19.jpg",
+      "image": "book-images/recbook_predict_童书_23.jpg",
       "recommend_time": "6月",
       "isbn": "9787550254194"
     },
     {
       "title": "了不起的我：自我发展的心理学",
-      "rank": 20,
+      "rank": 24,
       "author": "陈海贤",
       "publisher": "中信出版社",
-      "image": "book-images/recbook_predict_童书_20.jpg",
+      "image": "book-images/recbook_predict_童书_24.jpg",
       "recommend_time": "6月",
       "isbn": "9787508699675"
     },
     {
       "title": "被讨厌的勇气",
-      "rank": 21,
+      "rank": 25,
       "author": "岸见一郎、古贺史健（日）",
       "publisher": "机械工业出版社",
-      "image": "book-images/recbook_predict_童书_21.jpg",
+      "image": "book-images/recbook_predict_童书_25.jpg",
       "recommend_time": "6月",
       "isbn": "9787111491605"
     },
     {
       "title": "每一次不服输，都在改写命运",
-      "rank": 22,
+      "rank": 26,
       "author": "意林编辑部",
       "publisher": "吉林摄影出版社",
-      "image": "book-images/recbook_predict_童书_22.jpg",
+      "image": "book-images/recbook_predict_童书_26.jpg",
       "recommend_time": "6月",
       "isbn": "9787549848768"
     },
     {
       "title": "写给青少年的心理自愈书",
-      "rank": 23,
+      "rank": 27,
       "author": "王萍",
       "publisher": "中国纺织出版社",
-      "image": "book-images/recbook_predict_童书_23.jpg",
+      "image": "book-images/recbook_predict_童书_27.jpg",
       "recommend_time": "6月",
       "isbn": "9787518083587"
     },
     {
       "title": "我到底怎么了：青少年心理健康指南",
-      "rank": 24,
+      "rank": 28,
       "author": "奥利维亚・格雷（英）",
       "publisher": "北京联合出版公司",
-      "image": "book-images/recbook_predict_童书_24.jpg",
+      "image": "book-images/recbook_predict_童书_28.jpg",
       "recommend_time": "6月",
       "isbn": "9787559648646"
     },
     {
       "title": "坦率地说：给青少年的心理手册",
-      "rank": 25,
+      "rank": 29,
       "author": "尼尔斯・英格曼、玛丽安娜・英格曼（挪威）",
       "publisher": "中信出版社",
-      "image": "book-images/recbook_predict_童书_25.jpg",
+      "image": "book-images/recbook_predict_童书_29.jpg",
       "recommend_time": "6月",
       "isbn": "9787521738940"
     },
     {
       "title": "青少年正念：每天 10 分钟，让孩子更专注、更平和、更有韧性",
-      "rank": 26,
+      "rank": 30,
       "author": "珍妮・玛丽・巴蒂斯汀（美）",
       "publisher": "机械工业出版社",
-      "image": "book-images/recbook_predict_童书_26.jpg",
+      "image": "book-images/recbook_predict_童书_30.jpg",
       "recommend_time": "6月",
       "isbn": "9787111734599"
     },
     {
       "title": "渡过：青少年抑郁康复家庭指南",
-      "rank": 27,
+      "rank": 31,
       "author": "张进、渡过团队",
       "publisher": "机械工业出版社",
-      "image": "book-images/recbook_predict_童书_27.jpg",
+      "image": "book-images/recbook_predict_童书_31.jpg",
       "recommend_time": "6月",
       "isbn": "9787111766323"
     },
     {
       "title": "与青春期和解：如何解决青春期关键问题",
-      "rank": 28,
+      "rank": 32,
       "author": "凯文・莱曼（美）",
       "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_predict_童书_28.jpg",
+      "image": "book-images/recbook_predict_童书_32.jpg",
       "recommend_time": "6月",
       "isbn": "9787115539648"
     },
     {
       "title": "青春期心理学：青少年的成长、发展和面临的问题（原书第 14 版）",
-      "rank": 29,
+      "rank": 33,
       "author": "金・盖尔・多金（美）",
       "publisher": "机械工业出版社",
-      "image": "book-images/recbook_predict_童书_29.jpg",
+      "image": "book-images/recbook_predict_童书_33.jpg",
       "recommend_time": "6月",
       "isbn": "9787111689706"
     },
     {
       "title": "男生，我大声对你说",
-      "rank": 30,
+      "rank": 34,
       "author": "毕淑敏",
       "publisher": "中国妇女出版社",
-      "image": "book-images/recbook_predict_童书_30.jpg",
+      "image": "book-images/recbook_predict_童书_34.jpg",
       "recommend_time": "6月",
       "isbn": "9787512713524"
     },
     {
       "title": "女生，我悄悄对你说",
-      "rank": 31,
+      "rank": 35,
       "author": "毕淑敏",
       "publisher": "中国妇女出版社",
-      "image": "book-images/recbook_predict_童书_31.jpg",
+      "image": "book-images/recbook_predict_童书_35.jpg",
       "recommend_time": "6月",
       "isbn": "9787512713531"
     },
     {
       "title": "青春期不烦恼：给孩子的心理成长手册（漫画版）",
-      "rank": 32,
+      "rank": 36,
       "author": "李付沐瞳、奚铭霞",
       "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_predict_童书_32.jpg",
+      "image": "book-images/recbook_predict_童书_36.jpg",
       "recommend_time": "6月",
       "isbn": "9787115650481"
     },
     {
       "title": "我的情绪小怪兽",
-      "rank": 33,
+      "rank": 37,
       "author": "文·图/[西班牙]安娜·耶纳斯译/叶淑吟",
       "publisher": "四川少年儿童出版社",
-      "image": "book-images/recbook_predict_童书_33.jpg",
+      "image": "book-images/recbook_predict_童书_37.jpg",
       "recommend_time": "6月",
       "isbn": "9787572808470"
     },
     {
       "title": "大中华寻宝系列",
-      "rank": 34,
+      "rank": 38,
       "author": "孙家裕",
       "publisher": "二十一世纪出版社集团",
-      "image": "book-images/recbook_predict_童书_34.jpg",
+      "image": "book-images/recbook_predict_童书_38.jpg",
       "recommend_time": "6月",
       "isbn": "9787556869817"
     },
     {
       "title": "十万个为什么",
-      "rank": 35,
+      "rank": 39,
       "author": "十万个为什么编辑出版中心",
       "publisher": "少年儿童出版社",
-      "image": "book-images/recbook_predict_童书_35.jpg",
+      "image": "book-images/recbook_predict_童书_39.jpg",
       "recommend_time": "6月",
       "isbn": "9787558911002"
     },
     {
       "title": "三国演义绘本",
-      "rank": 36,
+      "rank": 40,
       "publisher": "中信出版集团",
-      "image": "book-images/recbook_predict_童书_36.jpg",
+      "image": "book-images/recbook_predict_童书_40.jpg",
       "recommend_time": "6月",
       "isbn": "2025112700420"
     },
     {
       "title": "100层的房子系列",
-      "rank": 37,
+      "rank": 41,
       "author": "岩井俊雄著",
       "publisher": "北京科学技术出版社",
-      "image": "book-images/recbook_predict_童书_37.jpg",
+      "image": "book-images/recbook_predict_童书_41.jpg",
       "recommend_time": "6月",
       "isbn": "9787571439316"
     },
     {
       "title": "我想去看海/想有颗星星/有个弟弟/找回太阳/爱小黑",
-      "rank": 38,
+      "rank": 42,
       "author": "[法]克利斯提昂·约里波瓦心文 [法]克利斯提昂·艾利旌众图郑迪蔚公译",
       "publisher": "二十一世纪出版社",
-      "image": "book-images/recbook_predict_童书_38.jpg",
+      "image": "book-images/recbook_predict_童书_42.jpg",
       "recommend_time": "6月",
       "isbn": "7556805002313"
     },
     {
       "title": "米吴科学漫画·奇妙万象篇",
-      "rank": 39,
+      "rank": 43,
       "author": "未华童书",
       "publisher": "二十一世纪出版社集团",
-      "image": "book-images/recbook_predict_童书_39.jpg",
+      "image": "book-images/recbook_predict_童书_43.jpg",
       "recommend_time": "6月",
       "isbn": "14453643"
     },
     {
       "title": "青蛙和蟾蜍",
-      "rank": 40,
+      "rank": 44,
       "author": "文·图/[美]艾诺·洛贝尔 译/潘人木党英台",
       "publisher": "明天出版社",
-      "image": "book-images/recbook_predict_童书_40.jpg",
+      "image": "book-images/recbook_predict_童书_44.jpg",
       "recommend_time": "6月",
       "isbn": "9787570807864"
     },
     {
       "title": "中国儿童百科全书",
-      "rank": 41,
+      "rank": 45,
       "author": "《中国儿童百科全书》编委会",
       "publisher": "中国大百科全书出版社",
-      "image": "book-images/recbook_predict_童书_41.jpg",
+      "image": "book-images/recbook_predict_童书_45.jpg",
       "recommend_time": "6月",
       "isbn": "9787520211130"
     },
     {
       "title": "儿童科学大百科",
-      "rank": 42,
+      "rank": 46,
       "author": "巨童文化",
       "publisher": "中国大百科全书出版社",
-      "image": "book-images/recbook_predict_童书_42.jpg",
+      "image": "book-images/recbook_predict_童书_46.jpg",
       "recommend_time": "6月",
       "isbn": "9787545577341"
     },
     {
       "title": "彩虹色的花",
-      "rank": 43,
+      "rank": 47,
       "publisher": "二十一世纪出版社集团",
-      "image": "book-images/recbook_predict_童书_43.jpg",
+      "image": "book-images/recbook_predict_童书_47.jpg",
       "recommend_time": "6月",
       "isbn": "9787556834280"
     },
     {
       "title": "思考世界的孩子",
-      "rank": 44,
+      "rank": 48,
       "publisher": "中信出版集团",
-      "image": "book-images/recbook_predict_童书_44.jpg",
+      "image": "book-images/recbook_predict_童书_48.jpg",
       "recommend_time": "6月",
       "isbn": "9787521757477"
     },
     {
       "title": "怪兽商业街从小培养孩子财商学习经营",
-      "rank": 45,
+      "rank": 49,
       "publisher": "天地出版社",
-      "image": "book-images/recbook_predict_童书_45.jpg",
+      "image": "book-images/recbook_predict_童书_49.jpg",
       "recommend_time": "6月",
       "isbn": "9787545566949"
     },
     {
       "title": "有趣的物理",
-      "rank": 46,
+      "rank": 50,
       "publisher": "北京日报出版社",
-      "image": "book-images/recbook_predict_童书_46.jpg",
+      "image": "book-images/recbook_predict_童书_50.jpg",
       "recommend_time": "6月",
       "isbn": "9787547731710"
     },
     {
       "title": "给孩子的科幻绘本",
-      "rank": 47,
+      "rank": 51,
       "publisher": "人民邮电出版社",
-      "image": "book-images/recbook_predict_童书_47.jpg",
+      "image": "book-images/recbook_predict_童书_51.jpg",
       "recommend_time": "6月",
       "isbn": "20220061E"
     },
     {
       "title": "DK儿童海洋百科全书",
-      "rank": 48,
+      "rank": 52,
       "publisher": "中国大百科全书出版社",
-      "image": "book-images/recbook_predict_童书_48.jpg",
+      "image": "book-images/recbook_predict_童书_52.jpg",
       "recommend_time": "6月",
       "isbn": "9787520200851"
     },
     {
       "title": "大中国美食环游记",
-      "rank": 49,
+      "rank": 53,
       "author": "海豚传媒",
       "publisher": "新星出版社",
-      "image": "book-images/recbook_predict_童书_49.jpg",
+      "image": "book-images/recbook_predict_童书_53.jpg",
       "recommend_time": "6月",
       "isbn": "9787513362412"
     },
     {
       "title": "神奇校车小百科",
-      "rank": 50,
+      "rank": 54,
       "author": "[美]汤姆·杰克逊著，[美]卡罗琳·布拉肯绘",
       "publisher": "贵州人民出版社",
-      "image": "book-images/recbook_predict_童书_50.jpg",
+      "image": "book-images/recbook_predict_童书_54.jpg",
       "recommend_time": "6月",
       "isbn": "9787221175670"
     }
   ],
   "教辅推荐书单": [
     {
-      "title": "初中提分笔记",
+      "title": "这才是我要的大学+这才是我要的专业",
       "rank": 1,
+      "image": "book-images/recbook_predict_教辅_1.jpg",
+      "recommend_time": "6月",
+      "isbn": "1191990663105"
+    },
+    {
+      "title": "趣味速记.初中数理化一本全",
+      "rank": 2,
+      "publisher": "青岛出版社",
+      "image": "book-images/recbook_predict_教辅_2.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787573634375"
+    },
+    {
+      "title": "涂重点预备新三年级英语",
+      "rank": 3,
+      "publisher": "吉林教育出版社",
+      "image": "book-images/recbook_predict_教辅_3.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787573440570"
+    },
+    {
+      "title": "作文金句小纸条",
+      "rank": 4,
+      "publisher": "台海出版社",
+      "image": "book-images/recbook_predict_教辅_4.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787516842317"
+    },
+    {
+      "title": "小学教材帮",
+      "rank": 5,
+      "publisher": "南京师范大学出版社",
+      "image": "book-images/recbook_predict_教辅_5.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787565169922"
+    },
+    {
+      "title": "暑期42天打规划",
+      "rank": 6,
+      "publisher": "江西人民出版社",
+      "image": "book-images/recbook_predict_教辅_6.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787210164036"
+    },
+    {
+      "title": "看图说话幼小衔接",
+      "rank": 7,
+      "publisher": "黑龙江美术出版社",
+      "image": "book-images/recbook_predict_教辅_7.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787575509954"
+    },
+    {
+      "title": "预习新初一",
+      "rank": 8,
+      "publisher": "东北师范大学出版社",
+      "image": "book-images/recbook_predict_教辅_8.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787577123950"
+    },
+    {
+      "title": "学霸速记",
+      "rank": 9,
+      "publisher": "湖南师范大学出版社",
+      "image": "book-images/recbook_predict_教辅_9.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787564831752"
+    },
+    {
+      "title": "新版随堂笔记下册",
+      "rank": 10,
+      "publisher": "新疆生产建设兵团出版社",
+      "image": "book-images/recbook_predict_教辅_10.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787557420406"
+    },
+    {
+      "title": "高中预习视频课",
+      "rank": 11,
+      "publisher": "漓江出版社",
+      "image": "book-images/recbook_predict_教辅_11.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787580108395"
+    },
+    {
+      "title": "文言文古诗词漫画笔记",
+      "rank": 12,
+      "image": "book-images/recbook_predict_教辅_12.jpg",
+      "recommend_time": "6月",
+      "isbn": "9787575411578"
+    },
+    {
+      "title": "初中提分笔记",
+      "rank": 13,
       "author": "峰阅教研组",
       "publisher": "浙江大学出版社",
-      "image": "book-images/recbook_predict_教辅_1.jpg",
+      "image": "book-images/recbook_predict_教辅_13.jpg",
       "recommend_time": "6月",
       "isbn": "9787308257770"
     },
     {
       "title": "不一样的九九乘除法",
-      "rank": 2,
+      "rank": 14,
       "author": "徐志兴",
       "publisher": "北京日报出版社",
-      "image": "book-images/recbook_predict_教辅_2.jpg",
+      "image": "book-images/recbook_predict_教辅_14.jpg",
       "recommend_time": "6月",
       "isbn": "9787547752500"
     },
     {
       "title": "作文与素材",
-      "rank": 3,
+      "rank": 15,
       "author": "峰阅教研组",
       "publisher": "山东大学出版社",
-      "image": "book-images/recbook_predict_教辅_3.jpg",
+      "image": "book-images/recbook_predict_教辅_15.jpg",
       "recommend_time": "6月",
       "isbn": "9787557033453"
     },
     {
       "title": "初中秒解数理化",
-      "rank": 4,
+      "rank": 16,
       "author": "刘大勇",
       "publisher": "延边教育出版社",
-      "image": "book-images/recbook_predict_教辅_4.jpg",
+      "image": "book-images/recbook_predict_教辅_16.jpg",
       "recommend_time": "6月",
       "isbn": "9787572448317"
     },
     {
       "title": "漫画趣味数理化启蒙",
-      "rank": 5,
+      "rank": 17,
       "publisher": "广东旅游出版社",
-      "image": "book-images/recbook_predict_教辅_5.jpg",
+      "image": "book-images/recbook_predict_教辅_17.jpg",
       "recommend_time": "6月",
       "isbn": "9787570538577"
     },
     {
       "title": "小学同步作文练字贴",
-      "rank": 6,
+      "rank": 18,
       "publisher": "陕西人民美术出版社",
-      "image": "book-images/recbook_predict_教辅_6.jpg",
+      "image": "book-images/recbook_predict_教辅_18.jpg",
       "recommend_time": "6月",
       "isbn": "9787536843929"
     },
     {
       "title": "背记清单.初中历史",
-      "rank": 7,
+      "rank": 19,
       "author": "徐春龙",
       "publisher": "北京时代华文书局",
-      "image": "book-images/recbook_predict_教辅_7.jpg",
+      "image": "book-images/recbook_predict_教辅_19.jpg",
       "recommend_time": "6月",
       "isbn": "9787569958454"
     },
     {
       "title": "语数英人教版教材",
-      "rank": 8,
+      "rank": 20,
       "publisher": "人民教育出版社",
-      "image": "book-images/recbook_predict_教辅_8.jpg",
+      "image": "book-images/recbook_predict_教辅_20.jpg",
       "recommend_time": "6月",
       "isbn": "9787107397547"
     },
     {
       "title": "新课堂笔记",
-      "rank": 9,
+      "rank": 21,
       "publisher": "青岛出版社",
-      "image": "book-images/recbook_predict_教辅_9.jpg",
+      "image": "book-images/recbook_predict_教辅_21.jpg",
       "recommend_time": "6月",
       "isbn": "9787573633507"
     },
     {
       "title": "暑假一本通",
-      "rank": 10,
-      "image": "book-images/recbook_predict_教辅_10.jpg",
+      "rank": 22,
+      "image": "book-images/recbook_predict_教辅_22.jpg",
       "recommend_time": "6月",
       "isbn": "9787521511604"
     },
     {
       "title": "暑假42天预习规划",
-      "rank": 11,
-      "image": "book-images/recbook_predict_教辅_11.jpg",
+      "rank": 23,
+      "image": "book-images/recbook_predict_教辅_23.jpg",
       "recommend_time": "6月",
       "isbn": "9787210169253"
     },
     {
       "title": "【暑假预复习一本通】语数英三科合一",
-      "rank": 12,
-      "image": "book-images/recbook_predict_教辅_12.jpg",
+      "rank": 24,
+      "image": "book-images/recbook_predict_教辅_24.jpg",
       "recommend_time": "6月",
       "isbn": "9787572452727"
     },
     {
       "title": "漫画中华文化1000问",
-      "rank": 13,
-      "image": "book-images/recbook_predict_教辅_13.jpg",
+      "rank": 25,
+      "image": "book-images/recbook_predict_教辅_25.jpg",
       "recommend_time": "6月",
       "isbn": "9787553699424"
     },
     {
       "title": "小学暑假衔接 语数英预复习一本通",
-      "rank": 14,
-      "image": "book-images/recbook_predict_教辅_14.jpg",
+      "rank": 26,
+      "image": "book-images/recbook_predict_教辅_26.jpg",
       "recommend_time": "6月",
       "isbn": "9787571627850"
     },
     {
       "title": "中国文化1000问",
-      "rank": 15,
-      "image": "book-images/recbook_predict_教辅_15.jpg",
+      "rank": 27,
+      "image": "book-images/recbook_predict_教辅_27.jpg",
       "recommend_time": "6月",
       "isbn": "9787201204222"
     },
     {
       "title": "高中文言文",
-      "rank": 16,
-      "image": "book-images/recbook_predict_教辅_16.jpg",
+      "rank": 28,
+      "image": "book-images/recbook_predict_教辅_28.jpg",
       "recommend_time": "6月",
       "isbn": "9787553981444"
     },
     {
       "title": "预备一年级",
-      "rank": 17,
-      "image": "book-images/recbook_predict_教辅_17.jpg",
+      "rank": 29,
+      "image": "book-images/recbook_predict_教辅_29.jpg",
       "recommend_time": "6月",
       "isbn": "9787210162964"
     },
     {
       "title": "预备新初一",
-      "rank": 18,
-      "image": "book-images/recbook_predict_教辅_18.jpg",
+      "rank": 30,
+      "image": "book-images/recbook_predict_教辅_30.jpg",
       "recommend_time": "6月",
       "isbn": "9787553980683"
     },
     {
       "title": "幼小衔接语数拼音口算应用题专项训练",
-      "rank": 19,
-      "image": "book-images/recbook_predict_教辅_19.jpg",
+      "rank": 31,
+      "image": "book-images/recbook_predict_教辅_31.jpg",
       "recommend_time": "6月",
       "isbn": "9787556880201"
     },
     {
       "title": "文言文导读之古文观止篇+康辉咬文嚼字",
-      "rank": 20,
-      "image": "book-images/recbook_predict_教辅_20.jpg",
+      "rank": 32,
+      "image": "book-images/recbook_predict_教辅_32.jpg",
       "recommend_time": "6月",
       "isbn": "9787523705803"
     },
     {
       "title": "秒记初中一本通",
-      "rank": 21,
-      "image": "book-images/recbook_predict_教辅_21.jpg",
+      "rank": 33,
+      "image": "book-images/recbook_predict_教辅_33.jpg",
       "recommend_time": "6月",
       "isbn": "9787540896232"
     },
     {
       "title": "这就是数学小学数学漫画启蒙",
-      "rank": 22,
-      "image": "book-images/recbook_predict_教辅_22.jpg",
+      "rank": 34,
+      "image": "book-images/recbook_predict_教辅_34.jpg",
       "recommend_time": "6月",
       "isbn": "9787116122215"
     },
     {
       "title": "读者35周年美文珍藏版",
-      "rank": 23,
-      "image": "book-images/recbook_predict_教辅_23.jpg",
+      "rank": 35,
+      "image": "book-images/recbook_predict_教辅_35.jpg",
       "recommend_time": "6月",
       "isbn": "9787542247230"
     },
     {
       "title": "大语文素材词典",
-      "rank": 24,
-      "image": "book-images/recbook_predict_教辅_24.jpg",
+      "rank": 36,
+      "image": "book-images/recbook_predict_教辅_36.jpg",
       "recommend_time": "6月",
       "isbn": "9787553992426"
     },
     {
       "title": "漫画论语+趣味大百科",
-      "rank": 25,
-      "image": "book-images/recbook_predict_教辅_25.jpg",
+      "rank": 37,
+      "image": "book-images/recbook_predict_教辅_37.jpg",
       "recommend_time": "6月",
       "isbn": "9787573908780"
     },
     {
       "title": "小初高必备文学文化常识",
-      "rank": 26,
-      "image": "book-images/recbook_predict_教辅_26.jpg",
+      "rank": 38,
+      "image": "book-images/recbook_predict_教辅_38.jpg",
       "recommend_time": "6月",
       "isbn": "9787553998138"
     },
     {
       "title": "高考核心考点专项突破",
-      "rank": 27,
-      "image": "book-images/recbook_predict_教辅_27.jpg",
+      "rank": 39,
+      "image": "book-images/recbook_predict_教辅_39.jpg",
       "recommend_time": "6月",
       "isbn": "9787201186801"
     },
     {
       "title": "高中思维知识大盘点",
-      "rank": 28,
-      "image": "book-images/recbook_predict_教辅_28.jpg",
+      "rank": 40,
+      "image": "book-images/recbook_predict_教辅_40.jpg",
       "recommend_time": "6月",
       "isbn": "9787548959014"
     }
   ],
   "社科推荐书单": [
     {
-      "title": "这才是我要的大学+这才是我要的专业",
+      "title": "乡土中国",
       "rank": 1,
+      "publisher": "中国文联出版社",
       "image": "book-images/recbook_predict_社科_1.jpg",
-      "recommend_time": "6月",
-      "isbn": "1191990663105"
+      "isbn": "9787555286240"
     },
     {
       "title": "懂比爱更重要",

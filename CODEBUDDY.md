@@ -89,6 +89,7 @@ repo/
 
 | 日期 | 设备 | 摘要 |
 |---|---|---|
+| 2026-06-02 | office | **预测推荐书单二次更新**：xlsx (2) → 224 本（教辅 40 + 12 / 童书 54 + 4 / 社科 63 / 健康 67），每品类 rank 独立从 1。脚本同步加 PIL 压缩兜底（PNG 也走 300px JPEG q82），256MB → 5MB；recommend-data.js 路径统一 .jpg。 |
 | 2026-06-02 | office | **首次 SOP 实战**：周榜单同步 6/1 周（rank-data.js 增量追加 21 期 + HOT_BOOK_BREAKDOWN 新增 6/1 三本代表书 + 默认切到 6/1）。三本代表书：这样吃长更高（健康基本盘）、中国立体书（童书机会盘 · 霸榜 2 周）、漫画帝王家书（童书潜力品 · 霸榜 2 周）。新增 `scripts/append_week_to_rank_data.py`（增量追加 + 协同安全）。修复 `parse_rank_excel.py` 的 `_infer_year` 基准 5/25→6/1（commit 97444aa） |
 | 2026-06-02 | office | 大脑文档第 13 节《周榜单同步 SOP》落地 + scripts/extract_predict_books.py 进 repo 智能识别两种布局（commit aa626cc） |
 | 2026-06-01 | jiangxinbei | #p4 怪长电商书名导致搜索 0 命中修复 + 图书内容提取报告补齐目录/前言/核心内容（commit 252277c / 20e1392） |
