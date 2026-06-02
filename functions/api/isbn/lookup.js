@@ -62,6 +62,33 @@ function fetchWithTimeout(url, opts, timeoutMs) {
 }
 
 // ---------------- 数据源 1：data.isbn.work（优先级最高，给更长超时） ----------------
+// 🧹 全局：电商卖点尾巴清洗（isbn.work / 当当 共用）
+//    解决 ISBN 国内库 + 当当 h1 经常被电商塞卖点关键词，例：
+//      '这样吃长更高 给孩子的长高营养食谱学之舟0-18岁儿童青少年科学长高秘籍告别焦虑家常易做营养均衡干预后天助力抓住成长黄金期'
+//      '漫画帝王家书修言行练处世谋略写给孩子的成长指南教育启蒙书籍'
+//    清洗后真书名应是「这样吃长更高」「漫画帝王家书」。
+function trimEcommerceTail(t) {
+  if (!t || t.length <= 12) return t; // 短书名一律不动
+  const strongNoise = /(给孩子|给宝宝|给学生|适合\S{0,8}(读|看|学|阅读|的孩子)|\d+[\-—]\d+[岁年级]|送给|认准.{0,4}正版|当当自营|自营同款|同款书籍|速发|顺丰|秘籍|告别焦虑|家常易做|抓住成长|后天助力|科学长高|营养均衡|教育启蒙|启蒙书籍|成长指南|内心强大|课外读物|课外阅读|畅销品|假一罚十|包邮速发)/;
+  const m1 = t.match(strongNoise);
+  if (m1 && m1.index > 0) {
+    let cut = m1.index;
+    // 往前找最近的空格 / 标点 / 加号让截断点更自然
+    for (let p = cut - 1; p >= Math.max(0, cut - 8); p -= 1) {
+      if (/[\s，,、+｜|·]/.test(t[p])) { cut = p; break; }
+    }
+    t = t.slice(0, cut).trim();
+  }
+  // 仍长 → 在第一个空格/逗号处截
+  if (t.length > 30) {
+    const sp = t.search(/[\s，,]/);
+    if (sp > 4 && sp < 25) t = t.slice(0, sp).trim();
+  }
+  // 极端兜底
+  if (t.length > 30) t = t.slice(0, 14).trim();
+  return t;
+}
+
 async function fetchIsbnWork(isbn) {
   const url = 'https://data.isbn.work/openApi/getInfoByIsbn?isbn=' + isbn + '&appKey=ae1718d4587744b0b79f940fbef69e77';
   // isbn.work 是国内库覆盖最广的源，给 7s 超时（比其他源多 2.5s），4 源并行整体仍 ≤ 7s
@@ -75,11 +102,13 @@ async function fetchIsbnWork(isbn) {
   }
   const d = data.data;
   if (/次数不足|请求过快|api|key/i.test(d.bookName)) return { ok: false, reason: 'limited' };
+  // 清洗 bookName 的电商卖点尾巴（ISBN 国内库给的 bookName 几乎照抄电商标题，常含一长串卖点）
+  const cleanedTitle = trimEcommerceTail(String(d.bookName || '').trim());
   return {
     ok: true,
     source: 'ISBN国内数据库 (data.isbn.work)',
     sourceUrl: 'https://data.isbn.work/',
-    title: String(d.bookName || '').trim(),
+    title: cleanedTitle || String(d.bookName || '').trim(),
     authors: d.author || '',
     publisher: d.press || '',
     date: d.pressDate || '',
@@ -261,10 +290,15 @@ async function fetchDangdang(isbn) {
       cleanTitle = cleanTitle
         .replace(/\s+(编著|主编|主审|编|著|译)(\s+(编著|主编|主审|编|著|译))*\s*$/g, '')
         .replace(/\s+(著|编|主编|主审|译|编著)\s*/g, ' ')
-        .replace(/(正版|包邮|现货|新华书店|赠品|套装|平装|精装|博库|文轩|可开发票|官方)+/g, ' ')
+        .replace(/(正版|包邮|现货|新华书店|赠品|套装|平装|精装|博库|文轩|可开发票|官方|当当自营|自营同款)+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
-      if (cleanTitle) title = cleanTitle;
+
+      // 🧹 电商卖点尾巴清洗（共用全局 trimEcommerceTail，见文件顶部）
+      const beforeTrim = cleanTitle;
+      cleanTitle = trimEcommerceTail(cleanTitle);
+      if (cleanTitle && cleanTitle.length >= 2) title = cleanTitle;
+      else title = beforeTrim; // 极端情况下不要把书名清空
 
       const finalAuthors = /^(不详|未知|佚名)$/.test(authors) ? '' : authors;
 
