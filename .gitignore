@@ -56,3 +56,7 @@ workers/tracker-api/.wrangler/
 coscli
 coscli.log
 *.cos.yaml
+
+# 周榜单同步 SOP - xlsx 源文件不进 git（只保留 scripts/extract_predict_books.py 生成的 recommend-data.js）
+data/predict_recommend_*.xlsx
+data/*.xlsx

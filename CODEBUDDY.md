@@ -252,3 +252,119 @@ git pull --rebase origin main
 | 改暑期专栏 | `site_output/summer/index.html` |
 | 改 AI 营销助手 | `site_output/ai/index.html` |
 | 选品池→创意生产队列 | `site_output/assets/creative-inbox.js` |
+
+---
+
+## 13. 🆕 周榜单同步 SOP（用户口令："榜单同步"）
+
+> 用户的预测推荐书单维护在腾讯企微在线文档（https://doc.weixin.qq.com/sheet/e3_AWsAewbeAMY48OWAY7uSzurF1VF2A?tab=wuq1tk）。
+> 该文档需登录鉴权，CodeBuddy 工作区无法直接 fetch，所以采用 **半自动 SOP**：用户导出 xlsx → 拖给 CodeBuddy → 一键同步并部署。
+
+### 用户的触发条件
+
+当用户说出以下任一句话时，立即按本 SOP 执行：
+- **"榜单同步"** / **"同步榜单"** / **"同步选品台数据"** / **"周榜单更新"**
+
+且对话中附带了一个 **xlsx 文件**（一般是从企微文档导出的「2026 教育行业图书选品指南-直购链路」）。
+
+### CodeBuddy 自动执行步骤
+
+#### Step 1：把 xlsx 落到工作区
+
+把用户上传的 xlsx 复制到 `data/predict_recommend_YYYYMMDD.xlsx`（按当天日期命名），便于追溯历史。
+
+#### Step 2：跑提取脚本
+
+脚本位于工作区根目录（**不在 repo 内**，不进 git）：`scripts/extract_predict_books.py`
+
+```bash
+cd /Users/wangziyue/CodeBuddy/20260518163935
+# 把用户的 xlsx 拷到 data/ 目录（也可以直接传绝对路径）
+python3 scripts/extract_predict_books.py data/predict_recommend_YYYYMMDD.xlsx
+```
+
+> 脚本支持命令行参数：第 1 个参数 = xlsx 路径，省略则默认读 `data/predict_recommend_2026.xlsx`。
+
+脚本会自动：
+- 解析 4 个 sheet（教辅/童书/社科/健康）
+- 抽取每行 ISBN + 标题 + 作者 + 出版社 + 推荐投放时间 + AMS 准入情况
+- 抽取每行的嵌入封面图，自动 JPEG 压缩到 300px 宽
+- 写入 `repo/site_output/select/recommend-data.js`，每品类 rank 独立从 1
+
+#### Step 3：自动产出本周【跑量书洞察】草稿
+
+基于本周新榜单数据，从 ADQ 热投榜 Top3（一般在 xlsx 顶部 sheet 或独立 sheet 中）选 3 本代表书，仿照 `select-data.js` 中 `HOT_BOOK_BREAKDOWN` 的结构产出：
+
+```js
+{
+  week: '2026-XX-XX',  // 本周 ISO
+  top3: [
+    {
+      role:'#1 童书·立体书',     // 角色定位（基本盘/机会盘/潜力盘）
+      roleClass:'basic',
+      title:'XXX',
+      isbn:'97870000XXXXX',
+      image:'rank-images/imageXXX.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥XXX'},
+        {icon:'📊', label:'日销售额', val:'XX-XXW', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'X.X-X.X%', cls:'hot'}
+      ],
+      persona:'目标人群一句话（年龄段+身份+场景）',
+      creativeCore:'创意公式：场景切入 + 产品价值 + 用户感受'
+    },
+    // ...×3
+  ]
+}
+```
+
+**洞察生成原则**：
+- 客单/销售额/转化等数据**必须基于真实数据**（从 xlsx 中提取或对照已有 ADQ 实战榜数据），不要瞎编
+- 目标人群和创意核心可以基于 AI 推演，但要符合该书的品类常识
+- 严禁出现广告法违禁词（保过/必上岸/包过/最/第一/独家），AI 预审规则会拦
+- 客单价主推 50-150 元区间（用户上次明确要求过）
+
+#### Step 4：把【跑量书洞察】草稿展示给用户确认
+
+把生成的 3 张代表书卡内容渲染成 markdown 表格 + 改写建议给用户：
+
+```markdown
+## 本周跑量书洞察草稿（待你确认）
+
+### #1 [品类·主题]
+- 📕 书名：xxx | ISBN: xxx
+- 数据条：💰 ¥xxx · 📊 xx-xxW · 🎯 x.x-x.x%
+- 🎯 目标人群：xxx
+- 💡 创意核心：xxx
+
+（×3）
+
+——————————————————
+✅ 确认无误请回复"确认部署"
+✏️ 想改某条请直接告诉我"#2 创意核心改成：xxx"
+```
+
+#### Step 5：用户确认后才 push
+
+只有用户明确说"**确认部署**" / "**OK 部署**" / "**可以发布**" 后，才执行：
+
+```bash
+cd /Users/wangziyue/CodeBuddy/20260518163935/repo
+git add -A
+git commit -m "feat(select): 周榜单同步 YYYYMMDD - 4 大品类 XX 本 + 跑量书洞察 #X 期"
+git push origin main
+```
+
+CF Pages 几分钟自动构建部署到 https://book-hot-dashboard.pages.dev/select/
+
+#### Step 6：把摘要写进第 6 节优化历程
+
+在 `CODEBUDDY.md` 第 6 节最上面追加一行记录，方便后续追溯每周更新。
+
+### 不要做的事
+
+- ❌ 不要直接 push，**必须等用户确认跑量书洞察文案**
+- ❌ 不要瞎编客单价/转化数据 — 没有真实数据时直接标注 `(待补充)` 让用户填
+- ❌ 不要把 xlsx 二进制文件 commit 到 git（`data/*.xlsx` 走 .gitignore，仅本地保留）
+- ❌ 不要修改 `creativeCore` 里的客单价表述方向，主带 50-150 元（教辅/童书）/ 39-79（社科）/ 29-49（健康）
