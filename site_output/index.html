@@ -2960,22 +2960,35 @@ async function webSearchBook(bookTitle,isbn){
       .replace(/^\d+年?新版/,'')
       .replace(/^[\(（].*?[\)）]/,'')
       .trim();
-    var arr=[];
-    if(clean) arr.push(clean);
-    if(bookTitle && bookTitle!==clean) arr.push(bookTitle);
+    var src=clean||bookTitle||'';
     // 多分隔符切短语（书名号/空格/逗号/+/连接词；纯结构化分隔符，不含具体词）
     var sepRe=/[里的之与和及，,、+｜|·\s「」『』《》【】\[\]]+/;
-    var subs=(clean||bookTitle).split(sepRe).filter(function(s){return s.length>=3 && s.length<=12;});
+    var subs=src.split(sepRe).filter(function(s){return s.length>=3 && s.length<=12;});
+    // 🔑 候选排序原则：短前缀优先（最易在第三方页面命中），但不丢失长全名（保留作为强匹配验证）
+    //    长 bookTitle（>10 字纯连续中文 或 >12 字含分隔）很难在第三方搜索结果完整出现，必须用短前缀做 query 主体。
+    //    短前缀候选：前 4/6/8 字 三档（无关键词，纯结构化前缀截取）。
+    //    顺序：[短前缀 6 字 → 短前缀 8 字 → 子短语 → clean → bookTitle] —— qTitle 用 [0]（最短最易命中）
+    var arr=[];
+    var isPureCN=/^[\u4e00-\u9fa5]+$/.test(src);
+    // 长串/纯连续中文 → 短前缀优先（破坏性最低且最稳）
+    if(src.length>10 || (isPureCN && src.length>8)){
+      if(src.length>=6) arr.push(src.substring(0,6));
+      if(src.length>=8) arr.push(src.substring(0,8));
+    }
+    // 子短语按长度从短到长加入（短的更易在他人页面完整出现）
+    subs.sort(function(a,b){return a.length-b.length;});
     subs.slice(0,5).forEach(function(s){if(arr.indexOf(s)<0) arr.push(s);});
-    // 长书名兜底：取前 4 字 / 前 6 字作为最短锚点（无关键词，纯前缀截取）
-    var src=clean||bookTitle||'';
-    if(src.length>=4){var k4=src.substring(0,4); if(arr.indexOf(k4)<0) arr.push(k4);}
-    if(src.length>=6){var k6=src.substring(0,6); if(arr.indexOf(k6)<0) arr.push(k6);}
+    // clean / bookTitle 保留在末尾作为"完整书名验证"用（不会被 qTitle 取到，但用于结果过滤命中）
+    if(clean && arr.indexOf(clean)<0) arr.push(clean);
+    if(bookTitle && arr.indexOf(bookTitle)<0) arr.push(bookTitle);
+    // 短书名（≤ 8 字）兜底：如果上面什么也没加，至少保证 [bookTitle] 在
+    if(!arr.length) arr.push(src);
     return arr;
   })();
-  // 🔍 query 用的"短核心书名"：长怪标题（含电商卖点的）拿不到搜索结果，用清洗后的核心词当 query 主体
-  //    若 titleCoreKws[0] 比原 bookTitle 短（说明清洗去掉了卖点尾巴），用它；否则保持原书名
-  var qTitle=(titleCoreKws[0] && titleCoreKws[0].length<bookTitle.length-3) ? titleCoreKws[0] : bookTitle;
+  // 🔍 query 用的"短核心书名"：用 titleCoreKws[0]（按上面排序就是最短候选）
+  //    短前缀的优势：第三方页面（豆瓣/当当/出版社官网）的书名展示几乎一定包含书名前 6-8 字，
+  //    长怪 query 拼接电商卖点尾巴反而会拉回完全无关的同关键词书。
+  var qTitle=titleCoreKws[0] || bookTitle;
   // pubQuery：命中 site 时用 site:，否则用宽搜索
   var pubQuery=pubInfo&&pubInfo.site
     ? {q:'site:'+pubInfo.site+' 《'+qTitle+'》',                       fb:pubKw+' '+qTitle+' 新书 内容简介',            src:'publisher',weight:10, label:pubInfo.name}
