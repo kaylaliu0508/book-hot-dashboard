@@ -371,3 +371,45 @@ CF Pages 几分钟自动构建部署到 https://book-hot-dashboard.pages.dev/sel
 - ❌ 不要瞎编客单价/转化数据 — 没有真实数据时直接标注 `(待补充)` 让用户填
 - ❌ 不要把 xlsx 二进制文件 commit 到 git（`data/*.xlsx` 走 .gitignore，仅本地保留）
 - ❌ 不要修改 `creativeCore` 里的客单价表述方向，主带 50-150 元（教辅/童书）/ 39-79（社科）/ 29-49（健康）
+
+---
+
+## 14. 🚀 部署自动化（已落地）— push 即生效
+
+### 现状（2026-06-02 起）
+
+通过 `site_output/_headers` 配置，**所有数据 JS push 后 5 分钟内全网自动生效**，无需手动 purge 缓存或加版本号：
+
+| 路径 | CDN 缓存 | 生效时间 |
+|---|---|---|
+| `/select/rank-data*.js`（含 v 版本副本） | 5 分钟 | push 后 ≤ 5 min |
+| `/select/select-data*.js` | 5 分钟 | ≤ 5 min |
+| `/select/select-app*.js` | 5 分钟 | ≤ 5 min |
+| `/select/recommend-data*.js` | 5 分钟 | ≤ 5 min |
+| `/select/bench-data*.js` | 5 分钟 | ≤ 5 min |
+| `/index.html` / `/*/index.html` | 1 分钟 | ≤ 1 min |
+| 静态资源（图/字体/CSS） | 1 小时 ~ 7 天 | 按变化频率分级 |
+
+### CodeBuddy 在更新代码时不再需要做的事
+
+- ❌ ~~每次手动加 `?v=20260602b` 缓存破坏参数~~
+- ❌ ~~每次重命名文件为 `rank-data-v20260602.js` 来绕缓存~~
+- ❌ ~~让用户去 CF 控制台 Purge Cache~~
+- ❌ ~~让用户去 CF 控制台改 Build output directory~~
+
+### CodeBuddy 仍然要做的事
+
+- ✅ commit + push 后**主动用 curl 验证 5 分钟内线上是否同步**（确认 `_headers` 在新部署里仍有效）：
+
+```bash
+# 验证模板（替换 EXPECTED_KEYWORD 为本次更新的关键内容关键词）
+curl -sSL "https://book-hot-dashboard.pages.dev/select/rank-data.js" | grep -c "EXPECTED_KEYWORD"
+```
+
+- ✅ 如果 5 分钟后 curl 还拿到老内容，**先看 `_headers` 是否被改坏了**（cache-control 应该包含 `s-maxage=300`），其次检查 CF Pages Build output 配置是否变动
+
+### 历史遗留：双文件名同步
+
+`site_output/select/rank-data-v20260602.js` 是 6/2 那天紧急绕 CDN 留下的副本，未来周更新时：
+- **保持** `rank-data.js`（主文件）和 `rank-data-v20260602.js`（副本）**内容完全一致**（md5 相同）
+- `select/index.html` 引用的是 `rank-data-v20260602.js`，下次彻底 _headers 全节点失效后可以改回 `rank-data.js` + 删除副本

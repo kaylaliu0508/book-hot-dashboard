@@ -1,43 +1,65 @@
 # Cloudflare Pages 自定义响应头
 # 文档: https://developers.cloudflare.com/pages/configuration/headers/
 #
-# 优先级：上面规则覆盖下面，从上到下匹配。
-# 一旦命中匹配规则即应用所有 header（不会继续匹配下面）。
+# 规则：上面规则优先匹配，命中后不再匹配下面。
+# 目的：让数据 JS push 后 5 分钟内全网自动生效，无需手动 purge / 加版本号。
 
 # ============================================================
-# 1. 频繁更新的数据 JS / JSON —— 5 分钟 CDN 缓存（push 后 5 分钟内全网生效）
+# 1. 频繁更新的数据 JS（含历史版本副本）—— 5 分钟 CDN 缓存
 # ============================================================
 
-/select/rank-data.js
+# 通配匹配 select 目录下所有数据/逻辑 JS（包括 rank-data*.js / select-data*.js / select-app.js / recommend-data.js / bench-data.js / isbn-image-map.js / 任意 -v20260602 等版本副本）
+/select/rank-data*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-/select/select-data.js
+/select/select-data*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-/select/select-app.js
+/select/select-app*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-/select/recommend-data.js
+/select/recommend-data*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-/select/bench-data.js
+/select/bench-data*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-/select/isbn-image-map.js
+/select/isbn-image-map*.js
   Cache-Control: public, max-age=60, s-maxage=300, must-revalidate
 
-# 主入口 HTML —— 不缓存（每次都从 CF Pages 拉最新）
+# ============================================================
+# 2. 主入口 HTML（每次访问都重新校验最新版）
+# ============================================================
+
+/
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
 /index.html
   Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
 
 /select/index.html
   Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
 
-/
+/select/
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
+/summer/index.html
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
+/summer/
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
+/ai/index.html
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
+/ai/
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
+
+/stats/index.html
   Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
 
 # ============================================================
-# 2. 大体量但偶尔变动的 JS / CSS —— 1 小时 CDN 缓存
+# 3. 其他大体量 JS / CSS —— 1 小时 CDN 缓存
 # ============================================================
 
 /select/*.js
@@ -50,6 +72,6 @@
   Cache-Control: public, max-age=300, s-maxage=3600
 
 # ============================================================
-# 3. 其他静态资源（图片/字体）—— 保留默认 7 天 CDN 缓存
+# 4. 静态资源（图片/字体）—— 保留默认 CF 7 天 CDN 缓存（无需配置）
 # ============================================================
-# CF Pages 默认对静态资源设置 s-maxage=604800（7 天），无需额外配置
+
