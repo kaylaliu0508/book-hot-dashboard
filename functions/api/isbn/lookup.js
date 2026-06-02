@@ -118,7 +118,8 @@ function trimEcommerceTail(t) {
 }
 
 async function fetchIsbnWork(isbn) {
-  const url = 'https://data.isbn.work/openApi/getInfoByIsbn?isbn=' + isbn + '&appKey=ae1718d4587744b0b79f940fbef69e77';
+  // 私人 appKey（5100 次额度，2026-06-02 领取，独享配额避免与公共 key 抢资源）
+  const url = 'https://data.isbn.work/openApi/getInfoByIsbn?isbn=' + isbn + '&appKey=69b68942b3314eb79000850365a50047';
   // isbn.work 是国内库覆盖最广的源，给 7s 超时（比其他源多 2.5s），4 源并行整体仍 ≤ 7s
   const r = await fetchWithTimeout(url, { cf: { cacheTtl: 0 } }, 7000);
   if (!r.ok) return { ok: false, reason: 'HTTP ' + r.status };
