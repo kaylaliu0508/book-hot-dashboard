@@ -2948,33 +2948,27 @@ async function webSearchBook(bookTitle,isbn){
   var pressKw=(isbnBookInfo&&isbnBookInfo.publisher)?(' '+isbnBookInfo.publisher):'';
   // 🔑 提取书名核心关键词（用于宽松命中：长书名很难在第三方页面完整出现）
   // 策略：去版次前缀 + 去电商卖点噪声后缀 + 多种分隔符切短语 + 前 N 字截短，多角度生成核心关键词
+  // 提取书名核心关键词（纯结构化，不依赖电商关键词枚举）
+  // bookTitle 此时已被 lookup.js 的 trimEcommerceTail 清洗，但仍可能含版次/括号等元素。
+  // 我们生成多组核心词作为联网搜索结果"是否相关"的过滤白名单。
   var titleCoreKws=(function(){
     if(!bookTitle) return [];
-    // 去版次/版本/年份前缀
+    // 去版次/版本/年份前缀（结构化模式，不是关键词）
     var clean=bookTitle
       .replace(/^\d{2,4}版?[新最]?新?版?/,'')
       .replace(/^第[一二三四五六七八九十\d]+版/,'')
       .replace(/^\d+年?新版/,'')
       .replace(/^[\(（].*?[\)）]/,'')
       .trim();
-    // 去电商/编辑硬塞的卖点尾巴（这类标题在 ISBN 国内库常见，例：'漫画帝王家书写给孩子的成长指南教育启蒙书籍'）
-    var clean2=clean
-      .replace(/(写给|送给).*$/,'')
-      .replace(/适合.{2,20}(读|看|学|阅读|的孩子)?$/,'')
-      .replace(/(教育启蒙|启蒙书籍|成长指南|课外读物|课外阅读|内心强大).*$/,'')
-      .replace(/(套装|全套|全集|礼盒装|精装版|平装版|珍藏版|彩绘版|插画版).*$/,'')
-      .replace(/(正版|包邮|现货|赠品|新华书店|当当自营|博库|文轩).*$/,'')
-      .trim();
     var arr=[];
-    if(clean2 && clean2!==clean) arr.push(clean2); // 去尾巴的版本（命中率最高）
     if(clean) arr.push(clean);
     if(bookTitle && bookTitle!==clean) arr.push(bookTitle);
-    // 多分隔符切短语（书名号/空格/逗号/+/连接词）
+    // 多分隔符切短语（书名号/空格/逗号/+/连接词；纯结构化分隔符，不含具体词）
     var sepRe=/[里的之与和及，,、+｜|·\s「」『』《》【】\[\]]+/;
-    var subs=(clean2||clean||bookTitle).split(sepRe).filter(function(s){return s.length>=3 && s.length<=12;});
+    var subs=(clean||bookTitle).split(sepRe).filter(function(s){return s.length>=3 && s.length<=12;});
     subs.slice(0,5).forEach(function(s){if(arr.indexOf(s)<0) arr.push(s);});
-    // 长书名兜底：取前 4 字 / 前 6 字作为最短锚点（4-6 字基本是国内书名核心词长度）
-    var src=clean2||clean||bookTitle||'';
+    // 长书名兜底：取前 4 字 / 前 6 字作为最短锚点（无关键词，纯前缀截取）
+    var src=clean||bookTitle||'';
     if(src.length>=4){var k4=src.substring(0,4); if(arr.indexOf(k4)<0) arr.push(k4);}
     if(src.length>=6){var k6=src.substring(0,6); if(arr.indexOf(k6)<0) arr.push(k6);}
     return arr;

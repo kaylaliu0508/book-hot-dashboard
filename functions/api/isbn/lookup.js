@@ -63,29 +63,47 @@ function fetchWithTimeout(url, opts, timeoutMs) {
 
 // ---------------- 数据源 1：data.isbn.work（优先级最高，给更长超时） ----------------
 // 🧹 全局：电商卖点尾巴清洗（isbn.work / 当当 共用）
-//    解决 ISBN 国内库 + 当当 h1 经常被电商塞卖点关键词，例：
-//      '这样吃长更高 给孩子的长高营养食谱学之舟0-18岁儿童青少年科学长高秘籍告别焦虑家常易做营养均衡干预后天助力抓住成长黄金期'
-//      '漫画帝王家书修言行练处世谋略写给孩子的成长指南教育启蒙书籍'
-//    清洗后真书名应是「这样吃长更高」「漫画帝王家书」。
+//
+// 设计思路：不依赖关键词枚举（'给孩子'/'秘籍'/'告别焦虑'…会写不完），
+// 改用**纯结构化规则**识别"真书名 + 电商卖点尾巴"的通用模式。
+//
+// 真书名特征：长度通常 ≤ 18 字、是连续语义单元、内部不含明显的句子停顿。
+// 电商污染特征：在真书名后接一长串描述句，常用 5 种结构标记中的 ≥1 个：
+//   ① 空格分隔卖点（'这样吃长更高 给孩子的长高营养食谱…'）
+//   ② '给X的'/'写给'/'送给' 介词结构（电商写卖点最常用的中文语法）
+//   ③ '0-18岁' / '3-6岁' / '7-9年级' 数字-数字+受众范围
+//   ④ '，、；！？' 等中文句子停顿标点
+//   ⑤ '：—－·' 副标题分隔符
+//
+// 阈值 18：常见实体书完整书名（含副标题）几乎不超过 18 字，超过即视为污染。
 function trimEcommerceTail(t) {
-  if (!t || t.length <= 12) return t; // 短书名一律不动
-  const strongNoise = /(给孩子|给宝宝|给学生|适合\S{0,8}(读|看|学|阅读|的孩子)|\d+[\-—]\d+[岁年级]|送给|认准.{0,4}正版|当当自营|自营同款|同款书籍|速发|顺丰|秘籍|告别焦虑|家常易做|抓住成长|后天助力|科学长高|营养均衡|教育启蒙|启蒙书籍|成长指南|内心强大|课外读物|课外阅读|畅销品|假一罚十|包邮速发)/;
-  const m1 = t.match(strongNoise);
-  if (m1 && m1.index > 0) {
-    let cut = m1.index;
-    // 往前找最近的空格 / 标点 / 加号让截断点更自然
-    for (let p = cut - 1; p >= Math.max(0, cut - 8); p -= 1) {
-      if (/[\s，,、+｜|·]/.test(t[p])) { cut = p; break; }
-    }
-    t = t.slice(0, cut).trim();
-  }
-  // 仍长 → 在第一个空格/逗号处截
-  if (t.length > 30) {
-    const sp = t.search(/[\s，,]/);
-    if (sp > 4 && sp < 25) t = t.slice(0, sp).trim();
-  }
-  // 极端兜底
-  if (t.length > 30) t = t.slice(0, 14).trim();
+  if (!t) return t;
+  if (t.length <= 18) return t; // ≤ 18 字一律不动（避免误伤正常带副标题的书名）
+
+  // 规则 1：空格分割（最可靠的电商分隔信号）
+  //   电商通常在真书名后用空格分隔卖点描述，首空格前 2-15 字即真书名。
+  const firstSpace = t.search(/[\s\u3000]/);
+  if (firstSpace >= 2 && firstSpace < 16) return t.slice(0, firstSpace).trim();
+
+  // 规则 2：'给X的' / '写给' / '送给' 介词结构（中文电商卖点的标志性语法）
+  const giveM = t.match(/(写给|送给|给\S{1,4}的)/);
+  if (giveM && giveM.index >= 2 && giveM.index <= 16) return t.slice(0, giveM.index).trim();
+
+  // 规则 3：数字-数字+岁/年级（"0-18岁"、"3-6岁"、"7-9年级"等受众范围标记）
+  const numM = t.match(/\d+\s*[\-—~]\s*\d+\s*[岁年级]/);
+  if (numM && numM.index >= 2) return t.slice(0, numM.index).trim();
+
+  // 规则 4：中文句子停顿标点（真书名内极少出现）
+  const punctIdx = t.search(/[，、；！？]/);
+  if (punctIdx >= 2 && punctIdx < 16) return t.slice(0, punctIdx).trim();
+
+  // 规则 5：副标题分隔符（'：' '—' '－' '·'）→ 切到主书名
+  const subTitleM = t.match(/[：—－·]/);
+  if (subTitleM && subTitleM.index >= 2 && subTitleM.index <= 16) return t.slice(0, subTitleM.index).trim();
+
+  // 规则 6：兜底（5 个规则都没命中但仍 > 25 字 → 取前 12 字保住基本可读性）
+  if (t.length > 25) return t.slice(0, 12).trim();
+
   return t;
 }
 
@@ -405,21 +423,32 @@ async function handle(request, env) {
 
   const attempted = results.map((r) => ({ source: r.name, label: r.label, ok: r.ok, reason: r.reason }));
 
-  // 🎯 书名质量打分：isbn.work 的 bookName 经常被电商/编辑塞进卖点关键词形成"长怪标题"
-  //    （例：'漫画帝王家书修言行练处世谋略写给孩子的成长指南教育启蒙书籍'），
-  //    这类标题 → 联网搜索 0 命中。降级它的优先级，把当当/豆瓣的干净书名顶上来。
+  // 🎯 书名质量打分（纯结构化，不依赖关键词枚举）
+  //
+  //    'trimEcommerceTail' 已经按结构截掉电商尾巴，但截后仍可能比同 ISBN 其他源的书名长。
+  //    比如 isbn.work 给 '我们生活在(全2册) 中国科幻,侦探小说 天瑞说符'（被规则1切到首空格 = '我们生活在(全2册)'）
+  //          豆瓣给 '我们生活在南京'
+  //    豆瓣的 7 字 < isbn.work 的 9 字，且更接近真书名。所以我们按"清洗后剩余长度"打分：越短越优。
+  //
+  //    评分维度：
+  //      ① 长度（每超出 12 字 +1 分，长字符更可能是带噪声残留）
+  //      ② 含中文标点 / 英文逗号 / 多个空格（说明结构未理清）
+  //      ③ 数字+岁/年级/版（说明仍有受众/版次描述残留）
   function titleQualityPenalty(d) {
     if (!d || !d.title) return 100;
     const t = d.title;
     let penalty = 0;
-    // 长度 > 22 字（正常实体书书名几乎不会这么长）
-    if (t.length > 22) penalty += 50;
+    // ① 长度惩罚：> 8 字开始扣（每多 1 字 +2 分），> 14 大幅扣，> 20 加重
+    //    斜率必须足够大让 6 字的源能压过 14 字的源（即使后者优先级更高）
+    if (t.length > 8) penalty += (t.length - 8) * 2;
+    if (t.length > 14) penalty += 5;
+    if (t.length > 20) penalty += 10;
     if (t.length > 30) penalty += 30;
-    // 噪声关键词（电商/编辑硬塞的卖点）
-    const noiseKws = /(写给|送给|适合|培养|教育启蒙|启蒙书籍|成长指南|内心强大|书籍正版|正版包邮|新华书店|当当自营|赠品)/;
-    if (noiseKws.test(t)) penalty += 40;
-    // 含连续多个并列动词/名词（写给孩子的 X X X X）
-    if ((t.match(/[\u4e00-\u9fa5]{2,4}/g) || []).length > 8) penalty += 20;
+    // ② 内部仍有结构性标点（说明清洗未完全分离真书名 + 描述）
+    if (/[，、；！？]/.test(t)) penalty += 8;
+    if (/\s.{4,}/.test(t)) penalty += 5; // 含空格+后续 4+ 字
+    // ③ 含数字-数字+岁/年级（受众范围残留）
+    if (/\d+[\-—~]\d+[岁年级]/.test(t)) penalty += 10;
     return penalty;
   }
   // 命中源排序：(原 priority + 标题质量惩罚) 越小越优
