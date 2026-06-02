@@ -462,13 +462,57 @@ async function handle(request, env) {
     if (/\d+[\-—~]\d+[岁年级]/.test(t)) penalty += 10;
     return penalty;
   }
+
+  // 🛡️ 源间交叉验证（纯结构化，防止当当/Google Books 等源返回"ISBN 匹配但书名完全不同"的脏数据）
+  //
+  // 真实案例（9787537766289）：
+  //   - isbn.work 返回 '漫画帝王家书修言行练处世谋略'（真书名）
+  //   - 当当详情页 ISBN 也是 9787537766289，但返回 '执行力漫画版'（同 ISBN 被错误关联到另一本书）
+  //   - 当当 6 字 vs isbn.work 14 字，打分让当当胜出 → 输出错误书名
+  //
+  // 验证规则（无关键词、零词典）：
+  //   isbn.work 是付费数据库，权威性最高，把它作为「锚定基准」。
+  //   其他源的 title 必须与 isbn.work title **共享前缀 ≥ 3 字** 或 **互为子串**，否则视为不可信脏数据丢弃。
+  //   "执行力漫画版" vs "漫画帝王家书修言行练处世谋略" 前缀 0 字重合、互不为子串 → 当当结果被剔除。
+  //   "我们生活在(全2册)" vs "我们生活在南京" 前缀 5 字「我们生活在」重合 → 豆瓣结果保留。
+  function sharedPrefixLen(a, b) {
+    if (!a || !b) return 0;
+    const n = Math.min(a.length, b.length);
+    let i = 0;
+    while (i < n && a[i] === b[i]) i += 1;
+    return i;
+  }
+  function crossValidate(results) {
+    const anchor = results.find((r) => r.ok && r.name === 'isbn.work' && r.data && r.data.title);
+    if (!anchor) return results; // 没有 isbn.work 锚 → 不做交叉验证，退回原打分
+    const anchorTitle = anchor.data.title;
+    return results.map((r) => {
+      if (!r.ok || r.name === 'isbn.work') return r;
+      const t = (r.data && r.data.title) || '';
+      if (!t) return r;
+      // 共享前缀 ≥ 3 字 且 含 ≥2 个中文字符（避免 'Python程序设计' vs 'Python编程入门' 因 'Python' 共 6 字虚假命中）
+      const sp = sharedPrefixLen(anchorTitle, t);
+      const sharedHead = anchorTitle.slice(0, sp);
+      const cjkCount = (sharedHead.match(/[\u4e00-\u9fa5]/g) || []).length;
+      const prefixOk = sp >= 3 && cjkCount >= 2;
+      // 互为子串（短书名是长书名的核心；如锚为'漫画帝王家书修言'，副源为'漫画帝王家书'）
+      const isSubstr = anchorTitle.indexOf(t) >= 0 || t.indexOf(anchorTitle) >= 0;
+      if (prefixOk || isSubstr) return r;
+      // 与锚书名无共同前缀且互不为子串 → 视为同 ISBN 的脏关联（如当当历史商品错关 ISBN）
+      return { ...r, ok: false, reason: 'cross-validate-fail: title 与 isbn.work 锚不一致 (' + t + ')', data: null };
+    });
+  }
+  const validated = crossValidate(results);
+
   // 命中源排序：(原 priority + 标题质量惩罚) 越小越优
-  const hit = results
+  const hit = validated
     .filter((r) => r.ok)
     .map((r) => ({ ...r, score: r.priority + titleQualityPenalty(r.data) }))
     .sort((a, b) => a.score - b.score)[0];
+  // attempted 用 validated 的状态（让前端能看到"被交叉验证淘汰"的源）
+  const attemptedFinal = validated.map((r) => ({ source: r.name, label: r.label, ok: r.ok, reason: r.reason }));
   if (hit && hit.data) {
-    return jsonResp({ ok: true, ...hit.data, attempted }, 200, cors);
+    return jsonResp({ ok: true, ...hit.data, attempted: attemptedFinal }, 200, cors);
   }
   return jsonResp({ ok: false, error: 'all sources failed', attempted }, 200, cors);
 }
