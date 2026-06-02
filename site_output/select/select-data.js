@@ -385,7 +385,57 @@ const WEEK_RHYTHM = {
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 5/25 周（最新）=====
+  // ===== 6/1 周（最新）=====
+  '2026-06-01': [
+    {
+      role:'#1 健康·儿童身高营养',
+      roleClass:'basic',
+      title:'这样吃长更高',
+      isbn:'9787500186250',
+      image:'rank-images/image259.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥50'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'10.7-11.7%', cls:'hot'}
+      ],
+      persona:'奶奶 + 妈妈（家中"喂饭主理人"，关注孩子成长黄金期，怕错过身高敏感窗）',
+      creativeCore:'抓住孩子成长黄金期 — 适配 0-18 岁全年龄段长高食谱（婴幼儿辅食 → 学龄营养餐 → 青春期补钙增高方案）；「你懒孩子就矮」直击家长行动力痛点，¥50 低门槛即下单',
+      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免"X 个月长高 X cm"等量化承诺'
+    },
+    {
+      role:'#2 童书·立体书',
+      roleClass:'opportunity',
+      title:'我们的中国立体书 + 环游世界立体书',
+      isbn:'9787555717119',
+      image:'rank-images/image87.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥89-159'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'6.7-7.7%'}
+      ],
+      persona:'3-8 岁孩子的妈妈自购 + 爷爷奶奶代际送礼（六一节冲刺，临节前最后送礼窗口）',
+      creativeCore:'六一儿童节冲刺阶段切入 — 孩子翻立体页惊喜表情 + 中国/世界知识科普沉浸式演示；礼物质感卡位节日价位带（送礼场景强调 ¥89-159 客单）'
+    },
+    {
+      role:'#3 童书·成长教育',
+      roleClass:'potential',
+      title:'漫画帝王家书',
+      isbn:'9787537766289',
+      image:'rank-images/image91.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥39.9'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'7.2-8.2%'}
+      ],
+      persona:'8-14 岁孩子的妈妈（关注孩子成长教育）',
+      creativeCore:'打教育解决方案信息差，主打逆袭翻盘 — 帝王智慧切入，提高孩子为人处事和情商；漫画形态降低阅读门槛'
+    }
+  ],
+
+  // ===== 5/25 周 =====
   '2026-05-25': [
     {
       role:'#1 童书·立体书',
@@ -486,7 +536,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-05-25'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-01'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
