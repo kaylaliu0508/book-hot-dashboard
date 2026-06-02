@@ -89,6 +89,9 @@ repo/
 
 | 日期 | 设备 | 摘要 |
 |---|---|---|
+| 2026-06-02 | office | **首次 SOP 实战**：周榜单同步 6/1 周（rank-data.js 增量追加 21 期 + HOT_BOOK_BREAKDOWN 新增 6/1 三本代表书 + 默认切到 6/1）。三本代表书：这样吃长更高（健康基本盘）、中国立体书（童书机会盘 · 霸榜 2 周）、漫画帝王家书（童书潜力品 · 霸榜 2 周）。新增 `scripts/append_week_to_rank_data.py`（增量追加 + 协同安全）。修复 `parse_rank_excel.py` 的 `_infer_year` 基准 5/25→6/1（commit 97444aa） |
+| 2026-06-02 | office | 大脑文档第 13 节《周榜单同步 SOP》落地 + scripts/extract_predict_books.py 进 repo 智能识别两种布局（commit aa626cc） |
+| 2026-06-01 | jiangxinbei | #p4 怪长电商书名导致搜索 0 命中修复 + 图书内容提取报告补齐目录/前言/核心内容（commit 252277c / 20e1392） |
 | 2026-05-29 | office | 推荐书单换为预测推荐书单（教辅28/童书50/社科63/健康67=208本）+ 每个品类 rank 独立从 1；xlsx 嵌入封面 230MB→4.8MB（300px JPEG q82）；提取脚本落地 `scripts/extract_predict_books.py`（commit b19f76a） |
 | 2026-05-28 | office | AI 预审 PROFANITY_2 规则上下文豁免（当妈的/做妈的/咱当妈的等家长身份称呼不再误判为粗话）（commit e7bc13c） |
 | 2026-05-28 | office | 榜单中心左导航「重点品类深度」→「重点品类选品方向」（commit 860f014） |
