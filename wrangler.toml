@@ -1,0 +1,39 @@
+# ============================================================
+# Cloudflare Pages 项目配置（book-hot-dashboard）
+#
+# 为什么要有这个文件？
+# 历史教训：Pages 项目的 KV / Secret / Var 绑定如果只在 Dashboard 网页上配置，
+# 一旦有人改设置 / 重建项目 / 某些"全量重新部署"操作，binding 就会消失，
+# 导致 /api/track 静默丢数据、/api/stats 返回 {"error":"no_kv"}。
+#
+# 把绑定写进仓库的 wrangler.toml 后，每次 git push 触发的 Pages 自动构建
+# 都会重新应用这份配置，绑定会跟着 git 走，永不丢失。
+#
+# 参考：https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+# ============================================================
+
+name = "book-hot-dashboard"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "site_output"
+
+# ===== KV 命名空间绑定 =====
+# 在 Pages Functions 里通过 env.TRACKER_AGG 访问
+# namespace id 来源：本仓库 workers/tracker-api/wrangler.toml 已经声明的同一个 KV
+[[kv_namespaces]]
+binding = "TRACKER_AGG"
+id = "2360767d707143e394cf90766faf418c"
+
+# ===== Preview 环境（PR 预览部署用）=====
+# 注意：preview 环境用独立的 KV namespace，不要污染生产数据
+[env.preview]
+[[env.preview.kv_namespaces]]
+binding = "TRACKER_AGG"
+id = "fcf318ad1b6544259581821b51b43342"
+
+# ===== 普通环境变量 =====
+[vars]
+RETENTION_DAYS = "90"
+
+# ===== Secret 不写在这里！=====
+# DEEPSEEK_API_KEY / ZHIPU_API_KEY 等敏感信息继续在 Cloudflare Dashboard
+# 的 "Variables and Secrets" 里配置，不要落 git 仓库。

@@ -39,9 +39,28 @@ export function dayKey(ts) {
 }
 
 // =================== 写入 KV ===================
+// KV 缺失时的告警节流：每 5 分钟 console 一次（CF Functions 没有持久内存，
+// 这里靠模块级变量在单实例内做轻量节流，足够让 Real-time Logs 看到红字告警）
+let _kvMissingLogTs = 0;
+function logKvMissingOnce(ctx) {
+  const now = Date.now();
+  if (now - _kvMissingLogTs < 5 * 60 * 1000) return;
+  _kvMissingLogTs = now;
+  // 在 Cloudflare Pages → Functions → Real-time Logs 里能直接看到这条
+  console.error(
+    '[tracker] FATAL: env.TRACKER_AGG KV binding is MISSING. ' +
+    'All track events are being SILENTLY DROPPED. ' +
+    'Check Cloudflare Dashboard → Pages → book-hot-dashboard → Settings → Bindings, ' +
+    'or verify wrangler.toml at repo root is being applied. ctx=' + (ctx || 'unknown')
+  );
+}
+
 export async function persistEvent(env, body) {
   const KV = env.TRACKER_AGG;
-  if (!KV) return { ok: 0, err: 'no_kv' };
+  if (!KV) {
+    logKvMissingOnce('persistEvent');
+    return { ok: 0, err: 'no_kv' };
+  }
   const ttl = (parseInt(env.RETENTION_DAYS || '90', 10) || 90) * 86400;
   const opt = { expirationTtl: ttl };
 
@@ -183,7 +202,10 @@ function parseHost(u) {
 // =================== 查询 KV ===================
 export async function aggregateStats(env, range, tabFilter) {
   const KV = env.TRACKER_AGG;
-  if (!KV) return { error: 'no_kv' };
+  if (!KV) {
+    logKvMissingOnce('aggregateStats');
+    return { error: 'no_kv' };
+  }
 
   const days = ({ '1d': 1, '7d': 7, '30d': 30, '90d': 90 })[range] || 7;
   const today = new Date();
