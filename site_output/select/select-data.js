@@ -385,7 +385,58 @@ const WEEK_RHYTHM = {
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 6/1 周（最新）=====
+  // ===== 6/9 周（最新）=====
+  '2026-06-09': [
+    {
+      role:'#1 社科·文化常识 · 黑马',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/image2.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥40'},
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'3.2-4.2%'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注孩子语文素养、阅读积累，幼小衔接 + 小升初通用）',
+      creativeCore:'**3 周连霸社科榜**，6/1 #13（1-5W）→ 6/9 #1（30-40W），**销量跳 7-10 倍**为本周最大黑马。用「孩子答不上的文化常识」家长焦虑切入 → 3000 问体系化补足知识盲区，¥40 价格门槛极低；直击「养娃 = 养见识」心智',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#2 健康·饮食 · 新爆款',
+      roleClass:'opportunity',
+      title:'减糖饮食',
+      isbn:'9787553215389',
+      image:'rank-images/image4.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥39.8'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'12.6-13.6%', cls:'hot'}
+      ],
+      persona:'25-45 岁女性自购（关注体重管理、轻断食、抗糖抗衰；糖尿病前期家庭也是核心）',
+      creativeCore:'**新登榜直冲 #3，conv 13.6% 全榜最高**。借势夏季穿搭 + 体重管理刚需切入 → 「戒糖一周肉眼可见」短视频效果展示；¥39.8 完美卡轻决策价位带，配合「附 21 天食谱」打实用感',
+      creativeWarning:'⚠️ 不得宣称治疗糖尿病等病理效果'
+    },
+    {
+      role:'#3 教辅·小学英语 · 高转化',
+      roleClass:'potential',
+      title:'60 篇童话故事学会小学 2000 词',
+      isbn:'9787572172267',
+      image:'rank-images/image18.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'💰', label:'客单', val:'¥39.9-59.9'},
+        {icon:'📊', label:'日销售额', val:'1-5W'},
+        {icon:'🎯', label:'转化', val:'9.8-12.3%', cls:'hot'}
+      ],
+      persona:'6-12 岁孩子的妈妈（小学英语启蒙刚需，暑期 60 天预热黄金窗口）',
+      creativeCore:'**新登榜 + conv 12.3%**。打「孩子怕背单词，不如听故事记 2000 词」教育解决方案信息差 → 暑期 60 天每天 1 篇童话节奏轻量；2000 词覆盖小学全阶段，¥39.9 起对标 1 节英语课价格'
+    }
+  ],
+
+  // ===== 6/1 周 =====
   '2026-06-01': [
     {
       role:'#1 健康·儿童身高营养',
@@ -536,7 +587,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-01'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-09'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
