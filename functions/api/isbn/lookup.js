@@ -79,12 +79,43 @@ function fetchWithTimeout(url, opts, timeoutMs) {
 // 阈值 8：≤ 8 字一律不动（中国出版业 95% 主书名在 8 字内，避免误伤）。
 function trimEcommerceTail(t) {
   if (!t) return t;
+  // 入口先 trim 半角/全角空白（普通 .trim() 不删 \u3000，这里用正则统一处理）
+  t = String(t).replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
   if (t.length <= 8) return t; // ≤ 8 字一律不动（百年孤独、解忧杂货店、如何阅读一本书 等正常书名）
 
-  // 规则 1：空格分割（最可靠的电商分隔信号）
-  //   电商通常在真书名后用空格分隔卖点描述，首空格前 2-15 字即真书名。
+  // 规则 1：空格分割（仅当空格右侧有电商卖点特征时才切断）
+  //
+  //   ⚠️ 重要修复（2026-06-09）：
+  //   之前的实现"见空格即切"会误伤一类常见书名 —— 上游数据库（data.isbn.work、当当列表页等）
+  //   会把书名里的中文逗号 / 冒号 / 破折号转成半角/全角空格，例如：
+  //     "我是中国人 所以我知道　"     (原书《我是中国人，所以我知道》)
+  //     "活着 就是要好好活着"          (原书《活着，就是要好好活着》)
+  //     "人间值得 12个小习惯"          (原书《人间值得：12个小习惯》)
+  //   旧规则 firstSpace=5 直接切到"我是中国人"，丢掉副标题。
+  //
+  //   修复策略：保留空格切断，但加 6 项**右侧电商特征**前置判断 —— 必须命中至少 1 项
+  //   才认为空格是电商分隔符；否则视为主副标题分隔，保留全文等后续规则继续判断。
   const firstSpace = t.search(/[\s\u3000]/);
-  if (firstSpace >= 2 && firstSpace < 16) return t.slice(0, firstSpace).trim();
+  if (firstSpace >= 2 && firstSpace < 16) {
+    const right = t.slice(firstSpace + 1).trim();
+    const hasEcommerceTailFeature =
+      // ① 右侧含电商常用介词卖点（"给X的"/"写给"/"送给"/"适合"/"献给"）
+      /(写给|送给|献给|给\S{1,4}的|适合\S{1,6})/.test(right)
+      // ② 右侧含数字+岁/年级/版（受众范围 / 版次描述）
+      || /\d+\s*[\-—~至到]\s*\d+\s*[岁年级]/.test(right)
+      || /\d+\s*[岁年级]\s*[+＋]/.test(right)
+      || /(全\s*\d+\s*[册卷]|\d+\s*[册卷套])/.test(right)
+      // ③ 右侧含中文句子停顿标点（真书名内罕见，电商描述高频）
+      || /[，、；！？]/.test(right)
+      // ④ 右侧出现典型电商前缀关键词（保留"白名单"作最后兜底，仅作加分项不作切断主力）
+      || /^(正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名|套装|平装|精装|博库|文轩|当当)/.test(right)
+      // ⑤ 右侧本身又含多个空格分段（"XXX YYY ZZZ"形式 = 卖点列表）
+      || /\s/.test(right)
+      // ⑥ 整体超长（>20 字）且右侧 >12 字 → 多半是电商尾巴
+      || (t.length > 20 && right.length > 12);
+    if (hasEcommerceTailFeature) return t.slice(0, firstSpace).trim();
+    // 否则视为主副标题分隔，把空格规整为半角后继续走后面规则（让 trim/正则收尾）
+  }
 
   // 规则 2：'给X的' / '写给' / '送给' 介词结构（中文电商卖点的标志性语法）
   const giveM = t.match(/(写给|送给|给\S{1,4}的)/);
@@ -504,10 +535,42 @@ async function handle(request, env) {
   }
   const validated = crossValidate(results);
 
-  // 命中源排序：(原 priority + 标题质量惩罚) 越小越优
-  const hit = validated
+  // 🆕 严格上位串提级（2026-06-09 修复）：
+  //
+  //   场景：isbn.work 因 trimEcommerceTail 误切（如把"我是中国人，所以我知道"砍成"我是中国人"）后，
+  //   豆瓣 / 当当 返回的真书名（11 字）反而被打分压不过 isbn.work 的 5 字版本。
+  //
+  //   规则：若某副源 title 严格"包含" isbn.work title（且更长 ≥ 2 字），且锚 ≤ 8 字（副源更可信的边界），
+  //   则把该副源 priority 直接加到极小（−10）确保胜出。
+  //
+  //   仅在锚 title 较短（≤ 8 字）时启用，因为锚长（≥ 9 字）时 isbn.work 一般是完整真书名，
+  //   长副源很可能反而是电商带卖点版本（豆瓣/当当历史商品页常见）。
+  function promoteStrictSuperset(arr) {
+    const anchor = arr.find((r) => r.ok && r.name === 'isbn.work' && r.data && r.data.title);
+    if (!anchor) return arr;
+    const at = anchor.data.title;
+    if (!at || at.length > 8) return arr;
+    return arr.map((r) => {
+      if (!r.ok || r.name === 'isbn.work') return r;
+      const t = (r.data && r.data.title) || '';
+      // 严格上位串：t 完整包含 at 作为子串，且 t.length >= at.length + 2
+      // 进一步：包含位置必须在 t 的前 4 字内（典型主+副标题，主标在前）
+      if (t.length < at.length + 2) return r;
+      const idx = t.indexOf(at);
+      if (idx < 0 || idx > 4) return r;
+      // 排除"恰好是 at + 全英文/电商关键词"的虚假上位串（如 'Python编程入门 正版包邮'）
+      const tail = t.slice(idx + at.length);
+      if (/^[\s·:：—\-]*(正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名|套装|平装|精装|博库|文轩|当当)/.test(tail)) return r;
+      // 标记 promoted = true，后续打分时直接给极小 priority
+      return { ...r, promoted: true };
+    });
+  }
+  const promoted = promoteStrictSuperset(validated);
+
+  // 命中源排序：(原 priority + 标题质量惩罚) 越小越优；promoted 强制提级
+  const hit = promoted
     .filter((r) => r.ok)
-    .map((r) => ({ ...r, score: r.priority + titleQualityPenalty(r.data) }))
+    .map((r) => ({ ...r, score: (r.promoted ? -10 : r.priority) + titleQualityPenalty(r.data) }))
     .sort((a, b) => a.score - b.score)[0];
   // attempted 用 validated 的状态（让前端能看到"被交叉验证淘汰"的源）
   const attemptedFinal = validated.map((r) => ({ source: r.name, label: r.label, ok: r.ok, reason: r.reason }));
