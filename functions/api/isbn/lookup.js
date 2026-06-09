@@ -95,26 +95,43 @@ function trimEcommerceTail(t) {
   //
   //   修复策略：保留空格切断，但加 6 项**右侧电商特征**前置判断 —— 必须命中至少 1 项
   //   才认为空格是电商分隔符；否则视为主副标题分隔，保留全文等后续规则继续判断。
+  // 切成段：连续空白视为一个分隔符
+  const segments = t.split(/[\s\u3000]+/).filter(Boolean);
   const firstSpace = t.search(/[\s\u3000]/);
-  if (firstSpace >= 2 && firstSpace < 16) {
+
+  if (firstSpace >= 2 && firstSpace < 16 && segments.length >= 2) {
     const right = t.slice(firstSpace + 1).trim();
-    const hasEcommerceTailFeature =
-      // ① 右侧含电商常用介词卖点（"给X的"/"写给"/"送给"/"适合"/"献给"）
+    // 2 段时（主 + 副 / 主 + 一段尾巴）：必须有强电商特征才切
+    // 3 段及以上：视为"主 + 副 + 卖点"或"主 + N 段卖点"，**至少切到前 2 段**保留主+副
+    const has2SegEcommerceFeature =
       /(写给|送给|献给|给\S{1,4}的|适合\S{1,6})/.test(right)
-      // ② 右侧含数字+岁/年级/版（受众范围 / 版次描述）
       || /\d+\s*[\-—~至到]\s*\d+\s*[岁年级]/.test(right)
       || /\d+\s*[岁年级]\s*[+＋]/.test(right)
       || /(全\s*\d+\s*[册卷]|\d+\s*[册卷套])/.test(right)
-      // ③ 右侧含中文句子停顿标点（真书名内罕见，电商描述高频）
       || /[，、；！？]/.test(right)
-      // ④ 右侧出现典型电商前缀关键词（保留"白名单"作最后兜底，仅作加分项不作切断主力）
       || /^(正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名|套装|平装|精装|博库|文轩|当当)/.test(right)
-      // ⑤ 右侧本身又含多个空格分段（"XXX YYY ZZZ"形式 = 卖点列表）
-      || /\s/.test(right)
-      // ⑥ 整体超长（>20 字）且右侧 >12 字 → 多半是电商尾巴
+      // 整体超长（>20 字）且右侧 >12 字 → 多半是电商尾巴
       || (t.length > 20 && right.length > 12);
-    if (hasEcommerceTailFeature) return t.slice(0, firstSpace).trim();
-    // 否则视为主副标题分隔，把空格规整为半角后继续走后面规则（让 trim/正则收尾）
+
+    if (segments.length === 2) {
+      if (has2SegEcommerceFeature) return segments[0];
+      // 否则保留主+副，规整为单空格
+      return segments.join(' ');
+    }
+    // ≥ 3 段：把前 2 段拼起来作为"主+副"候选；如果"主+副"长度合理（≤16）则用它，否则只取主标
+    // 这样既能正确处理「我是中国人 所以我知道 中国学生必会的名著考点2000问」(3 段 → 主+副)，
+    // 也能处理「育儿百科 0-6岁宝宝养育指南 适合新手父母」(3 段，第 2 段已是卖点 → 只取主标)
+    const seg2RightSelf = segments[1];
+    const seg2IsAlreadyEcommerce =
+      /(写给|送给|献给|给\S{1,4}的|适合\S{1,6})/.test(seg2RightSelf)
+      || /\d+\s*[\-—~至到]\s*\d+\s*[岁年级]/.test(seg2RightSelf)
+      || /\d+\s*[岁年级]\s*[+＋]/.test(seg2RightSelf)
+      || /^(正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名|套装|平装|精装)/.test(seg2RightSelf)
+      || /(全\s*\d+\s*[册卷]|\d+\s*[册卷套])/.test(seg2RightSelf);
+    if (seg2IsAlreadyEcommerce) return segments[0];
+    const mainSub = segments.slice(0, 2).join(' ');
+    if (mainSub.length <= 16) return mainSub;
+    return segments[0];
   }
 
   // 规则 2：'给X的' / '写给' / '送给' 介词结构（中文电商卖点的标志性语法）

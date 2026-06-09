@@ -3143,6 +3143,15 @@ async function autoLookupISBN(){
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
+  // 🆕 主+副标题型书名展示美化：上游数据源（data.isbn.work / 当当列表）会把书名里的
+  // 中文逗号/冒号转成空格，这里在书名内部仅剩 1 个空格、且空格两侧均为中文时还原中文逗号。
+  // 例：「我是中国人 所以我知道」→「我是中国人，所以我知道」
+  function _titleSpaceToComma(s){
+    if(!s) return s;
+    var spaces=(s.match(/[\s\u3000]/g)||[]).length;
+    if(spaces!==1) return s;
+    return s.replace(/([\u4e00-\u9fa5])[\s\u3000]([\u4e00-\u9fa5])/, '$1，$2');
+  }
   function _cleanName(name,author,publisher){
     if(!name) return '';
     var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
@@ -3156,7 +3165,7 @@ async function autoLookupISBN(){
     c=c.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').trim();
     c=c.replace(/\s+/g,' ').replace(/^[\-—:：·\s]+|[\-—:：·\s]+$/g,'').trim();
     if(c.length>40) c=c.substring(0,40);
-    return c;
+    return _titleSpaceToComma(c);
   }
   function _renderHit(title,authors,publisher,date,sourceName,sourceUrl,extraNote){
     isbnBookInfo={title:title,authors:authors,publisher:publisher,date:date,source:sourceName,sourceUrl:sourceUrl};
@@ -4116,7 +4125,7 @@ function adCleanName(name,author,publisher){
   c=c.replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').trim();
   c=c.replace(/\s+/g,' ').replace(/^[\-—:：·\s]+|[\-—:：·\s]+$/g,'').trim();
   if(c.length>40) c=c.substring(0,40);
-  return c;
+  return _titleSpaceToComma(c);
 }
 
 async function adAutoLookup(){
