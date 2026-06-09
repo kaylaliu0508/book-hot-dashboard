@@ -420,19 +420,20 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       creativeWarning:'⚠️ 不得宣称治疗糖尿病等病理效果'
     },
     {
-      role:'#3 教辅·小学英语 · 高转化',
-      roleClass:'potential',
-      title:'60 篇童话故事学会小学 2000 词',
-      isbn:'9787572172267',
-      image:'rank-images/image18.jpg',
-      cat:'教辅',
+      role:'#3 健康·儿童身高营养 · 长青基本盘',
+      roleClass:'basic',
+      title:'这样吃长更高',
+      isbn:'9787500186250',
+      image:'rank-images/image3.jpg',
+      cat:'健康',
       stats:[
-        {icon:'💰', label:'客单', val:'¥39.9-59.9'},
-        {icon:'📊', label:'日销售额', val:'1-5W'},
-        {icon:'🎯', label:'转化', val:'9.8-12.3%', cls:'hot'}
+        {icon:'💰', label:'客单', val:'¥50'},
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
       ],
-      persona:'6-12 岁孩子的妈妈（小学英语启蒙刚需，暑期 60 天预热黄金窗口）',
-      creativeCore:'**新登榜 + conv 12.3%**。打「孩子怕背单词，不如听故事记 2000 词」教育解决方案信息差 → 暑期 60 天每天 1 篇童话节奏轻量；2000 词覆盖小学全阶段，¥39.9 起对标 1 节英语课价格'
+      persona:'奶奶 + 妈妈（家中"喂饭主理人"，关注孩子成长黄金期，怕错过身高敏感窗）',
+      creativeCore:'**3 周连霸（5/25 #5 → 6/1 #1 → 6/9 #2），10-20W 销量稳定基本盘**。抓住孩子成长黄金期 — 适配 0-18 岁全年龄段长高食谱（婴幼儿辅食 → 学龄营养餐 → 青春期补钙增高方案）；「你懒孩子就矮」直击家长行动力痛点，¥50 低门槛即下单',
+      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免"X 个月长高 X cm"等量化承诺'
     }
   ],
 
