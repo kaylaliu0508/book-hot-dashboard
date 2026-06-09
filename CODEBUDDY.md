@@ -89,7 +89,8 @@ repo/
 
 | 日期 | 设备 | 摘要 |
 |---|---|---|
-| 2026-06-09 | office | **第二次 SOP 实战**：周榜单同步 6/9 周（rank-data.js 共 22 期，6/9 cat_share 手动写入 教辅 45 / 童书 30 / 健康 20 / 社科 5）。三本代表书：①《中国孩子必知的文化常识 3000 问》6/1 #13→6/9 #1，销量跳 7-10 倍**本周最大黑马**；②《减糖饮食》新登榜直冲 #3，conv 13.6% 全榜最高；③《60 篇童话故事学会小学 2000 词》新登榜，小学英语暑期预热品。`_infer_year` 基准从 6/1 升级到 6/9。清理 48 张冗余 PNG（73MB）。 |
+| 2026-06-09 | office | **6/9 部署 bug 修复 + 历史遗留清理**：发现线上 `/select/index.html` 还引用 6/2 留下的版本号副本 `rank-data-v20260602.js` / `select-data-v20260602.js`，导致 6/9 主文件更新对线上无效。彻底修复：①index.html 引用改回主文件名；②删除 3 个孤儿副本（v2.js + 两个 -v20260602.js）；③`_headers` 删掉 `/select/*.js` 兜底通配（会跟精确规则叠加致 cache-control 重复）；④CODEBUDDY 第 14 节「历史遗留」标记为已清理。从此榜单同步 SOP 只改主文件，不再维护副本。 |
+| 2026-06-09 | office | **第二次 SOP 实战**：周榜单同步 6/9 周（rank-data.js 共 22 期，6/9 cat_share 手动写入 教辅 45 / 童书 30 / 健康 20 / 社科 5）。三本代表书：①《中国孩子必知的文化常识 3000 问》6/1 #13→6/9 #1，销量跳 7-10 倍**本周最大黑马**；②《减糖饮食》新登榜直冲 #3，conv 13.6% 全榜最高；③《这样吃长更高》3 周连霸长青基本盘。`_infer_year` 基准从 6/1 升级到 6/9。清理 48 张冗余 PNG（73MB）。 |
 | 2026-06-02 | office | **预测推荐书单二次更新**：xlsx (2) → 224 本（教辅 40 + 12 / 童书 54 + 4 / 社科 63 / 健康 67），每品类 rank 独立从 1。脚本同步加 PIL 压缩兜底（PNG 也走 300px JPEG q82），256MB → 5MB；recommend-data.js 路径统一 .jpg。 |
 | 2026-06-02 | office | **首次 SOP 实战**：周榜单同步 6/1 周（rank-data.js 增量追加 21 期 + HOT_BOOK_BREAKDOWN 新增 6/1 三本代表书 + 默认切到 6/1）。三本代表书：这样吃长更高（健康基本盘）、中国立体书（童书机会盘 · 霸榜 2 周）、漫画帝王家书（童书潜力品 · 霸榜 2 周）。新增 `scripts/append_week_to_rank_data.py`（增量追加 + 协同安全）。修复 `parse_rank_excel.py` 的 `_infer_year` 基准 5/25→6/1（commit 97444aa） |
 | 2026-06-02 | office | 大脑文档第 13 节《周榜单同步 SOP》落地 + scripts/extract_predict_books.py 进 repo 智能识别两种布局（commit aa626cc） |
@@ -410,8 +411,13 @@ curl -sSL "https://book-hot-dashboard.pages.dev/select/rank-data.js" | grep -c "
 
 - ✅ 如果 5 分钟后 curl 还拿到老内容，**先看 `_headers` 是否被改坏了**（cache-control 应该包含 `s-maxage=300`），其次检查 CF Pages Build output 配置是否变动
 
-### 历史遗留：双文件名同步
+### 历史遗留：双文件名同步（已于 2026-06-09 完成清理）
 
-`site_output/select/rank-data-v20260602.js` 是 6/2 那天紧急绕 CDN 留下的副本，未来周更新时：
-- **保持** `rank-data.js`（主文件）和 `rank-data-v20260602.js`（副本）**内容完全一致**（md5 相同）
-- `select/index.html` 引用的是 `rank-data-v20260602.js`，下次彻底 _headers 全节点失效后可以改回 `rank-data.js` + 删除副本
+~~`site_output/select/rank-data-v20260602.js` 是 6/2 那天紧急绕 CDN 留下的副本~~
+
+✅ **2026-06-09 已彻底清理**：
+- `select/index.html` 引用改回主文件名 `rank-data.js` / `select-data.js`
+- 删除三个孤儿副本：`rank-data-v2.js` / `rank-data-v20260602.js` / `select-data-v20260602.js`
+- _headers 也清理了 `/select/*.js` 兜底通配（会跟上面精确规则叠加导致响应头出现两次 Cache-Control）
+
+**未来教训**：榜单同步 SOP 只需更新 `rank-data.js` / `select-data.js` 主文件即可，**不要再搞带版本号的副本**——_headers 通配的 5 分钟 CDN 缓存已彻底解决问题。
