@@ -392,15 +392,15 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       roleClass:'basic',
       title:'中国孩子必知的文化常识3000问',
       isbn:'9787510699450',
-      image:'rank-images/image2.jpg',
+      image:'rank-images/2026-06-09-image2.jpg',
       cat:'社科',
       stats:[
         {icon:'💰', label:'客单', val:'¥40'},
         {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
         {icon:'🎯', label:'转化', val:'3.2-4.2%'}
       ],
-      persona:'6-15 岁孩子的妈妈（关注孩子语文素养、阅读积累，幼小衔接 + 小升初通用）',
-      creativeCore:'**3 周连霸社科榜**，6/1 #13（1-5W）→ 6/9 #1（30-40W），**销量跳 7-10 倍**为本周最大黑马。用「孩子答不上的文化常识」家长焦虑切入 → 3000 问体系化补足知识盲区，¥40 价格门槛极低；直击「养娃 = 养见识」心智',
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'本周最大黑马：6/1 #13（1-5W）→ 6/9 #1（30-40W），销量跳 7-10 倍。¥40 低门槛打"养娃 = 养见识"心智',
       creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
     },
     {
@@ -408,15 +408,15 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       roleClass:'opportunity',
       title:'减糖饮食',
       isbn:'9787553215389',
-      image:'rank-images/image4.jpg',
+      image:'rank-images/2026-06-09-image4.jpg',
       cat:'健康',
       stats:[
         {icon:'💰', label:'客单', val:'¥39.8'},
         {icon:'📊', label:'日销售额', val:'10-20W'},
         {icon:'🎯', label:'转化', val:'12.6-13.6%', cls:'hot'}
       ],
-      persona:'25-45 岁女性自购（关注体重管理、轻断食、抗糖抗衰；糖尿病前期家庭也是核心）',
-      creativeCore:'**新登榜直冲 #3，conv 13.6% 全榜最高**。借势夏季穿搭 + 体重管理刚需切入 → 「戒糖一周肉眼可见」短视频效果展示；¥39.8 完美卡轻决策价位带，配合「附 21 天食谱」打实用感',
+      persona:'25-45 岁女性自购（体重管理 / 抗糖抗衰）',
+      creativeCore:'新登榜直冲 #3，conv 13.6% 全榜最高。夏季体重管理刚需 + ¥39.8 轻决策价位带',
       creativeWarning:'⚠️ 不得宣称治疗糖尿病等病理效果'
     },
     {
@@ -424,16 +424,16 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
       roleClass:'basic',
       title:'这样吃长更高',
       isbn:'9787500186250',
-      image:'rank-images/image3.jpg',
+      image:'rank-images/2026-06-09-image3.jpg',
       cat:'健康',
       stats:[
         {icon:'💰', label:'客单', val:'¥50'},
         {icon:'📊', label:'日销售额', val:'10-20W'},
         {icon:'🎯', label:'转化', val:'10.6-11.6%', cls:'hot'}
       ],
-      persona:'奶奶 + 妈妈（家中"喂饭主理人"，关注孩子成长黄金期，怕错过身高敏感窗）',
-      creativeCore:'**3 周连霸（5/25 #5 → 6/1 #1 → 6/9 #2），10-20W 销量稳定基本盘**。抓住孩子成长黄金期 — 适配 0-18 岁全年龄段长高食谱（婴幼儿辅食 → 学龄营养餐 → 青春期补钙增高方案）；「你懒孩子就矮」直击家长行动力痛点，¥50 低门槛即下单',
-      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免"X 个月长高 X cm"等量化承诺'
+      persona:'奶奶 + 妈妈（家中"喂饭主理人"）',
+      creativeCore:'3 周连霸（5/25 #5 → 6/1 #1 → 6/9 #2），10-20W 销量稳定基本盘。0-18 岁全龄食谱 + ¥50 低门槛',
+      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免量化承诺'
     }
   ],
 
