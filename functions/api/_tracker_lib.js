@@ -207,7 +207,7 @@ export async function aggregateStats(env, range, tabFilter) {
     return { error: 'no_kv' };
   }
 
-  const days = ({ '1d': 1, '7d': 7, '30d': 30, '90d': 90 })[range] || 7;
+  const days = ({ '1d': 1, '7d': 7, '14d': 14, '30d': 30, '90d': 90 })[range] || 7;
   const today = new Date();
   const dateList = [];
   for (let i = days - 1; i >= 0; i--) {
@@ -218,57 +218,63 @@ export async function aggregateStats(env, range, tabFilter) {
   const tabs = tabFilter === 'all' ? Array.from(VALID_TABS) : [tabFilter];
   const result = { range, from: dateList[0], to: dateList[dateList.length - 1], tabs: {} };
 
-  for (const tab of tabs) {
+  // 性能优化（2026-06-14）：原先 7 tabs × N 天 × 6 KV.get 全串行，30 天必超时（CF Workers 100s 上限）
+  // 改成：每个 tab 内部所有日 × 6 key 都并发拉，tabs 之间也并发
+  await Promise.all(tabs.map(async (tab) => {
     const tabAgg = { pv: 0, uv: 0, stayAvgSec: 0, bounceRate: 0, events: {}, devices: {}, referrers: {}, trend: [] };
     const uvSet = new Set();
     let staySumMs = 0, stayCount = 0, sessSum = 0, bouncedSum = 0;
 
-    for (const date of dateList) {
-      const pv = parseInt((await KV.get(`pv:${tab}:${date}`)) || '0', 10) || 0;
-      const dayUvArr = (await KV.get(`uv:${tab}:${date}`, 'json')) || [];
-      dayUvArr.forEach((u) => uvSet.add(u));
-      tabAgg.trend.push({ date, pv, uv: dayUvArr.length });
+    // 每个 date 并发拉 6 个 key
+    const perDay = await Promise.all(dateList.map(async (date) => {
+      const [pvRaw, dayUvArr, stayObj, dev, ref, bn] = await Promise.all([
+        KV.get(`pv:${tab}:${date}`),
+        KV.get(`uv:${tab}:${date}`, 'json'),
+        KV.get(`stay:${tab}:${date}`, 'json'),
+        KV.get(`device:${tab}:${date}`, 'json'),
+        KV.get(`ref:${tab}:${date}`, 'json'),
+        KV.get(`bounce:${tab}:${date}`, 'json'),
+      ]);
+      return { date, pv: parseInt(pvRaw || '0', 10) || 0, dayUvArr: dayUvArr || [], stayObj, dev: dev || {}, ref: ref || {}, bn };
+    }));
 
-      const stayObj = (await KV.get(`stay:${tab}:${date}`, 'json')) || null;
-      if (stayObj) { staySumMs += stayObj.sumMs || 0; stayCount += stayObj.count || 0; }
-
-      const dev = (await KV.get(`device:${tab}:${date}`, 'json')) || {};
-      Object.keys(dev).forEach((k) => (tabAgg.devices[k] = (tabAgg.devices[k] || 0) + dev[k]));
-
-      const ref = (await KV.get(`ref:${tab}:${date}`, 'json')) || {};
-      Object.keys(ref).forEach((k) => (tabAgg.referrers[k] = (tabAgg.referrers[k] || 0) + ref[k]));
-
-      const bn = (await KV.get(`bounce:${tab}:${date}`, 'json')) || null;
-      if (bn) { sessSum += bn.sessions || 0; bouncedSum += bn.bounced || 0; }
-
-      tabAgg.pv += pv;
+    for (const d of perDay) {
+      d.dayUvArr.forEach((u) => uvSet.add(u));
+      tabAgg.trend.push({ date: d.date, pv: d.pv, uv: d.dayUvArr.length });
+      if (d.stayObj) { staySumMs += d.stayObj.sumMs || 0; stayCount += d.stayObj.count || 0; }
+      Object.keys(d.dev).forEach((k) => (tabAgg.devices[k] = (tabAgg.devices[k] || 0) + d.dev[k]));
+      Object.keys(d.ref).forEach((k) => (tabAgg.referrers[k] = (tabAgg.referrers[k] || 0) + d.ref[k]));
+      if (d.bn) { sessSum += d.bn.sessions || 0; bouncedSum += d.bn.bounced || 0; }
+      tabAgg.pv += d.pv;
     }
     tabAgg.uv = uvSet.size;
     tabAgg.stayAvgSec = stayCount ? Math.round((staySumMs / stayCount / 1000) * 10) / 10 : 0;
     tabAgg.bounceRate = sessSum ? Math.round((bouncedSum / sessSum) * 1000) / 1000 : 0;
 
+    // events: KV.list 后并发取 value
     const evList = await KV.list({ prefix: `evt:${tab}:` });
-    for (const k of evList.keys) {
+    const evKeys = evList.keys.filter((k) => {
       const parts = k.name.split(':');
-      const name = parts[2];
-      const d = parts[3];
-      if (d === 'total') continue;
-      if (dateList.includes(d)) {
-        const v = parseInt((await KV.get(k.name)) || '0', 10) || 0;
-        tabAgg.events[name] = (tabAgg.events[name] || 0) + v;
-      }
-    }
+      return parts[3] !== 'total' && dateList.includes(parts[3]);
+    });
+    const evVals = await Promise.all(evKeys.map((k) => KV.get(k.name)));
+    evKeys.forEach((k, i) => {
+      const name = k.name.split(':')[2];
+      const v = parseInt(evVals[i] || '0', 10) || 0;
+      tabAgg.events[name] = (tabAgg.events[name] || 0) + v;
+    });
 
     result.tabs[tab] = tabAgg;
-  }
+  }));
 
-  // 📚 ISBN 分来源 Top 聚合（isbn:book_extract / isbn:select_hub / isbn:ad_copy）
+  // 📚 ISBN 分来源 Top 聚合（并发拉每个 src × 每个 date 的 KV）
   const isbnSources = ['book_extract', 'select_hub', 'ad_copy'];
   const isbnResult = {};
-  for (const src of isbnSources) {
+  await Promise.all(isbnSources.map(async (src) => {
+    const dayMaps = await Promise.all(dateList.map((date) => KV.get(`isbn:${src}:${date}`, 'json')));
     const agg = {};
-    for (const date of dateList) {
-      const dayMap = (await KV.get(`isbn:${src}:${date}`, 'json')) || {};
+    for (const dayMap of dayMaps) {
+      if (!dayMap) continue;
       for (const isbn of Object.keys(dayMap)) {
         const entry = dayMap[isbn];
         if (!agg[isbn]) agg[isbn] = { count: 0, title: '', lastTs: 0 };
@@ -281,7 +287,7 @@ export async function aggregateStats(env, range, tabFilter) {
       .map((isbn) => ({ isbn, ...agg[isbn] }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 50);
-  }
+  }));
   // 兼容旧接口：isbnTop 仍为 book_extract 的数据
   result.isbnTop = isbnResult.book_extract || [];
   result.isbnBySource = isbnResult;
