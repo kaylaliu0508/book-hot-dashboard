@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="app-version" content="2026-06-16-r19-relax-isbn-strict-and-ban-fake-edition">
+<meta name="app-version" content="2026-06-16-r20-strip-edition-prefix-from-title">
 <!-- 2026-06-01 触发 CF Pages 强制重新部署：5/29 用户手动 rollback 后导致 ai/ 和 summer/ 子目录未被发布到产物，本次仅强制重建 -->
 
 <title>图书灵感中心 - 2026.05.26</title>
@@ -3154,6 +3154,31 @@ async function autoLookupISBN(){
   }
   function _cleanName(name,author,publisher){
     if(!name) return '';
+    // 🆕 版本/装帧/赠品/营销前缀清洗（前置步骤，最高优先级）
+    //   覆盖：当当/京东/天猫等电商把营销活动词当成商品标题前缀的常见污染
+    //   例：「印签版 咸的玩笑」→「咸的玩笑」、「精装典藏版 活着」→「活着」、「赠书签 哈利波特」→「哈利波特」
+    //   设计：分两类词，都要求"后跟分隔符 [空格/逗号/顿号/冒号]"才能剥掉，避免误伤"平装订工艺/精装本入门/赠书人语"等正常书名
+    //   - 强词组（带"版"字尾或够长）：如 印签版、精装典藏版、签名首发
+    //   - 短词组（单字根，必须独立成词）：如 精装、平装、限量、全彩
+    //   - 赠/附/送/含/带 类：必须 紧跟 [简短修饰词 ≤6 字 + 分隔符]
+    var SEP='[\\s\\u3000，,、:：·\\-—]+'; // 强制后跟至少 1 个分隔符
+    var strongKw='印签版|签名版|签字版|签版|印签|签名首发|签名预售|首发版|首版|限量版|限定版|典藏版|珍藏版|收藏版|纪念版|纪念珍藏版|特装版|特别版|豪华版|豪华典藏版|精装典藏版|精装版|平装版|软精装|裸脊精装|布面精装|插图版|插画版|彩图版|图文版|全彩版|精校版|修订版|增订版|增补版|最新版|完整版|未删节版|无删减版|套装版|礼盒版|2025新版|2026新版|2024新版';
+    var shortKw='精装|平装|特装|限量|全彩|新版|盒装|套装|礼盒装';
+    var giftKw='赠[\\u4e00-\\u9fa5A-Za-z0-9]{1,6}|附[\\u4e00-\\u9fa5A-Za-z0-9]{1,6}|送[\\u4e00-\\u9fa5A-Za-z0-9]{1,6}|含[\\u4e00-\\u9fa5A-Za-z0-9]{1,6}|带[\\u4e00-\\u9fa5A-Za-z0-9]{0,4}签';
+    var brandKw='博集天卷|果麦文化|果麦|读客|新经典|磨铁图书|磨铁'; // 出版品牌前缀
+    // 头部清洗：(强词组|短词组|赠品|品牌) 后必须跟分隔符，可重复
+    var versionHeadRe=new RegExp('^(?:(?:'+strongKw+'|'+shortKw+'|'+giftKw+'|'+brandKw+')'+SEP+')+','g');
+    // 尾部清洗：分隔符 + (强词组|短词组) —— 倒装情形（赠品/品牌不出现在尾部）
+    var versionTailRe=new RegExp(SEP+'(?:'+strongKw+'|'+shortKw+')\\s*$','g');
+    var beforeClean=name;
+    name=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(versionHeadRe,'').replace(/^[\s\u3000，,、:：·]+/,'').trim();
+    name=name.replace(versionTailRe,'').trim();
+    // 特殊情形：开头是"强词组+紧贴书名"无分隔符，如「印签版咸的玩笑」（电商常见）
+    //   只对带"版"字尾的强词组允许，避免误伤
+    var strongStickyRe=new RegExp('^(?:'+strongKw+')(?=[\\u4e00-\\u9fa5])','g');
+    name=name.replace(strongStickyRe,'').trim();
+    if(name!==beforeClean){try{console.log('[cleanTitle] 版本前缀清洗: ['+beforeClean+'] → ['+name+']');}catch(_){}}
+    if(!name) name=beforeClean; // 防御：清洗过头变空，回滚
     var c=name.replace(/^[\s\u3000]+|[\s\u3000]+$/g,'').replace(/^(书籍|图书|正版|包邮|现货|新华|官方|预售|赠品|特价|限量|签名)+\s*/g,'').replace(/\s*(【[^】]*】|\[[^\]]*\]|（[^）]*）|\([^)]*\))\s*/g,' ').replace(/(人天书店书|新华书店|京东图书|当当图书|天猫|淘宝|博库|文轩|J-SZZPWH).*$/,'').replace(/可开发票.*$/,'').replace(/[\-—]\s*[A-Z\d]{4,}\s*$/,'').replace(/\s+/g,' ').trim();
     // 用真实 author/publisher 字段把它们从书名里剥离（最精准的方式，避免电商把作者/出版社粘贴在书名后面）
     if(publisher){var pp=publisher.trim();if(pp)c=c.split(pp).join('').trim();}
