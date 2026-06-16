@@ -17,7 +17,7 @@
  */
 
 const UPSTREAM = 'https://api.deepseek.com/v1/chat/completions';
-const MAX_BODY_BYTES = 64 * 1024; // 64KB，足够容纳长 prompt 但防滥用
+const MAX_BODY_BYTES = 256 * 1024; // 256KB —— 联网搜索满命中（如刘震云《咸的玩笑》共 90 条 ~70KB）也能通过；DeepSeek 上游上下文 128K tokens 完全 hold 得住
 
 // 内存级简单限频（边缘函数实例间不共享，仅作软约束）
 const rateMap = new Map();
