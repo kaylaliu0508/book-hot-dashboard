@@ -385,7 +385,58 @@ const WEEK_RHYTHM = {
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 6/9 周（最新）=====
+  // ===== 6/15 周（最新）=====
+  '2026-06-15': [
+    {
+      role:'#1 社科·文化常识 · 长青基本盘',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/2026-06-15-image1.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'4.2-5.2%'},
+        {icon:'🏆', label:'霸榜', val:'4 周连霸', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'打认知信息差 — 「这些常识孩子答不上，但同龄人都会」。3000 问体系化补足语文素养盲区，戳中家长「怕娃见识比同龄人窄」的焦虑',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#2 健康·儿童身高营养 · 长青基本盘',
+      roleClass:'basic',
+      title:'这样吃长更高',
+      isbn:'9787500186250',
+      image:'rank-images/2026-06-15-image2.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'9.7-10.7%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'4 周连霸', cls:'hot'}
+      ],
+      persona:'奶奶 + 妈妈（家中"喂饭主理人"）',
+      creativeCore:'锁定家中「喂饭主理人」 — 给一份按年龄分段照着做的长高食谱：婴幼儿、学龄、青春期每天吃什么直接抄作业',
+      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免量化承诺'
+    },
+    {
+      role:'#3 教辅·初中物理 · 新晋黑马',
+      roleClass:'opportunity',
+      title:'漫画初中物理早知道',
+      isbn:'9787573639851',
+      image:'rank-images/2026-06-15-image3.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'📈', label:'跳量级', val:'6/9 #11 → 6/15 #3', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'3.7-3.5%'}
+      ],
+      persona:'小升初 + 初一家长（暑期初二物理预习刚需）',
+      creativeCore:'锁定小升初 + 初一家长 — 给一份用漫画讲透初中物理重难点的「暑期预习路线图」，让娃开学物理不再坐过山车'
+    }
+  ],
+
+  // ===== 6/9 周 =====
   '2026-06-09': [
     {
       role:'#1 社科·文化常识 · 黑马',
@@ -588,7 +639,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-09'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-15'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
