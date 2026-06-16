@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="app-version" content="2026-06-16-r20-strip-edition-prefix-from-title">
+<meta name="app-version" content="2026-06-16-r21-detect-truncated-short-title">
 <!-- 2026-06-01 触发 CF Pages 强制重新部署：5/29 用户手动 rollback 后导致 ai/ 和 summer/ 子目录未被发布到产物，本次仅强制重建 -->
 
 <title>图书灵感中心 - 2026.05.26</title>
@@ -3192,6 +3192,136 @@ async function autoLookupISBN(){
     if(c.length>40) c=c.substring(0,40);
     return _titleSpaceToComma(c);
   }
+  // 🆕 短书名截断检测：识别 isbn.work 等上游元数据"只录了主词、丢了副标题"的情况
+  //   核心思想：真书名《活着》《三体》在官方简介里通常会带书名号自我引用（"《活着》是..."），
+  //              假书名/截断（如"孩子"是主题词而非书名）则简介里只把它当普通名词使用。
+  //   触发条件（必须全满足）：
+  //   1. title 长度 ≤ 4 字 且非纯数字/字母（避免误伤《1Q84》《S.》等）
+  //   2. 简介中**没有**出现 《title》 这样的书名号自我引用
+  //   3. 简介中 title 以普通名词形式（书名+空格/标点）出现 ≥ 2 次（≤2 字时降到 ≥ 1 次）
+  //   4. 简介首句不以 title 开头（《白夜行》这种简介首句"《白夜行》是东野圭吾..."就不算）
+  //   返回 {suspicious:bool, reason:string}
+  function _detectShortTitleTruncation(title,desc){
+    if(!title || !desc) return {suspicious:false};
+    var t=title.trim();
+    if(!t || t.length>4) return {suspicious:false};
+    if(/^[A-Za-z0-9.\-]+$/.test(t)) return {suspicious:false};
+    // 关键证据 1：简介里有 《title》 书名号自我引用 → 100% 不是截断（真书名）
+    if(desc.indexOf('《'+t+'》')>=0){
+      return {suspicious:false};
+    }
+    // 关键证据 2：简介里有 《title 任何字》 → 极可能是真书名的全称形式（不算截断，但提示一下）
+    var fullTitleMatch=desc.match(new RegExp('《'+t+'[^《》]{1,20}》'));
+    if(fullTitleMatch){
+      return {suspicious:true,reason:'简介中出现完整书名 '+fullTitleMatch[0]+'，疑似上游只截取了主词',hint:fullTitleMatch[0].replace(/^《|》$/g,'')};
+    }
+    // 普通名词形式出现次数（已在前面排除掉 《title》 自引情形，所以这里直接计数）
+    var globalMatches=desc.match(new RegExp(t,'g'))||[];
+    var asNoun=globalMatches.length;
+    // 3-4 字书名：要求 ≥2 次普通名词形式（保守，避免误伤）
+    if(t.length>=3 && asNoun>=2){
+      return {suspicious:true,reason:'简介中"'+t+'"作为普通名词出现 '+asNoun+' 次（无书名号包裹），疑似上游元数据截断了副标题'};
+    }
+    // 1-2 字超短书名：≥1 次即可（真书名一般会有《》自引；简介只用普通名词形式说明它就是主题词）
+    if(t.length<=2 && asNoun>=1){
+      return {suspicious:true,reason:'书名仅 '+t.length+' 字，简介中"'+t+'"作为普通名词使用（无书名号自引），高度疑似上游只录了主词、丢了副标题'};
+    }
+    return {suspicious:false};
+  }
+
+  // 🆕 公网回查完整书名：用 ISBN+作者+出版社 做多 query 联网搜，提取书名号匹配
+  //   返回 {found:bool, candidates:[完整书名候选...], sources:[拼接的命中片段...]}
+  async function _recoverFullTitleFromWeb(shortTitle,author,publisher,isbn){
+    var queries=[
+      'ISBN '+isbn+' '+(author||'')+' '+(publisher||''),
+      '《'+shortTitle+'》'+(author||'')+' '+(publisher||'')+' 内容简介',
+      isbn+' 图书 完整书名',
+    ];
+    var allCands={}; // title -> hitCount
+    var sources=[];
+    for(var qi=0;qi<queries.length;qi++){
+      var q=queries[qi];
+      try{
+        var resp=await fetch('/api/zhipu/search',{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({request_id:'recover_title_'+Date.now()+'_'+qi,tool:'web-search-pro',stream:false,messages:[{role:'user',content:q}]})
+        });
+        if(!resp.ok) continue;
+        var data=await resp.json();
+        var choices=data.choices||[];
+        for(var ci=0;ci<choices.length;ci++){
+          var msg=choices[ci].message||{};
+          var tcs=msg.tool_calls||[];
+          for(var ti=0;ti<tcs.length;ti++){
+            var sr=tcs[ti].search_result||tcs[ti].search_results||[];
+            for(var si=0;si<sr.length;si++){
+              var hay=(sr[si].title||'')+' '+(sr[si].content||'');
+              // 抽出所有书名号包裹的内容
+              var bookMatches=hay.match(/《[^《》]{2,30}》/g)||[];
+              for(var bi=0;bi<bookMatches.length;bi++){
+                var raw=bookMatches[bi].replace(/^《|》$/g,'').trim();
+                // 候选必须包含 shortTitle（说明是它的扩展形式）
+                if(raw.indexOf(shortTitle)<0) continue;
+                // 候选不能就是 shortTitle 本身
+                if(raw===shortTitle) continue;
+                // 长度合理：比 shortTitle 长 2 字以上、≤30 字
+                if(raw.length<shortTitle.length+2 || raw.length>30) continue;
+                // 简单排黑：含明显垃圾词的不要
+                if(/(教程|系列|套装|全集|合集)$/.test(raw)) continue;
+                allCands[raw]=(allCands[raw]||0)+1;
+              }
+              // 记录来源标题（前 2 条用于展示）
+              if(sources.length<2 && hay.indexOf(shortTitle)>=0){
+                sources.push((sr[si].title||'').substring(0,60));
+              }
+            }
+          }
+        }
+      }catch(e){/* 忽略单 query 失败 */}
+    }
+    // 按命中次数排序，取 Top 3
+    var candList=Object.keys(allCands).sort(function(a,b){return allCands[b]-allCands[a];}).slice(0,3);
+    return {found:candList.length>0, candidates:candList, sources:sources, hitMap:allCands};
+  }
+
+  // 🆕 渲染"短书名截断"友好提示条：把检测+回查结果叠加到 status 区域
+  //   返回需要追加到 status.innerHTML 的 HTML 字符串
+  async function _renderTruncationWarning(title,authors,publisher,isbn,desc){
+    var det=_detectShortTitleTruncation(title,desc);
+    if(!det.suspicious) return '';
+    var html='<div style="margin-top:8px;background:#3a2a0a;border:1px solid #f0b429;border-left:4px solid #f0b429;border-radius:4px;padding:8px 12px;font-size:12px;color:#f0b429">';
+    html+='<div style="font-weight:600">⚠️ 书名疑似被上游数据库截断</div>';
+    html+='<div style="font-size:11px;color:#d4a017;margin-top:2px">'+det.reason+'</div>';
+    // 公网回查
+    html+='<div id="titleRecoverArea" style="margin-top:6px;font-size:11px;color:#8b949e">🔍 正在尝试从公网回查完整书名...</div>';
+    html+='<div style="margin-top:6px;font-size:11px"><a href="https://search.douban.com/book/subject_search?search_text='+encodeURIComponent(isbn)+'" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none;margin-right:12px">🔗 在豆瓣搜 ISBN</a>';
+    html+='<a href="https://search.dangdang.com/?key='+encodeURIComponent(isbn)+'" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none;margin-right:12px">🔗 在当当搜 ISBN</a>';
+    html+='<a href="https://weread.qq.com/web/search/global?keyword='+encodeURIComponent(isbn)+'" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none">🔗 在微信读书搜</a></div>';
+    html+='<div style="margin-top:4px;font-size:11px;color:#8b949e">如确认完整书名，可直接在上方"书名"输入框手动修改后再点【🚀 开始采集】</div>';
+    html+='</div>';
+    // 异步触发回查（不阻塞 status 渲染），结果回填到 #titleRecoverArea
+    setTimeout(function(){
+      _recoverFullTitleFromWeb(title,authors,publisher,isbn).then(function(rec){
+        var area=document.getElementById('titleRecoverArea');
+        if(!area) return;
+        if(rec.found){
+          var btns='';
+          for(var i=0;i<rec.candidates.length;i++){
+            var cand=rec.candidates[i].replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+            btns+='<button onclick="document.getElementById(\'bookTitleInput\').value=\''+cand.replace(/'/g,"\\'")+'\';this.parentNode.parentNode.style.display=\'none\';" style="margin:2px 4px 2px 0;padding:3px 10px;background:#1a73e8;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer">采用《'+cand+'》</button>';
+          }
+          area.innerHTML='<div style="color:#3fb950">🎯 公网回查到 '+rec.candidates.length+' 个候选完整书名（按相关度排序）：</div><div style="margin-top:4px">'+btns+'</div>';
+        }else{
+          area.innerHTML='<span style="color:#d4a017">🚫 公网未回查到更完整的书名（这本书可能新上市/小众，公网索引尚未充分收录）。请用上方外链手动核对。</span>';
+        }
+      }).catch(function(e){
+        var area=document.getElementById('titleRecoverArea');
+        if(area) area.innerHTML='<span style="color:#d4a017">⚠️ 公网回查失败：'+(e.message||e)+'</span>';
+      });
+    },50);
+    return html;
+  }
+
   function _renderHit(title,authors,publisher,date,sourceName,sourceUrl,extraNote){
     isbnBookInfo={title:title,authors:authors,publisher:publisher,date:date,source:sourceName,sourceUrl:sourceUrl};
     document.getElementById('bookTitleInput').value=title;
@@ -3255,12 +3385,15 @@ async function autoLookupISBN(){
           for(var ai=0;ai<dPxy.attempted.length;ai++){var a=dPxy.attempted[ai];atArr.push((a.ok?'✅':'❌')+' '+a.source);}
           atTxt='<div style="font-size:10px;color:#484f58;margin-top:2px">尝试链路：'+atArr.join(' → ')+'</div>';
         }
+        // 🆕 短书名截断检测 + 公网回查（用 await 拿到提示条 HTML，回查则在 setTimeout 里异步回填）
+        var truncWarn=await _renderTruncationWarning(ftPxy,dPxy.authors||'',dPxy.publisher||'',isbn,dPxy.bookDesc||'');
         status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+ftPxy+'</strong></div>'
           +(metaP?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+metaP+'</div>':'')
           +(extraP?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+extraP+'</div>':'')
           +descP
           +'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="'+(dPxy.sourceUrl||'#')+'" target="_blank" style="color:#58a6ff;text-decoration:none">'+(dPxy.source||'多源代理')+'</a></div>'
-          +atTxt;
+          +atTxt
+          +truncWarn;
         return;
       }
     }
@@ -3306,11 +3439,14 @@ async function autoLookupISBN(){
       if(isbnBookInfo.price) extraMeta+='💰 '+isbnBookInfo.price+' ';
       if(d.clcName) extraMeta+='🏷️ '+d.clcName;
       var descPreview=d.bookDesc?'<div style="font-size:11px;color:#3fb950;margin-top:6px;background:#0d1f12;border-left:3px solid #3fb950;padding:6px 8px;border-radius:0 4px 4px 0">📖 已获取官方简介（'+d.bookDesc.length+' 字）：'+d.bookDesc.substring(0,80)+(d.bookDesc.length>80?'...':'')+'</div>':'';
+      // 🆕 短书名截断检测 + 公网回查
+      var truncWarn2=await _renderTruncationWarning(fullTitle,d.author||'',d.press||'',isbn,d.bookDesc||'');
       status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+fullTitle+'</strong></div>'
         +(meta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+meta+'</div>':'')
         +(extraMeta?'<div style="font-size:11px;color:#8b949e;margin-top:2px">'+extraMeta+'</div>':'')
         +descPreview
-        +'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></div>';
+        +'<div style="font-size:10px;color:#484f58;margin-top:4px">📡 数据来源：<a href="https://data.isbn.work/" target="_blank" style="color:#58a6ff;text-decoration:none">ISBN国内数据库 (data.isbn.work)</a></div>'
+        +truncWarn2;
       return;
     }
   }catch(e){}
