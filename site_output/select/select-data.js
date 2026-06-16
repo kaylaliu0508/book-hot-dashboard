@@ -167,8 +167,25 @@ const WEEKS=[
   {key:'2026-05-04',data:WEEK_2026_05_04}
 ];
 let currentWeekIdx=0;
-function getCurrentWeek(){return WEEKS[currentWeekIdx].data;}
-function getRankData(){return getCurrentWeek().lists;}
+// 🛡️ 防御性：WEEKS 可能为空 / currentWeekIdx 越界，返回空数据避免崩
+function getCurrentWeek(){
+  try {
+    if (typeof WEEKS !== 'undefined' && WEEKS[currentWeekIdx] && WEEKS[currentWeekIdx].data) {
+      return WEEKS[currentWeekIdx].data;
+    }
+  } catch(e) {}
+  // 兜底：从 WEEK_RANK_LIST 取最新一周
+  try {
+    if (typeof WEEK_RANK_LIST !== 'undefined' && WEEK_RANK_LIST[0] && WEEK_RANK_LIST[0].data) {
+      return WEEK_RANK_LIST[0].data;
+    }
+  } catch(e) {}
+  return { lists: {}, label: '', cat_share: [] };
+}
+function getRankData(){
+  const wk = getCurrentWeek();
+  return (wk && wk.lists) ? wk.lists : {};
+}
 
 // ==================== 12 月节奏（数值=各品类消耗占比%，每月合计100%） ====================
 const MONTHS_DATA = [

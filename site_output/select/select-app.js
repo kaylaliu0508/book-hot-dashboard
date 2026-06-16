@@ -1533,13 +1533,25 @@ document.querySelectorAll('.subtab').forEach(t => t.addEventListener('click', ()
 // ==================== 周切换（已移除UI，仅保留数据初始化）====================
 function initWeekSelect() {
   const lbl = document.getElementById('rankWeekLabel');
-  if (lbl) lbl.textContent = WEEKS[0].data.label;
+  // 防御：WEEKS 可能为 undefined / 空 / 元素无 data
+  if (lbl) {
+    try {
+      lbl.textContent = (typeof WEEKS !== 'undefined' && WEEKS[0] && WEEKS[0].data && WEEKS[0].data.label)
+        ? WEEKS[0].data.label
+        : ((typeof WEEK_RANK_LIST !== 'undefined' && WEEK_RANK_LIST[0]) ? WEEK_RANK_LIST[0].label : '');
+    } catch (e) { /* 静默 */ }
+  }
   const sku = document.getElementById('statSku');
-  if (sku) sku.textContent = totalSku();
-  updateRecCount();
+  if (sku) { try { sku.textContent = totalSku(); } catch(e) { sku.textContent = '—'; } }
+  try { updateRecCount(); } catch(e) {}
 }
 function totalSku() {
-  return Object.values(getCurrentWeek().lists).reduce((s,l) => s + (l.items?.length||0), 0);
+  // 防御：getCurrentWeek 可能取不到 lists
+  try {
+    const wk = getCurrentWeek();
+    if (!wk || !wk.lists) return 0;
+    return Object.values(wk.lists).reduce((s,l) => s + (l && l.items ? l.items.length : 0), 0);
+  } catch(e) { return 0; }
 }
 function onWeekChange(idx) {
   currentWeekIdx = parseInt(idx);
@@ -1878,18 +1890,21 @@ function renderCatRadar() {
 }
 
 // ==================== 初始化 ====================
-initWeekSelect();
-initRankWeekSwitcher();
-initFollowWeekSwitcher();
-buildCrossIndex();
+// 🛡️ 稳定性兜底（2026-06-16）：每个 init 独立 try-catch，单个失败绝不阻断后续
+const _safeInit = (fn, label) => {
+  try { fn(); } catch (e) { console.error('[init] ' + label + ' 失败:', e); }
+};
+_safeInit(initWeekSelect,        'initWeekSelect');
+_safeInit(initRankWeekSwitcher,  'initRankWeekSwitcher');
+_safeInit(initFollowWeekSwitcher,'initFollowWeekSwitcher');
+_safeInit(buildCrossIndex,       'buildCrossIndex');
 // 默认 active 是 future（先看趋势）→ 初始化 future
-// hub 改为切到时按需渲染（避免初始化时因数据未就绪报错）
-try { initFuture(); } catch (e) { console.error('[init] initFuture 失败:', e); }
+_safeInit(initFuture,            'initFuture');
 // 提前预渲染一次 hub，让用户切到 hub 时表格已就绪
-try { renderHub(); } catch (e) { console.error('[init] renderHub 失败:', e); }
-try { initHubSearch(); } catch (e) { console.error('[init] initHubSearch 失败:', e); }
-updatePoolUI();
-syncRecSideCount();
+_safeInit(renderHub,             'renderHub');
+_safeInit(initHubSearch,         'initHubSearch');
+_safeInit(updatePoolUI,          'updatePoolUI');
+_safeInit(syncRecSideCount,      'syncRecSideCount');
 
 // 初始化默认 Tab 提示（hub 架构下已不需要）
 

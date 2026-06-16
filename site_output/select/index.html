@@ -4,6 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>图书选品台 · 2026年6月</title>
+<script>
+// 🛡️ 全局错误兜底（2026-06-16 修复客户反馈空白页）
+// 任何未捕获 JS 错误都不让用户看到全白页，给一个降级提示+刷新按钮
+window.addEventListener('error', function(e){
+  try {
+    // 5 秒后检测主内容区是否还是空的
+    setTimeout(function(){
+      var main = document.querySelector('.subtabs') || document.querySelector('main') || document.body;
+      if (main && main.innerText && main.innerText.length > 100) return; // 已有内容，不打扰
+      var hint = document.getElementById('__fallback_hint__');
+      if (hint) return;
+      hint = document.createElement('div');
+      hint.id = '__fallback_hint__';
+      hint.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:24px 32px;box-shadow:0 8px 24px rgba(0,0,0,0.1);text-align:center;font-family:-apple-system,sans-serif;';
+      hint.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">⚠️</div><div style="font-size:16px;font-weight:600;color:#374151;margin-bottom:6px;">页面加载异常</div><div style="font-size:13px;color:#6b7280;margin-bottom:16px;">部分模块未能正确加载，请尝试刷新</div><button onclick="location.reload(true)" style="background:#3b82f6;color:#fff;border:0;border-radius:6px;padding:8px 18px;font-size:14px;cursor:pointer;">🔄 强制刷新</button>';
+      document.body.appendChild(hint);
+    }, 5000);
+  } catch(_){}
+}, true);
+</script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <link rel="stylesheet" href="select.css">
 <script>
