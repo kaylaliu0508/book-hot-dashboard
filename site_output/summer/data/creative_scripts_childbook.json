@@ -1,51 +1,268 @@
 {
-  "version": "childbook-placeholder-v1",
+  "version": "childbook-v20260617-5items",
   "updated_at": "2026-06-17",
-  "total_videos": 0,
+  "total_videos": 5,
   "category_legend": [
     {
       "id": "object_flip",
       "name": "实物翻书展示",
       "icon": "📚",
       "color": "#4ade80",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "童书桌面翻页+插图特写"
     },
     {
       "id": "drama_skit",
       "name": "情景剧场代入",
       "icon": "🎬",
       "color": "#a78bfa",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "学习/家庭场景演绎+童书植入"
     },
     {
       "id": "talking_head",
       "name": "真人口播种草",
       "icon": "🎤",
       "color": "#5b9eff",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "作者/老师/家长真人推荐童书"
     },
     {
       "id": "anxiety_long",
       "name": "深度演讲长视频",
       "icon": "📢",
       "color": "#ff5f6d",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "育儿/教育演讲长视频+童书转化"
     },
     {
       "id": "hot_topic",
       "name": "热点话题切入",
       "icon": "🔥",
       "color": "#ffb547",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "考点/热搜/路人采访+童书种草"
     },
     {
       "id": "knowledge_display",
       "name": "知识直给",
       "icon": "📖",
       "color": "#22d3ee",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "课文/范文/常识直接朗读呈现"
     }
   ],
-  "scripts": [],
-  "category_summary": {}
+  "scripts": [
+    {
+      "video_id": "child_4",
+      "title": "戒掉手机三观塑造",
+      "category": "drama_skit",
+      "hook": "孩子看完《戒掉手机》默默放下手机再也不叛逆厌学了",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "女孩书桌写作业特写+字幕",
+          "script": "孩子看完《戒掉手机》",
+          "purpose": "痛点结果钩子"
+        },
+        "build": {
+          "shot": "'想要出众没有捷径'金句",
+          "script": "默默放下手机再不叛逆厌学",
+          "purpose": "金句+反差"
+        },
+        "climax": {
+          "shot": "切到演讲嘉宾舞台",
+          "script": "就是帮助孩子塑造正确的三观",
+          "purpose": "解决方案亮相"
+        },
+        "cta": {
+          "shot": "下方书封购买",
+          "script": "下单戒掉手机",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "学习女孩+演讲嘉宾双段式",
+      "frames_dir": "./keyframes/child_4",
+      "duration_range": "60-120s",
+      "analysis": {
+        "win": "学习女孩静态画面+演讲嘉宾动态金句，情景剧+权威背书双重转化。",
+        "reuse": "任何习惯养成/心理育儿书都可用'孩子真实画面+嘉宾金句'双段式。",
+        "scene": "暑假家长焦虑孩子手机沉迷与三观塑造的窗口。"
+      }
+    },
+    {
+      "video_id": "child_1",
+      "title": "中国孩子必知文化常识3000",
+      "category": "anxiety_long",
+      "hook": "中考原题故宫为什么没厕所",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "AI大礼堂诸事顺利标题",
+          "script": "中考原题故宫为什么没厕所",
+          "purpose": "中考真题悬念钩子"
+        },
+        "build": {
+          "shot": "AI礼堂学生大合影",
+          "script": "你想一想",
+          "purpose": "引发停留思考"
+        },
+        "climax": {
+          "shot": "切到学生专注听课画面",
+          "script": "而是他能明白世界的广袤",
+          "purpose": "卖点亮相"
+        },
+        "cta": {
+          "shot": "左下《我是中国人》书封",
+          "script": "必知文化常识3000下单",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "AI大礼堂演讲+中考文化常识题",
+      "frames_dir": "./keyframes/child_1",
+      "duration_range": "240s+",
+      "analysis": {
+        "win": "'中考原题+故宫没厕所'悬念奇袭+AI大礼堂氛围感，让家长立刻意识到孩子常识盲区。",
+        "reuse": "任何文化常识/百科类童书都可用'真题悬念+大场景画面'演讲式开场。",
+        "scene": "暑假初中升学衔接期家长找文化通识书的决策窗口。"
+      }
+    },
+    {
+      "video_id": "child_3",
+      "title": "孩子反霸凌500句演讲",
+      "category": "anxiety_long",
+      "hook": "孩子的灵性什么时候开始定型",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "名家演讲台话筒特写",
+          "script": "孩子的灵性什么时候开始定型",
+          "purpose": "育儿哲学问句钩子"
+        },
+        "build": {
+          "shot": "'太重要了'字幕+名家手势",
+          "script": "很多时候并不是孩子有多",
+          "purpose": "痛点共鸣"
+        },
+        "climax": {
+          "shot": "左下《孩子反霸凌500句》漫画封",
+          "script": "完整应对话术",
+          "purpose": "品牌植入"
+        },
+        "cta": {
+          "shot": "点击下方书封",
+          "script": "下单反霸凌500句",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "李玫瑾风格演讲+反霸凌500句",
+      "frames_dir": "./keyframes/child_3",
+      "duration_range": "180-240s",
+      "analysis": {
+        "win": "'灵性定型'高密度认知话题+名家演讲信任锚点，育儿焦虑家长决策快。",
+        "reuse": "任何儿童心理/育儿话术书都可用'名家演讲+书封定格'结构。",
+        "scene": "暑假家长担心孩子心理与社交问题的深度收看窗口。"
+      }
+    },
+    {
+      "video_id": "child_5",
+      "title": "人民日报词云图励志",
+      "category": "hot_topic",
+      "hook": "中关村高考考点路人采访励志书单",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "中关村高考考点门口+高考女生",
+          "script": "中关村31号大街高考采访",
+          "purpose": "实景路人采访钩子"
+        },
+        "build": {
+          "shot": "女生举鲜花+耳机特写",
+          "script": "但是后面想办法戒掉了",
+          "purpose": "真人故事铺陈"
+        },
+        "climax": {
+          "shot": "切到《人民日报词云图励志》书封",
+          "script": "自泥泞出发踏荆棘登顶",
+          "purpose": "励志金句"
+        },
+        "cta": {
+          "shot": "下方书堆+下单",
+          "script": "下单励志套装",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "高考路人采访+人民日报励志书",
+      "frames_dir": "./keyframes/child_5",
+      "duration_range": "240s+",
+      "analysis": {
+        "win": "中关村高考考点的真实感+高考状元路人采访，借势高考热点转化励志套装。",
+        "reuse": "任何励志/作文素材类童书都可用'高考考点路人采访+励志金句'结构。",
+        "scene": "6月初高考前后家长选励志书单的窗口。"
+      }
+    },
+    {
+      "video_id": "child_2",
+      "title": "夏日的雷雨儿童文学",
+      "category": "knowledge_display",
+      "hook": "夏日的雷雨整篇范文",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "黑底白纸+夏日的雷雨标题",
+          "script": "夏日的雷雨",
+          "purpose": "范文标题钩子"
+        },
+        "build": {
+          "shot": "满屏中文文段+树叶装饰",
+          "script": "太阳像火球大地烤滚烫",
+          "purpose": "直接朗读范文"
+        },
+        "climax": {
+          "shot": "'七彩的桥挂在天空'结尾段",
+          "script": "彩虹七色生动比喻",
+          "purpose": "写作技法亮点"
+        },
+        "cta": {
+          "shot": "底部星星同学标签",
+          "script": "下单整套童年文集",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "课文范文整篇朗读型",
+      "frames_dir": "./keyframes/child_2",
+      "duration_range": "30-60s",
+      "analysis": {
+        "win": "'整篇课文直接朗读'非常硬核，40秒内交付完整范文，写作家长收藏率高。",
+        "reuse": "任何儿童文学/作文范文集都可用'纯文字大屏+整篇朗读'格式。",
+        "scene": "暑假家长找暑期作文范文积累的窗口。"
+      }
+    }
+  ],
+  "category_summary": {
+    "object_flip": {
+      "common_pattern": "童书桌面静物+翻页特写+插图亮点。",
+      "summer_hook": "','插图美感+硬货书页让家长直观感受值。",
+      "best_format": "60-180秒，翻页特写+底部购物车。"
+    },
+    "drama_skit": {
+      "common_pattern": "学习/家庭场景演绎+童书自然嵌入。",
+      "summer_hook": "孩子真实画面+反差金句激发家长代入感。",
+      "best_format": "60-180秒，场景铺陈+反差话术+品牌断言。"
+    },
+    "talking_head": {
+      "common_pattern": "作者/老师/家长真人推荐童书+实物展示。",
+      "summer_hook": "作者IP+真人推荐降低家长决策成本。",
+      "best_format": "30-120秒，特写+书封+品牌断言。"
+    },
+    "anxiety_long": {
+      "common_pattern": "育儿/教育演讲长视频+童书转化。",
+      "summer_hook": "名家演讲场+'灵性定型/三观塑造'认知付费转化。",
+      "best_format": "180秒以上，演讲场景+金句字幕+书封定格。"
+    },
+    "hot_topic": {
+      "common_pattern": "考点/热搜/路人采访+童书种草。",
+      "summer_hook": "借势高考/中考热点，提升完播率与转化率。",
+      "best_format": "60-120秒，实景钩子+真人故事+品牌植入。"
+    },
+    "knowledge_display": {
+      "common_pattern": "课文/范文/常识直接朗读呈现。",
+      "summer_hook": "硬货整篇交付，写作家长收藏率高。",
+      "best_format": "30-60秒，纯文字大屏+整篇范文+品牌落点。"
+    }
+  }
 }
