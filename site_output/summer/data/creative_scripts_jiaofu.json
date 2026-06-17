@@ -1,823 +1,501 @@
 {
-  "version": "summer-v20260527-53items-balanced",
-  "updated_at": "2026-05-27",
-  "total_videos": 53,
+  "schema_version": 2,
+  "version": "jiaofu-v2-2026-06-18",
+  "category_label": "教辅",
+  "total_videos": 7,
   "category_legend": [
     {
-      "id": "object_flip",
+      "id": "realbook",
       "name": "实物翻书展示",
       "icon": "📚",
-      "color": "#4ade80",
-      "desc": "桌面静物 + 翻书特写 + 知识点亮点抓取"
+      "desc": "翻书+特写镜头展示书内细节，最直观，转化最高",
+      "color": "#3b82f6"
     },
     {
-      "id": "drama_skit",
+      "id": "scene",
       "name": "情景剧场代入",
       "icon": "🎬",
-      "color": "#a78bfa",
-      "desc": "情景演绎 + 权威信息引用"
+      "desc": "剧情演绎+情感共鸣，用真实场景拉近距离",
+      "color": "#ec4899"
     },
     {
-      "id": "talking_head",
-      "name": "真人口播种草",
-      "icon": "🎤",
-      "color": "#5b9eff",
-      "desc": "名人/作者/老师真人出镜口播 + 实物展示"
-    },
-    {
-      "id": "anxiety_long",
+      "id": "speech",
       "name": "深度演讲长视频",
       "icon": "📢",
-      "color": "#ff5f6d",
-      "desc": "演讲台/对话剧场，长视频深度种草 + 认知付费转化"
+      "desc": "专家/名师/嘉宾长篇演讲，权威感强、停留时间长",
+      "color": "#8b5cf6"
     },
     {
-      "id": "hot_topic",
-      "name": "热点话题切入",
-      "icon": "🔥",
-      "color": "#ffb547",
-      "desc": "网络热梗/路人采访 + 时效性"
-    },
-    {
-      "id": "knowledge_display",
+      "id": "knowledge",
       "name": "知识直给",
       "icon": "📖",
-      "color": "#22d3ee",
-      "desc": "场景开场一带而过 + 直接抛书本内容/知识点，用硬货吸引停留"
+      "desc": "满屏文字+配音直接抛干货，结构化强、易收藏",
+      "color": "#10b981"
+    },
+    {
+      "id": "kol",
+      "name": "真人口播种草",
+      "icon": "🎤",
+      "desc": "真人镜头口播，强IP背书+种草话术",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "hot",
+      "name": "热点话题切入",
+      "icon": "🔥",
+      "desc": "用近期热点/节点/实景做钩子，自然引出书",
+      "color": "#ef4444"
     }
   ],
   "scripts": [
     {
-      "video_id": "ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
-      "title": "打开我们中国立体科普",
-      "category": "object_flip",
-      "hook": "如果六一只送孩子一种礼物那一定是这套《打开我们中国》",
+      "video_id": "jiaofu_6",
+      "title": "一本·暑假阅读+口算+练字三件套",
+      "category": "hot",
+      "duration_sec": 39,
+      "duration_label": "40秒短视频",
+      "hook": "暑假把这3样练完",
       "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "窗台立体东方明珠浮起",
-          "script": "六一只送一种礼物",
-          "purpose": "六一钩子+立体震撼"
-        },
-        "build": {
-          "shot": "镜头拉远展示翻页",
-          "script": "收到这个中国立体科普书",
-          "purpose": "品类断言"
-        },
-        "climax": {
-          "shot": "立体上海高楼林立",
-          "script": "送孩子最佳礼物",
-          "purpose": "卖点收束"
-        },
-        "cta": {
-          "shot": "下方购买",
-          "script": "抓住六一",
-          "purpose": "转化"
-        }
+      "selling_point": "暑期节点钩子+一本品牌+阅读口算练字三合一",
+      "frames_dir": "./keyframes/jiaofu_6",
+      "tags": {
+        "pain": [
+          "升学焦虑",
+          "暑期作业焦虑"
+        ],
+        "effect": [
+          "应试提分",
+          "习惯养成"
+        ],
+        "user": [
+          "中小学家长"
+        ],
+        "scene": [
+          "暑期+开学季"
+        ],
+        "marketing": [
+          "实物翻书特写",
+          "品牌IP锚定",
+          "金句字幕浮窗"
+        ]
       },
-      "selling_point": "3D立体翻页东方明珠",
-      "frames_dir": "./keyframes/ads_svp_video__0b53hiad4aaaoaago3aejjvbuoqehy5aapsa_f0",
-      "duration_range": "60-120s",
+      "script_structure": [
+        {
+          "stage_no": 1,
+          "title": "分镜1: 桌面摆三册书+暑期节点钩子",
+          "time_range": "00:00~00:08",
+          "strategy": "用桌面平摆「一本」暑假阅读/口算/练字3册书+'暑假把这3样练完'核弹钩子，精准触达暑假家长决策刚需",
+          "execution": [
+            "俯拍3册书并排平铺+左上角合规'情景演绎'",
+            "'一本'红色LOGO反复强化品牌",
+            "'暑假把这3样练完'白底黄字大号钩子",
+            "BGM切快节奏暑期氛围"
+          ],
+          "script_content": "暑假把这3样练完——孩子开学语数双科至少提10分。一本暑假阅读、暑假口算、暑假练字帖，3本搞定整个暑假任务。"
+        },
+        {
+          "stage_no": 2,
+          "title": "分镜2: 翻到阅读训练《稻草人》课文实拍",
+          "time_range": "00:08~00:24",
+          "strategy": "翻到《稻草人》课文阅读训练章节+黄色划线重点+练习题，让家长看到'不是单纯做题，而是按课文做精读训练'的差异化价值",
+          "execution": [
+            "翻书特写《稻草人》课文",
+            "黄色划线重点段+扫码听音",
+            "左侧批注笔记+右侧理解题",
+            "BGM保持稳定阅读节奏"
+          ],
+          "script_content": "翻到第3天阅读训练——《稻草人》节选，按课文做精读：先批注审题、再做理解练习、最后做提分笔记，每天15分钟。"
+        },
+        {
+          "stage_no": 3,
+          "title": "分镜3: ISBN合规标识+CTA收口",
+          "time_range": "00:24~00:39",
+          "strategy": "底部 3 本书 ISBN 全部清晰露出做合规背书，'此视频无不良引导'消除焦虑，3 本一起拍CTA降低决策门槛",
+          "execution": [
+            "3本书 ISBN 底部清晰滚动",
+            "'此视频无不良引导'灰字合规",
+            "'3本一起拍'红框金句浮窗",
+            "BGM收尾留白便于截图"
+          ],
+          "script_content": "阅读 ISBN 978-7-5539-8153-1、口算 978-7-5539-8904-4、练字 978-7-210-14652-0——3本一起拍，给孩子一个高效暑假。"
+        }
+      ],
       "analysis": {
-        "win": "立体翻页的3D震撼力秒杀普通画面六一窗口下视觉冲击转化高。",
-        "reuse": "立体书/POPUP图书都可主推3D瞬间惊艳卖点。",
-        "scene": "5月底六一节家长选高单价立体书的决策窗口。"
+        "why_win": "暑期节点钩子+实物三件套+ISBN合规背书三段紧凑40秒高转化",
+        "reusable_for": "任何套装/系列/暑假/寒假节点教辅，'桌面摆+课文翻+ISBN收口'是低成本高转化套路",
+        "applicable_scenes": "暑假7-8月/寒假1-2月节点+开学前最后一周冲刺期"
       }
     },
     {
-      "video_id": "ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
-      "title": "打开我们中国六一礼物",
-      "category": "object_flip",
-      "hook": "如果六一只送孩子一种礼物那一定是这套《打开我们中国》",
+      "video_id": "jiaofu_8",
+      "title": "五升六暑假大盘点·街头采访+限时七五折",
+      "category": "speech",
+      "duration_sec": 144,
+      "duration_label": "2.5分钟演讲+实景",
+      "hook": "五升六暑假的重点是预习还是复习",
       "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "葵花+实物书封黄红对比",
-          "script": "六一只送一种礼物",
-          "purpose": "节日钩子"
-        },
-        "build": {
-          "shot": "翻到东北地区页面",
-          "script": "你家小孩六一儿童节",
-          "purpose": "具体内容展示"
-        },
-        "climax": {
-          "shot": "翻到华南地区页面",
-          "script": "让孩子足不出户就能感受",
-          "purpose": "核心卖点"
-        },
-        "cta": {
-          "shot": "快乐六一logo+下单",
-          "script": "抓住时效",
-          "purpose": "转化"
-        }
+      "selling_point": "街头资深教师采访+男老师演讲+限时七五折直播间催单",
+      "frames_dir": "./keyframes/jiaofu_8",
+      "tags": {
+        "pain": [
+          "升学焦虑",
+          "暑期作业焦虑"
+        ],
+        "effect": [
+          "应试提分",
+          "权威认证"
+        ],
+        "user": [
+          "中小学家长"
+        ],
+        "scene": [
+          "暑期+开学季",
+          "升学过渡期"
+        ],
+        "marketing": [
+          "实景街头采访",
+          "演讲嘉宾IP",
+          "品牌IP锚定",
+          "金句字幕浮窗"
+        ]
       },
-      "selling_point": "翻书展示+六一断言",
-      "frames_dir": "./keyframes/ads_svp_video__0b53aeaamaaadqaf7riezvvbuaieayaqabsa_f0",
-      "duration_range": "60-120s",
+      "script_structure": [
+        {
+          "stage_no": 1,
+          "title": "分镜1: 街头采访资深教师+核弹钩子",
+          "time_range": "00:00~00:15",
+          "strategy": "用街头实景+真实老师（条纹POLO衫+水杯）+'五升六暑假的重点是预习还是复习'选择题钩子，瞬间拦截高年级小升初家长",
+          "execution": [
+            "街头实景+老师手持水杯真实感",
+            "'五升六暑假的重点'红黄双色钩子大字",
+            "'最重要的是预习'红色金句弹窗",
+            "BGM切口播节奏稳定"
+          ],
+          "script_content": "五升六暑假的重点，到底是预习还是复习？我跟教过15年小升初的张老师聊过——他说：最重要的是预习，复习只占3成。"
+        },
+        {
+          "stage_no": 2,
+          "title": "分镜2: 切到男老师演讲深度论证'做知识梳理'",
+          "time_range": "00:15~01:10",
+          "strategy": "转到带麦男老师演讲+'小升初想要稳步提升必须做知识梳理'+《小学知识大盘点》IP水印，把街头建议升级为'有专业书可查'方案",
+          "execution": [
+            "男老师演讲家庭办公室真实场景",
+            "'五升六暑假就要做知识梳理'金句反复弹窗",
+            "'《小学知识大盘点》助益孩子稳步提升'书籍IP",
+            "BGM切渐强家长会氛围"
+          ],
+          "script_content": "小升初想要稳——五升六暑假就要做知识梳理。不是简单刷题，而是把6年的语文数学考点都过一遍。这本《小学知识大盘点》：90个核心考点+80个解题方法+小学知识全梳理。"
+        },
+        {
+          "stage_no": 3,
+          "title": "分镜3: 翻书展示90考点+80方法分层",
+          "time_range": "01:10~02:00",
+          "strategy": "翻到《小学知识大盘点》目录+按章节标注'90核心考点/80解题方法'，让家长感受'这一本=半年补习班'的高密度价值",
+          "execution": [
+            "翻书特写章节目录密度爆破",
+            "'90个核心考点'数字红框反复",
+            "'80个解题方法'金句弹窗",
+            "BGM保持稳定家长会节奏"
+          ],
+          "script_content": "这本《一本·小学知识大盘点》分语文+数学两册——90个核心考点全梳理、80个解题方法全收录，15分钟一个知识点，36天刷完整个小学6年。"
+        },
+        {
+          "stage_no": 4,
+          "title": "分镜4: '抢购'+'七五折'限时催单",
+          "time_range": "02:00~02:24",
+          "strategy": "切到货架满铺《小学知识大盘点》+黄色七五折抢购贴+'现在直播间限时优惠'，催发即时下单决策",
+          "execution": [
+            "货架满铺2册书排列堆叠强冲击",
+            "'抢购 七五折'黄色贴片反复出现",
+            "'现在直播间限时优惠'金句浮窗",
+            "BGM切收尾紧凑节奏"
+          ],
+          "script_content": "现在直播间限时优惠——七五折抢购，原价X元到手价仅XX元。语文+数学2本一起拿，给孩子一个稳稳的小升初。"
+        }
+      ],
       "analysis": {
-        "win": "六一只送一种的断言加精美翻书让家长想下单。",
-        "reuse": "节日+礼物决策可套用只送一种断言式开场。",
-        "scene": "5月下旬-6月1日六一节窗口对应暑期阅读启动节点。"
-      }
+        "why_win": "街头真老师+演讲方案+翻书密度+限时折扣四段递进，小升初家长无死角触达",
+        "reusable_for": "所有小升初/初升高/升学过渡类教辅，'街头采访+演讲方案+限时折扣'是高转化套路",
+        "applicable_scenes": "5-7月小升初决策期/12-2月初升高决策期/暑假前最后一波家长会"
+      },
+      "warning": "街头老师若需真实身份背书需明确授权，限时优惠话术需符合广告法不得虚标原价"
     },
     {
-      "video_id": "ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
-      "title": "百变拼音平板学习机",
-      "category": "object_flip",
-      "hook": "完整的拼音平板按一下就会读",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "双手举书+蓝粉色拼音表",
-          "script": "完整的拼音平板",
-          "purpose": "实物正面定位"
-        },
-        "build": {
-          "shot": "手指按b/p/m/f按钮",
-          "script": "按一下就会读",
-          "purpose": "互动展示"
-        },
-        "climax": {
-          "shot": "切到声调/韵母全表",
-          "script": "声母韵母全有了",
-          "purpose": "内容全展示"
-        },
-        "cta": {
-          "shot": "下方挂购买卡",
-          "script": "下单送音箱",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "实物拼音平板按压发声",
-      "frames_dir": "./keyframes/ads_svp_video__0b53gecwiaafxyaphewrmnur6miemqyqkzca_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "按一下就发声的互动展示让家长直接看到孩子学习场景。",
-        "reuse": "幼小衔接发声书/点读笔都能用实物互动演示。",
-        "scene": "暑假幼升小衔接期6-8月家长拼音突击窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
-      "title": "立体长城我们的中国",
-      "category": "object_flip",
-      "hook": "如果六一只送孩子一种礼物那一定是这套《我们的中国》",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "彩色山脉立体长城浮起",
-          "script": "六一只送一种礼物",
-          "purpose": "钩子"
-        },
-        "build": {
-          "shot": "北京长城立体模型说明",
-          "script": "蜿蜒于山峦间",
-          "purpose": "卖点"
-        },
-        "climax": {
-          "shot": "从书里站起来字幕",
-          "script": "震撼3D体验",
-          "purpose": "视觉冲击"
-        },
-        "cta": {
-          "shot": "底部下单",
-          "script": "抢套装",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "立体长城突破纸面",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3keafeaaaluah5iaitvvbuuiekjiqausa_f0",
-      "duration_range": "120-180s",
-      "analysis": {
-        "win": "从书里站起来拟人化文案加立体长城突破纸面震撼力极强。",
-        "reuse": "POPUP立体书都可用站起来活起来拟人化文案。",
-        "scene": "六一节加暑假家长选具收藏价值的立体书窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
-      "title": "七年级历史背诵口诀",
-      "category": "object_flip",
-      "hook": "新版七上历史全册必背记忆口诀",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "白纸竖版口诀标题",
-          "script": "新版七上历史必背口诀",
-          "purpose": "品类定位"
-        },
-        "build": {
-          "shot": "元谋人+北京人考点",
-          "script": "史前时期重点逐条罗列",
-          "purpose": "内容直给"
-        },
-        "climax": {
-          "shot": "河姆渡半坡居民展示",
-          "script": "原始农耕课考点全",
-          "purpose": "硬货堆叠"
-        },
-        "cta": {
-          "shot": "底部购买",
-          "script": "下单全套口诀",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "初中历史背诵口诀全册",
-      "frames_dir": "./keyframes/ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "白纸加口诀加考点序号让家长一眼看出考点全加背得动。",
-        "reuse": "政史地等文科口诀书都可用白纸竖版逐条罗列格式。",
-        "scene": "暑假小升初/初二预科家长选教辅决策点。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
-      "title": "初中地理高频考点教辅",
-      "category": "object_flip",
-      "hook": "例如七大洲5年考201次",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "切到教辅+紫色衣女主",
-          "script": "为啥这两样东西这么重要",
-          "purpose": "问句铺陈"
-        },
-        "build": {
-          "shot": "翻到七大洲表格",
-          "script": "面积最大跨纬度最广",
-          "purpose": "硬货逐条"
-        },
-        "climax": {
-          "shot": "5年201次高频字幕",
-          "script": "考的就是这些",
-          "purpose": "稀缺感"
-        },
-        "cta": {
-          "shot": "底部购买",
-          "script": "下单教辅",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "高频考点教辅+真人推荐",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "5年201次量化数据让家长瞬间觉得命中率超高。",
-        "reuse": "考点类教辅都可用X年Y次量化高频考点话术。",
-        "scene": "暑假初中生家长选高考教辅决策窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
-      "title": "我们的中国六一礼物",
-      "category": "drama_skit",
-      "hook": "六一儿童节爷爷奶奶给孙子准备的惊喜",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "客厅沙发母子共读特写",
-          "script": "六一儿童节爷爷奶奶准备的惊喜",
-          "purpose": "节日时效钩子"
-        },
-        "build": {
-          "shot": "孩子翻书惊喜表情",
-          "script": "孩子收到后开心的不得了",
-          "purpose": "情绪共鸣"
-        },
-        "climax": {
-          "shot": "实物《我们的中国》封面",
-          "script": "我以后也要去长城",
-          "purpose": "触发孩子向往感"
-        },
-        "cta": {
-          "shot": "书本展示+购买引导",
-          "script": "六一礼物赶快下单",
-          "purpose": "节日紧迫感转化"
-        }
-      },
-      "selling_point": "六一节+隔代礼物情景剧",
-      "frames_dir": "./keyframes/ads_svp_video__0b532ealuaaaaeaabaikervbvuiexliqbosa_f0",
-      "duration_range": "120-180s",
-      "analysis": {
-        "win": "亲子共读画面加孩子主动想去做决策依据。",
-        "reuse": "中国地理/科普类图书都可套用六一/儿童节亲子场景。",
-        "scene": "5月底-6月1日六一节家长选礼物窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
-      "title": "六一礼物我们的中国",
-      "category": "drama_skit",
-      "hook": "如果六一只送孩子一种礼物那一定是这套《我们的中国》",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "门口母子拥抱画面",
-          "script": "六一只送孩子一种礼物",
-          "purpose": "节日决策钩子"
-        },
-        "build": {
-          "shot": "孩子展示《我们的中国》",
-          "script": "爷爷奶奶给我买的六一礼物",
-          "purpose": "隔代赠礼场景"
-        },
-        "climax": {
-          "shot": "母亲微笑+礼物特写",
-          "script": "一定是这套《我们的中国》",
-          "purpose": "品牌断言"
-        },
-        "cta": {
-          "shot": "品牌LOGO+下单链接",
-          "script": "赶紧下单",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "AI生成六一母子情景剧",
-      "frames_dir": "./keyframes/ads_svp_video__0b537eacmaaaliantaaoifvbv6iee34qajsa_f0",
-      "duration_range": "180-240s",
-      "analysis": {
-        "win": "AI生成的温馨亲情画面加断言式书名植入节日转化稳。",
-        "reuse": "节日礼物场景都可AI生成温馨家庭剧。",
-        "scene": "5月底-6月1日六一节前夕黄金选品窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
-      "title": "爷爷奶奶送孙六一礼",
-      "category": "drama_skit",
-      "hook": "儿童节马上到了你给乖孙买好礼物了吗？",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "爷爷奶奶+孙子合影",
-          "script": "儿童节马上到了",
-          "purpose": "时效问句钩子"
-        },
-        "build": {
-          "shot": "孩子收礼欢喜",
-          "script": "你给乖孙买好礼物了吗",
-          "purpose": "转向决策提问"
-        },
-        "climax": {
-          "shot": "《我们的中国》红色书封",
-          "script": "谢谢爷爷奶奶",
-          "purpose": "情绪定格"
-        },
-        "cta": {
-          "shot": "品牌LOGO+加购卡片",
-          "script": "下单礼盒",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "爷孙三代AI情景礼物剧",
-      "frames_dir": "./keyframes/ads_svp_video__0b53b4aq6aab2yan3pypuzvbwdyeb4hqcd2a_f0",
-      "duration_range": "120-180s",
-      "analysis": {
-        "win": "AI生成三代同框画面加疑问钩子直击隔代礼物决策。",
-        "reuse": "父母节/重阳节都可套用隔代家庭温情情景剧。",
-        "scene": "6月初六一节窗口覆盖隔代家庭礼物决策。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
-      "title": "六一生日中国立体书",
-      "category": "drama_skit",
-      "hook": "孩子期待的六一礼物让孩子足不出户看世界",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "HappyBirthday蛋糕+气球",
-          "script": "孩子期待的六一礼物",
-          "purpose": "节日场景钩子"
-        },
-        "build": {
-          "shot": "两小女孩奔跑庆祝",
-          "script": "让孩子足不出户看世界",
-          "purpose": "情绪+卖点"
-        },
-        "climax": {
-          "shot": "中国立体科普书标签",
-          "script": "拆礼物惊喜",
-          "purpose": "开箱情绪"
-        },
-        "cta": {
-          "shot": "下方下单",
-          "script": "赶上儿童节",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "气球生日派对收书惊喜",
-      "frames_dir": "./keyframes/ads_svp_video__0bc35yakeaaa6eakkqqmonvbv3qeulxabisa_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "气球生日派对营造仪式感加足不出户看世界卖点强转化。",
-        "reuse": "带强场景仪式感的礼物都可借用气球派对剧情。",
-        "scene": "5月底-6月初六一节家长选具仪式感的礼物。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
-      "title": "金龟子代言中国书",
-      "category": "talking_head",
-      "hook": "金龟子都会给大家准备礼物",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "金龟子蓝眼镜白衣特写",
-          "script": "金龟子标签",
-          "purpose": "明星IP亮相"
-        },
-        "build": {
-          "shot": "金龟子真人口播+书堆",
-          "script": "都会给大家准备礼物",
-          "purpose": "推荐意图"
-        },
-        "climax": {
-          "shot": "展示《打开我们中国》",
-          "script": "就是这套书",
-          "purpose": "品牌植入"
-        },
-        "cta": {
-          "shot": "下方下单",
-          "script": "跟着金龟子买",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "金龟子IP+礼物推荐",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3faapyaaahqahbpynr5vbukae7quab7ca_f0",
-      "duration_range": "30-60s",
-      "analysis": {
-        "win": "金龟子的童年IP加真人推荐对家长产生强信任锚点。",
-        "reuse": "童年IP代言都可用白色基调清新感稳重场景。",
-        "scene": "六一节+暑假家长选择IP背书图书的决策窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
-      "title": "打开我们中国演讲推荐",
-      "category": "talking_head",
-      "hook": "如果六一只送孩子一种礼物那一定是这套《打开我们中国》",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "眼镜男嘉宾舞台话筒",
-          "script": "六一只送一种礼物",
-          "purpose": "演讲嘉宾权威感"
-        },
-        "build": {
-          "shot": "嘉宾手势+实物书",
-          "script": "没给孩子买礼物了",
-          "purpose": "痛点共鸣"
-        },
-        "climax": {
-          "shot": "展示《打开我们中国》",
-          "script": "就送这套",
-          "purpose": "品牌断言"
-        },
-        "cta": {
-          "shot": "下方挂购买",
-          "script": "限时套装",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "演讲嘉宾真人推荐六一礼物",
-      "frames_dir": "./keyframes/ads_svp_video__0b53kaas6aabcaaghbync5vbwuaef5iacl2a_f0",
-      "duration_range": "120-180s",
-      "analysis": {
-        "win": "演讲台加真人嘉宾实拍感比AI更说服力六一节话题精准。",
-        "reuse": "节日单品可在专家演讲场切入只送这一个断言。",
-        "scene": "5月底-6月初六一节家长选礼物决策窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
-      "title": "立体中国地图书六一",
-      "category": "talking_head",
-      "hook": "六一不知道送孩子什么？给他一本会动的中国地图",
-      "summer_relevance": "★★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "西装话筒男嘉宾",
-          "script": "六一不知道送孩子什么",
-          "purpose": "问句钩子"
-        },
-        "build": {
-          "shot": "嘉宾比划+介绍",
-          "script": "给他一本会动的中国地图",
-          "purpose": "解决方案"
-        },
-        "climax": {
-          "shot": "《我们的中国》立体书断言",
-          "script": "就是这本立体书",
-          "purpose": "品牌植入"
-        },
-        "cta": {
-          "shot": "下方购买",
-          "script": "限时套装",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "演讲嘉宾口播立体地图",
-      "frames_dir": "./keyframes/ads_svp_video__0bc36aaloaaavyal4dqmbnvbv4aew7yabn2a_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "问句开场加会动的中国地图有画面感关键词演讲场更可信。",
-        "reuse": "六一礼物都可用问句钩子加一句话品类断言。",
-        "scene": "5月底六一节窗口家长选礼物决策点。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
-      "title": "帝王家书亲子共读",
-      "category": "anxiety_long",
-      "hook": "让普通家庭孩子开悟逆袭就是读《帝王家书》",
+      "video_id": "jiaofu_3",
+      "title": "混子哥·初中小四门早知道·每天5分钟",
+      "category": "kol",
+      "duration_sec": 106,
+      "duration_label": "2分钟真人口播",
+      "hook": "不断有家长感谢《初中小四门早知道》",
       "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "演讲台主持人话筒特写",
-          "script": "让普通家庭孩子开悟逆袭",
-          "purpose": "抛阶层跃迁认知钩子"
-        },
-        "build": {
-          "shot": "切到嘉宾解读古代家书",
-          "script": "就是读《帝王家书》",
-          "purpose": "抛书名给方案"
-        },
-        "climax": {
-          "shot": "实物《帝王家书》封面浮窗",
-          "script": "有人开价多少都不卖",
-          "purpose": "稀缺价值感"
-        },
-        "cta": {
-          "shot": "下方挂购买卡片",
-          "script": "限时套装抢购",
-          "purpose": "引导下单"
-        }
+      "selling_point": "混子哥强IP+'每天随便翻5分钟'低门槛承诺+实物漫画翻书",
+      "frames_dir": "./keyframes/jiaofu_3",
+      "tags": {
+        "pain": [
+          "升学焦虑",
+          "小四门记忆痛"
+        ],
+        "effect": [
+          "应试提分",
+          "权威认证",
+          "低门槛学习"
+        ],
+        "user": [
+          "中小学家长"
+        ],
+        "scene": [
+          "暑期+开学季",
+          "升学过渡期"
+        ],
+        "marketing": [
+          "演讲嘉宾IP",
+          "实物翻书特写",
+          "金句字幕浮窗"
+        ]
       },
-      "selling_point": "古文家书+开悟逆袭叙事",
-      "frames_dir": "./keyframes/ads_svp_video__0b532aagiaaalaapepqg4vvbvuaemtiaazca_f0",
-      "duration_range": "180-240s",
+      "script_structure": [
+        {
+          "stage_no": 1,
+          "title": "分镜1: 混子哥真人胸像+'家长感谢'钩子",
+          "time_range": "00:00~00:12",
+          "strategy": "用混子哥本人正面胸像+「混知漫画创始人」身份标签+'不断有家长感谢'第三方背书钩子，秒拦截所有混子哥粉丝+小升初家长",
+          "execution": [
+            "混子哥正面胸像稳定不切镜头",
+            "左下角身份标签'混知漫画创始人'蓝底强化",
+            "右侧'不断有家长感谢《初中小四门早知道》'红底大字",
+            "BGM切舒缓口播节奏"
+          ],
+          "script_content": "我是混子哥——最近不断有家长牵着孩子跑过来感谢《初中小四门早知道》。说孩子开始喜欢学历史地理生物道法了。"
+        },
+        {
+          "stage_no": 2,
+          "title": "分镜2: 抛出'小四门难背'共识痛点",
+          "time_range": "00:12~00:55",
+          "strategy": "用'确实很难背'金句承认家长共识痛点，把'小四门=死记硬背'的家长认知做反向铺垫，为'我用漫画解决'做钩子",
+          "execution": [
+            "混子哥胸像保持稳定",
+            "'确实很难背'金句白底圆角弹窗",
+            "左下角'《初中小四门早知道》作者'身份持续",
+            "BGM保持稳定口播节奏"
+          ],
+          "script_content": "小四门——历史地理生物道法，确实很难背。课本厚、考点散、孩子一看就犯困。所以我花了2年时间，把这4门全画成漫画。"
+        },
+        {
+          "stage_no": 3,
+          "title": "分镜3: 翻书展示漫画+'每天5分钟'承诺",
+          "time_range": "00:55~01:35",
+          "strategy": "翻到《初中小四门早知道》内页漫画+'每天随便翻5分钟'低门槛承诺，把'2年学完'目标压缩到家长心理可承受的'每天5分钟'",
+          "execution": [
+            "翻书特写漫画风格清晰",
+            "'每天随便翻5分钟'金句白底大字",
+            "漫画人物表情夸张吸引注意",
+            "BGM切轻快节奏配合翻页"
+          ],
+          "script_content": "翻到任意一页——历史人物用漫画，地理常识用插图，生物结构画成卡通，道法考点编成故事。每天随便翻5分钟，比硬背强10倍。"
+        },
+        {
+          "stage_no": 4,
+          "title": "分镜4: CTA收口+'混子哥推荐'IP固定",
+          "time_range": "01:35~01:46",
+          "strategy": "用左下角熊猫×书封小图固定IP+混子哥本人收口寄语，让粉丝因IP信任直接下单",
+          "execution": [
+            "左下角熊猫×书封小图固定2秒",
+            "混子哥微笑收口胸像",
+            "BGM收尾保留口播余韵",
+            "底部合规'此视频无不良引导'灰字"
+          ],
+          "script_content": "《初中小四门早知道》——给即将上初中的孩子，一份不痛苦的小四门启蒙。"
+        }
+      ],
       "analysis": {
-        "win": "演讲式阶层跃迁话术配古籍稀缺感，激发普通家庭决策欲。",
-        "reuse": "家庭教育/认知类书目找演讲嘉宾做长视频拆解可复刻。",
-        "scene": "暑假7-8月晚间家长闲暇，知识付费长视频转化窗口。"
+        "why_win": "混子哥本人IP+第三方背书钩子+低门槛承诺+漫画翻书展示，强IP放大转化",
+        "reusable_for": "任何漫画教辅/科普/低龄学习类，'强IP+痛点共识+低门槛+翻书'是高效组合",
+        "applicable_scenes": "小升初过渡期/初一新生入学前/暑期阅读种草高峰"
       }
     },
     {
-      "video_id": "ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0",
-      "title": "黄导家庭教育演讲",
-      "category": "anxiety_long",
-      "hook": "黄导再次语出惊人普通家庭的机会来了",
-      "summer_relevance": "★★★",
-      "script_structure": {
-        "open": {
-          "shot": "黄导白板舞台话筒",
-          "script": "黄导再次语出惊人",
-          "purpose": "权威IP钩子"
-        },
-        "build": {
-          "shot": "深耕家庭教育16年字幕",
-          "script": "普通家庭的机会来了",
-          "purpose": "卖点铺陈"
-        },
-        "climax": {
-          "shot": "成长思维白板手写",
-          "script": "具体方法逐条讲解",
-          "purpose": "深度内容"
-        },
-        "cta": {
-          "shot": "下方课程购买",
-          "script": "报名家庭教育课",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "家庭教育16年演讲长视频",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3peeg2aai2uaf6xqjbzvbe6ienv4qq3ka_f0",
-      "duration_range": "240s+",
-      "analysis": {
-        "win": "黄导IP加16年经验权威感加白板手写让长视频转化稳。",
-        "reuse": "家庭教育/认知付费都可用专家IP加白板手写结构。",
-        "scene": "暑假晚间家长深度学习家庭教育课的窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
-      "title": "雪乡实景开场中国书",
-      "category": "hot_topic",
-      "hook": "东北的雪乡有多冷",
+      "video_id": "jiaofu_4",
+      "title": "小学数学画图法·容斥问题韦恩图",
+      "category": "knowledge",
+      "duration_sec": 77,
+      "duration_label": "1分钟知识直给",
+      "hook": "年年考年年错——容斥问题",
       "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "蓝天雪乡实景全景",
-          "script": "东北的雪乡有多冷",
-          "purpose": "实景钩子"
-        },
-        "build": {
-          "shot": "切到桌面《打开我们中国》",
-          "script": "六大地区全是立体机关",
-          "purpose": "转翻书"
-        },
-        "climax": {
-          "shot": "翻到京津冀北京故宫",
-          "script": "实景看不到的孩子也能学",
-          "purpose": "卖点"
-        },
-        "cta": {
-          "shot": "底部购买",
-          "script": "下单一套",
-          "purpose": "转化"
-        }
+      "selling_point": "高频考点钩子+手写解题+实物翻书+山东济南真题",
+      "frames_dir": "./keyframes/jiaofu_4",
+      "tags": {
+        "pain": [
+          "应试压力",
+          "数学失分点"
+        ],
+        "effect": [
+          "应试提分",
+          "方法论赋能"
+        ],
+        "user": [
+          "中小学家长",
+          "K12学生本人"
+        ],
+        "scene": [
+          "暑期+开学季"
+        ],
+        "marketing": [
+          "手写画图演示",
+          "实物翻书特写",
+          "金句字幕浮窗"
+        ]
       },
-      "selling_point": "实景雪乡转翻书科普",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3h4anqaaauualtbyodrvbupye3a7qbwca_f0",
-      "duration_range": "120-180s",
+      "script_structure": [
+        {
+          "stage_no": 1,
+          "title": "分镜1: 厚书侧立展示+'年年考年年错'核弹钩子",
+          "time_range": "00:00~00:08",
+          "strategy": "用厚书侧立+蓝色书页强冲击+'年年考年年错·容斥问题'红色警示钩子，把所有数学失分的小学家长拦截在划走前",
+          "execution": [
+            "《小学数学画图法》厚书侧立+蓝边强冲击",
+            "'年年考年年错·容斥问题'红框大字钩子",
+            "'29人喝红牛31人喝可乐'真题悬念",
+            "BGM切快节奏紧凑"
+          ],
+          "script_content": "年年考、年年错——容斥问题。29人喝红牛、31人喝可乐、9人两种都喝，一共有几人？"
+        },
+        {
+          "stage_no": 2,
+          "title": "分镜2: 手写题目+悬念铺垫",
+          "time_range": "00:08~00:25",
+          "strategy": "用蓝天荷花背景+手写蓝色钢笔题目+悬念语音'问一共有几个人'，让看视频家长跟着思考'我会做吗'",
+          "execution": [
+            "蓝天白云荷花清新背景",
+            "手写蓝笔慢速写题目",
+            "'问一共有几个人'金句白底浮窗",
+            "BGM切悠扬童趣节奏"
+          ],
+          "script_content": "问一共有几个人？很多孩子直接 29+31=60，错了——这就是容斥问题最容易踩的坑。"
+        },
+        {
+          "stage_no": 3,
+          "title": "分镜3: 翻书展示韦恩图法+山东济南真题",
+          "time_range": "00:25~01:05",
+          "strategy": "翻到《小学数学画图法》第46讲容斥问题+山东济南真题+韦恩图法+大红勾标准答案，把'家长讲不清楚'转化为'看一本书就能教'的具体方案",
+          "execution": [
+            "翻书特写第46讲'容斥问题韦恩图法'",
+            "'2025年·山东省济南市'真题来源蓝框",
+            "韦恩图3色圆环（黄椭+红椭+15重叠）",
+            "大红勾✓标记30+22-15=37(人)答案"
+          ],
+          "script_content": "翻到第46讲：用黄色椭圆表示喝可乐的人，红色椭圆表示喝雪碧的人，中间重复部分就是两种都喝的人。30+22-15=37人，答：一共有37人。"
+        },
+        {
+          "stage_no": 4,
+          "title": "分镜4: '一书两用'核心卖点收口",
+          "time_range": "01:05~01:17",
+          "strategy": "用'一书两用'卖点收口，强调'家长能讲+孩子能学'双重价值，把单一刷题书升级为'家长教学工具'",
+          "execution": [
+            "书封最后2秒大占比露出",
+            "'一书两用'金句红框反复",
+            "BGM收尾保留写字声效",
+            "底部合规'此视频无不良引导'"
+          ],
+          "script_content": "《小学数学画图法》——一书两用：孩子能看图自学，家长能照书辅导。再难的题，画个图就解出来了。"
+        }
+      ],
       "analysis": {
-        "win": "实景大场景加室内翻书形成去不了也能看的强心理共鸣。",
-        "reuse": "地理/旅游图书都可用实景画面到室内翻书对比结构。",
-        "scene": "暑假未出游家庭加碎片时间停留场景。"
+        "why_win": "高频考点钩子+悬念真题+韦恩图法+一书两用，4段紧凑高完播",
+        "reusable_for": "所有数学画图/思维/方法论类教辅，'真题钩子+悬念铺垫+解题演示+一书两用'是高转化",
+        "applicable_scenes": "暑假数学预习+月考前夕+小升初专题突破期"
       }
     },
     {
-      "video_id": "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
-      "title": "等积模型拉窗帘",
-      "category": "knowledge_display",
-      "hook": "同底等高三角形面积不变",
+      "video_id": "jiaofu_1",
+      "title": "小学成语速记·按心情分类+课文同步",
+      "category": "realbook",
+      "duration_sec": 108,
+      "duration_label": "2分钟实物翻书",
+      "hook": "表心情的成语——伤心生气害怕分类记",
       "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "黄底数学板书标题",
-          "script": "等积模型（拉窗帘）",
-          "purpose": "几何模型名称悬念"
-        },
-        "build": {
-          "shot": "三角形动画演示",
-          "script": "同底等高三角形面积不变",
-          "purpose": "结论先抛"
-        },
-        "climax": {
-          "shot": "ABCD四点动态推导",
-          "script": "这是等积模型",
-          "purpose": "原理可视化"
-        },
-        "cta": {
-          "shot": "下方挂教辅书购买",
-          "script": "中考几何必备",
-          "purpose": "导向教辅购买"
-        }
+      "selling_point": "按心情分类速记+课文同步成语接龙+卡通插图",
+      "frames_dir": "./keyframes/jiaofu_1",
+      "tags": {
+        "pain": [
+          "应试压力",
+          "成语记不住"
+        ],
+        "effect": [
+          "应试提分",
+          "记忆方法赋能"
+        ],
+        "user": [
+          "中小学家长",
+          "K12学生本人"
+        ],
+        "scene": [
+          "暑期+开学季"
+        ],
+        "marketing": [
+          "实物翻书特写",
+          "卡通插图+拼音",
+          "金句字幕浮窗"
+        ]
       },
-      "selling_point": "数学几何模型一招通解",
-      "frames_dir": "./keyframes/ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "动起来的几何模型让抽象结论变直觉，30秒讲清常考考点。",
-        "reuse": "中考几何/物理力学等可动图演示考点都能用知识直给。",
-        "scene": "暑假初升高/初二升初三衔接期，主动找方法窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
-      "title": "小学画图模型一半问题",
-      "category": "knowledge_display",
-      "hook": "小学常用画图模型·一半问题",
-      "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "格子背景标题卡",
-          "script": "小学常用画图模型·一半问题",
-          "purpose": "品类+方法定位"
+      "script_structure": [
+        {
+          "stage_no": 1,
+          "title": "分镜1: 翻到'表心情成语'分类页+卡通插画",
+          "time_range": "00:00~00:18",
+          "strategy": "翻到'表心情成语·伤心/生气/害怕'分类+卡通小孩表情插画，让低年级家长瞬间产生'孩子能看懂'的安心感",
+          "execution": [
+            "翻书俯拍'第五章成语'清晰章节",
+            "'伤心/生气/害怕'3列分类+卡通插画",
+            "成语拼音注音清晰可读",
+            "BGM切舒缓童趣节奏"
+          ],
+          "script_content": "翻到第五章成语——按心情分类记：伤心有'心如刀割、泪如雨下、悲痛欲绝'；生气有'怒发冲冠、气急败坏、怒火中烧'；害怕有'心惊胆战、心有余悸、毛骨悚然'。"
         },
-        "build": {
-          "shot": "巧克力题面文字",
-          "script": "吃了一半多2块还剩5块",
-          "purpose": "具体题面"
+        {
+          "stage_no": 2,
+          "title": "分镜2: 翻到课文同步成语+卡通配图",
+          "time_range": "00:18~00:55",
+          "strategy": "翻到课文12《坐井观天》+课文13《大雪纷飞》同步成语+青蛙井底卡通插画，让家长看到'书里的成语跟课本是一对一'的差异化价值",
+          "execution": [
+            "翻书展示'课文12《坐井观天》'清晰",
+            "卡通青蛙坐井底+小麦堆配图",
+            "'就是一只青蛙坐在井底'童趣金句",
+            "BGM保持稳定阅读节奏"
+          ],
+          "script_content": "还跟课本同步——课文12《坐井观天》：就是一只青蛙坐在井底，比喻眼光狭窄；课文13《大雪纷飞》：形容雪下得很大。学课文+背成语，两不误。"
         },
-        "climax": {
-          "shot": "圆形图示拆解2块+5块",
-          "script": "一半:2+5=7块",
-          "purpose": "可视化解题步骤"
+        {
+          "stage_no": 3,
+          "title": "分镜3: 翻到'第三单元小学语境运用'章节",
+          "time_range": "00:55~01:35",
+          "strategy": "翻到'无奇不有/百发百中/百依百顺/明察秋毫/七上八下'+成语接龙+小学语境运用，强化书的'全场景适用'卖点",
+          "execution": [
+            "翻书特写'第三单元成语·按语境运用'",
+            "'你就可以把这个成语'金句弹窗",
+            "卡通小人插画+成语示例",
+            "BGM保持轻快节奏"
+          ],
+          "script_content": "翻到第三单元——成语语境运用：无奇不有、百发百中、百依百顺、明察秋毫、七上八下。你就可以把这个成语用在作文里。"
         },
-        "cta": {
-          "shot": "结论+教辅推荐",
-          "script": "一共14块·完整解法",
-          "purpose": "转化教辅书"
+        {
+          "stage_no": 4,
+          "title": "分镜4: 翻活页式速记卡+创新卖点收口",
+          "time_range": "01:35~01:48",
+          "strategy": "翻到活页式速记卡片+'不完美是常态'金句，强化书的'随时随地学'的差异化创新卖点",
+          "execution": [
+            "活页式卡片2环装订特写",
+            "'不完美是常态'装裱字画背景",
+            "花瓶+卡通装饰营造温暖氛围",
+            "BGM收尾保留翻动声"
+          ],
+          "script_content": "还配活页式速记卡——随时翻、随时背、3个月练完小学6年所有常用成语。"
         }
-      },
-      "selling_point": "应用题画图秒解法",
-      "frames_dir": "./keyframes/ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
-      "duration_range": "60-120s",
+      ],
       "analysis": {
-        "win": "题面+图示+结论一镜到底让家长直观看到孩子能学会。",
-        "reuse": "小学应用题/数学思维教辅都可套用画图模型展示。",
-        "scene": "暑假家长筛选小学数学教辅时秒看秒懂决策窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
-      "title": "大脑突触育儿科普",
-      "category": "knowledge_display",
-      "hook": "如果浪费在手机电视上",
-      "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "蓝底大脑突触动画加红蓝光点",
-          "script": "大脑神经突触示意",
-          "purpose": "科普视觉钩子"
-        },
-        "build": {
-          "shot": "如果浪费在手机电视上字幕",
-          "script": "痛点铺陈",
-          "purpose": "引出焦虑"
-        },
-        "climax": {
-          "shot": "切到育儿书加抓住关键期",
-          "script": "脑科学育儿方案",
-          "purpose": "卖点亮相"
-        },
-        "cta": {
-          "shot": "底部下单",
-          "script": "抢育儿套装",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "大脑神经科普动画",
-      "frames_dir": "./keyframes/ads_svp_video__0bc3naalsaaaymag6iylbzvbu2aexfuaboka_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "脑科学权威感加关键期紧迫感新手家长决策成本大幅降低。",
-        "reuse": "脑科学/儿童发育话题都可用脑动画加关键期结构。",
-        "scene": "暑假0-6岁家长找科学育儿方案窗口。"
-      }
-    },
-    {
-      "video_id": "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
-      "title": "数学思维训练画图",
-      "category": "knowledge_display",
-      "hook": "思维训练·填相同的数",
-      "summer_relevance": "★★★★",
-      "script_structure": {
-        "open": {
-          "shot": "黑底标题卡",
-          "script": "思维训练·填相同的数",
-          "purpose": "方法定位"
-        },
-        "build": {
-          "shot": "白色方框公式",
-          "script": "抽象题面拆解",
-          "purpose": "题面铺陈"
-        },
-        "climax": {
-          "shot": "线段图拆解",
-          "script": "可视化解题",
-          "purpose": "核心方法"
-        },
-        "cta": {
-          "shot": "ISBN+教辅",
-          "script": "下单同款",
-          "purpose": "转化"
-        }
-      },
-      "selling_point": "数学画线段解题",
-      "frames_dir": "./keyframes/ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
-      "duration_range": "60-120s",
-      "analysis": {
-        "win": "线段图把分数除法题目可视化30秒讲完一道难题。",
-        "reuse": "小学数学难题都可用线段图法做知识直给。",
-        "scene": "暑假家长筛选小学数学思维训练教辅决策窗口。"
+        "why_win": "按心情分类+课文同步+活页速记，3个差异化卖点叠加+全程翻书无口播",
+        "reusable_for": "所有成语/古诗/作文素材类工具书，'分类速记+课文同步+卡通插画'是低年级强转化套路",
+        "applicable_scenes": "暑期预习/期末作文冲刺/期初成语单元突破期"
       }
     }
-  ],
-  "category_summary": {
-    "object_flip": {
-      "common_pattern": "实物书桌面静物+翻页特写+知识点逐页展示，是图书行业最稳定的真实感锚点。",
-      "summer_hook": "六一/暑期场景下用'只送一种礼物'断言+立体3D机关展示，瞬间提升礼盒感。",
-      "best_format": "60-120秒，俯拍+翻页特写+具体数字（100知识点/52翻翻页）。"
-    },
-    "drama_skit": {
-      "common_pattern": "AI生成或真人演绎的家庭情景剧，多用亲子/隔代/对比剧引发情绪共鸣。",
-      "summer_hook": "六一儿童节、暑假在家、生日派对等强场景仪式感的礼物决策窗口。",
-      "best_format": "120-180秒，分上下场（情景铺陈+礼物揭晓），结尾落到购买卡。"
-    },
-    "talking_head": {
-      "common_pattern": "名人/作者/老师真人出镜口播，搭配实物书与字幕花字身份背书。",
-      "summer_hook": "明星IP（金龟子）或一线名师在镜头前给出'我也送孩子这本'的私人推荐。",
-      "best_format": "60-120秒，特写+品牌断言+教辅书画外定格。"
-    },
-    "anxiety_long": {
-      "common_pattern": "演讲台/对话剧场长视频，用焦虑话题+权威观点+认知付费转化。",
-      "summer_hook": "暑期晚间家长闲暇时间深度收看，叠加'普通家庭逆袭'式认知钩子。",
-      "best_format": "180秒以上，演讲嘉宾全身镜头+字幕金句+二维码引流。"
-    },
-    "hot_topic": {
-      "common_pattern": "网络热梗/路人采访/自然实景开场，再切到产品做对比种草。",
-      "summer_hook": "用未出游家庭看不到的实景画面对比室内翻书，形成强心理代偿。",
-      "best_format": "60-120秒，实景空镜→产品翻书→购买卡三段式。"
-    },
-    "knowledge_display": {
-      "common_pattern": "场景开场一带而过+直接抛书本内容/解题步骤，用硬货吸引停留。",
-      "summer_hook": "暑期主动找方法的初/高中生家长，对'30秒讲清考点'类硬核内容停留率高。",
-      "best_format": "30-60秒，黑底动画/白板手写+一题多解+底部教辅推荐卡。"
-    }
-  }
+  ]
 }

@@ -1,690 +1,433 @@
 {
-  "version": "childbook-tags-v20260617",
-  "updated_at": "2026-06-17",
-  "data_note": "基于本批 5 条童书视频做五维度拆解，频率=该标签出现次数",
+  "schema_version": 2,
+  "version": "childbook-tags-v2-2026-06-17",
+  "category_label": "童书",
   "total_sample_videos": 5,
   "dimensions": [
     {
       "id": "pain",
-      "name": "痛点",
-      "icon": "⚡",
-      "color": "#ff5f6d",
-      "question": "解决什么问题？",
-      "desc": "孩子面临的具体学习/心理/社交困扰"
+      "name": "痛点维度",
+      "icon": "😣",
+      "desc": "用户最焦虑、最想解决的问题"
     },
     {
       "id": "effect",
-      "name": "效果",
+      "name": "效果维度",
       "icon": "✨",
-      "color": "#4ade80",
-      "question": "能达成什么结果？",
-      "desc": "读完童书后孩子可获得的具体改变"
+      "desc": "承诺的转化效果与卖点"
     },
     {
       "id": "user",
-      "name": "目标用户",
+      "name": "目标用户维度",
       "icon": "👥",
-      "color": "#a78bfa",
-      "question": "谁需要解决这个问题？",
-      "desc": "童书决策家长画像（学段/角色）"
+      "desc": "精准触达的人群画像"
     },
     {
       "id": "scene",
-      "name": "场景",
-      "icon": "🎬",
-      "color": "#5b9eff",
-      "question": "在什么情况下产生需求？",
-      "desc": "时间节点+物理空间+心理状态"
+      "name": "场景维度",
+      "icon": "🎯",
+      "desc": "使用/触发场景"
     },
     {
       "id": "marketing",
-      "name": "营销方式",
-      "icon": "🎯",
-      "color": "#ffb547",
-      "question": "如何说服用户行动？",
-      "desc": "话术结构+信任背书+转化钩子"
+      "name": "营销方式维度",
+      "icon": "💡",
+      "desc": "创意手法与表现形式"
     }
   ],
+  "data_note": "基于 5 个童书类目素材聚合得到的高频标签",
   "tag_library": {
     "pain": [
       {
-        "tag": "升学焦虑",
-        "freq": 2,
-        "videos": [
-          "child_1",
-          "child_5"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "中高考前后家长对孩子升学结果与素养的双重焦虑。",
-        "examples": [
-          "中考原题悬念",
-          "高考考点路人采访"
-        ],
-        "applicable_categories": [
-          "文化常识童书",
-          "励志套装",
-          "作文素材书"
-        ]
-      },
-      {
-        "tag": "作文素材",
-        "freq": 2,
-        "videos": [
-          "child_2",
-          "child_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子写作没素材没金句没积累，家长找范文/积累书。",
-        "examples": [
-          "夏日的雷雨范文",
-          "励志金句词云图"
-        ],
-        "applicable_categories": [
-          "儿童文学集",
-          "作文素材书",
-          "励志套装"
-        ]
-      },
-      {
-        "tag": "知识盲区",
-        "freq": 1,
-        "videos": [
-          "child_1"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子对中国文化常识/历史地理常识的缺失，中考真题常考。",
-        "examples": [
-          "故宫为什么没厕所",
-          "必知文化常识3000"
-        ],
-        "applicable_categories": [
-          "文化常识童书",
-          "百科类童书"
-        ]
-      },
-      {
-        "tag": "课外积累少",
-        "freq": 1,
-        "videos": [
-          "child_2"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子课外阅读量少、文学素养薄弱。",
-        "examples": [
-          "整篇课文范文",
-          "儿童文学童年文集"
-        ],
-        "applicable_categories": [
-          "儿童文学集",
-          "课外读物"
-        ]
-      },
-      {
-        "tag": "孩子社交",
-        "freq": 1,
-        "videos": [
-          "child_3"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子在校园社交不顺、被孤立、缺乏话术。",
-        "examples": [
-          "孩子的灵性定型",
-          "完整应对话术"
-        ],
-        "applicable_categories": [
-          "儿童心理书",
-          "反霸凌话术书"
-        ],
-        "warning": "⚠️ 注意：素材中不要出现校园霸凌、暴力冲突等敏感题材，聚焦正面社交引导。"
-      },
-      {
-        "tag": "育儿话题",
-        "freq": 1,
-        "videos": [
-          "child_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "家长在孩子心理建设、习惯养成上的具体疑问。",
+        "tag": "亲子隔阂",
+        "freq": 4,
+        "summer_link": "家庭关系刚需痛点",
+        "explain": "父母与孩子的情感断层，触发购买情感教育书",
         "examples": [
           "孩子的灵性什么时候定型",
-          "塑造正确三观"
+          "父母的辛苦从不让孩子看见"
         ],
         "applicable_categories": [
-          "儿童心理书",
-          "育儿方法书"
-        ]
+          "童书",
+          "社科"
+        ],
+        "warning": null
       },
       {
-        "tag": "手机沉迷",
+        "tag": "应试压力",
         "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子假期沉迷手机短视频游戏，家长焦虑高发期。",
+        "summer_link": "中高考冲刺刚需",
+        "explain": "中考真题/必考点是家长决策最强触发点",
         "examples": [
-          "默默放下手机",
-          "再也不叛逆厌学"
+          "中考原题：故宫为什么没厕所",
+          "必考点全整理"
         ],
         "applicable_categories": [
-          "习惯养成书",
-          "心理育儿书"
-        ]
+          "教辅",
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "三观塑造",
+        "tag": "文化常识缺失",
         "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "青少年三观建立期，家长想用书籍正向引导。",
+        "summer_link": "中高考文化常识失分项",
+        "explain": "故宫/五湖等文化常识是失分重灾区",
         "examples": [
-          "帮孩子塑造正确三观",
-          "想要出众没有捷径"
+          "中国孩子必知文化常识3000",
+          "地理名胜66-90"
         ],
         "applicable_categories": [
-          "心理育儿书",
-          "励志套装"
-        ]
+          "童书",
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "霸凌焦虑",
+        "freq": 1,
+        "summer_link": "校园安全敏感话题",
+        "explain": "涉及孩子人身安全，转化极高但需合规处理",
+        "examples": [
+          "孩子反霸凌500句"
+        ],
+        "applicable_categories": [
+          "童书"
+        ],
+        "warning": "反霸凌话题禁止渲染暴力场景，需挂温和方法论"
+      },
+      {
+        "tag": "升学焦虑",
+        "freq": 1,
+        "summer_link": "高考/中考节点强相关",
+        "explain": "考点街头采访自带高关注度",
+        "examples": [
+          "中关村高考考点街拍",
+          "云南某地学霸"
+        ],
+        "applicable_categories": [
+          "童书",
+          "教辅"
+        ],
+        "warning": null
       }
     ],
     "effect": [
       {
-        "tag": "文化通识",
-        "freq": 2,
-        "videos": [
-          "child_1",
-          "child_2"
-        ],
-        "summer_link": "★★★★",
-        "explain": "建立中国文化基础常识，应对中考通识题。",
+        "tag": "权威认证",
+        "freq": 3,
+        "summer_link": "提升信任与决策速度",
+        "explain": "人民网/人民日报背书提升权威感",
         "examples": [
-          "故宫历史常识",
-          "中国文化3000"
+          "人民网这样说",
+          "人民日报励志词云"
         ],
         "applicable_categories": [
-          "文化常识童书",
-          "历史趣味书"
-        ]
+          "童书",
+          "社科"
+        ],
+        "warning": null
       },
       {
-        "tag": "读写提升",
-        "freq": 2,
-        "videos": [
-          "child_2",
-          "child_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "通过范文积累与金句训练提升孩子读写能力。",
+        "tag": "情感共鸣",
+        "freq": 3,
+        "summer_link": "情感教育系刚需",
+        "explain": "亲子情感故事强情感共鸣",
         "examples": [
-          "整篇范文朗读",
+          "童年是岁月的柔光",
+          "虎子失踪"
+        ],
+        "applicable_categories": [
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "文化素养提升",
+        "freq": 2,
+        "summer_link": "双减后素质教育转向",
+        "explain": "文化常识包装为升学加分项",
+        "examples": [
+          "文化常识3000",
           "励志金句词云"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "作文素材书"
-        ]
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "心理健康",
+        "tag": "行为引导",
         "freq": 2,
-        "videos": [
-          "child_3",
-          "child_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "建立孩子心理韧性、社交技巧与情绪管理能力。",
+        "summer_link": "叛逆期家长强需求",
+        "explain": "反霸凌/手机管理给具体话术",
         "examples": [
-          "孩子的灵性定型",
-          "完整应对话术"
+          "反霸凌500句",
+          "手机搜题如何影响成绩"
         ],
         "applicable_categories": [
-          "儿童心理书",
-          "反霸凌话术书"
-        ]
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "拓宽视野",
+        "tag": "应试提分",
         "freq": 1,
-        "videos": [
-          "child_1"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子读完童书后能拓展课本外的认知边界。",
+        "summer_link": "中高考前家长决策强信号",
+        "explain": "考点直击/真题解析触发即时购买",
         "examples": [
-          "明白世界的广袤",
-          "必知文化常识3000"
+          "中考真题",
+          "考点都给你整理出来"
         ],
         "applicable_categories": [
-          "文化常识童书",
-          "百科类童书"
-        ]
-      },
-      {
-        "tag": "育儿方法",
-        "freq": 1,
-        "videos": [
-          "child_3"
+          "教辅",
+          "童书"
         ],
-        "summer_link": "★★★",
-        "explain": "给到家长可操作的育儿话术与方法论。",
-        "examples": [
-          "塑造三观方法",
-          "名家育儿金句"
-        ],
-        "applicable_categories": [
-          "育儿方法书",
-          "心理育儿书"
-        ]
-      },
-      {
-        "tag": "习惯养成",
-        "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "帮助孩子建立放下手机、自主学习的好习惯。",
-        "examples": [
-          "默默放下手机",
-          "再也不叛逆厌学"
-        ],
-        "applicable_categories": [
-          "习惯养成书",
-          "心理育儿书"
-        ]
-      },
-      {
-        "tag": "观念更新",
-        "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "更新家长与孩子的成长观念，建立正向价值观。",
-        "examples": [
-          "塑造正确三观",
-          "想要出众没有捷径"
-        ],
-        "applicable_categories": [
-          "心理育儿书",
-          "励志套装"
-        ]
+        "warning": null
       }
     ],
     "user": [
       {
-        "tag": "小学生家长",
+        "tag": "中小学家长",
+        "freq": 5,
+        "summer_link": "暑期+开学家长决策高峰",
+        "explain": "亲子教育最大基本盘",
+        "examples": [
+          "中考家长",
+          "中关村高考家长"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "亲子家庭",
+        "freq": 3,
+        "summer_link": "亲子共读场景",
+        "explain": "母子/隔代家庭共读",
+        "examples": [
+          "餐桌母子对话",
+          "奶奶捧书"
+        ],
+        "applicable_categories": [
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "K12学生本人",
         "freq": 2,
-        "videos": [
-          "child_1",
-          "child_2"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "孩子 6-12 岁的家长，关注阅读启蒙与素养积累。",
+        "summer_link": "自我成长动机",
+        "explain": "孩子受励志故事自驱购买",
         "examples": [
-          "小学常识积累",
-          "儿童文学童年文集"
+          "云南学霸",
+          "看不清未来时坚持久一点"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "文化常识童书"
-        ]
-      },
-      {
-        "tag": "初中生家长",
-        "freq": 2,
-        "videos": [
-          "child_1",
-          "child_5"
+          "童书"
         ],
-        "summer_link": "★★★★",
-        "explain": "孩子 12-15 岁的家长，关注中考与心理双重压力。",
-        "examples": [
-          "中考原题",
-          "升学衔接积累"
-        ],
-        "applicable_categories": [
-          "文化常识童书",
-          "作文素材书"
-        ]
-      },
-      {
-        "tag": "重心理的家长",
-        "freq": 2,
-        "videos": [
-          "child_3",
-          "child_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "关注孩子心理健康、情绪管理、社交能力的家长群。",
-        "examples": [
-          "反霸凌500句",
-          "完整应对话术"
-        ],
-        "applicable_categories": [
-          "儿童心理书",
-          "反霸凌话术书"
-        ]
-      },
-      {
-        "tag": "教育型妈妈",
-        "freq": 1,
-        "videos": [
-          "child_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "重视教育投入、追名家育儿方法的妈妈群体。",
-        "examples": [
-          "孩子的灵性定型",
-          "名家育儿金句"
-        ],
-        "applicable_categories": [
-          "心理育儿书",
-          "儿童文学集"
-        ]
-      },
-      {
-        "tag": "中学生家长",
-        "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "中学阶段家长，关注青春期手机/叛逆/学习问题。",
-        "examples": [
-          "默默放下手机",
-          "塑造正确三观"
-        ],
-        "applicable_categories": [
-          "习惯养成书",
-          "心理育儿书"
-        ]
-      },
-      {
-        "tag": "高中生家长",
-        "freq": 1,
-        "videos": [
-          "child_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子 15-18 岁的家长，关注高考与人生规划。",
-        "examples": [
-          "中关村高考考点",
-          "励志套装"
-        ],
-        "applicable_categories": [
-          "励志套装",
-          "作文素材书"
-        ]
+        "warning": null
       }
     ],
     "scene": [
       {
-        "tag": "升学衔接期",
-        "freq": 2,
-        "videos": [
-          "child_1",
-          "child_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "幼小/小升初/初升高/高考前后衔接的家长决策窗口。",
+        "tag": "暑期+开学季",
+        "freq": 5,
+        "summer_link": "暑期/开学家长决策黄金期",
+        "explain": "开学前后是教辅童书消费高峰",
         "examples": [
-          "中考原题",
-          "高考考点采访"
+          "暑期阅读",
+          "开学礼"
         ],
         "applicable_categories": [
-          "文化常识童书",
-          "励志套装"
-        ]
+          "教辅",
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "暑假在家",
+        "tag": "中高考节点",
         "freq": 2,
-        "videos": [
-          "child_1",
-          "child_4"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "6-8月孩子放假在家，长时段需要自主阅读内容。",
+        "summer_link": "6月中高考强热点",
+        "explain": "考点路人街拍/真题是热门钩子",
         "examples": [
-          "假期沉迷手机",
-          "暑期文学阅读"
+          "中关村高考考点",
+          "中考原题"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "文化常识童书"
-        ]
+          "童书",
+          "教辅"
+        ],
+        "warning": null
       },
       {
-        "tag": "碎片时间快速看",
-        "freq": 2,
-        "videos": [
-          "child_2",
-          "child_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "通勤、午休碎片时间刷短视频即决策的高频场景。",
-        "examples": [
-          "夏日雷雨整篇范文",
-          "高考考点采访"
-        ],
-        "applicable_categories": [
-          "儿童文学集",
-          "励志套装"
-        ]
-      },
-      {
-        "tag": "晚上闲暇深度看",
-        "freq": 2,
-        "videos": [
-          "child_3",
-          "child_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "夜间家长有大段时间深度收看长视频与认知付费内容。",
-        "examples": [
-          "李玫瑾式深度演讲",
-          "塑造三观长视频"
-        ],
-        "applicable_categories": [
-          "心理育儿书",
-          "儿童心理书"
-        ]
-      },
-      {
-        "tag": "写作集中训练期",
+        "tag": "睡前亲子共读",
         "freq": 1,
-        "videos": [
-          "child_2"
-        ],
-        "summer_link": "★★★",
-        "explain": "暑假语文集中训练期，家长找作文范文/素材积累。",
+        "summer_link": "低压亲子陪伴场景",
+        "explain": "睡前共读是阅读启蒙黄金时段",
         "examples": [
-          "整篇范文朗读",
-          "励志金句素材"
+          "读者致童年",
+          "虎子情感散文"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "作文素材书"
-        ]
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "餐桌亲子时刻",
+        "freq": 1,
+        "summer_link": "家庭情感建设场景",
+        "explain": "餐桌是亲子沟通核心场景",
+        "examples": [
+          "母子求买手机",
+          "隔代共读"
+        ],
+        "applicable_categories": [
+          "童书"
+        ],
+        "warning": null
       }
     ],
     "marketing": [
       {
-        "tag": "名家背书",
+        "tag": "实物翻书特写",
+        "freq": 4,
+        "summer_link": "最直观最高转化的表现",
+        "explain": "翻书+划线高亮特写引发收藏欲",
+        "examples": [
+          "中考考点都给你整理",
+          "蒸菜煲菜500例"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "金句字幕浮窗",
         "freq": 3,
-        "videos": [
-          "child_3",
-          "child_4",
-          "child_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "育儿专家、文化名家、演讲嘉宾等权威信任锚点。",
+        "summer_link": "低成本高保留率手法",
+        "explain": "金句+大字幕便于无声看完",
         "examples": [
-          "孩子的灵性定型",
-          "塑造正确三观演讲"
+          "孩子的灵性什么时候定型",
+          "老祖宗千年智慧"
         ],
         "applicable_categories": [
-          "心理育儿书",
-          "儿童心理书"
+          "童书",
+          "社科",
+          "泛健康"
         ],
-        "warning": "⚠️ 使用前提：必须已获得名家本人或机构的正式授权，未经授权不得使用其姓名/肖像。"
+        "warning": null
       },
       {
-        "tag": "长视频叙事",
+        "tag": "实景街头采访",
         "freq": 2,
-        "videos": [
-          "child_1",
-          "child_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "180秒以上演讲/对话剧场，适合育儿/心理深度话题。",
+        "summer_link": "自带真实感与热度",
+        "explain": "中关村高考考点/雪乡/自建房现场",
         "examples": [
-          "李玫瑾风格演讲",
-          "塑造三观长视频"
+          "高考考点路人街拍",
+          "农村建房现场"
         ],
         "applicable_categories": [
-          "心理育儿书",
-          "儿童心理书"
-        ]
+          "童书",
+          "社科"
+        ],
+        "warning": null
       },
       {
-        "tag": "悬念开场",
-        "freq": 1,
-        "videos": [
-          "child_1"
-        ],
-        "summer_link": "★★★★",
-        "explain": "用反常识问句/中考真题/疑问钩子抓前3秒停留。",
+        "tag": "情感共鸣文学摘段",
+        "freq": 2,
+        "summer_link": "睡前+亲子阅读刚需",
+        "explain": "散文金句+流泪情节强情感",
         "examples": [
-          "故宫为什么没厕所",
-          "孩子的灵性什么时候定型"
+          "秋天 蒋勋",
+          "虎子失踪"
         ],
         "applicable_categories": [
-          "文化常识童书",
-          "心理育儿书"
-        ]
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "数字堆叠",
+        "tag": "热点节点钩子",
         "freq": 1,
-        "videos": [
-          "child_1"
-        ],
-        "summer_link": "★★★",
-        "explain": "3000个常识/500句话术等量化数字让内容厚度可视化。",
+        "summer_link": "借势节点获取流量",
+        "explain": "中考/高考/暑期节点强相关",
         "examples": [
-          "必知文化常识3000",
-          "反霸凌500句"
+          "中考原题钩子",
+          "6月高考节点"
         ],
         "applicable_categories": [
-          "文化常识童书",
-          "反霸凌话术书"
-        ]
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "纯文字大屏",
+        "tag": "AI生成场景",
         "freq": 1,
-        "videos": [
-          "child_2"
-        ],
-        "summer_link": "★★",
-        "explain": "纯文字朗读型视频，硬核交付完整内容。",
+        "summer_link": "AI视觉降低制作成本",
+        "explain": "AI生成礼堂/古风/灯火夜读",
         "examples": [
-          "整篇课文朗读",
-          "励志金句词云"
+          "AI礼堂演讲",
+          "AI老者烛光夜读"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "作文素材书"
-        ]
+          "童书",
+          "社科"
+        ],
+        "warning": "需明示'人物为AI生成无具体年龄指向'"
       },
       {
-        "tag": "知识直给",
+        "tag": "演讲嘉宾IP",
         "freq": 1,
-        "videos": [
-          "child_2"
-        ],
-        "summer_link": "★★★",
-        "explain": "直接抛书本内容/范文/知识点，硬货吸引停留。",
+        "summer_link": "借势KOL权威",
+        "explain": "专家/名师/嘉宾长篇演讲",
         "examples": [
-          "夏日雷雨整篇",
-          "常识题直接讲"
+          "李玫瑾风演讲",
+          "曾仕强风口播"
         ],
         "applicable_categories": [
-          "儿童文学集",
-          "文化常识童书"
-        ]
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": "名人肖像/姓名/语录需获得授权"
       },
       {
-        "tag": "情景剧",
+        "tag": "情景演绎双人对话",
         "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "学习/家庭场景演绎，孩子真实画面让家长代入。",
+        "summer_link": "剧情化降低硬广感",
+        "explain": "双人对话拉出书的应用场景",
         "examples": [
-          "孩子默默放下手机",
-          "学习女孩书桌特写"
+          "千万别去当法定代表人",
+          "母子求买手机"
         ],
         "applicable_categories": [
-          "习惯养成书",
-          "心理育儿书"
-        ]
+          "社科",
+          "童书"
+        ],
+        "warning": "需标注'视频为情节演绎场景'"
       },
       {
-        "tag": "反向开场",
+        "tag": "权威机构背书",
         "freq": 1,
-        "videos": [
-          "child_4"
-        ],
-        "summer_link": "★★",
-        "explain": "反常识金句或反差话术打破家长既有认知。",
+        "summer_link": "提升信任与决策速度",
+        "explain": "人民网/人民日报/专业律师背书",
         "examples": [
-          "想要出众没有捷径",
-          "孩子的灵性早就定型"
+          "人民网这样说",
+          "联合专业律师编写"
         ],
         "applicable_categories": [
-          "心理育儿书",
-          "励志套装"
-        ]
-      },
-      {
-        "tag": "实景开场",
-        "freq": 1,
-        "videos": [
-          "child_5"
+          "童书",
+          "社科"
         ],
-        "summer_link": "★★★",
-        "explain": "真实生活场景（学校/考点/书店）开场建立可信度。",
-        "examples": [
-          "中关村高考考点",
-          "学校大礼堂"
-        ],
-        "applicable_categories": [
-          "励志套装",
-          "文化常识童书"
-        ]
-      },
-      {
-        "tag": "借势话题",
-        "freq": 1,
-        "videos": [
-          "child_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "借助高考/中考/热门话题等社会热点提升完播率。",
-        "examples": [
-          "高考考点采访",
-          "中考原题悬念"
-        ],
-        "applicable_categories": [
-          "励志套装",
-          "文化常识童书"
-        ]
+        "warning": null
       }
     ]
   }

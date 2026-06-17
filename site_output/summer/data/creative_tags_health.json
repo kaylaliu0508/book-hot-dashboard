@@ -1,645 +1,383 @@
 {
-  "version": "health-tags-v20260617",
-  "updated_at": "2026-06-17",
-  "data_note": "基于本批 5 条泛健康视频做五维度拆解，频率=该标签出现次数",
+  "schema_version": 2,
+  "version": "health-tags-v2-2026-06-17",
+  "category_label": "泛健康",
   "total_sample_videos": 5,
   "dimensions": [
     {
       "id": "pain",
-      "name": "痛点",
-      "icon": "⚡",
-      "color": "#ff5f6d",
-      "question": "解决什么健康问题？",
-      "desc": "用户面临的具体身体困扰或亚健康状态"
+      "name": "痛点维度",
+      "icon": "😣",
+      "desc": "用户最焦虑、最想解决的问题"
     },
     {
       "id": "effect",
-      "name": "效果",
+      "name": "效果维度",
       "icon": "✨",
-      "color": "#4ade80",
-      "question": "能达成什么健康结果？",
-      "desc": "使用产品后能获得的具体身心改变"
+      "desc": "承诺的转化效果与卖点"
     },
     {
       "id": "user",
-      "name": "目标用户",
+      "name": "目标用户维度",
       "icon": "👥",
-      "color": "#a78bfa",
-      "question": "谁需要解决这个问题？",
-      "desc": "健康决策人画像（年龄/角色/特征）"
+      "desc": "精准触达的人群画像"
     },
     {
       "id": "scene",
-      "name": "场景",
-      "icon": "🎬",
-      "color": "#5b9eff",
-      "question": "在什么情况下产生需求？",
-      "desc": "时间节点+生活场景+心理状态"
+      "name": "场景维度",
+      "icon": "🎯",
+      "desc": "使用/触发场景"
     },
     {
       "id": "marketing",
-      "name": "营销方式",
-      "icon": "🎯",
-      "color": "#ffb547",
-      "question": "如何说服用户行动？",
-      "desc": "话术结构+信任背书+转化钩子"
+      "name": "营销方式维度",
+      "icon": "💡",
+      "desc": "创意手法与表现形式"
     }
   ],
+  "data_note": "基于 5 个泛健康类目素材聚合得到的高频标签",
   "tag_library": {
     "pain": [
       {
-        "tag": "老年慢病",
+        "tag": "中老年慢病",
         "freq": 2,
-        "videos": [
-          "health_1",
-          "health_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "三高、心脑血管、糖尿病等中老年慢性病管理痛点。",
+        "summer_link": "中老年保健刚需",
+        "explain": "血糖/血压/养生与药结合是高需求",
         "examples": [
-          "这段黄金时间在家轻松养生",
+          "丝瓜煮水有妙用",
+          "减糖饮食"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "不得做医疗效果承诺，需明示'仅书籍推荐 非医疗广告'"
+      },
+      {
+        "tag": "亚健康调理",
+        "freq": 2,
+        "summer_link": "中医养生年轻化",
+        "explain": "易经五行/中医调理近年走年轻群体",
+        "examples": [
+          "易经养生",
           "老祖宗千年智慧"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+          "泛健康"
+        ],
+        "warning": "避免具体疾病疗效宣传"
       },
       {
-        "tag": "脱发白发",
-        "freq": 1,
-        "videos": [
-          "health_1"
-        ],
-        "summer_link": "★★★",
-        "explain": "中老年女性头发稀疏、白发增多、头皮油腻等常见焦虑。",
+        "tag": "饮食健康困惑",
+        "freq": 2,
+        "summer_link": "日常吃食强需求",
+        "explain": "减糖/养生菜单是高频家务决策",
         "examples": [
-          "你的头发也有这些问题",
-          "白发烦恼一招解决"
+          "蒸菜煲菜焖菜500例",
+          "减糖饮食"
         ],
         "applicable_categories": [
-          "中医食疗书",
-          "头皮护理书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "身高发育",
+        "tag": "孩子长高焦虑",
         "freq": 1,
-        "videos": [
-          "health_2"
-        ],
-        "summer_link": "★★★★",
-        "explain": "12-18 岁青少年身高焦虑及家长营养干预需求。",
+        "summer_link": "3-18岁家长高频痛点",
+        "explain": "长高关键期是父母焦虑爆点",
         "examples": [
-          "12-18岁青春期黄金时间",
-          "39道长高食谱"
+          "3-18岁长脑长高关键期",
+          "这样吃长更高"
         ],
         "applicable_categories": [
-          "青少年营养书",
-          "长高食谱"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "青春期营养",
+        "tag": "应试压力",
         "freq": 1,
-        "videos": [
-          "health_2"
-        ],
-        "summer_link": "★★★★",
-        "explain": "青春期孩子学业压力大、营养摄入不均衡。",
+        "summer_link": "中高考冲刺刚需",
+        "explain": "中考真题/必考点是家长决策最强触发点",
         "examples": [
-          "帮助孩子长脑和身高",
-          "青春期黄金窗口"
+          "中考原题：故宫为什么没厕所",
+          "必考点全整理"
         ],
         "applicable_categories": [
-          "青少年营养书",
-          "学生食谱书"
-        ]
+          "教辅",
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "重油重盐",
+        "tag": "传统文化好奇",
         "freq": 1,
-        "videos": [
-          "health_3"
-        ],
-        "summer_link": "★★★",
-        "explain": "家庭日常做菜偏重口、缺少健康烹饪方法的痛点。",
+        "summer_link": "国学复兴风口",
+        "explain": "易经/玄学/老祖宗智慧自带传播力",
         "examples": [
-          "每天不重样吃出健康",
-          "少油少盐做家常菜"
+          "易经养生",
+          "荣枯鉴"
         ],
         "applicable_categories": [
-          "家常菜谱",
-          "蒸菜煲菜书"
-        ]
-      },
-      {
-        "tag": "做饭不会",
-        "freq": 1,
-        "videos": [
-          "health_3"
+          "社科",
+          "泛健康"
         ],
-        "summer_link": "★★★",
-        "explain": "年轻家庭主妇/上班族不会做饭、做饭重复同一道菜。",
-        "examples": [
-          "18分钟做出蒸茄子",
-          "500例每天不重样"
-        ],
-        "applicable_categories": [
-          "家常菜谱",
-          "新手厨房书"
-        ]
-      },
-      {
-        "tag": "血糖偏高",
-        "freq": 1,
-        "videos": [
-          "health_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "中年人体检血糖偏高、糖耐量异常、糖前期人群需控糖。",
-        "examples": [
-          "这些食物搭配多管用",
-          "它为什么大家都反馈"
-        ],
-        "applicable_categories": [
-          "减糖饮食书",
-          "控糖食谱"
-        ]
-      },
-      {
-        "tag": "代谢综合征",
-        "freq": 1,
-        "videos": [
-          "health_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "中年高血脂/腹型肥胖/胰岛素抵抗等代谢问题。",
-        "examples": [
-          "低糖控糖一日三餐",
-          "均衡饮食方案"
-        ],
-        "applicable_categories": [
-          "减糖饮食书",
-          "低GI食谱"
-        ]
-      },
-      {
-        "tag": "亚健康困扰",
-        "freq": 1,
-        "videos": [
-          "health_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "长期疲劳、睡眠差、肠胃不适等中青年常见亚健康。",
-        "examples": [
-          "在家轻松养生",
-          "老祖宗千年智慧"
-        ],
-        "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+        "warning": "避免命理/算命/封建迷信表述"
       }
     ],
     "effect": [
       {
-        "tag": "居家自疗",
-        "freq": 2,
-        "videos": [
-          "health_1",
-          "health_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "用家中常见食材/方法解决常见健康问题，无需就医。",
+        "tag": "调理身体",
+        "freq": 4,
+        "summer_link": "中老年/亚健康人群强需求",
+        "explain": "中医方剂调理身体是稳态卖点",
         "examples": [
           "丝瓜煮水有妙用",
-          "在家轻松养生"
+          "健康小妙招"
         ],
         "applicable_categories": [
-          "中医食疗书",
-          "民间偏方书"
-        ]
+          "泛健康"
+        ],
+        "warning": "不得做疗效承诺"
       },
       {
-        "tag": "食疗调理",
+        "tag": "改善饮食",
         "freq": 2,
-        "videos": [
-          "health_1",
-          "health_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "通过日常饮食搭配调理身体，长期改善体质。",
+        "summer_link": "日常吃食改善",
+        "explain": "日常蒸菜煲菜每天不重样",
         "examples": [
           "每天不重样吃出健康",
-          "均衡饮食搭配"
+          "蒸菜煲菜焖菜500例"
         ],
         "applicable_categories": [
-          "食疗养生书",
-          "家常菜谱"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "均衡饮食",
-        "freq": 2,
-        "videos": [
-          "health_2",
-          "health_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "科学搭配蛋白质碳水蔬果，改善饮食结构。",
-        "examples": [
-          "低GI均衡搭配",
-          "少油少盐每日餐"
-        ],
-        "applicable_categories": [
-          "营养学书",
-          "家常菜谱"
-        ]
-      },
-      {
-        "tag": "长高助育",
+        "tag": "孩子长高",
         "freq": 1,
-        "videos": [
-          "health_2"
-        ],
-        "summer_link": "★★★★",
-        "explain": "通过营养餐谱帮助青少年抓住生长黄金期。",
+        "summer_link": "3-18岁家长强需求",
+        "explain": "长高食谱/营养规划高决策",
         "examples": [
-          "12-18岁黄金时间",
-          "39道长高食谱"
+          "3-18岁帮助长脑长高",
+          "这样吃长更高"
         ],
         "applicable_categories": [
-          "青少年营养书",
-          "长高食谱"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "少油烹饪",
+        "tag": "国学养生",
         "freq": 1,
-        "videos": [
-          "health_3"
-        ],
-        "summer_link": "★★★",
-        "explain": "蒸/煮/焖等少油烹饪方法替代煎炸，吃出健康。",
+        "summer_link": "易经养生年轻化潮流",
+        "explain": "老祖宗智慧+漫画形式降低门槛",
         "examples": [
-          "蒸菜18分钟出锅",
-          "少油少盐做家常菜"
+          "漫画讲透·易经养生",
+          "五行五脏对应关系"
         ],
         "applicable_categories": [
-          "蒸菜煲菜书",
-          "少油食谱"
-        ]
-      },
-      {
-        "tag": "低糖控糖",
-        "freq": 1,
-        "videos": [
-          "health_4"
+          "泛健康"
         ],
-        "summer_link": "★★★",
-        "explain": "通过减糖饮食方法控制血糖，改善代谢健康。",
-        "examples": [
-          "这些食物搭配多管用",
-          "它为什么大家都反馈"
-        ],
-        "applicable_categories": [
-          "减糖饮食书",
-          "控糖食谱"
-        ]
-      },
-      {
-        "tag": "观念更新",
-        "freq": 1,
-        "videos": [
-          "health_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "通过国学/中医智慧更新养生观念，建立健康认知。",
-        "examples": [
-          "老祖宗千年智慧",
-          "在家轻松养生"
-        ],
-        "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+        "warning": "避免医疗承诺与封建表述"
       }
     ],
     "user": [
       {
-        "tag": "中老年家庭主妇",
-        "freq": 3,
-        "videos": [
-          "health_1",
-          "health_3",
-          "health_5"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "45-65岁退休或在家主妇，关注家人饮食养生，决策力强。",
+        "tag": "中老年保健族",
+        "freq": 4,
+        "summer_link": "中老年高频养生消费群",
+        "explain": "中医方剂/养生菜谱核心买家",
         "examples": [
-          "让普通老百姓吃出健康",
-          "在家轻松养生"
+          "丝瓜煮水妙用",
+          "减糖饮食"
         ],
         "applicable_categories": [
-          "家常菜谱",
-          "中医养生书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "养生爱好者",
-        "freq": 3,
-        "videos": [
-          "health_1",
-          "health_4",
-          "health_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "对中医、食疗、传统养生有深度兴趣的中产人群。",
+        "tag": "宝妈群体",
+        "freq": 4,
+        "summer_link": "育儿+日常买菜决策",
+        "explain": "既管孩子又管家庭饮食的关键人",
         "examples": [
-          "老祖宗千年智慧",
-          "食疗调理体质"
+          "孩子长高食谱",
+          "蒸菜煲菜焖菜"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+          "泛健康",
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "小学高年级家长",
+        "tag": "中小学家长",
         "freq": 1,
-        "videos": [
-          "health_2"
-        ],
-        "summer_link": "★★★",
-        "explain": "孩子9-12岁即将进入青春期，提前布局营养。",
+        "summer_link": "暑期+开学家长决策高峰",
+        "explain": "亲子教育最大基本盘",
         "examples": [
-          "抢在青春期前",
-          "抓住黄金生长期"
+          "中考家长",
+          "中关村高考家长"
         ],
         "applicable_categories": [
-          "青少年营养书",
-          "儿童食谱"
-        ]
+          "教辅",
+          "童书"
+        ],
+        "warning": null
       },
       {
-        "tag": "中学生家长",
+        "tag": "亚健康年轻人",
         "freq": 1,
-        "videos": [
-          "health_2"
-        ],
-        "summer_link": "★★★★",
-        "explain": "孩子12-18岁正值青春期，特别关注营养与身高。",
+        "summer_link": "年轻人转向中医养生",
+        "explain": "加班/熬夜亚健康年轻人新需求",
         "examples": [
-          "帮孩子长脑和身高",
-          "青春期黄金窗口"
+          "漫画讲透易经养生"
         ],
         "applicable_categories": [
-          "青少年营养书",
-          "长高食谱"
-        ]
-      },
-      {
-        "tag": "家庭主妇",
-        "freq": 1,
-        "videos": [
-          "health_3"
+          "泛健康"
         ],
-        "summer_link": "★★★★",
-        "explain": "30-50岁负责家庭做饭的女性，需要新菜谱灵感。",
-        "examples": [
-          "每天不重样",
-          "500例家常菜"
-        ],
-        "applicable_categories": [
-          "家常菜谱",
-          "新手厨房书"
-        ]
-      },
-      {
-        "tag": "中年三高人群",
-        "freq": 1,
-        "videos": [
-          "health_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "40-55岁体检指标异常的中年职场人，关注控糖控脂。",
-        "examples": [
-          "减糖饮食方案",
-          "中年代谢管理"
-        ],
-        "applicable_categories": [
-          "减糖饮食书",
-          "控糖食谱"
-        ]
+        "warning": null
       }
     ],
     "scene": [
       {
-        "tag": "晚间养生时段",
-        "freq": 3,
-        "videos": [
-          "health_1",
-          "health_4",
-          "health_5"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "晚间19-22点中老年人闲暇刷手机找养生方法的高频时段。",
+        "tag": "中医保健咨询",
+        "freq": 2,
+        "summer_link": "日常中医保健咨询",
+        "explain": "日常中医保健应用场景",
         "examples": [
-          "晚上躺着看养生视频",
-          "睡前学个食疗方"
+          "丝瓜煮水妙用",
+          "易经养生五行"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "食疗书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "厨房备餐时",
-        "freq": 3,
-        "videos": [
-          "health_1",
-          "health_2",
-          "health_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "做饭前在手机上找菜谱灵感的高转化场景。",
+        "tag": "日常家庭做饭",
+        "freq": 2,
+        "summer_link": "每日做饭场景",
+        "explain": "日常餐桌做菜参考场景",
         "examples": [
-          "每天不重样",
-          "18分钟蒸茄子"
+          "蒸菜煲菜焖菜500例",
+          "减糖饮食"
         ],
         "applicable_categories": [
-          "家常菜谱",
-          "食疗书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "晚餐家庭时段",
-        "freq": 3,
-        "videos": [
-          "health_2",
-          "health_3",
-          "health_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "全家一起吃晚饭时，家长决策为家人健康选购图书。",
-        "examples": [
-          "家宴桌满桌大菜",
-          "全家均衡饮食"
-        ],
-        "applicable_categories": [
-          "家常菜谱",
-          "减糖饮食书"
-        ]
-      },
-      {
-        "tag": "睡前刷手机",
+        "tag": "孩子学习关键期",
         "freq": 1,
-        "videos": [
-          "health_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "睡前躺床上短视频深度收看时段，适合长视频养生讲座。",
+        "summer_link": "3-18岁长高关键期",
+        "explain": "考试前营养加餐场景",
         "examples": [
-          "老祖宗千年智慧",
-          "在家轻松养生"
+          "孩子考试前一个月6道菜"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "中高考节点",
+        "freq": 1,
+        "summer_link": "6月中高考强热点",
+        "explain": "考点路人街拍/真题是热门钩子",
+        "examples": [
+          "中关村高考考点",
+          "中考原题"
+        ],
+        "applicable_categories": [
+          "童书",
+          "教辅"
+        ],
+        "warning": null
       }
     ],
     "marketing": [
       {
-        "tag": "实物翻书",
-        "freq": 5,
-        "videos": [
-          "health_1",
-          "health_2",
-          "health_3",
-          "health_4",
-          "health_5"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "图书桌面静物+翻页特写，养生/食谱书的真实感锚点。",
+        "tag": "演讲嘉宾IP",
+        "freq": 4,
+        "summer_link": "借势KOL权威",
+        "explain": "专家/名师/嘉宾长篇演讲",
         "examples": [
-          "翻到39道食谱目录",
-          "蒸菜500例书封"
+          "李玫瑾风演讲",
+          "曾仕强风口播"
         ],
         "applicable_categories": [
-          "养生食谱书",
-          "中医食疗书"
-        ]
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": "名人肖像/姓名/语录需获得授权"
       },
       {
-        "tag": "美食实拍",
-        "freq": 3,
-        "videos": [
-          "health_2",
-          "health_3",
-          "health_4"
-        ],
-        "summer_link": "★★★★",
-        "explain": "高清菜肴大特写+热气腾腾视觉冲击，激发食欲与下单冲动。",
+        "tag": "实物翻书特写",
+        "freq": 4,
+        "summer_link": "最直观最高转化的表现",
+        "explain": "翻书+划线高亮特写引发收藏欲",
         "examples": [
-          "蒸茄子18分钟特写",
-          "虾仁蒸蛋实拍"
+          "中考考点都给你整理",
+          "蒸菜煲菜500例"
         ],
         "applicable_categories": [
-          "家常菜谱",
-          "食疗书"
-        ]
+          "教辅",
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "名家背书",
-        "freq": 2,
-        "videos": [
-          "health_1",
-          "health_5"
-        ],
-        "summer_link": "★★★★",
-        "explain": "中医名家、国学大师、CCTV出镜专家等权威信任锚点。",
+        "tag": "金句字幕浮窗",
+        "freq": 4,
+        "summer_link": "低成本高保留率手法",
+        "explain": "金句+大字幕便于无声看完",
         "examples": [
-          "宋兆普中医小妙招",
+          "孩子的灵性什么时候定型",
           "老祖宗千年智慧"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
+          "童书",
+          "社科",
+          "泛健康"
         ],
-        "warning": "⚠️ 使用前提：必须已获得名家本人或机构的正式授权，未经授权不得使用其姓名/肖像/CCTV画面。"
+        "warning": null
       },
       {
-        "tag": "数字堆叠",
+        "tag": "美食特写ASMR",
         "freq": 2,
-        "videos": [
-          "health_2",
-          "health_3"
-        ],
-        "summer_link": "★★★★",
-        "explain": "500例/39道/200余幅等量化数字让内容厚度可视化。",
+        "summer_link": "饭点强吸引力素材",
+        "explain": "蒸菜煲菜冒热气特写",
         "examples": [
-          "500例每天不重样",
-          "39道长高食谱",
-          "200余幅精美漫画"
+          "蒸大闸蟹16分钟",
+          "满桌养生菜"
         ],
         "applicable_categories": [
-          "菜谱书",
-          "养生科普书"
-        ]
+          "泛健康"
+        ],
+        "warning": null
       },
       {
-        "tag": "央视画面",
+        "tag": "实景街头采访",
         "freq": 1,
-        "videos": [
-          "health_1"
-        ],
-        "summer_link": "★★★",
-        "explain": "CCTV或其它官方媒体片段引用，提升专业可信度。",
+        "summer_link": "自带真实感与热度",
+        "explain": "中关村高考考点/雪乡/自建房现场",
         "examples": [
-          "CCTV画面引入",
-          "央视采访片段"
+          "高考考点路人街拍",
+          "农村建房现场"
         ],
         "applicable_categories": [
-          "中医养生书",
-          "名家科普书"
+          "童书",
+          "社科"
         ],
-        "warning": "⚠️ 使用前提：央视/官方媒体画面必须确认版权可商用，否则下架风险高。"
-      },
-      {
-        "tag": "家长共鸣",
-        "freq": 1,
-        "videos": [
-          "health_4"
-        ],
-        "summer_link": "★★★",
-        "explain": "通过'孩子学习/身高/营养'等家长焦虑话题建立共鸣。",
-        "examples": [
-          "帮孩子长脑和身高",
-          "它为什么大家都反馈"
-        ],
-        "applicable_categories": [
-          "青少年营养书",
-          "减糖饮食书"
-        ]
-      },
-      {
-        "tag": "长视频叙事",
-        "freq": 1,
-        "videos": [
-          "health_5"
-        ],
-        "summer_link": "★★★",
-        "explain": "180秒以上深度讲解，适合养生讲座、认知付费类内容。",
-        "examples": [
-          "老祖宗千年智慧讲座",
-          "易经养生深度解读"
-        ],
-        "applicable_categories": [
-          "中医养生书",
-          "易经养生书"
-        ]
+        "warning": null
       }
     ]
   }

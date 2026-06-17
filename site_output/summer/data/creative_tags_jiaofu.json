@@ -1,8 +1,8 @@
 {
-  "version": "summer-tags-v20260527",
+  "version": "jiaofu-tags-merge-20260618",
   "updated_at": "2026-05-27",
-  "data_note": "基于本批 50 个暑期创意视频做五维度拆解，频率 = 该标签在 50 条素材中出现次数",
-  "total_sample_videos": 53,
+  "data_note": "基于本批 50 个暑期创意视频做五维度拆解，频率 = 该标签在 50 条素材中出现次数｜2026-06-18 合并 7 条新增教辅素材标签：新增 22 个标签，1 个标签 freq 累加",
+  "total_sample_videos": 60,
   "dimensions": [
     {
       "id": "pain",
@@ -314,6 +314,47 @@
         "warning": "⚠️ 注意：素材中不要出现校园霸凌、暴力冲突等敏感题材，聚焦正面社交引导。"
       },
       {
+        "tag": "升学焦虑",
+        "freq": 3,
+        "summer_link": "高考/中考节点强相关",
+        "explain": "考点街头采访自带高关注度",
+        "examples": [
+          "中关村高考考点街拍",
+          "云南某地学霸"
+        ],
+        "applicable_categories": [
+          "童书",
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "暑期作业焦虑",
+        "freq": 2,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "应试压力",
+        "freq": 2,
+        "summer_link": "中高考冲刺刚需",
+        "explain": "中考真题/必考点是家长决策最强触发点",
+        "examples": [
+          "中考原题：故宫为什么没厕所",
+          "必考点全整理"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
         "tag": "志愿规划",
         "freq": 1,
         "videos": [
@@ -331,6 +372,39 @@
           "升学规划书",
           "才艺培养手册"
         ]
+      },
+      {
+        "tag": "小四门记忆痛",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "数学失分点",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "成语记不住",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
       }
     ],
     "effect": [
@@ -456,6 +530,34 @@
         ]
       },
       {
+        "tag": "应试提分",
+        "freq": 15,
+        "videos": [
+          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
+          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
+          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
+          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
+          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
+          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
+          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
+          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
+          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
+          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0"
+        ],
+        "summer_link": "★★★★★",
+        "explain": "主打分数提升的硬效果，常配合学霸案例、年级前三、必背考点等承诺。",
+        "examples": [
+          "数学垫底→年级前三",
+          "5年201次高频考点",
+          "中考几何必备"
+        ],
+        "applicable_categories": [
+          "真题模拟卷",
+          "学霸笔记",
+          "提分专项练"
+        ]
+      },
+      {
         "tag": "观念更新",
         "freq": 13,
         "videos": [
@@ -484,34 +586,6 @@
           "家庭教育书",
           "认知付费课程",
           "家长成长课"
-        ]
-      },
-      {
-        "tag": "应试提分",
-        "freq": 10,
-        "videos": [
-          "ads_svp_video__0b532iaasaaaquamkxbtc5urvuqebhjaacka_f0",
-          "ads_svp_video__0b533ec7oaafaiajaiw2ubur7wie67mql52a_f0",
-          "ads_svp_video__0b53pmaluaaaxqahgvykczvbu6yexj5qbosa_f0",
-          "ads_svp_video__0b53wqangaaapmalfwqnn5vbvnae2o2abu2a_f0",
-          "ads_svp_video__0b53zma3oaab2ianermaanurxsyew7fqdn2a_f0",
-          "ads_svp_video__0bc3eqabwaaasyacva63grurujaedmsaag2a_f0",
-          "ads_svp_video__0bc3hyaf2aaazaabgsacczvbupqelu7aaxka_f0",
-          "ads_svp_video__0bc3iiaj4aaalmafeziklrvbuqqetzbabhsa_f0",
-          "ads_svp_video__0bc3kqal4aaarqam4wqnmvvbuvaexzkabpsa_f0",
-          "ads_svp_video__0bc3nybhqaac3uagdsvcxrurq3qepbxae6ca_f0"
-        ],
-        "summer_link": "★★★★★",
-        "explain": "主打分数提升的硬效果，常配合学霸案例、年级前三、必背考点等承诺。",
-        "examples": [
-          "数学垫底→年级前三",
-          "5年201次高频考点",
-          "中考几何必备"
-        ],
-        "applicable_categories": [
-          "真题模拟卷",
-          "学霸笔记",
-          "提分专项练"
         ]
       },
       {
@@ -600,6 +674,65 @@
           "英语语法书",
           "暑期英语集训"
         ]
+      },
+      {
+        "tag": "权威认证",
+        "freq": 2,
+        "summer_link": "提升信任与决策速度",
+        "explain": "人民网/人民日报背书提升权威感",
+        "examples": [
+          "人民网这样说",
+          "人民日报励志词云"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "习惯养成",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "低门槛学习",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "方法论赋能",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "记忆方法赋能",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
       }
     ],
     "user": [
@@ -788,6 +921,21 @@
         ]
       },
       {
+        "tag": "中小学家长",
+        "freq": 5,
+        "summer_link": "暑期+开学家长决策高峰",
+        "explain": "亲子教育最大基本盘",
+        "examples": [
+          "中考家长",
+          "中关村高考家长"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
         "tag": "下沉地区家长",
         "freq": 4,
         "videos": [
@@ -828,6 +976,20 @@
           "英语语法书",
           "暑期英语集训"
         ]
+      },
+      {
+        "tag": "K12学生本人",
+        "freq": 2,
+        "summer_link": "自我成长动机",
+        "explain": "孩子受励志故事自驱购买",
+        "examples": [
+          "云南学霸",
+          "看不清未来时坚持久一点"
+        ],
+        "applicable_categories": [
+          "童书"
+        ],
+        "warning": null
       }
     ],
     "scene": [
@@ -974,6 +1136,21 @@
         ]
       },
       {
+        "tag": "暑期+开学季",
+        "freq": 5,
+        "summer_link": "暑期/开学家长决策黄金期",
+        "explain": "开学前后是教辅童书消费高峰",
+        "examples": [
+          "暑期阅读",
+          "开学礼"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
         "tag": "碎片时间快速看",
         "freq": 3,
         "videos": [
@@ -1033,6 +1210,17 @@
           "英语语法书",
           "暑期英语集训"
         ]
+      },
+      {
+        "tag": "升学过渡期",
+        "freq": 2,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
       },
       {
         "tag": "暑假出门旅行",
@@ -1319,6 +1507,22 @@
         ]
       },
       {
+        "tag": "金句字幕浮窗",
+        "freq": 5,
+        "summer_link": "低成本高保留率手法",
+        "explain": "金句+大字幕便于无声看完",
+        "examples": [
+          "孩子的灵性什么时候定型",
+          "老祖宗千年智慧"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
         "tag": "反向开场",
         "freq": 4,
         "videos": [
@@ -1341,6 +1545,23 @@
         ]
       },
       {
+        "tag": "实物翻书特写",
+        "freq": 4,
+        "summer_link": "最直观最高转化的表现",
+        "explain": "翻书+划线高亮特写引发收藏欲",
+        "examples": [
+          "中考考点都给你整理",
+          "蒸菜煲菜500例"
+        ],
+        "applicable_categories": [
+          "教辅",
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
         "tag": "悬念开场",
         "freq": 2,
         "videos": [
@@ -1359,6 +1580,70 @@
           "家长成长课",
           "深度育儿书"
         ]
+      },
+      {
+        "tag": "品牌IP锚定",
+        "freq": 2,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "演讲嘉宾IP",
+        "freq": 2,
+        "summer_link": "借势KOL权威",
+        "explain": "专家/名师/嘉宾长篇演讲",
+        "examples": [
+          "李玫瑾风演讲",
+          "曾仕强风口播"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": "名人肖像/姓名/语录需获得授权"
+      },
+      {
+        "tag": "实景街头采访",
+        "freq": 1,
+        "summer_link": "自带真实感与热度",
+        "explain": "中关村高考考点/雪乡/自建房现场",
+        "examples": [
+          "高考考点路人街拍",
+          "农村建房现场"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "手写画图演示",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "卡通插图+拼音",
+        "freq": 1,
+        "summer_link": "通用素材标签",
+        "explain": "",
+        "examples": [],
+        "applicable_categories": [
+          "教辅"
+        ],
+        "warning": null
       }
     ]
   }

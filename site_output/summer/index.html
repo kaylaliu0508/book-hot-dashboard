@@ -1804,7 +1804,7 @@
     <div class="cat-switch-label">📂 选择类目：</div>
     <div class="cat-switch-tabs">
       <button class="cat-tab active" data-cat="jiaofu"   data-label="教辅">📘 教辅</button>
-      <button class="cat-tab"        data-cat="childbook" data-label="童书">📕 童书</button>
+      <button class="cat-tab" data-cat="childbook" data-label="童书">📕 童书</button>
       <button class="cat-tab"        data-cat="social"   data-label="社科">📗 社科</button>
       <button class="cat-tab"        data-cat="health"   data-label="泛健康">📙 泛健康</button>
     </div>
@@ -1820,6 +1820,35 @@
     .empty-state .es-ic{font-size:48px;margin-bottom:14px;opacity:.5}
     .empty-state .es-title{font-size:15px;color:var(--text);font-weight:600;margin-bottom:6px}
     .empty-state .es-desc{font-size:13px;color:var(--text-muted);line-height:1.7}
+    /* schema v2 精细分镜样式 */
+    .struct-step-v2{border-radius:14px;padding:16px 18px;margin-bottom:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
+    .struct-step-v2.open{border-left:4px solid #f59e0b}
+    .struct-step-v2.build{border-left:4px solid #ec4899}
+    .struct-step-v2.develop{border-left:4px solid #8b5cf6}
+    .struct-step-v2.climax{border-left:4px solid #ef4444}
+    .struct-step-v2.cta{border-left:4px solid #10b981}
+    .struct-step-v2 .v2-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+    .struct-step-v2 .step-num{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;padding:4px 10px;border-radius:8px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace}
+    .struct-step-v2 .step-time{background:rgba(16,185,129,.12);color:#10b981;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;border:1px solid rgba(16,185,129,.3)}
+    .struct-step-v2 .v2-lbl{flex:1;min-width:200px;font-size:14px;font-weight:600;color:var(--text);line-height:1.5}
+    .struct-step-v2 .v2-row{display:flex;gap:10px;margin-top:8px;padding:8px 0;border-top:1px dashed rgba(255,255,255,.06)}
+    .struct-step-v2 .v2-row:first-of-type{border-top:none;padding-top:4px}
+    .struct-step-v2 .srow-lbl{flex-shrink:0;min-width:88px;font-size:12px;color:var(--text-muted);font-weight:600;padding-top:2px}
+    .struct-step-v2 .srow-val{flex:1;font-size:13px;color:var(--text);line-height:1.7}
+    .struct-step-v2 .exec-list{margin:0;padding:0 0 0 18px;list-style:disc}
+    .struct-step-v2 .exec-list li{margin-bottom:4px;font-size:12.5px;line-height:1.65;color:var(--text);opacity:.92}
+    .struct-step-v2 .v2-row-script .script-quote{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.75;color:#67e8f9;font-weight:500;letter-spacing:.3px;display:block}
+    .warn-chip{display:inline-block;margin-left:10px;padding:3px 10px;border-radius:10px;background:rgba(245,158,11,.15);color:#fbbf24;font-size:11px;font-weight:600;border:1px solid rgba(245,158,11,.35);cursor:help}
+    /* v2 手风琴：同一时间只展开一段 */
+    .v2-accordion{display:flex;flex-direction:column;gap:8px}
+    .v2-accordion .struct-step-v2{margin-bottom:0;padding:0;overflow:hidden;transition:background .15s}
+    .v2-accordion .struct-step-v2 .v2-head{padding:12px 16px;cursor:pointer;margin-bottom:0;user-select:none;transition:background .15s}
+    .v2-accordion .struct-step-v2 .v2-head:hover{background:rgba(124,58,237,.08)}
+    .v2-accordion .struct-step-v2 .v2-body{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .25s ease, padding .15s ease;opacity:0}
+    .v2-accordion .struct-step-v2.is-open .v2-body{max-height:2000px;padding:4px 16px 14px 16px;opacity:1}
+    .v2-accordion .struct-step-v2.is-open .v2-head{background:rgba(124,58,237,.10);border-bottom:1px solid rgba(255,255,255,.06)}
+    .v2-accordion .v2-caret{margin-left:auto;color:var(--text-muted);font-size:14px;transition:transform .2s}
+    .v2-accordion .struct-step-v2.is-open .v2-caret{transform:rotate(180deg);color:#a78bfa}
   </style>
 
   <!-- ============ 模块②：分类目爆款脚本总结 ============ -->
@@ -1871,7 +1900,7 @@
 try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('summer'); }); }catch(e){}
 // ============ 数据源路径 ============
 // cache-bust: 加版本号确保每次更新数据后浏览器拉取最新版
-const VER = '20260617-v61-social6';
+const VER = 'v66-fine-granularity-20260618';
 const CALENDAR_JSON = './data/calendar_events.json?v=' + VER;
 // 分类目数据源（②③ 章节由 cat-switch-bar 控制）
 let CURRENT_CAT = 'jiaofu';
@@ -2147,7 +2176,7 @@ function renderScriptList(){
       cat: c,
       allCount: allItems.length,
       items: pickRepresentatives(allItems, pickMaxN(allItems.length)),
-      summary: scriptsData.category_summary[c.id] || {}
+      summary: (scriptsData.category_summary && scriptsData.category_summary[c.id]) || {}
     };
   })
   .filter(g => g.allCount > 0)
@@ -2192,6 +2221,16 @@ function renderScriptList(){
 }
 
 // 手风琴模式：点击展开当前分组，自动收起其他所有分组
+function toggleV2Stage(headEl){
+  // 手风琴：同一作用域 (.v2-accordion) 内只展开一段
+  const stepEl = headEl.closest('.struct-step-v2');
+  const accord = headEl.closest('.v2-accordion');
+  if(!stepEl || !accord) return;
+  const wasOpen = stepEl.classList.contains('is-open');
+  accord.querySelectorAll('.struct-step-v2.is-open').forEach(s => s.classList.remove('is-open'));
+  if(!wasOpen) stepEl.classList.add('is-open');
+}
+
 function toggleGroup(catId){
   const el = document.getElementById('group-' + catId);
   if(!el) return;
@@ -2221,38 +2260,71 @@ function renderScriptCard(s, c){
     </div>
   `).join('');
 
-  // 分阶段细致拆解：每段含 镜头/话术/作用 三个子项
-  const struct = s.script_structure || {};
-  const stepDefs = [
-    {key:'open',    cls:'open',    label:'OPEN · 钩子开场'},
-    {key:'build',   cls:'build',   label:'BUILD · 痛点铺陈'},
-    {key:'develop', cls:'develop', label:'DEVELOP · 深度展开'},
-    {key:'climax',  cls:'climax',  label:'CLIMAX · 卖点亮相'},
-    {key:'cta',     cls:'cta',     label:'CTA · 转化收口'}
-  ];
-  const present = stepDefs.filter(d => struct[d.key]);
-  const numerals = ['①','②','③','④','⑤'];
-  const structHtml = present.map((d, idx) => {
-    const stage = struct[d.key];
-    // 兼容两种数据格式：旧字符串 / 新对象 {shot,script,purpose}
-    const isObj = typeof stage === 'object' && stage !== null;
-    const shot = isObj ? (stage.shot || '') : '';
-    const script = isObj ? (stage.script || '') : '';
-    const purpose = isObj ? (stage.purpose || '') : '';
-    const fallback = isObj ? '' : stage;
-    return `
-      <div class="struct-step ${d.cls}">
-        <div class="step-head">
-          <span class="step-num">${numerals[idx]}</span>
-          <span class="step-lbl">${d.label}</span>
-        </div>
-        ${shot ? `<div class="step-row"><span class="srow-lbl">🎬 镜头</span><span class="srow-val">${shot}</span></div>` : ''}
-        ${script ? `<div class="step-row"><span class="srow-lbl">💬 话术</span><span class="srow-val">${script}</span></div>` : ''}
-        ${purpose ? `<div class="step-row"><span class="srow-lbl">🎯 作用</span><span class="srow-val">${purpose}</span></div>` : ''}
-        ${fallback ? `<div class="step-row"><span class="srow-val">${fallback}</span></div>` : ''}
-      </div>
-    `;
-  }).join('');
+  // 分阶段细致拆解：支持 schema_v1 (对象 open/build/...) 和 schema_v2 (数组 [{stage_no,title,time_range,strategy,execution,script_content}])
+  let structHtml = '';
+  if (Array.isArray(s.script_structure)) {
+    // === schema v2: 精细到秒的分镜数组（手风琴：同一时间只展开一个）===
+    const v2Cls = ['open','build','develop','climax','cta','open','build'];
+    const cardKey = (s.video_id || 'sc').replace(/[^a-zA-Z0-9_]/g,'_');
+    structHtml = `<div class="v2-accordion" data-card-key="${cardKey}">` + s.script_structure.map((stage, idx) => {
+      const cls = v2Cls[idx % v2Cls.length];
+      const execList = Array.isArray(stage.execution) ? stage.execution
+                       : (stage.execution ? [stage.execution] : []);
+      const execHtml = execList.length ? `
+        <div class="step-row v2-row v2-row-exec">
+          <span class="srow-lbl">⚙️ 执行要点</span>
+          <span class="srow-val">
+            <ul class="exec-list">${execList.map(e=>`<li>${e}</li>`).join('')}</ul>
+          </span>
+        </div>` : '';
+      const openCls = idx === 0 ? ' is-open' : '';
+      return `
+        <div class="struct-step ${cls} struct-step-v2${openCls}" data-stage-idx="${idx}">
+          <div class="step-head v2-head" onclick="toggleV2Stage(this)">
+            <span class="step-num">${String(stage.stage_no || (idx+1)).padStart(2,'0')}</span>
+            <span class="step-time">${stage.time_range || ''}</span>
+            <span class="step-lbl v2-lbl">${stage.title || ''}</span>
+            <span class="v2-caret">▾</span>
+          </div>
+          <div class="v2-body">
+            ${stage.strategy ? `<div class="step-row v2-row"><span class="srow-lbl">🎯 策略拆解</span><span class="srow-val">${stage.strategy}</span></div>` : ''}
+            ${execHtml}
+            ${stage.script_content ? `<div class="step-row v2-row v2-row-script"><span class="srow-lbl">💬 脚本内容</span><span class="srow-val script-quote">${stage.script_content}</span></div>` : ''}
+          </div>
+        </div>`;
+    }).join('') + `</div>`;
+  } else {
+    // === schema v1: 旧版对象格式 ===
+    const struct = s.script_structure || {};
+    const stepDefs = [
+      {key:'open',    cls:'open',    label:'OPEN · 钩子开场'},
+      {key:'build',   cls:'build',   label:'BUILD · 痛点铺陈'},
+      {key:'develop', cls:'develop', label:'DEVELOP · 深度展开'},
+      {key:'climax',  cls:'climax',  label:'CLIMAX · 卖点亮相'},
+      {key:'cta',     cls:'cta',     label:'CTA · 转化收口'}
+    ];
+    const present = stepDefs.filter(d => struct[d.key]);
+    const numerals = ['①','②','③','④','⑤'];
+    structHtml = present.map((d, idx) => {
+      const stage = struct[d.key];
+      const isObj = typeof stage === 'object' && stage !== null;
+      const shot = isObj ? (stage.shot || '') : '';
+      const script = isObj ? (stage.script || '') : '';
+      const purpose = isObj ? (stage.purpose || '') : '';
+      const fallback = isObj ? '' : stage;
+      return `
+        <div class="struct-step ${d.cls}">
+          <div class="step-head">
+            <span class="step-num">${numerals[idx]}</span>
+            <span class="step-lbl">${d.label}</span>
+          </div>
+          ${shot ? `<div class="step-row"><span class="srow-lbl">🎬 镜头</span><span class="srow-val">${shot}</span></div>` : ''}
+          ${script ? `<div class="step-row"><span class="srow-lbl">💬 话术</span><span class="srow-val">${script}</span></div>` : ''}
+          ${purpose ? `<div class="step-row"><span class="srow-lbl">🎯 作用</span><span class="srow-val">${purpose}</span></div>` : ''}
+          ${fallback ? `<div class="step-row"><span class="srow-val">${fallback}</span></div>` : ''}
+        </div>`;
+    }).join('');
+  }
 
   return `
     <div class="script-card">
@@ -2261,7 +2333,8 @@ function renderScriptCard(s, c){
         <div class="script-title">${s.title}</div>
         <div class="script-relevance">暑期相关度 ${s.summer_relevance}</div>
         <div class="script-meta">
-          <span>⏱ ${s.duration_range || '-'}</span>
+          <span>⏱ ${s.duration_label || s.duration_range || (s.duration_sec ? s.duration_sec+'s' : '-')}</span>
+          ${s.warning ? `<span class="warn-chip" title="${s.warning}">⚠️ 合规提示</span>` : ''}
         </div>
       </div>
       <div class="script-body">
@@ -2272,15 +2345,15 @@ function renderScriptCard(s, c){
             <div class="analysis-box">
               <div class="analysis-row analysis-win">
                 <span class="a-lbl">🏆 胜在何处</span>
-                <span class="a-val">${s.analysis.win || ''}</span>
+                <span class="a-val">${s.analysis.why_win || s.analysis.win || ''}</span>
               </div>
               <div class="analysis-row analysis-reuse">
                 <span class="a-lbl">🔁 同类复用</span>
-                <span class="a-val">${s.analysis.reuse || ''}</span>
+                <span class="a-val">${s.analysis.reusable_for || s.analysis.reuse || ''}</span>
               </div>
               <div class="analysis-row analysis-scene">
                 <span class="a-lbl">📌 适用场景</span>
-                <span class="a-val">${s.analysis.scene || ''}</span>
+                <span class="a-val">${s.analysis.applicable_scenes || s.analysis.scene || ''}</span>
               </div>
             </div>
           ` : `
@@ -2458,7 +2531,7 @@ function renderInsights(){
 
 function renderCombos(){
   // 按品类（应用场景）聚合，品类作为大标题
-  const groups = tagsData.cross_analysis.combos_by_category || [];
+  const groups = (tagsData.cross_analysis && tagsData.cross_analysis.combos_by_category) || [];
   const html = groups.map(g => `
     <div class="combo-category" style="border-top-color:${g.color};">
       <div class="ccat-head">
