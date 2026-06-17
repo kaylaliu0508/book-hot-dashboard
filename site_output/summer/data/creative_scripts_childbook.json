@@ -1,0 +1,51 @@
+{
+  "version": "childbook-placeholder-v1",
+  "updated_at": "2026-06-17",
+  "total_videos": 0,
+  "category_legend": [
+    {
+      "id": "object_flip",
+      "name": "实物翻书展示",
+      "icon": "📚",
+      "color": "#4ade80",
+      "desc": "（待采集本类目素材后填充）"
+    },
+    {
+      "id": "drama_skit",
+      "name": "情景剧场代入",
+      "icon": "🎬",
+      "color": "#a78bfa",
+      "desc": "（待采集本类目素材后填充）"
+    },
+    {
+      "id": "talking_head",
+      "name": "真人口播种草",
+      "icon": "🎤",
+      "color": "#5b9eff",
+      "desc": "（待采集本类目素材后填充）"
+    },
+    {
+      "id": "anxiety_long",
+      "name": "深度演讲长视频",
+      "icon": "📢",
+      "color": "#ff5f6d",
+      "desc": "（待采集本类目素材后填充）"
+    },
+    {
+      "id": "hot_topic",
+      "name": "热点话题切入",
+      "icon": "🔥",
+      "color": "#ffb547",
+      "desc": "（待采集本类目素材后填充）"
+    },
+    {
+      "id": "knowledge_display",
+      "name": "知识直给",
+      "icon": "📖",
+      "color": "#22d3ee",
+      "desc": "（待采集本类目素材后填充）"
+    }
+  ],
+  "scripts": [],
+  "category_summary": {}
+}

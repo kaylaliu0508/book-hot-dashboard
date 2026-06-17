@@ -1,0 +1,55 @@
+{
+  "version": "childbook-tags-placeholder-v1",
+  "updated_at": "2026-06-17",
+  "data_note": "童书类目数据采集中，标签将在素材就位后生成。",
+  "total_sample_videos": 0,
+  "dimensions": [
+    {
+      "id": "pain",
+      "name": "痛点",
+      "icon": "⚡",
+      "color": "#ff5f6d",
+      "question": "解决什么健康问题？",
+      "desc": "用户面临的具体身体困扰或亚健康状态"
+    },
+    {
+      "id": "effect",
+      "name": "效果",
+      "icon": "✨",
+      "color": "#4ade80",
+      "question": "能达成什么健康结果？",
+      "desc": "使用产品后能获得的具体身心改变"
+    },
+    {
+      "id": "user",
+      "name": "目标用户",
+      "icon": "👥",
+      "color": "#a78bfa",
+      "question": "谁需要解决这个问题？",
+      "desc": "健康决策人画像（年龄/角色/特征）"
+    },
+    {
+      "id": "scene",
+      "name": "场景",
+      "icon": "🎬",
+      "color": "#5b9eff",
+      "question": "在什么情况下产生需求？",
+      "desc": "时间节点+生活场景+心理状态"
+    },
+    {
+      "id": "marketing",
+      "name": "营销方式",
+      "icon": "🎯",
+      "color": "#ffb547",
+      "question": "如何说服用户行动？",
+      "desc": "话术结构+信任背书+转化钩子"
+    }
+  ],
+  "tag_library": {
+    "pain": [],
+    "effect": [],
+    "user": [],
+    "scene": [],
+    "marketing": []
+  }
+}

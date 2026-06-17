@@ -1,0 +1,268 @@
+{
+  "version": "health-v20260617-5items",
+  "updated_at": "2026-06-17",
+  "total_videos": 5,
+  "category_legend": [
+    {
+      "id": "object_flip",
+      "name": "实物翻书展示",
+      "icon": "📚",
+      "color": "#4ade80",
+      "desc": "养生书/食谱书桌面翻页+菜谱图特写"
+    },
+    {
+      "id": "drama_skit",
+      "name": "情景剧场代入",
+      "icon": "🎬",
+      "color": "#a78bfa",
+      "desc": "家宴/厨房/家庭健康场景演绎+实物书"
+    },
+    {
+      "id": "talking_head",
+      "name": "真人口播种草",
+      "icon": "🎤",
+      "color": "#5b9eff",
+      "desc": "中医名家/国学IP真人出镜+图书展示"
+    },
+    {
+      "id": "anxiety_long",
+      "name": "深度演讲长视频",
+      "icon": "📢",
+      "color": "#ff5f6d",
+      "desc": "养生讲座式长视频+认知付费转化"
+    },
+    {
+      "id": "hot_topic",
+      "name": "热点话题切入",
+      "icon": "🔥",
+      "color": "#ffb547",
+      "desc": "健康热搜话题/路人采访+产品种草"
+    },
+    {
+      "id": "knowledge_display",
+      "name": "知识直给",
+      "icon": "📖",
+      "color": "#22d3ee",
+      "desc": "健康知识/食疗方/穴位图直给"
+    }
+  ],
+  "scripts": [
+    {
+      "video_id": "health_2",
+      "title": "12-18岁青春期长高食谱",
+      "category": "object_flip",
+      "hook": "12-18岁青春期39道长高食谱",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "女孩书桌写作业背影",
+          "script": "帮助孩子长脑和",
+          "purpose": "升学家长共鸣钩子"
+        },
+        "build": {
+          "shot": "切到虾仁蒸蛋等长高菜实拍",
+          "script": "12-18岁青春期黄金时间",
+          "purpose": "美食视觉冲击"
+        },
+        "climax": {
+          "shot": "翻到39道食谱目录页",
+          "script": "39道长高食谱完整呈现",
+          "purpose": "数字+实物展示"
+        },
+        "cta": {
+          "shot": "下方挂购买",
+          "script": "下单整套食谱",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "青春期身高+39道长高食谱实物书",
+      "frames_dir": "./keyframes/health_2",
+      "duration_range": "120-180s",
+      "analysis": {
+        "win": "'孩子长脑'共鸣痛点+具体39道食谱让妈妈感觉有方法可抄。",
+        "reuse": "儿童营养/食谱类图书都可用'孩子学习场景+黄金时间+数字食谱'结构。",
+        "scene": "暑假/开学前家长冲刺安排孩子营养的窗口。"
+      }
+    },
+    {
+      "video_id": "health_3",
+      "title": "蒸菜煲菜焖菜500例",
+      "category": "object_flip",
+      "hook": "蒸菜煲菜焖菜500例每天不重样吃出健康",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "蒸茄子18分钟特写",
+          "script": "七：蒸茄子18分钟",
+          "purpose": "美食钩子+具体时长"
+        },
+        "build": {
+          "shot": "虾仁豆腐特写+大字标题",
+          "script": "蒸菜煲菜焖菜500例",
+          "purpose": "品类总览"
+        },
+        "climax": {
+          "shot": "'我要让每个普通老百姓'字幕",
+          "script": "每天不重样吃出健康",
+          "purpose": "承诺亮相"
+        },
+        "cta": {
+          "shot": "下方书封挂购买",
+          "script": "下单菜谱",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "500道少油健康家常菜",
+      "frames_dir": "./keyframes/health_3",
+      "duration_range": "180-240s",
+      "analysis": {
+        "win": "高清美食特写+'18分钟具体步骤'+500道数字硬货是家常菜谱的稳定爆款公式。",
+        "reuse": "家常菜/养生食谱类图书都可用'高清美食大特写+具体步骤+500例'结构。",
+        "scene": "晚餐前刷手机找做菜灵感的全民厨房场景。"
+      }
+    },
+    {
+      "video_id": "health_4",
+      "title": "减糖饮食控糖指南",
+      "category": "drama_skit",
+      "hook": "这些食物搭配到底有多管用",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "满桌家宴美食特写",
+          "script": "这些食物搭配到底有多管用",
+          "purpose": "好奇心钩子"
+        },
+        "build": {
+          "shot": "三文鱼大虾水果配酒画面",
+          "script": "健康家宴情景剧",
+          "purpose": "视觉氛围"
+        },
+        "climax": {
+          "shot": "切到《减糖饮食》书封",
+          "script": "它为什么大家都反馈",
+          "purpose": "社交背书"
+        },
+        "cta": {
+          "shot": "下方挂购买",
+          "script": "下单控糖书",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "减糖饮食+控糖食材搭配",
+      "frames_dir": "./keyframes/health_4",
+      "duration_range": "180-240s",
+      "analysis": {
+        "win": "满桌家宴的'富足感'与'减糖瘦身'反差吸引中年家长停留，社交背书话术强转化。",
+        "reuse": "减糖/控糖/低GI饮食书都可用'美食家宴+反差话术+社交背书'结构。",
+        "scene": "晚间家长担心血糖/三高/孩子糖摄入的健康焦虑时段。"
+      }
+    },
+    {
+      "video_id": "health_5",
+      "title": "曾仕强易经养生漫画",
+      "category": "talking_head",
+      "hook": "老祖宗传承千年的智慧让你在家轻松养生",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "名家西装真人特写+福气满满标题",
+          "script": "老祖宗传承千年的智慧",
+          "purpose": "权威IP钩子"
+        },
+        "build": {
+          "shot": "名家手势+背景灯笼",
+          "script": "让你在家轻松养生这段黄金时间",
+          "purpose": "卖点铺陈"
+        },
+        "climax": {
+          "shot": "切到《漫画讲透·易经养生》书封",
+          "script": "200余幅精美漫画趣味呈现中医经典",
+          "purpose": "品牌植入"
+        },
+        "cta": {
+          "shot": "下方书封购买",
+          "script": "正版下单",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "国学名家+200余幅漫画讲透易经养生",
+      "frames_dir": "./keyframes/health_5",
+      "duration_range": "180-240s",
+      "analysis": {
+        "win": "国学名家IP+'老祖宗千年智慧'强信任锚点，漫画讲透降低易经理解门槛。",
+        "reuse": "传统文化/中医养生类图书都可用'名家IP+漫画化呈现+千年智慧'结构。",
+        "scene": "中老年家长想了解中医易经而又怕看古文的认知付费窗口。"
+      }
+    },
+    {
+      "video_id": "health_1",
+      "title": "宋兆普健康小妙招",
+      "category": "talking_head",
+      "hook": "宋兆普健康小妙招丝瓜煮水有妙用",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "CCTV画面+黄底大字标题",
+          "script": "宋兆普健康小妙招丝瓜煮水有妙用",
+          "purpose": "CCTV权威感+具体偏方钩子"
+        },
+        "build": {
+          "shot": "女性长发头皮特写+绿手镯",
+          "script": "你的头发也有这些问题",
+          "purpose": "痛点共鸣"
+        },
+        "climax": {
+          "shot": "切到《宋兆普小妙招》书封",
+          "script": "宋兆普小妙招正版发售",
+          "purpose": "品牌落点"
+        },
+        "cta": {
+          "shot": "图书购物车浮窗",
+          "script": "正版发售购买",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "中医名家+丝瓜煮水民间偏方",
+      "frames_dir": "./keyframes/health_1",
+      "duration_range": "30-60s",
+      "analysis": {
+        "win": "CCTV出镜的中医名家背书+丝瓜煮水具体偏方钩子，普通家庭主妇决策成本极低。",
+        "reuse": "中医食疗/家用偏方类图书都可用'名家+CCTV片段+具体小偏方'结构。",
+        "scene": "中老年家庭主妇早晚刷短视频找养生方法的窗口。"
+      }
+    }
+  ],
+  "category_summary": {
+    "object_flip": {
+      "common_pattern": "食谱书/养生书桌面翻页+菜谱图特写+具体数字硬货",
+      "summer_hook": "500例/39道等量化数字让普通家庭一秒感受'值'。",
+      "best_format": "60-180秒，俯拍美食特写+翻页+底部购物车。"
+    },
+    "drama_skit": {
+      "common_pattern": "家宴/家庭健康场景演绎+实物书自然嵌入。",
+      "summer_hook": "满桌家宴的富足感与减糖/控糖反差建立决策动机。",
+      "best_format": "180秒，场景铺陈+反差话术+品牌断言+下单卡。"
+    },
+    "talking_head": {
+      "common_pattern": "中医名家/国学IP真人出镜+实物书展示+权威话术。",
+      "summer_hook": "名家IP+'老祖宗千年智慧'强信任锚点，中老年决策快。",
+      "best_format": "30-120秒，名家特写+具体偏方/智慧金句+品牌断言。"
+    },
+    "anxiety_long": {
+      "common_pattern": "养生讲座式长视频+认知付费转化。",
+      "summer_hook": "晚间睡前深度收看，知识付费转化窗口。",
+      "best_format": "180秒以上，演讲场景+字幕金句+二维码引流。"
+    },
+    "hot_topic": {
+      "common_pattern": "健康热搜话题/路人采访+产品种草。",
+      "summer_hook": "借势社会健康话题，提升完播率。",
+      "best_format": "60-120秒，热搜钩子+产品转化。"
+    },
+    "knowledge_display": {
+      "common_pattern": "健康知识/食疗方/穴位图直给。",
+      "summer_hook": "碎片时间硬货停留，建立专业度。",
+      "best_format": "30-60秒，干货图示+品牌落点。"
+    }
+  }
+}

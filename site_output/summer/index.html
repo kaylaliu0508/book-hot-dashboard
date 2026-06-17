@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>图书行业暑期专栏 · 教辅&童书暑期档情报站</title>
-<meta name="description" content="教辅&童书暑期档情报站 · 暑期教育日历 / 爆款创意脚本 / 爆款标签" />
-<meta property="og:title" content="图书行业暑期专栏 · 教辅&童书暑期档情报站" />
-<meta property="og:description" content="教辅&童书暑期档情报站 · 暑期跑量素材洞察" />
+<title>图书行业素材洞察 · 分类目跑量情报站</title>
+<meta name="description" content="分类目素材洞察 · 教辅 / 童书 / 社科 / 泛健康 跑量脚本与标签" />
+<meta property="og:title" content="图书行业素材洞察 · 分类目跑量情报站" />
+<meta property="og:description" content="分类目素材洞察 · 4 大类目跑量脚本与标签" />
 <style>
   :root {
     --bg-deep: #0a0e1a;
@@ -1744,7 +1744,7 @@
 <a href="/#p5" class="tb" data-track="tab_btn_script_gen">一键生成口播脚本</a>
 <a href="/#p6" class="tb">图片文案生成</a>
 <a href="/#p3" class="tb" data-track="tab_btn_ai_audit">AI预审</a>
-<a href="/summer/" class="tb on" data-track="tab_btn_summer">📅 暑期专栏</a>
+<a href="/summer/" class="tb on" data-track="tab_btn_summer">📂 素材洞察</a>
 <a href="/#pai" class="tb tb-ai" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></a>
 </div></div>
 
@@ -1766,8 +1766,8 @@
 
 <!-- ============ Hero ============ -->
 <section class="hero">
-  <h1>图书行业暑期专栏</h1>
-  <p class="subtitle">教辅&童书暑期档情报站</p>
+  <h1>分类目素材洞察</h1>
+  <p class="subtitle">教辅 · 童书 · 社科 · 泛健康｜4 大类目跑量脚本与标签</p>
 </section>
 
 <!-- ============ 免责声明 ============ -->
@@ -1798,12 +1798,36 @@
     <div class="calendar-grid" id="calendarGrid"></div>
   </section>
 
-  <!-- ============ 模块②：教辅童书爆款脚本总结 ============ -->
+  <!-- ============ 类目切换条（教辅/童书/社科/泛健康，控制 ②③ 章节）============ -->
+  <div class="cat-switch-bar" id="catSwitchBar">
+    <div class="cat-switch-label">📂 选择类目：</div>
+    <div class="cat-switch-tabs">
+      <button class="cat-tab active" data-cat="jiaofu"   data-label="教辅">📘 教辅</button>
+      <button class="cat-tab"        data-cat="childbook" data-label="童书">📕 童书</button>
+      <button class="cat-tab"        data-cat="social"   data-label="社科">📗 社科</button>
+      <button class="cat-tab"        data-cat="health"   data-label="泛健康">📙 泛健康</button>
+    </div>
+  </div>
+  <style>
+    .cat-switch-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;margin:18px 0;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(37,99,235,.06));border-radius:12px;border:1px solid rgba(124,58,237,.18);flex-wrap:wrap}
+    .cat-switch-label{font-size:13px;color:var(--text-muted);font-weight:600;flex-shrink:0}
+    .cat-switch-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .cat-tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .cat-tab:hover{background:rgba(124,58,237,.12);color:#fff;border-color:rgba(124,58,237,.4)}
+    .cat-tab.active{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border-color:transparent;box-shadow:0 4px 12px -2px rgba(124,58,237,.4)}
+    .empty-state{padding:60px 30px;text-align:center;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.12);border-radius:14px;margin:20px 0}
+    .empty-state .es-ic{font-size:48px;margin-bottom:14px;opacity:.5}
+    .empty-state .es-title{font-size:15px;color:var(--text);font-weight:600;margin-bottom:6px}
+    .empty-state .es-desc{font-size:13px;color:var(--text-muted);line-height:1.7}
+  </style>
+
+  <!-- ============ 模块②：分类目爆款脚本总结 ============ -->
   <section class="section" id="scripts">
     <div class="section-header">
       <div class="section-num">②</div>
       <div style="flex:1;">
-        <div class="section-title">教辅童书爆款脚本总结</div>
+        <div class="section-title"><span id="scriptsCatLabel">教辅</span>类目爆款脚本总结</div>
+        <div class="section-desc" id="scriptsCatDesc"></div>
       </div>
     </div>
 
@@ -1817,12 +1841,12 @@
     <div class="script-list" id="scriptList"></div>
   </section>
 
-  <!-- ============ 模块③：爆款标签总结 ============ -->
+  <!-- ============ 模块③：分类目爆款标签总结 ============ -->
   <section class="section" id="tags">
     <div class="section-header">
       <div class="section-num">③</div>
       <div style="flex:1;">
-        <div class="section-title">爆款标签总结</div>
+        <div class="section-title"><span id="tagsCatLabel">教辅</span>类目爆款标签总结</div>
         <div class="section-desc">五维度拆解 · 痛点 / 效果 / 目标用户 / 场景 / 营销方式</div>
       </div>
     </div>
@@ -1837,7 +1861,7 @@
 </main>
 
 <footer class="footer">
-  <div>📊 图书灵感中心 · 暑期话题专栏</div>
+  <div>📊 图书灵感中心 · 分类目素材洞察</div>
   <div>© 2026</div>
 </footer>
 
@@ -1846,10 +1870,15 @@
 try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('summer'); }); }catch(e){}
 // ============ 数据源路径 ============
 // cache-bust: 加版本号确保每次更新数据后浏览器拉取最新版
-const VER = '20260527-v57-summer-53items';
+const VER = '20260617-v58-multicat-health5';
 const CALENDAR_JSON = './data/calendar_events.json?v=' + VER;
-const SCRIPTS_JSON = './data/creative_scripts.json?v=' + VER;
-const TAGS_JSON = './data/creative_tags.json?v=' + VER;
+// 分类目数据源（②③ 章节由 cat-switch-bar 控制）
+let CURRENT_CAT = 'jiaofu';
+function buildScriptsUrl(cat){ return `./data/creative_scripts_${cat}.json?v=` + VER; }
+function buildTagsUrl(cat){    return `./data/creative_tags_${cat}.json?v=`   + VER; }
+// 兼容旧引用
+const SCRIPTS_JSON = buildScriptsUrl(CURRENT_CAT);
+const TAGS_JSON    = buildTagsUrl(CURRENT_CAT);
 const TREND_JSON = './data/category_trend.json?v=' + VER;
 
 // ============ 模块①：暑期日历（全国统一）============
@@ -2026,13 +2055,16 @@ function renderCalendar(){
   }).filter(Boolean).join('');
 }
 
-// ============ 模块②：教辅童书爆款脚本总结 ============
+// ============ 模块②：分类目爆款脚本总结 ============
 let scriptsData = null;
 
-fetch(SCRIPTS_JSON).then(r=>r.json()).then(data=>{
-  scriptsData = data;
-  renderScriptList();
-});
+function loadScripts(cat){
+  return fetch(buildScriptsUrl(cat)).then(r=>r.json()).then(data=>{
+    scriptsData = data;
+    renderScriptList();
+  });
+}
+loadScripts(CURRENT_CAT);
 
 // 根据频次相对值生成火焰图标（5格满热度，脱敏处理不显示数字）
 function renderHeatIcons(count, maxCount){
@@ -2046,6 +2078,16 @@ function renderHeatIcons(count, maxCount){
 }
 
 function renderScriptList(){
+  // 空数据占位
+  if(!scriptsData || !scriptsData.scripts || scriptsData.scripts.length === 0){
+    document.getElementById('scriptList').innerHTML = `
+      <div class="empty-state">
+        <div class="es-ic">📭</div>
+        <div class="es-title">本类目素材采集中</div>
+        <div class="es-desc">本类目暂无已采集的代表案例，<br/>素材入库后将自动生成 6 大套路 × 代表案例的脚本拆解。</div>
+      </div>`;
+    return;
+  }
   const legendMap = {};
   scriptsData.category_legend.forEach(c => legendMap[c.id] = c);
 
@@ -2252,14 +2294,37 @@ function renderScriptCard(s, c){
   `;
 }
 
-// ============ 模块③：爆款标签总结 ============
+// ============ 模块③：分类目爆款标签总结 ============
 let tagsData = null;
 
-fetch(TAGS_JSON).then(r=>r.json()).then(data=>{
-  tagsData = data;
-  renderDimOverview();
-  renderDimSections();
-});
+function loadTags(cat){
+  return fetch(buildTagsUrl(cat)).then(r=>r.json()).then(data=>{
+    tagsData = data;
+    renderDimOverview();
+    renderDimSections();
+  });
+}
+loadTags(CURRENT_CAT);
+
+// ============ 类目切换条 ============
+(function bindCatSwitch(){
+  const bar = document.getElementById('catSwitchBar');
+  if(!bar) return;
+  bar.querySelectorAll('.cat-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const cat = btn.dataset.cat;
+      const label = btn.dataset.label;
+      if(cat === CURRENT_CAT) return;
+      CURRENT_CAT = cat;
+      bar.querySelectorAll('.cat-tab').forEach(b=>b.classList.toggle('active', b===btn));
+      const lbl1 = document.getElementById('scriptsCatLabel'); if(lbl1) lbl1.textContent = label;
+      const lbl2 = document.getElementById('tagsCatLabel');    if(lbl2) lbl2.textContent = label;
+      try{ window.tracker && window.tracker.feature('cat_switch',{cat:cat},null,'summer'); }catch(e){}
+      loadScripts(cat);
+      loadTags(cat);
+    });
+  });
+})();
 
 function renderDimOverview(){
   const html = tagsData.dimensions.map(d=>{
@@ -2275,6 +2340,18 @@ function renderDimOverview(){
 }
 
 function renderDimSections(){
+  // 空数据占位
+  const allEmpty = !tagsData || !tagsData.tag_library ||
+    tagsData.dimensions.every(d => !(tagsData.tag_library[d.id] || []).length);
+  if(allEmpty){
+    document.getElementById('dimSections').innerHTML = `
+      <div class="empty-state">
+        <div class="es-ic">🏷️</div>
+        <div class="es-title">本类目标签库采集中</div>
+        <div class="es-desc">${(tagsData && tagsData.data_note) || '素材入库后将按 5 维度（痛点 / 效果 / 目标用户 / 场景 / 营销方式）自动聚合标签云。'}</div>
+      </div>`;
+    return;
+  }
   const html = tagsData.dimensions.map(d=>{
     const tags = tagsData.tag_library[d.id] || [];
     // 按freq排序
