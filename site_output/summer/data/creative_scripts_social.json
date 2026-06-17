@@ -1,51 +1,305 @@
 {
-  "version": "social-placeholder-v1",
+  "version": "social-v20260617-6items",
   "updated_at": "2026-06-17",
-  "total_videos": 0,
+  "total_videos": 6,
   "category_legend": [
     {
       "id": "object_flip",
       "name": "实物翻书展示",
       "icon": "📚",
       "color": "#4ade80",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "社科书桌面翻页+古画/插图特写"
     },
     {
       "id": "drama_skit",
       "name": "情景剧场代入",
       "icon": "🎬",
       "color": "#a78bfa",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "AI古风/家庭场景演绎+社科书植入"
     },
     {
       "id": "talking_head",
       "name": "真人口播种草",
       "icon": "🎤",
       "color": "#5b9eff",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "商业人物/国学老师真人推荐"
     },
     {
       "id": "anxiety_long",
       "name": "深度演讲长视频",
       "icon": "📢",
       "color": "#ff5f6d",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "商业/认知演讲长视频+图书或课程转化"
     },
     {
       "id": "hot_topic",
       "name": "热点话题切入",
       "icon": "🔥",
       "color": "#ffb547",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "社会热搜/路人采访+图书种草"
     },
     {
       "id": "knowledge_display",
       "name": "知识直给",
       "icon": "📖",
       "color": "#22d3ee",
-      "desc": "（待采集本类目素材后填充）"
+      "desc": "古画/兵法/处世干货逐条罗列"
     }
   ],
-  "scripts": [],
-  "category_summary": {}
+  "scripts": [
+    {
+      "video_id": "social_4",
+      "title": "荣枯鉴老祖宗的智慧",
+      "category": "drama_skit",
+      "hook": "你的对头马上就要栽大跟头",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "客厅一对夫妇白底标题",
+          "script": "老祖宗的智慧",
+          "purpose": "传统智慧钩子"
+        },
+        "build": {
+          "shot": "切到AI古代老者翻竹简",
+          "script": "古籍蜡烛烛光氛围",
+          "purpose": "古风氛围铺垫"
+        },
+        "climax": {
+          "shot": "老者抚书+金句字幕",
+          "script": "你的对头马上就要栽大跟头",
+          "purpose": "金句反转"
+        },
+        "cta": {
+          "shot": "右下《荣枯鉴》书封",
+          "script": "看清人性必读",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "AI古风老者翻古书+《荣枯鉴》",
+      "frames_dir": "./keyframes/social_4",
+      "duration_range": "60-120s",
+      "analysis": {
+        "win": "AI古风场景+'你的对头要栽大跟头'金句让中年职场男性产生强好奇。",
+        "reuse": "传统文化/识人术/处世智慧书都可用'AI古风老者+金句反转'结构。",
+        "scene": "中年男性晚间寻找'职场处世智慧'的窗口。"
+      }
+    },
+    {
+      "video_id": "social_6",
+      "title": "农村建房风水常识",
+      "category": "drama_skit",
+      "hook": "我房四角放山石不要前宽后窄",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "小别墅航拍+山石装饰",
+          "script": "我房四角放山石",
+          "purpose": "风水实景钩子"
+        },
+        "build": {
+          "shot": "切到农村建房工地",
+          "script": "不要前宽后窄",
+          "purpose": "禁忌警示"
+        },
+        "climax": {
+          "shot": "施工对比画面",
+          "script": "建房风水常识",
+          "purpose": "卖点亮相"
+        },
+        "cta": {
+          "shot": "下方书封购买",
+          "script": "下单建房常识书",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "别墅航拍+建房风水常识情景剧",
+      "frames_dir": "./keyframes/social_6",
+      "duration_range": "60-120s",
+      "analysis": {
+        "win": "'四角放山石'具体实操+'前宽后窄'禁忌警示让农村建房家庭决策快。",
+        "reuse": "任何农村建房/家居布局类常识书都可用'别墅航拍+具体禁忌'结构，但需淡化封建色彩。",
+        "scene": "中老年农村家庭准备自建房的决策窗口。"
+      }
+    },
+    {
+      "video_id": "social_1",
+      "title": "公司控制权与股权布局",
+      "category": "talking_head",
+      "hook": "怎么管理公司呢",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "男女商务人物户外对谈",
+          "script": "怎么管理公司呢",
+          "purpose": "商业话题钩子"
+        },
+        "build": {
+          "shot": "女主咨询提问表情",
+          "script": "公司管理之道",
+          "purpose": "痛点共鸣"
+        },
+        "climax": {
+          "shot": "男主举起《公司控制权与股权布局》",
+          "script": "公司控制权与股权布局",
+          "purpose": "品牌植入"
+        },
+        "cta": {
+          "shot": "下方挂购买",
+          "script": "下单股权布局书",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "商业人物对话+股权管理实物书",
+      "frames_dir": "./keyframes/social_1",
+      "duration_range": "60-120s",
+      "analysis": {
+        "win": "户外商务对谈的真实感+实物书举证，让创业老板瞬间觉得'我需要这本'。",
+        "reuse": "任何商业管理/股权/创业类图书都可用'户外人物对话+举书'结构。",
+        "scene": "工作日通勤/午休时段创业者群体决策窗口。"
+      }
+    },
+    {
+      "video_id": "social_3",
+      "title": "奇门遁甲易经5天课",
+      "category": "talking_head",
+      "hook": "学会奇门遁甲来人不用问仅需9.9",
+      "summer_relevance": "★★",
+      "script_structure": {
+        "open": {
+          "shot": "老师中式背景特写+火焰标题",
+          "script": "学会奇门遁甲来人不用问",
+          "purpose": "传统文化钩子"
+        },
+        "build": {
+          "shot": "老师笑容+念珠特写",
+          "script": "奇门遁甲详解+易经图解",
+          "purpose": "课程内容"
+        },
+        "climax": {
+          "shot": "底部书页特写",
+          "script": "从基础符号开始讲起",
+          "purpose": "学法演示"
+        },
+        "cta": {
+          "shot": "9.9元课程卡",
+          "script": "仅需9.9报名",
+          "purpose": "低价转化"
+        }
+      },
+      "selling_point": "国学老师推荐易经5天课",
+      "frames_dir": "./keyframes/social_3",
+      "duration_range": "0-30s",
+      "analysis": {
+        "win": "9.9低价钩子+'来人不用问'承诺，下沉地区中老年学员群体决策快。",
+        "reuse": "任何传统文化/玄学课程都可用'低价钩子+承诺神奇效果'结构，但需注意合规。",
+        "scene": "中老年下沉地区晚间刷手机的玄学课程决策窗口。"
+      }
+    },
+    {
+      "video_id": "social_2",
+      "title": "突破收入天花板演讲",
+      "category": "anxiety_long",
+      "hook": "就可以让三代过稳稳的日子",
+      "summer_relevance": "★★★★",
+      "script_structure": {
+        "open": {
+          "shot": "美式别墅院落空镜+福气满满标识",
+          "script": "就可以让三代过稳稳的日子",
+          "purpose": "阶层愿景钩子"
+        },
+        "build": {
+          "shot": "切到演讲嘉宾橙色背景",
+          "script": "突破收入天花板",
+          "purpose": "目标承诺"
+        },
+        "climax": {
+          "shot": "嘉宾手势+话筒特写",
+          "script": "三代传承的家庭密码",
+          "purpose": "卖点收束"
+        },
+        "cta": {
+          "shot": "下方课程二维码",
+          "script": "报名认知付费课",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "别墅家产+演讲嘉宾收入突破",
+      "frames_dir": "./keyframes/social_2",
+      "duration_range": "240s+",
+      "analysis": {
+        "win": "'三代稳稳的日子'阶层焦虑钩子+演讲式认知付费转化，中产决策高。",
+        "reuse": "任何财商/认知付费/家族传承类内容都可用'家产画面+演讲嘉宾'双段式。",
+        "scene": "晚间中产男性深度收看认知付费内容的窗口。"
+      }
+    },
+    {
+      "video_id": "social_5",
+      "title": "观海即观心办事兵法",
+      "category": "knowledge_display",
+      "hook": "办事兵法会办事的人有多厉害",
+      "summer_relevance": "★★★",
+      "script_structure": {
+        "open": {
+          "shot": "古画对弈+大字标题",
+          "script": "办事兵法会办事的人有多厉害",
+          "purpose": "传统智慧钩子"
+        },
+        "build": {
+          "shot": "8 条办事兵法逐条罗列",
+          "script": "想拉拢一个人就请他帮小忙",
+          "purpose": "金句硬货"
+        },
+        "climax": {
+          "shot": "翻到《观》终极启示",
+          "script": "观海即观心处世即修心",
+          "purpose": "哲理升华"
+        },
+        "cta": {
+          "shot": "下方书堆挂购买",
+          "script": "下单观海即观心",
+          "purpose": "转化"
+        }
+      },
+      "selling_point": "古画+办事兵法满屏文字直给",
+      "frames_dir": "./keyframes/social_5",
+      "duration_range": "180-240s",
+      "analysis": {
+        "win": "8 条具体办事兵法+古画氛围让职场人群一秒收藏。",
+        "reuse": "处世/识人/办事术书都可用'古画+逐条干货+终极启示'结构。",
+        "scene": "工作日通勤/午休时间职场中层快速保存收藏。"
+      }
+    }
+  ],
+  "category_summary": {
+    "object_flip": {
+      "common_pattern": "社科书桌面翻页+古画/实物书举证。",
+      "summer_hook": "翻页特写+具体金句让职场人一秒收藏。",
+      "best_format": "60-180秒，翻页特写+底部购物车。"
+    },
+    "drama_skit": {
+      "common_pattern": "AI古风/家庭场景演绎+社科书自然嵌入。",
+      "summer_hook": "AI古风场景+'老祖宗智慧'反差金句激发好奇。",
+      "best_format": "60-180秒，场景铺陈+金句反转+品牌断言。"
+    },
+    "talking_head": {
+      "common_pattern": "商业人物/国学老师真人推荐+实物书展示。",
+      "summer_hook": "户外商务/中式背景+实物书举证，信任锚点强。",
+      "best_format": "30-120秒，特写+实物书+品牌断言。"
+    },
+    "anxiety_long": {
+      "common_pattern": "商业/认知演讲长视频+认知付费转化。",
+      "summer_hook": "'阶层焦虑/三代传承'高密度认知话题，中产决策稳。",
+      "best_format": "180秒以上，演讲+字幕金句+二维码。"
+    },
+    "hot_topic": {
+      "common_pattern": "社会热搜/路人采访+图书种草。",
+      "summer_hook": "借势社会热点提升完播率。",
+      "best_format": "60-120秒，热点钩子+图书植入。"
+    },
+    "knowledge_display": {
+      "common_pattern": "古画/兵法/处世干货逐条罗列。",
+      "summer_hook": "硬货金句一秒保存，职场人收藏率高。",
+      "best_format": "30-60秒，古画+逐条干货+终极启示。"
+    }
+  }
 }

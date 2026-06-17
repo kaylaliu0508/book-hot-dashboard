@@ -1,24 +1,24 @@
 {
-  "version": "social-tags-placeholder-v1",
+  "version": "social-tags-v20260617",
   "updated_at": "2026-06-17",
-  "data_note": "社科类目数据采集中，标签将在素材就位后生成。",
-  "total_sample_videos": 0,
+  "data_note": "基于本批 6 条社科视频做五维度拆解，频率=该标签出现次数",
+  "total_sample_videos": 6,
   "dimensions": [
     {
       "id": "pain",
       "name": "痛点",
       "icon": "⚡",
       "color": "#ff5f6d",
-      "question": "解决什么健康问题？",
-      "desc": "用户面临的具体身体困扰或亚健康状态"
+      "question": "解决什么问题？",
+      "desc": "用户面临的商业/处世/认知困惑"
     },
     {
       "id": "effect",
       "name": "效果",
       "icon": "✨",
       "color": "#4ade80",
-      "question": "能达成什么健康结果？",
-      "desc": "使用产品后能获得的具体身心改变"
+      "question": "能达成什么结果？",
+      "desc": "读完社科书后可获得的具体改变"
     },
     {
       "id": "user",
@@ -26,7 +26,7 @@
       "icon": "👥",
       "color": "#a78bfa",
       "question": "谁需要解决这个问题？",
-      "desc": "健康决策人画像（年龄/角色/特征）"
+      "desc": "社科书决策人画像（年龄/职业）"
     },
     {
       "id": "scene",
@@ -34,7 +34,7 @@
       "icon": "🎬",
       "color": "#5b9eff",
       "question": "在什么情况下产生需求？",
-      "desc": "时间节点+生活场景+心理状态"
+      "desc": "时间节点+心理状态+物理场景"
     },
     {
       "id": "marketing",
@@ -46,10 +46,659 @@
     }
   ],
   "tag_library": {
-    "pain": [],
-    "effect": [],
-    "user": [],
-    "scene": [],
-    "marketing": []
+    "pain": [
+      {
+        "tag": "处世困惑",
+        "freq": 3,
+        "videos": [
+          "social_3",
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★★",
+        "explain": "中年职场人对人际关系、识人辨人、处世智慧的需求。",
+        "examples": [
+          "看清人性必读",
+          "处世即修心"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "识人术书"
+        ]
+      },
+      {
+        "tag": "传统文化好奇",
+        "freq": 2,
+        "videos": [
+          "social_3",
+          "social_6"
+        ],
+        "summer_link": "★★★",
+        "explain": "对传统文化/玄学/古籍的兴趣型求知欲。",
+        "examples": [
+          "老祖宗的智慧",
+          "奇门遁甲来人不用问"
+        ],
+        "applicable_categories": [
+          "传统文化书",
+          "处世智慧书"
+        ],
+        "warning": "⚠️ 注意：玄学/风水/命理类内容必须明确标注'抵制封建迷信、弘扬传统文化'，避免合规风险。"
+      },
+      {
+        "tag": "职场识人",
+        "freq": 2,
+        "videos": [
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★",
+        "explain": "职场中层对领导/同事/合作伙伴识别判断的需求。",
+        "examples": [
+          "你的对头马上要栽跟头",
+          "会办事的人有多厉害"
+        ],
+        "applicable_categories": [
+          "识人术书",
+          "商业管理书"
+        ]
+      },
+      {
+        "tag": "公司治理",
+        "freq": 1,
+        "videos": [
+          "social_1"
+        ],
+        "summer_link": "★★★",
+        "explain": "创业老板对公司股权分配、控制权管理的现实困惑。",
+        "examples": [
+          "怎么管理公司",
+          "股权布局之道"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "创业方法书"
+        ]
+      },
+      {
+        "tag": "股权焦虑",
+        "freq": 1,
+        "videos": [
+          "social_1"
+        ],
+        "summer_link": "★★★",
+        "explain": "老板担心股权失控、被踢出局等股权分配焦虑。",
+        "examples": [
+          "公司控制权",
+          "股权布局"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "股权设计书"
+        ]
+      },
+      {
+        "tag": "收入瓶颈",
+        "freq": 1,
+        "videos": [
+          "social_2"
+        ],
+        "summer_link": "★★★",
+        "explain": "职场中层与中产'收入天花板'的阶层焦虑。",
+        "examples": [
+          "突破收入天花板",
+          "三代稳稳日子"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "商业管理书"
+        ]
+      },
+      {
+        "tag": "阶层焦虑",
+        "freq": 1,
+        "videos": [
+          "social_2"
+        ],
+        "summer_link": "★★★★",
+        "explain": "中产对阶层固化、子女上升通道收窄的深度焦虑。",
+        "examples": [
+          "三代过稳稳的日子",
+          "家族传承密码"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "家族传承书"
+        ]
+      },
+      {
+        "tag": "建房疑虑",
+        "freq": 1,
+        "videos": [
+          "social_6"
+        ],
+        "summer_link": "★★",
+        "explain": "农村家庭自建房关于布局/朝向/风水的常识困惑。",
+        "examples": [
+          "四角放山石",
+          "前宽后窄禁忌"
+        ],
+        "applicable_categories": [
+          "建房常识书",
+          "家居布局书"
+        ],
+        "warning": "⚠️ 注意：建房风水内容需淡化封建色彩，聚焦实用居家布局常识。"
+      }
+    ],
+    "effect": [
+      {
+        "tag": "传统智慧",
+        "freq": 4,
+        "videos": [
+          "social_3",
+          "social_4",
+          "social_5",
+          "social_6"
+        ],
+        "summer_link": "★★★★",
+        "explain": "获得古人识人术/办事兵法/处世智慧的传承内容。",
+        "examples": [
+          "老祖宗的智慧",
+          "观海即观心"
+        ],
+        "applicable_categories": [
+          "传统文化书",
+          "处世智慧书"
+        ]
+      },
+      {
+        "tag": "处世方法",
+        "freq": 3,
+        "videos": [
+          "social_3",
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★★",
+        "explain": "可操作的识人辨人、人际处理、职场策略方法。",
+        "examples": [
+          "会办事的人有多厉害",
+          "看清人性必读"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "识人术书"
+        ]
+      },
+      {
+        "tag": "商业认知",
+        "freq": 2,
+        "videos": [
+          "social_1",
+          "social_2"
+        ],
+        "summer_link": "★★★",
+        "explain": "建立公司管理、股权布局、商业模式的系统认知。",
+        "examples": [
+          "公司控制权认知",
+          "突破收入天花板"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "认知付费课程"
+        ]
+      },
+      {
+        "tag": "管理方法",
+        "freq": 1,
+        "videos": [
+          "social_1"
+        ],
+        "summer_link": "★★★",
+        "explain": "获得可操作的公司管理、团队管理、股权设计方法。",
+        "examples": [
+          "股权布局方法",
+          "公司治理方法"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "股权设计书"
+        ]
+      },
+      {
+        "tag": "观念更新",
+        "freq": 1,
+        "videos": [
+          "social_2"
+        ],
+        "summer_link": "★★★",
+        "explain": "更新认知观念，建立财商/家族传承/阶层跃迁新认知。",
+        "examples": [
+          "三代稳稳日子",
+          "家族传承密码"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "家族传承书"
+        ]
+      },
+      {
+        "tag": "居家布局",
+        "freq": 1,
+        "videos": [
+          "social_6"
+        ],
+        "summer_link": "★★",
+        "explain": "建房选址、家居布局、空间设计的实用常识。",
+        "examples": [
+          "四角放山石",
+          "建房布局禁忌"
+        ],
+        "applicable_categories": [
+          "建房常识书",
+          "家居布局书"
+        ]
+      }
+    ],
+    "user": [
+      {
+        "tag": "职场中层",
+        "freq": 3,
+        "videos": [
+          "social_1",
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★★★",
+        "explain": "30-45岁中型企业部门负责人/主管/高级专员。",
+        "examples": [
+          "突破收入天花板",
+          "会办事的人有多厉害"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "商业管理书"
+        ]
+      },
+      {
+        "tag": "中产职场人",
+        "freq": 3,
+        "videos": [
+          "social_2",
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★★",
+        "explain": "年收入中等以上的城市职场人，关注认知付费与子女传承。",
+        "examples": [
+          "三代稳稳日子",
+          "家族传承密码"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "家族传承书"
+        ]
+      },
+      {
+        "tag": "创业老板",
+        "freq": 2,
+        "videos": [
+          "social_1",
+          "social_2"
+        ],
+        "summer_link": "★★★★",
+        "explain": "自己开公司或合伙创业的中小老板群体。",
+        "examples": [
+          "公司控制权管理",
+          "三代家族传承"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "股权设计书",
+          "认知付费课程"
+        ]
+      },
+      {
+        "tag": "中老年女性",
+        "freq": 2,
+        "videos": [
+          "social_3",
+          "social_6"
+        ],
+        "summer_link": "★★★",
+        "explain": "45-65岁退休或在家女性，对传统文化/玄学/识人有兴趣。",
+        "examples": [
+          "奇门遁甲来人不用问",
+          "老祖宗的智慧"
+        ],
+        "applicable_categories": [
+          "传统文化书",
+          "处世智慧书"
+        ]
+      },
+      {
+        "tag": "下沉地区学员",
+        "freq": 1,
+        "videos": [
+          "social_3"
+        ],
+        "summer_link": "★★",
+        "explain": "二三四线城市对低价文化课程敏感的中老年学员群体。",
+        "examples": [
+          "9.9元5天课",
+          "低价奇门遁甲课"
+        ],
+        "applicable_categories": [
+          "低价文化课程",
+          "传统文化书"
+        ]
+      },
+      {
+        "tag": "农村家庭",
+        "freq": 1,
+        "videos": [
+          "social_6"
+        ],
+        "summer_link": "★★",
+        "explain": "农村准备自建房或装修的中老年家庭群体。",
+        "examples": [
+          "建房风水常识",
+          "四角放山石"
+        ],
+        "applicable_categories": [
+          "建房常识书",
+          "家居布局书"
+        ]
+      }
+    ],
+    "scene": [
+      {
+        "tag": "通勤午休时段",
+        "freq": 3,
+        "videos": [
+          "social_1",
+          "social_4",
+          "social_5"
+        ],
+        "summer_link": "★★★★",
+        "explain": "工作日通勤/午休碎片时间，职场人快速决策的窗口。",
+        "examples": [
+          "公司管理对话",
+          "办事兵法收藏"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "处世智慧书"
+        ]
+      },
+      {
+        "tag": "晚上闲暇深度看",
+        "freq": 3,
+        "videos": [
+          "social_2",
+          "social_3",
+          "social_4"
+        ],
+        "summer_link": "★★★★★",
+        "explain": "晚间深度收看长视频与认知付费内容的高频窗口。",
+        "examples": [
+          "突破收入天花板演讲",
+          "老祖宗的智慧长视频"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "商业管理书",
+          "处世智慧书"
+        ]
+      },
+      {
+        "tag": "碎片时间快速看",
+        "freq": 3,
+        "videos": [
+          "social_3",
+          "social_5",
+          "social_6"
+        ],
+        "summer_link": "★★★",
+        "explain": "地铁/排队/午休等短时段刷手机即决策的高频场景。",
+        "examples": [
+          "古画办事兵法",
+          "建房风水常识"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "建房常识书"
+        ]
+      },
+      {
+        "tag": "睡前刷手机",
+        "freq": 2,
+        "videos": [
+          "social_1",
+          "social_6"
+        ],
+        "summer_link": "★★★",
+        "explain": "睡前躺床上刷短视频时段，中老年对玄学/识人内容停留率高。",
+        "examples": [
+          "奇门遁甲玄学课",
+          "老祖宗智慧"
+        ],
+        "applicable_categories": [
+          "传统文化书",
+          "处世智慧书"
+        ]
+      }
+    ],
+    "marketing": [
+      {
+        "tag": "实物翻书",
+        "freq": 2,
+        "videos": [
+          "social_1",
+          "social_4"
+        ],
+        "summer_link": "★★★★",
+        "explain": "图书桌面翻页+实物书举证的真实感锚点。",
+        "examples": [
+          "公司控制权举书",
+          "观海即观心翻页"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "处世智慧书"
+        ]
+      },
+      {
+        "tag": "实景开场",
+        "freq": 2,
+        "videos": [
+          "social_2",
+          "social_6"
+        ],
+        "summer_link": "★★★",
+        "explain": "真实生活场景（户外/别墅/工地）开场建立可信度。",
+        "examples": [
+          "商务户外对谈",
+          "美式别墅航拍",
+          "农村建房工地"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "建房常识书",
+          "认知付费课程"
+        ]
+      },
+      {
+        "tag": "真人对话",
+        "freq": 1,
+        "videos": [
+          "social_1"
+        ],
+        "summer_link": "★★★",
+        "explain": "真人物对话演绎，让商业话题自然展开。",
+        "examples": [
+          "商务户外对谈",
+          "女主咨询提问"
+        ],
+        "applicable_categories": [
+          "商业管理书",
+          "创业方法书"
+        ]
+      },
+      {
+        "tag": "长视频叙事",
+        "freq": 1,
+        "videos": [
+          "social_2"
+        ],
+        "summer_link": "★★★★",
+        "explain": "180秒以上演讲长视频，适合商业/认知付费内容。",
+        "examples": [
+          "突破收入天花板演讲",
+          "三代传承密码"
+        ],
+        "applicable_categories": [
+          "认知付费课程",
+          "商业管理书"
+        ]
+      },
+      {
+        "tag": "低价钩子",
+        "freq": 1,
+        "videos": [
+          "social_3"
+        ],
+        "summer_link": "★★",
+        "explain": "9.9/19.9元低价课程钩子，激发下沉用户决策。",
+        "examples": [
+          "仅需9.9",
+          "5天课程9.9元"
+        ],
+        "applicable_categories": [
+          "低价文化课程",
+          "传统文化书"
+        ]
+      },
+      {
+        "tag": "名家背书",
+        "freq": 1,
+        "videos": [
+          "social_3"
+        ],
+        "summer_link": "★★★",
+        "explain": "国学老师/商业大咖/演讲嘉宾权威信任锚点。",
+        "examples": [
+          "奇门遁甲国学老师",
+          "商业演讲嘉宾"
+        ],
+        "applicable_categories": [
+          "传统文化书",
+          "认知付费课程"
+        ],
+        "warning": "⚠️ 使用前提：必须已获得名家本人或机构的正式授权，未经授权不得使用其姓名/肖像。"
+      },
+      {
+        "tag": "AI古风场景",
+        "freq": 1,
+        "videos": [
+          "social_4"
+        ],
+        "summer_link": "★★★",
+        "explain": "AI生成古代场景+老者翻古籍，传统文化氛围拉满。",
+        "examples": [
+          "古代老者翻竹简",
+          "蜡烛烛光氛围"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "传统文化书"
+        ]
+      },
+      {
+        "tag": "反向开场",
+        "freq": 1,
+        "videos": [
+          "social_4"
+        ],
+        "summer_link": "★★",
+        "explain": "反常识金句或反向断言抓前3秒停留。",
+        "examples": [
+          "你的对头马上要栽跟头",
+          "老祖宗早就说过"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "识人术书"
+        ]
+      },
+      {
+        "tag": "古画氛围",
+        "freq": 1,
+        "videos": [
+          "social_5"
+        ],
+        "summer_link": "★★★",
+        "explain": "古代水墨/对弈/山水画作为背景，提升内容质感。",
+        "examples": [
+          "古画对弈办事兵法",
+          "水墨山水观海"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "传统文化书"
+        ]
+      },
+      {
+        "tag": "知识直给",
+        "freq": 1,
+        "videos": [
+          "social_5"
+        ],
+        "summer_link": "★★★",
+        "explain": "直接抛兵法/识人术/方法论硬货，让用户一秒收藏。",
+        "examples": [
+          "8条办事兵法",
+          "观海即观心终极启示"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "识人术书"
+        ]
+      },
+      {
+        "tag": "数字堆叠",
+        "freq": 1,
+        "videos": [
+          "social_5"
+        ],
+        "summer_link": "★★★",
+        "explain": "具体数字（8条/10种/9.9元）让内容厚度可视化。",
+        "examples": [
+          "8条办事兵法",
+          "9.9元5天课"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "低价文化课程"
+        ]
+      },
+      {
+        "tag": "情景剧",
+        "freq": 1,
+        "videos": [
+          "social_6"
+        ],
+        "summer_link": "★★",
+        "explain": "AI/真人场景化演绎，建立内容代入感。",
+        "examples": [
+          "夫妇客厅传统智慧",
+          "古代老者翻书"
+        ],
+        "applicable_categories": [
+          "处世智慧书",
+          "传统文化书"
+        ]
+      }
+    ]
   }
 }
