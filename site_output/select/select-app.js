@@ -851,6 +851,52 @@ function updateTabTip(tipId, tabEl) {
 }
 
 // ==================== 大盘 Benchmark ====================
+// ==================== 大盘指标·期间切换器 ====================
+// 渲染期间切换按钮（最新在前 + 标"最新"徽章），按钮点击后刷新当前激活的 bench tab
+function initBenchPeriodSwitcher() {
+  const box = document.getElementById('benchPeriodSwitcher');
+  if (!box) return;
+  if (typeof BENCH_PERIODS === 'undefined' || !Array.isArray(BENCH_PERIODS) || BENCH_PERIODS.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+  // 只有 1 期就别显示切换器了
+  if (BENCH_PERIODS.length <= 1) {
+    box.style.display = 'none';
+    return;
+  }
+  const curId = (typeof CURRENT_BENCH_PERIOD !== 'undefined') ? CURRENT_BENCH_PERIOD : BENCH_PERIODS[0].id;
+  box.innerHTML = BENCH_PERIODS.map(p => {
+    const active = p.id === curId ? 'active' : '';
+    const latest = p.isLatest ? '<span class="latest-tag">最新</span>' : '';
+    return `<button class="bench-period-btn ${active}" data-bench-period="${p.id}">${p.label}${latest}</button>`;
+  }).join('');
+  // 期间标签同步到 panel-title 的 extra
+  updateBenchPeriodLabel();
+  // 绑定点击
+  box.querySelectorAll('.bench-period-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pid = btn.dataset.benchPeriod;
+      if (typeof setBenchPeriod === 'function') setBenchPeriod(pid);
+      // 切 active
+      box.querySelectorAll('.bench-period-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateBenchPeriodLabel();
+      // 重渲染当前激活的 bench tab
+      const active = document.querySelector('.bench-tab.active');
+      const tabKey = (active && active.dataset.bench) || 'cat_price';
+      try { renderBenchmark(tabKey); } catch (e) { console.error('[bench] 切期间后渲染失败:', e); }
+    });
+  });
+}
+function updateBenchPeriodLabel() {
+  const lbl = document.getElementById('benchPeriodLabel');
+  if (!lbl || typeof BENCH_PERIODS === 'undefined') return;
+  const curId = (typeof CURRENT_BENCH_PERIOD !== 'undefined') ? CURRENT_BENCH_PERIOD : BENCH_PERIODS[0].id;
+  const cur = BENCH_PERIODS.find(p => p.id === curId);
+  if (cur) lbl.textContent = `${cur.label} · 图书行业大盘 · 视频号 og 链路`;
+}
+
 function renderBenchmark(key) {
   key = key || 'cat_price';
   const body = document.getElementById('benchBody');
@@ -860,7 +906,7 @@ function renderBenchmark(key) {
   const fmtRoi = (v) => v == null ? '—' : (typeof v === 'number' ? v.toFixed(1) : v);
   
   if (key === 'cat_price' && typeof BENCH_CAT_PRICE !== 'undefined') {
-    const d = BENCH_CAT_PRICE;
+    const d = (typeof getCurrentBenchCatPrice === 'function') ? getCurrentBenchCatPrice() : BENCH_CAT_PRICE;
     let html = `<div class="bench-table-wrap">`;
     d.priceRanges.forEach(pr => {
       html += `
@@ -892,7 +938,7 @@ function renderBenchmark(key) {
   }
   
   if (key === 'price_channel' && typeof BENCH_PRICE_CHANNEL !== 'undefined') {
-    const d = BENCH_PRICE_CHANNEL;
+    const d = (typeof getCurrentBenchPriceChannel === 'function') ? getCurrentBenchPriceChannel() : BENCH_PRICE_CHANNEL;
     let html = `<div class="bench-table-wrap"><div class="bench-block">
       <table class="bench-table">
         <thead><tr>
@@ -1231,6 +1277,7 @@ function renderHub() {
   safeRender(() => renderCatShareBar(),          '类目占比');
   safeRender(() => renderHotBookBreakdown(),     '跑量书洞察');
   safeRender(() => renderBenchmark('cat_price'), '大盘指标');
+  safeRender(() => initBenchPeriodSwitcher(),    '大盘期间切换器');
   safeRender(() => syncHubSideCount(),  '左侧栏数量');
   safeRender(() => observeHubAnchors(), '锚点观察');
 }
