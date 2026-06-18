@@ -894,7 +894,7 @@ function updateBenchPeriodLabel() {
   if (!lbl || typeof BENCH_PERIODS === 'undefined') return;
   const curId = (typeof CURRENT_BENCH_PERIOD !== 'undefined') ? CURRENT_BENCH_PERIOD : BENCH_PERIODS[0].id;
   const cur = BENCH_PERIODS.find(p => p.id === curId);
-  if (cur) lbl.textContent = `${cur.label} · 图书行业大盘 · 视频号 og 链路`;
+  if (cur) lbl.textContent = `${cur.label} · 图书行业大盘 · 视频号下单链路`;
 }
 
 function renderBenchmark(key) {
