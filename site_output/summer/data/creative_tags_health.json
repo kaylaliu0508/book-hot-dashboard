@@ -6,33 +6,43 @@
   "dimensions": [
     {
       "id": "pain",
-      "name": "痛点维度",
-      "icon": "😣",
-      "desc": "用户最焦虑、最想解决的问题"
+      "name": "痛点",
+      "icon": "⚡",
+      "desc": "用户最焦虑、最想解决的问题",
+      "color": "#ff5f6d",
+      "question": "解决什么问题？"
     },
     {
       "id": "effect",
-      "name": "效果维度",
+      "name": "效果",
       "icon": "✨",
-      "desc": "承诺的转化效果与卖点"
+      "desc": "承诺的转化效果与卖点",
+      "color": "#4ade80",
+      "question": "能达成什么结果？"
     },
     {
       "id": "user",
-      "name": "目标用户维度",
+      "name": "目标用户",
       "icon": "👥",
-      "desc": "精准触达的人群画像"
+      "desc": "精准触达的人群画像",
+      "color": "#a78bfa",
+      "question": "谁需要解决这个问题？"
     },
     {
       "id": "scene",
-      "name": "场景维度",
-      "icon": "🎯",
-      "desc": "使用/触发场景"
+      "name": "场景",
+      "icon": "🎬",
+      "desc": "使用/触发场景",
+      "color": "#5b9eff",
+      "question": "在什么情况下产生需求？"
     },
     {
       "id": "marketing",
-      "name": "营销方式维度",
-      "icon": "💡",
-      "desc": "创意手法与表现形式"
+      "name": "营销方式",
+      "icon": "🎯",
+      "desc": "创意手法与表现形式",
+      "color": "#ffb547",
+      "question": "如何说服用户行动？"
     }
   ],
   "data_note": "基于 5 个泛健康类目素材聚合得到的高频标签",
