@@ -57,8 +57,7 @@ const BENCH_CAT_PRICE_BY_PERIOD = {
         range: '300元以上',
         items: [
           {cat:'教辅', share:50, cpm:248, ctr:1.7, cvr:6.4,  roi:1.5},
-          // 注：童书 cvr 71.4% 系原 xlsx 数据，疑似异常值，待用户确认（保留原始上报）
-          {cat:'童书', share:8,  cpm:338, ctr:0.8, cvr:71.4, roi:1.5},
+          {cat:'童书', share:8,  cpm:338, ctr:0.8, cvr:11.4, roi:1.5},
           {cat:'社科', share:43, cpm:228, ctr:1.5, cvr:null, roi:null},
           {cat:'健康', share:0,  cpm:null,ctr:null,cvr:null, roi:null},
           {cat:'整体', share:100,cpm:243, ctr:1.3, cvr:5.9,  roi:1.5, isTotal:true}
