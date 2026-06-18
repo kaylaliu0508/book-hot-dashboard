@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "version": "social-tags-v2-2026-06-17",
+  "version": "v3-merge-extra-20260618",
   "category_label": "社科",
-  "total_sample_videos": 5,
+  "total_sample_videos": 9,
   "dimensions": [
     {
       "id": "pain",
@@ -45,7 +45,7 @@
       "question": "如何说服用户行动？"
     }
   ],
-  "data_note": "基于 5 个社科类目素材聚合得到的高频标签",
+  "data_note": "基于 9 个社科类目素材聚合得到的高频标签",
   "tag_library": {
     "pain": [
       {
@@ -78,17 +78,74 @@
         "warning": null
       },
       {
-        "tag": "法律盲区",
+        "tag": "买房禁忌焦虑",
         "freq": 1,
-        "summer_link": "创业/做生意刚需",
-        "explain": "法定代表人/股权布局是创业者深度痛点",
+        "summer_link": "购房旺季话题",
+        "explain": "购房者担心格局犯忌影响家运",
         "examples": [
-          "千万别去当法定代表人"
+          "九大禁忌",
+          "灶火朝向"
         ],
         "applicable_categories": [
           "社科"
         ],
-        "warning": null
+        "warning": "避免恐吓话术"
+      },
+      {
+        "tag": "人际博弈失利",
+        "freq": 1,
+        "summer_link": "中年男性精进刚需",
+        "explain": "职场中年人渴望反内耗、博弈不输",
+        "examples": [
+          "教会你800个心眼儿",
+          "驭人术"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免厚黑/阴谋导向"
+      },
+      {
+        "tag": "加班费纠纷",
+        "freq": 1,
+        "summer_link": "职场维权热点",
+        "explain": "加班费如何避免巨额纠纷是HR/老板高频痛点",
+        "examples": [
+          "无效加班怎么避免",
+          "员工索要巨额加班费"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "内容须依法表述"
+      },
+      {
+        "tag": "家居选址迷茫",
+        "freq": 1,
+        "summer_link": "建房旺季",
+        "explain": "自建房/购房群体担心选址影响家运",
+        "examples": [
+          "房屋有九怕",
+          "门前鸡笼"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免封建迷信导向，包装为'传统居住智慧'"
+      },
+      {
+        "tag": "工伤处理无方",
+        "freq": 1,
+        "summer_link": "用工旺季维权热点",
+        "explain": "老板不懂工伤合法处理流程被动赔付",
+        "examples": [
+          "员工发生工伤",
+          "怎么正确合法处理"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "涉及法律须依法表述"
       },
       {
         "tag": "建房疑虑",
@@ -117,6 +174,75 @@
           "社科"
         ],
         "warning": "不得承诺具体收益数字，避免引导投资行为"
+      },
+      {
+        "tag": "法律盲区",
+        "freq": 1,
+        "summer_link": "创业/做生意刚需",
+        "explain": "法定代表人/股权布局是创业者深度痛点",
+        "examples": [
+          "千万别去当法定代表人"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "用工合规风险",
+        "freq": 1,
+        "summer_link": "中小企业HR痛点",
+        "explain": "老板/HR担心因不懂法被员工反告",
+        "examples": [
+          "企业用工风险管控",
+          "9大体系"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "涉及劳动法的具体话术需依法表述"
+      },
+      {
+        "tag": "被收割焦虑",
+        "freq": 1,
+        "summer_link": "理财觉醒题材常青",
+        "explain": "普通人怕被韭菜化、怕被通胀稀释购买力",
+        "examples": [
+          "告诉各位一个好消息",
+          "有财商跟没财商的区别"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免散布金融恐慌"
+      },
+      {
+        "tag": "识人不清吃亏",
+        "freq": 1,
+        "summer_link": "中年职场社交焦虑",
+        "explain": "普通人吃过看错人/被忽悠的亏，渴望识人术",
+        "examples": [
+          "对穷人谈利益",
+          "对老人吹长寿"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免厌世/操控话术"
+      },
+      {
+        "tag": "财商缺失",
+        "freq": 1,
+        "summer_link": "暑期增收/副业风口",
+        "explain": "普通人不懂资产配置，被动陷入财富焦虑",
+        "examples": [
+          "财富之路",
+          "赚钱有道"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "不得承诺具体收益数字，避免引导高风险投资"
       }
     ],
     "effect": [
@@ -128,6 +254,33 @@
         "examples": [
           "把他的名字告诉我",
           "观海即观心办事兵法"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "家相趋吉避凶",
+        "freq": 1,
+        "summer_link": "家相文化热度",
+        "explain": "按传统居住智慧调整格局，给家人安心感",
+        "examples": [
+          "房屋九怕",
+          "灶火朝向"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "包装为传统智慧，避免迷信"
+      },
+      {
+        "tag": "建房参考",
+        "freq": 1,
+        "summer_link": "农村建房参考资料",
+        "explain": "图文并茂的建房指导",
+        "examples": [
+          "书中都有详细指导"
         ],
         "applicable_categories": [
           "社科"
@@ -149,17 +302,18 @@
         "warning": null
       },
       {
-        "tag": "建房参考",
+        "tag": "用工合法管控",
         "freq": 1,
-        "summer_link": "农村建房参考资料",
-        "explain": "图文并茂的建房指导",
+        "summer_link": "中小企业自查",
+        "explain": "老板靠流程图一步步合规化用工",
         "examples": [
-          "书中都有详细指导"
+          "9大体系",
+          "管控讲解"
         ],
         "applicable_categories": [
           "社科"
         ],
-        "warning": null
+        "warning": "内容须依法表述"
       },
       {
         "tag": "致富方法论",
@@ -174,6 +328,34 @@
           "社科"
         ],
         "warning": "不得承诺具体收益"
+      },
+      {
+        "tag": "财商觉醒",
+        "freq": 1,
+        "summer_link": "理财开窍话题",
+        "explain": "读这类书让人从'埋头干活'切到'懂财富规则'",
+        "examples": [
+          "有财商跟没财商的区别",
+          "财富之路"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免承诺具体收益"
+      },
+      {
+        "tag": "驭人识人术",
+        "freq": 1,
+        "summer_link": "职场社交进修",
+        "explain": "800个心眼/博弈论让人少吃亏识破套路",
+        "examples": [
+          "教会你800个心眼儿",
+          "驭人术"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免厚黑导向"
       }
     ],
     "user": [
@@ -207,6 +389,19 @@
         "warning": null
       },
       {
+        "tag": "中小企业老板/HR",
+        "freq": 1,
+        "summer_link": "老板用工痛点",
+        "explain": "小公司老板/初级HR最缺合规知识",
+        "examples": [
+          "sc_extra_14"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
         "tag": "农村中年群体",
         "freq": 1,
         "summer_link": "农村自建房决策核心人群",
@@ -218,6 +413,46 @@
           "社科"
         ],
         "warning": null
+      },
+      {
+        "tag": "处世人际进修者",
+        "freq": 1,
+        "summer_link": "中年精进刚需",
+        "explain": "35-50岁中年男性看博弈论/识人书最爆",
+        "examples": [
+          "sc_extra_15"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "职场新人/打工人",
+        "freq": 1,
+        "summer_link": "理财启蒙刚需",
+        "explain": "刚入职月光族最需要财商觉醒",
+        "examples": [
+          "sc_extra_12"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "自建房农村家庭",
+        "freq": 1,
+        "summer_link": "建房旺季精准用户",
+        "explain": "夏季建房群体看家相内容转化高",
+        "examples": [
+          "sc_extra_13",
+          "social_6"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
       }
     ],
     "scene": [
@@ -229,6 +464,45 @@
         "examples": [
           "负债6年翻不了身",
           "突破收入天花板"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "买地建房决策期",
+        "freq": 1,
+        "summer_link": "夏季建房旺季",
+        "explain": "看地基朝向时需要风水内容辅助决策",
+        "examples": [
+          "房屋九怕"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "企业用工合规自查",
+        "freq": 1,
+        "summer_link": "暑期社保/工伤纠纷高发",
+        "explain": "老板上下班路上看用工合规视频",
+        "examples": [
+          "企业用工风险管控"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "农村自建房",
+        "freq": 1,
+        "summer_link": "农村建房刚需场景",
+        "explain": "建房选址/朝向/风水问询",
+        "examples": [
+          "正中红旗飘呀飘"
         ],
         "applicable_categories": [
           "社科"
@@ -249,17 +523,30 @@
         "warning": null
       },
       {
-        "tag": "农村自建房",
+        "tag": "理财觉醒前夜",
         "freq": 1,
-        "summer_link": "农村建房刚需场景",
-        "explain": "建房选址/朝向/风水问询",
+        "summer_link": "工资到账后理财思考",
+        "explain": "月底/年底是被收割焦虑高发节点",
         "examples": [
-          "正中红旗飘呀飘"
+          "告诉各位一个好消息"
         ],
         "applicable_categories": [
           "社科"
         ],
-        "warning": null
+        "warning": ""
+      },
+      {
+        "tag": "职场社交中年困局",
+        "freq": 1,
+        "summer_link": "中年男性夜间刷视频高峰",
+        "explain": "35-50岁男性睡前刷处世/驭人内容",
+        "examples": [
+          "教会你800个心眼儿"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
       }
     ],
     "marketing": [
@@ -311,6 +598,115 @@
         "warning": "避免命理/算命/封建迷信表述"
       },
       {
+        "tag": "财富视觉炫耀",
+        "freq": 2,
+        "summer_link": "刺激购买冲动",
+        "explain": "美钞/豪宅视觉强冲击",
+        "examples": [
+          "满桌美钞钞票特写"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "违反广告法导向，建议限制使用或加'本视频无引导焦虑'声明"
+      },
+      {
+        "tag": "9大体系流程图",
+        "freq": 1,
+        "summer_link": "硬核工具图刺激",
+        "explain": "9模块流程图自带'体系完备'信任感",
+        "examples": [
+          "企业用工风险管控"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "AI生成内容警示",
+        "freq": 1,
+        "summer_link": "合规规避审核",
+        "explain": "在视频角落加'部分素材由AI生成'规避平台",
+        "examples": [
+          "sc_extra_15"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "必须真实标注"
+      },
+      {
+        "tag": "AI生成场景",
+        "freq": 1,
+        "summer_link": "AI视觉降低制作成本",
+        "explain": "AI生成礼堂/古风/灯火夜读",
+        "examples": [
+          "AI礼堂演讲",
+          "AI老者烛光夜读"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科"
+        ],
+        "warning": "需明示'人物为AI生成无具体年龄指向'"
+      },
+      {
+        "tag": "HR真人口播",
+        "freq": 1,
+        "summer_link": "职场垂直人设",
+        "explain": "HR/律师真人出镜增强专业感",
+        "examples": [
+          "sc_extra_14"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "古风毛笔特写素材",
+        "freq": 1,
+        "summer_link": "国学美学复兴",
+        "explain": "宣纸+毛笔+烫金+古画做内容包装",
+        "examples": [
+          "sc_extra_15",
+          "荣枯鉴"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": ""
+      },
+      {
+        "tag": "国外读者反馈",
+        "freq": 1,
+        "summer_link": "权威背书素材",
+        "explain": "西方读者书房读书画面增加权威感",
+        "examples": [
+          "sc_extra_12"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "画面合法授权"
+      },
+      {
+        "tag": "实景街头采访",
+        "freq": 1,
+        "summer_link": "自带真实感与热度",
+        "explain": "中关村高考考点/雪乡/自建房现场",
+        "examples": [
+          "高考考点路人街拍",
+          "农村建房现场"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科"
+        ],
+        "warning": null
+      },
+      {
         "tag": "情景演绎双人对话",
         "freq": 1,
         "summer_link": "剧情化降低硬广感",
@@ -341,36 +737,6 @@
         "warning": null
       },
       {
-        "tag": "AI生成场景",
-        "freq": 1,
-        "summer_link": "AI视觉降低制作成本",
-        "explain": "AI生成礼堂/古风/灯火夜读",
-        "examples": [
-          "AI礼堂演讲",
-          "AI老者烛光夜读"
-        ],
-        "applicable_categories": [
-          "童书",
-          "社科"
-        ],
-        "warning": "需明示'人物为AI生成无具体年龄指向'"
-      },
-      {
-        "tag": "实景街头采访",
-        "freq": 1,
-        "summer_link": "自带真实感与热度",
-        "explain": "中关村高考考点/雪乡/自建房现场",
-        "examples": [
-          "高考考点路人街拍",
-          "农村建房现场"
-        ],
-        "applicable_categories": [
-          "童书",
-          "社科"
-        ],
-        "warning": null
-      },
-      {
         "tag": "演讲嘉宾IP",
         "freq": 1,
         "summer_link": "借势KOL权威",
@@ -387,17 +753,30 @@
         "warning": "名人肖像/姓名/语录需获得授权"
       },
       {
-        "tag": "财富视觉炫耀",
+        "tag": "烫金硬壳封面美学",
         "freq": 1,
-        "summer_link": "刺激购买冲动",
-        "explain": "美钞/豪宅视觉强冲击",
+        "summer_link": "礼品级图书包装",
+        "explain": "黑底烫金封面适合礼品/收藏定位",
         "examples": [
-          "满桌美钞钞票特写"
+          "教会你800个心眼儿"
         ],
         "applicable_categories": [
           "社科"
         ],
-        "warning": "违反广告法导向，建议限制使用或加'本视频无引导焦虑'声明"
+        "warning": ""
+      },
+      {
+        "tag": "防伪正版话术",
+        "freq": 1,
+        "summer_link": "打击盗版反向种草",
+        "explain": "'真正的XX是黑色封皮'差异化打盗版同时强化卖点",
+        "examples": [
+          "真正的800个心眼是黑色封皮"
+        ],
+        "applicable_categories": [
+          "社科"
+        ],
+        "warning": "避免抹黑同行"
       }
     ]
   }
