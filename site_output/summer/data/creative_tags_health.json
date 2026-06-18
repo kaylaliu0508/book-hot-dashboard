@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "version": "health-tags-v2-2026-06-17",
+  "version": "health-tags-merge-20260618",
   "category_label": "泛健康",
-  "total_sample_videos": 5,
+  "total_sample_videos": 8,
   "dimensions": [
     {
       "id": "pain",
@@ -45,12 +45,12 @@
       "question": "如何说服用户行动？"
     }
   ],
-  "data_note": "基于 5 个泛健康类目素材聚合得到的高频标签",
+  "data_note": "基于 5 个泛健康类目素材聚合得到的高频标签｜2026-06-18 合并 3 条新增泛健康素材：新增 23 个标签，16 个标签 freq 累加",
   "tag_library": {
     "pain": [
       {
         "tag": "中老年慢病",
-        "freq": 2,
+        "freq": 3,
         "summer_link": "中老年保健刚需",
         "explain": "血糖/血压/养生与药结合是高需求",
         "examples": [
@@ -61,6 +61,20 @@
           "泛健康"
         ],
         "warning": "不得做医疗效果承诺，需明示'仅书籍推荐 非医疗广告'"
+      },
+      {
+        "tag": "饮食健康困惑",
+        "freq": 3,
+        "summer_link": "日常吃食强需求",
+        "explain": "减糖/养生菜单是高频家务决策",
+        "examples": [
+          "蒸菜煲菜焖菜500例",
+          "减糖饮食"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
       },
       {
         "tag": "亚健康调理",
@@ -77,22 +91,8 @@
         "warning": "避免具体疾病疗效宣传"
       },
       {
-        "tag": "饮食健康困惑",
-        "freq": 2,
-        "summer_link": "日常吃食强需求",
-        "explain": "减糖/养生菜单是高频家务决策",
-        "examples": [
-          "蒸菜煲菜焖菜500例",
-          "减糖饮食"
-        ],
-        "applicable_categories": [
-          "泛健康"
-        ],
-        "warning": null
-      },
-      {
         "tag": "孩子长高焦虑",
-        "freq": 1,
+        "freq": 2,
         "summer_link": "3-18岁家长高频痛点",
         "explain": "长高关键期是父母焦虑爆点",
         "examples": [
@@ -133,12 +133,92 @@
           "泛健康"
         ],
         "warning": "避免命理/算命/封建迷信表述"
+      },
+      {
+        "tag": "遗传矮焦虑",
+        "freq": 1,
+        "summer_link": "父母矮孩子家长高频痛",
+        "explain": "父母身高不理想，担心孩子无法逆袭",
+        "examples": [
+          "遗传矮≠孩子矮",
+          "错过1-3岁不能再错过"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "不得做身高承诺，需明示'仅书籍推荐 非医疗广告'"
+      },
+      {
+        "tag": "隔代喂养困惑",
+        "freq": 1,
+        "summer_link": "祖辈带娃刚需痛",
+        "explain": "爷爷奶奶带娃喂法不科学",
+        "examples": [
+          "孙子长得高不高 主要是看他的奶奶"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "药膳食疗困惑",
+        "freq": 1,
+        "summer_link": "中老年慢病食疗刚需",
+        "explain": "想用食疗调理却不知道方子",
+        "examples": [
+          "大脑喜欢的是天麻鸽子汤"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "不得做疗效承诺"
+      },
+      {
+        "tag": "老年慢性病调理",
+        "freq": 1,
+        "summer_link": "50+人群核心痛点",
+        "explain": "高血压/糖尿病/慢性病食疗调理",
+        "examples": [
+          "一本把汤讲透的手册"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "不得做疗效承诺"
+      },
+      {
+        "tag": "节气调养困惑",
+        "freq": 1,
+        "summer_link": "传统养生节点刚需",
+        "explain": "二十四节气怎么吃不知道",
+        "examples": [
+          "二十四节气健康吃法"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "50+健康困惑",
+        "freq": 1,
+        "summer_link": "50岁退休前后人群",
+        "explain": "50岁开始关注健康但不知怎么入手",
+        "examples": [
+          "尤其是50岁以上的中老年人"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
       }
     ],
     "effect": [
       {
         "tag": "调理身体",
-        "freq": 4,
+        "freq": 6,
         "summer_link": "中老年/亚健康人群强需求",
         "explain": "中医方剂调理身体是稳态卖点",
         "examples": [
@@ -152,7 +232,7 @@
       },
       {
         "tag": "改善饮食",
-        "freq": 2,
+        "freq": 3,
         "summer_link": "日常吃食改善",
         "explain": "日常蒸菜煲菜每天不重样",
         "examples": [
@@ -166,7 +246,7 @@
       },
       {
         "tag": "孩子长高",
-        "freq": 1,
+        "freq": 2,
         "summer_link": "3-18岁家长强需求",
         "explain": "长高食谱/营养规划高决策",
         "examples": [
@@ -180,7 +260,7 @@
       },
       {
         "tag": "国学养生",
-        "freq": 1,
+        "freq": 2,
         "summer_link": "易经养生年轻化潮流",
         "explain": "老祖宗智慧+漫画形式降低门槛",
         "examples": [
@@ -191,12 +271,65 @@
           "泛健康"
         ],
         "warning": "避免医疗承诺与封建表述"
+      },
+      {
+        "tag": "遗传逆袭",
+        "freq": 1,
+        "summer_link": "长高营销决策核弹",
+        "explain": "突破遗传矮的逆袭故事强转化",
+        "examples": [
+          "我让孩子靠这本书逆袭了"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "避免做绝对效果承诺"
+      },
+      {
+        "tag": "药膳调理",
+        "freq": 1,
+        "summer_link": "中老年食疗强需求",
+        "explain": "中医药膳改善慢病",
+        "examples": [
+          "天麻鸽子汤",
+          "一本把汤讲透"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": "不得做疗效承诺"
+      },
+      {
+        "tag": "老年优雅生活",
+        "freq": 1,
+        "summer_link": "50+人群向往生活",
+        "explain": "老年夫妇散步充满健康智慧",
+        "examples": [
+          "都充满健康智慧"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "节气养生",
+        "freq": 1,
+        "summer_link": "传统节气节点流量",
+        "explain": "按节气调整饮食与作息",
+        "examples": [
+          "二十四节气健康吃法"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
       }
     ],
     "user": [
       {
         "tag": "中老年保健族",
-        "freq": 4,
+        "freq": 7,
         "summer_link": "中老年高频养生消费群",
         "explain": "中医方剂/养生菜谱核心买家",
         "examples": [
@@ -210,7 +343,7 @@
       },
       {
         "tag": "宝妈群体",
-        "freq": 4,
+        "freq": 6,
         "summer_link": "育儿+日常买菜决策",
         "explain": "既管孩子又管家庭饮食的关键人",
         "examples": [
@@ -250,17 +383,28 @@
           "泛健康"
         ],
         "warning": null
-      }
-    ],
-    "scene": [
+      },
       {
-        "tag": "中医保健咨询",
-        "freq": 2,
-        "summer_link": "日常中医保健咨询",
-        "explain": "日常中医保健应用场景",
+        "tag": "隔代抚养家庭",
+        "freq": 1,
+        "summer_link": "祖辈带娃决策核心",
+        "explain": "祖辈承担主要喂养决策的家庭",
         "examples": [
-          "丝瓜煮水妙用",
-          "易经养生五行"
+          "奶奶做饭"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "退休夫妇",
+        "freq": 1,
+        "summer_link": "50-65岁退休消费力强",
+        "explain": "退休夫妇时间富裕养生意愿高",
+        "examples": [
+          "老年夫妇散步"
         ],
         "applicable_categories": [
           "泛健康"
@@ -268,8 +412,36 @@
         "warning": null
       },
       {
+        "tag": "50+中老年精准用户",
+        "freq": 1,
+        "summer_link": "50岁分水岭精准用户",
+        "explain": "50岁前后自我健康意识觉醒",
+        "examples": [
+          "尤其是50岁以上的中老年人"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "买菜女性",
+        "freq": 1,
+        "summer_link": "主妇决策核心人群",
+        "explain": "主妇日常买菜决定全家饮食",
+        "examples": [
+          "特价区菜市场场景"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      }
+    ],
+    "scene": [
+      {
         "tag": "日常家庭做饭",
-        "freq": 2,
+        "freq": 4,
         "summer_link": "每日做饭场景",
         "explain": "日常餐桌做菜参考场景",
         "examples": [
@@ -282,8 +454,22 @@
         "warning": null
       },
       {
+        "tag": "中医保健咨询",
+        "freq": 3,
+        "summer_link": "日常中医保健咨询",
+        "explain": "日常中医保健应用场景",
+        "examples": [
+          "丝瓜煮水妙用",
+          "易经养生五行"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
         "tag": "孩子学习关键期",
-        "freq": 1,
+        "freq": 2,
         "summer_link": "3-18岁长高关键期",
         "explain": "考试前营养加餐场景",
         "examples": [
@@ -308,12 +494,64 @@
           "教辅"
         ],
         "warning": null
+      },
+      {
+        "tag": "1-3岁黄金期",
+        "freq": 1,
+        "summer_link": "婴幼儿喂养黄金期",
+        "explain": "1-3岁是身体发育最关键窗口",
+        "examples": [
+          "错过1-3岁，不能再错过"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "老年休闲生活",
+        "freq": 1,
+        "summer_link": "50+生活场景",
+        "explain": "散步/喝茶/老年休闲场景",
+        "examples": [
+          "老年夫妇公园散步"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "菜市场买菜",
+        "freq": 1,
+        "summer_link": "主妇日常决策场景",
+        "explain": "菜市场是主妇决策买什么吃什么",
+        "examples": [
+          "特价区菜市场年轻女子"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "二十四节气节点",
+        "freq": 1,
+        "summer_link": "传统节气流量节点",
+        "explain": "立春/立秋等节气是养生话题高峰",
+        "examples": [
+          "二十四节气健康吃法"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
       }
     ],
     "marketing": [
       {
         "tag": "演讲嘉宾IP",
-        "freq": 4,
+        "freq": 7,
         "summer_link": "借势KOL权威",
         "explain": "专家/名师/嘉宾长篇演讲",
         "examples": [
@@ -326,6 +564,22 @@
           "泛健康"
         ],
         "warning": "名人肖像/姓名/语录需获得授权"
+      },
+      {
+        "tag": "金句字幕浮窗",
+        "freq": 6,
+        "summer_link": "低成本高保留率手法",
+        "explain": "金句+大字幕便于无声看完",
+        "examples": [
+          "孩子的灵性什么时候定型",
+          "老祖宗千年智慧"
+        ],
+        "applicable_categories": [
+          "童书",
+          "社科",
+          "泛健康"
+        ],
+        "warning": null
       },
       {
         "tag": "实物翻书特写",
@@ -345,24 +599,8 @@
         "warning": null
       },
       {
-        "tag": "金句字幕浮窗",
-        "freq": 4,
-        "summer_link": "低成本高保留率手法",
-        "explain": "金句+大字幕便于无声看完",
-        "examples": [
-          "孩子的灵性什么时候定型",
-          "老祖宗千年智慧"
-        ],
-        "applicable_categories": [
-          "童书",
-          "社科",
-          "泛健康"
-        ],
-        "warning": null
-      },
-      {
         "tag": "美食特写ASMR",
-        "freq": 2,
+        "freq": 3,
         "summer_link": "饭点强吸引力素材",
         "explain": "蒸菜煲菜冒热气特写",
         "examples": [
@@ -376,7 +614,7 @@
       },
       {
         "tag": "实景街头采访",
-        "freq": 1,
+        "freq": 2,
         "summer_link": "自带真实感与热度",
         "explain": "中关村高考考点/雪乡/自建房现场",
         "examples": [
@@ -388,6 +626,78 @@
           "社科"
         ],
         "warning": null
+      },
+      {
+        "tag": "李玫瑾IP",
+        "freq": 2,
+        "summer_link": "育儿+健康跨界IP",
+        "explain": "李玫瑾风演讲嘉宾覆盖多类目",
+        "examples": [
+          "李玫瑾：我让孩子靠这本书逆袭了"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "童书"
+        ],
+        "warning": "名人IP需获得肖像/语录授权"
+      },
+      {
+        "tag": "名家陪伴话术",
+        "freq": 1,
+        "summer_link": "温情转化高停留",
+        "explain": "'我让孩子靠这本书逆袭了'第一人称话术",
+        "examples": [
+          "我让孩子靠这本书逆袭了"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "童书"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "出版社权威背书",
+        "freq": 1,
+        "summer_link": "提升书籍正版可信度",
+        "explain": "'经过出版社的多方努力'强权威感",
+        "examples": [
+          "经过出版社的多方努力",
+          "千万别错过"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "童书",
+          "教辅",
+          "社科"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "老年优雅生活素材",
+        "freq": 1,
+        "summer_link": "50+人群向往钩子",
+        "explain": "老年夫妇优雅散步钩子触达50+",
+        "examples": [
+          "老年夫妇公园散步充满健康智慧"
+        ],
+        "applicable_categories": [
+          "泛健康"
+        ],
+        "warning": null
+      },
+      {
+        "tag": "长辈祖辈代言",
+        "freq": 1,
+        "summer_link": "国学养生信任增强",
+        "explain": "曾仕强风/老者代言提升国学信任",
+        "examples": [
+          "你要买就是这本"
+        ],
+        "applicable_categories": [
+          "泛健康",
+          "社科"
+        ],
+        "warning": "老者形象若使用知名人物需获得授权"
       }
     ]
   }
