@@ -402,7 +402,57 @@ const WEEK_RHYTHM = {
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 6/15 周（最新）=====
+  // ===== 6/22 周（最新）=====
+  '2026-06-22': [
+    {
+      role:'#1 社科·职场谋略 · 新爆款',
+      roleClass:'opportunity',
+      title:'闷声发大财',
+      isbn:'9787558352744',
+      image:'rank-images/2026-06-22-image2.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.7-10.7%'},
+        {icon:'📈', label:'新登榜', val:'直冲 #2', cls:'hot'}
+      ],
+      persona:'25-40 岁打工人 / 中小老板（关注职场博弈、副业思维）',
+      creativeCore:'锁定打工人 / 中小老板 — 给一份"不显山不露水把钱赚到手"的处世行动指南：管嘴/避坑/借势 3 步法，每步配真实场景'
+    },
+    {
+      role:'#2 教辅·高中文言文 · 新晋黑马',
+      roleClass:'opportunity',
+      title:'高中文言文全解漫画笔记',
+      isbn:'9787575422185',
+      image:'rank-images/2026-06-22-image5.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'📈', label:'跳量级', val:'6/15 #17 → 6/22 #5', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.5-9.5%'}
+      ],
+      persona:'准高一 / 高二学生家长（暑期文言文衔接刚需）',
+      creativeCore:'锁定准高一+高二家长 — 给一份用漫画把高考必背 70 篇文言文讲透的暑期 60 天预习路线图，开学考阅读理解直接抄'
+    },
+    {
+      role:'#3 健康·儿童身高营养 · 长青基本盘',
+      roleClass:'basic',
+      title:'这样吃长更高',
+      isbn:'9787500186250',
+      image:'rank-images/2026-06-22-image7.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'5-10W'},
+        {icon:'🎯', label:'转化', val:'11.2-12.2%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'5 周连霸', cls:'hot'}
+      ],
+      persona:'奶奶 + 妈妈（家中"喂饭主理人"）',
+      creativeCore:'锁定家中「喂饭主理人」 — 给一份按年龄分段照着做的长高食谱：婴幼儿、学龄、青春期每天吃什么直接抄作业',
+      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免量化承诺'
+    }
+  ],
+
+  // ===== 6/15 周 =====
   '2026-06-15': [
     {
       role:'#1 社科·文化常识 · 长青基本盘',
@@ -656,7 +706,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-15'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-22'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
