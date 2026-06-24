@@ -80,6 +80,10 @@ repo/
 4. **bot 自动更新热点已禁用**（commit `946b557`），不要再因为"热点没更新"去改 GH Actions。
 5. **邀请码校验是前端逻辑**，不要把它当安全屏障，只是降噪。
 6. **AI 调用走 Pages Functions 代理**，前端不直接持有 API Key。修改 prompt 注意改的是 `functions/api/*` 还是前端模板。
+7. **🚫 跑量品 Top3 必须取 ADQ 榜 #1/#2/#3，禁止自作主张挑选**（2026-06-24 用户两次纠正后固化）：
+   - 三本代表书 = `WEEK_RANK_LIST[0].data.lists.adq_hot.items[0..3]`，按 rank 顺序，**不可用"销量跳量级 / conv 更高 / 题材更新"等主观理由替换**
+   - 角色（黑马/长青/新爆款）和创意切入点可以基于多周轨迹自主判断
+   - 但 **"挑哪三本"这个动作零自由度**，永远跟着榜单 #1/#2/#3 走
 
 ---
 
@@ -89,6 +93,7 @@ repo/
 
 | 日期 | 设备 | 摘要 |
 |---|---|---|
+| 2026-06-24 | office | **第四次 SOP 实战 + 跑量品 Top3 规则固化**：周榜单同步 6/22 周（共 24 期，3 榜全量 adq_hot 20 / weixinshop 15 / potential 15，cat_share 教辅 50 / 社科 30 / 健康 15 / 童书 5 — 社科爆发从 15% 跳到 30%）。**[规则纠错] 第一次提交跑量品挑了 #1/#2/#5（高中文言文销量翻 5 倍）被用户纠正→必须严格按 ADQ Top3 = #1/#2/#3 取**，已固化到 `.codebuddy/rules/project/RULE.mdc` + `CODEBUDDY.md` 第 5 节硬约束 + 第 13 节 SOP Step3。最终三本：①文化常识3000问（5 周连霸 #1）②闷声发大财（新爆款）③预备一年级（4 周连续在榜，幼小衔接刚需）。`_infer_year` 基准 6/15→6/22。30 张图 28.5MB → 0.9MB。 |
 | 2026-06-16 | office | **第三次 SOP 实战**：周榜单同步 6/15 周（共 23 期，cat_share 教辅 55 / 童书 15 / 健康 15 / 社科 15，**教辅占比从 6/9 的 45% 升到 55% — 期末复习+暑期预热双引擎**）。三本代表书：①《中国孩子必知的文化常识 3000 问》**4 周连霸** #1（销量 30-40W）— 黑马转长青；②《这样吃长更高》**4 周连霸** #2（10-20W）— 长青基本盘；③《漫画初中物理早知道》**新晋黑马**（6/9 #11 5-10W → 6/15 #3 10-20W）。xlsx 是单 sheet 精简版（与之前多 sheet 110 周表完全不同），新增专用脚本 `scripts/append_week_v2.py` 适配该格式（richData vm 抽图 + ISO 前缀重命名）。`_infer_year` 基准升级到 6/15。20 张图压缩 27.5MB → 0.6MB。 |
 | 2026-06-14 | office | **新增 `/api/stats_total` 接口** 返回 since-launch 累计 PV/UV（绕开 Workers subrequest 50 上限）。**优化 `_tracker_lib.js` aggregateStats** 串行 KV.get 改 Promise.all 并发（14d 接口 117s 超时 → 4.6s 出结果，25 倍加速）。新增支持 `range=14d`。全站累计 PV 2135 / UV 369（截至 6/14）。 |
 | 2026-06-09 | office | **6/9 部署 bug 修复 + 历史遗留清理**：发现线上 `/select/index.html` 还引用 6/2 留下的版本号副本 `rank-data-v20260602.js` / `select-data-v20260602.js`，导致 6/9 主文件更新对线上无效。彻底修复：①index.html 引用改回主文件名；②删除 3 个孤儿副本（v2.js + 两个 -v20260602.js）；③`_headers` 删掉 `/select/*.js` 兜底通配（会跟精确规则叠加致 cache-control 重复）；④CODEBUDDY 第 14 节「历史遗留」标记为已清理。从此榜单同步 SOP 只改主文件，不再维护副本。 |
@@ -301,7 +306,29 @@ python3 scripts/extract_predict_books.py data/predict_recommend_YYYYMMDD.xlsx
 
 #### Step 3：自动产出本周【跑量书洞察】草稿
 
-基于本周新榜单数据，从 ADQ 热投榜 Top3（一般在 xlsx 顶部 sheet 或独立 sheet 中）选 3 本代表书，仿照 `select-data.js` 中 `HOT_BOOK_BREAKDOWN` 的结构产出：
+**🚫 硬性规则（2026-06-24 用户两次纠正后固化，零自由度）**：
+
+**三本代表书 = ADQ 榜 #1 / #2 / #3，按 rank 顺序取，不允许替换。**
+
+```python
+# 取数代码（必须严格按此逻辑）
+items = WEEK_RANK_LIST[0]['data']['lists']['adq_hot']['items']
+top3 = items[:3]   # 永远是 rank 1/2/3
+```
+
+**禁止理由**：
+- ❌ "#5 销量翻 5 倍，比 #3 更亮眼" → 不行
+- ❌ "#3 数据下滑了，换 #4" → 不行
+- ❌ "题材重复，换不同品类" → 不行
+- ❌ "新登榜更有故事" → 不行
+
+**允许自主判断的部分**（只在"已固定的三本"内做）：
+- ✅ 角色标签（基本盘 / 机会盘 / 潜力盘 / 长青基本盘 / 新爆款 / 黑马 / 季节性刚需 等）— 基于多周霸榜轨迹
+- ✅ persona（目标人群描述）— 基于品类 + 客单价场景推断
+- ✅ creativeCore（创意切入点）— 按"明确受众 + 行动指南 / 认知信息差"两套话术框架（2026-06-09 用户敲定）
+- ✅ creativeWarning（合规警示）— 健康/医疗类必加
+
+基于以上规则产出 `HOT_BOOK_BREAKDOWN_BY_WEEK['YYYY-MM-DD']` 草稿，仿照 `select-data.js` 现有结构：
 
 ```js
 {
