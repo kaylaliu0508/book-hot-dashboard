@@ -171,7 +171,7 @@ var TAB_LABELS = {
   ai_audit:'🛡️ AI预审',
   select_hub:'🛒 图书选品台',
   ai_assistant:'🤖 AI营销助手',
-  summer:'📅 暑期专栏'
+  summer:'📂 创意洞察'   // 2026-06-24 前端 tab 文案由"暑期专栏"改为"创意洞察"；后端 tab id 保留 summer 以保住 KV 历史数据连续性
 };
 var TAB_COLORS = {
   book_extract:'#1a73e8',
@@ -202,20 +202,29 @@ var EVT_NICE = {
   audit_load_sample:'📝 加载示例',
   audit_upload_file:'📁 上传文件',
   audit_clear:'🗑️ 清空',
-  // summer
-  summer_nav_calendar:'① 暑期日历导航',
+  // select_hub（图书选品台业务事件）
+  select_export_rank:'📤 导出榜单',
+  select_pool_toggle:'⭐ 切换选品池',
+  // ai_assistant（AI 营销助手业务事件）
+  ai_fab_btn:'🤖 悬浮按钮唤起',
+  ai_chat_toggle:'💬 展开/收起助手',
+  ai_chat_send:'✉️ 发送消息',
+  ai_chat_quick:'⚡ 点击快捷问',
+  // summer（即"创意洞察"，2026-06-24 改名，tab id 保留 summer）
+  summer_nav_calendar:'① 节奏日历导航',
   summer_nav_scripts:'② 脚本总结导航',
   summer_nav_tags:'③ 标签总结导航',
   script_group_expand:'展开脚本分组',
   keyframe_view:'查看关键帧',
   dim_card_jump:'点击维度卡片',
+  cat_switch:'切换品类',
   // tab buttons（顶部导航）
   tab_btn_select_hub:'切到 图书选品台',
   tab_btn_book_extract:'切到 图书内容提取',
   tab_btn_script_gen:'切到 口播脚本',
   tab_btn_ad_copy:'切到 图片文案生成',
   tab_btn_ai_audit:'切到 AI预审',
-  tab_btn_summer:'切到 暑期专栏',
+  tab_btn_summer:'切到 创意洞察',
   tab_btn_ai_assistant:'切到 AI营销助手'
 };
 
