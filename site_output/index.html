@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="app-version" content="2026-06-16-r21-detect-truncated-short-title">
+<meta name="app-version" content="2026-06-24-r22-anti-abuse-origin-rate-quota">
 <!-- 2026-06-01 触发 CF Pages 强制重新部署：5/29 用户手动 rollback 后导致 ai/ 和 summer/ 子目录未被发布到产物，本次仅强制重建 -->
 
 <title>图书灵感中心 - 2026.05.26</title>
@@ -63,6 +63,42 @@ tr.rl td{background:rgba(230,57,70,.02)}
 <script src="/data/script_samples.js"></script>
 </head>
 <body>
+
+<!-- 🆕 2026-06-24 LLM 服务状态红条（启动时静默 ping /api/deepseek 检查 402/限流/封禁，命中才显示） -->
+<div id="llmStatusBar" style="display:none;position:sticky;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#dc2626,#b91c1c);color:#fff;padding:10px 16px;font-size:13px;font-weight:500;box-shadow:0 2px 8px rgba(220,38,38,.4);text-align:center"></div>
+<script>
+(function(){
+  // 仅在域名匹配时检查（preview 域名也开，便于联调）
+  function showBar(msg,detail){
+    var bar=document.getElementById('llmStatusBar');
+    if(!bar) return;
+    bar.style.display='block';
+    bar.innerHTML='<strong>⚠️ '+msg+'</strong>'+(detail?'<span style="opacity:.85;margin-left:8px;font-weight:400">'+detail+'</span>':'')+'<span style="margin-left:12px;cursor:pointer;opacity:.7;font-size:14px" onclick="this.parentNode.style.display=\'none\'">✕</span>';
+  }
+  // 延迟 2 秒发，避免与邀请码登录、tracker.js 等抢资源
+  setTimeout(function(){
+    try{
+      fetch('/api/deepseek/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:'1'}],max_tokens:1,stream:false})
+      }).then(function(r){
+        if(r.status===402){
+          showBar('AI 服务暂不可用：DeepSeek 账户余额不足','请到 platform.deepseek.com 充值，到账后 AI 预审/ISBN 采集/文案生成立即恢复');
+        }else if(r.status===429){
+          showBar('AI 服务限流中','请稍后重试，或等 1 分钟后再试');
+        }else if(r.status===503){
+          showBar('AI 服务今日额度已用尽','安全保护已触发（日累计熔断），明天 UTC 0 点自动恢复');
+        }else if(r.status===403){
+          // 不应该出现（Origin 我们是从正确域来的），出现就是配置异常
+          showBar('AI 服务访问被拒','请确认通过 book-hot-dashboard.pages.dev 访问，而非镜像/IP 直连');
+        }
+        // 200 / 400 / 500 等不显示
+      }).catch(function(){/* 网络异常静默 */});
+    }catch(_){}
+  },2000);
+})();
+</script>
 
 <!-- ===== 邀请码登录拦截层（不依赖任何外部库；通过校验后自动隐藏，sessionStorage 记忆本会话）===== -->
 <div id="invite-gate">

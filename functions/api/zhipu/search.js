@@ -13,8 +13,12 @@
 const UPSTREAM = 'https://open.bigmodel.cn/api/paas/v4/tools';
 const MAX_BODY_BYTES = 32 * 1024;
 
+// 🆕 2026-06-24 安全加固（同步 deepseek 代理的逻辑，避免攻击者转火）
+const DEFAULT_ALLOWED_HOSTS = ['book-hot-dashboard.pages.dev'];
+const PREVIEW_HOST_PATTERN = /^[a-z0-9-]+\.book-hot-dashboard\.pages\.dev$/i;
+
 const rateMap = new Map();
-const RATE_LIMIT = 50;
+const RATE_LIMIT = 10; // 10 次/分钟/IP（zhipu 单次 ISBN 采集会 8 条并发，10/min 留一定 buffer）
 const RATE_WINDOW_MS = 60 * 1000;
 
 function rateLimited(ip) {
@@ -28,21 +32,58 @@ function rateLimited(ip) {
   return rec.count > RATE_LIMIT;
 }
 
-function buildCorsHeaders(env, request) {
-  const allowed = (env && env.ALLOWED_ORIGIN) || '*';
+function isOriginAllowed(request, env) {
   const origin = request.headers.get('origin') || '';
-  let allowOrigin = '*';
-  if (allowed !== '*') {
-    const list = allowed.split(',').map((s) => s.trim()).filter(Boolean);
-    allowOrigin = list.includes(origin) ? origin : list[0] || '*';
-  }
-  return {
-    'Access-Control-Allow-Origin': allowOrigin,
+  const referer = request.headers.get('referer') || '';
+  let host = '';
+  try {
+    if (origin) host = new URL(origin).host;
+    else if (referer) host = new URL(referer).host;
+  } catch (_) { host = ''; }
+  const extraHosts = ((env && env.ALLOWED_ORIGIN) || '')
+    .split(',').map((s) => s.trim()).filter(Boolean)
+    .map((s) => { try { return new URL(s).host; } catch (_) { return s.replace(/^https?:\/\//, '').split('/')[0]; } });
+  const allowList = [...DEFAULT_ALLOWED_HOSTS, ...extraHosts];
+  if (!host) return false;
+  if (allowList.includes(host)) return true;
+  if (PREVIEW_HOST_PATTERN.test(host)) return true;
+  return false;
+}
+
+async function dailyQuotaExceeded(env) {
+  if (!env || !env.TRACKER_AGG) return false;
+  const quota = parseInt((env && env.ZHIPU_DAILY_QUOTA) || '500', 10); // zhipu 比 deepseek 略高，1 次采集 = 8 条
+  const today = new Date().toISOString().slice(0, 10);
+  const key = `zh_quota:${today}`;
+  try {
+    const cur = parseInt((await env.TRACKER_AGG.get(key)) || '0', 10);
+    if (cur >= quota) return { exceeded: true, used: cur, quota };
+    await env.TRACKER_AGG.put(key, String(cur + 1), { expirationTtl: 86400 * 2 });
+    return { exceeded: false, used: cur + 1, quota };
+  } catch (e) { return false; }
+}
+
+function buildCorsHeaders(env, request) {
+  const origin = request.headers.get('origin') || '';
+  let allowOrigin = '';
+  try {
+    if (origin) {
+      const host = new URL(origin).host;
+      const extraHosts = ((env && env.ALLOWED_ORIGIN) || '')
+        .split(',').map((s) => s.trim()).filter(Boolean)
+        .map((s) => { try { return new URL(s).host; } catch (_) { return s.replace(/^https?:\/\//, '').split('/')[0]; } });
+      const allowList = [...DEFAULT_ALLOWED_HOSTS, ...extraHosts];
+      if (allowList.includes(host) || PREVIEW_HOST_PATTERN.test(host)) allowOrigin = origin;
+    }
+  } catch (_) { /* keep empty */ }
+  const headers = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
+  if (allowOrigin) headers['Access-Control-Allow-Origin'] = allowOrigin;
+  return headers;
 }
 
 function jsonError(status, message, cors) {
@@ -62,6 +103,12 @@ export async function onRequest(context) {
   if (request.method !== 'POST') {
     return jsonError(405, 'Method Not Allowed', cors);
   }
+
+  // 🆕 第一道闸：Origin 白名单
+  if (!isOriginAllowed(request, env)) {
+    return jsonError(403, 'Forbidden: this API is only accessible from book-hot-dashboard.pages.dev', cors);
+  }
+
   if (!env || !env.ZHIPU_API_KEY) {
     return jsonError(500, 'Server misconfigured: ZHIPU_API_KEY missing', cors);
   }
@@ -72,7 +119,13 @@ export async function onRequest(context) {
     request.headers.get('x-forwarded-for') ||
     'unknown';
   if (rateLimited(ip)) {
-    return jsonError(429, 'Too many requests', cors);
+    return jsonError(429, 'Too many requests (10/min/IP). Slow down.', cors);
+  }
+
+  // 🆕 第二道闸：日累计熔断
+  const quota = await dailyQuotaExceeded(env);
+  if (quota && quota.exceeded) {
+    return jsonError(503, `Daily quota exceeded (${quota.used}/${quota.quota}).`, cors);
   }
 
   const ct = request.headers.get('content-type') || '';
