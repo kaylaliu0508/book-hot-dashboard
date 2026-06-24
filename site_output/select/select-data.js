@@ -405,7 +405,23 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
   // ===== 6/22 周（最新）=====
   '2026-06-22': [
     {
-      role:'#1 社科·职场谋略 · 新爆款',
+      role:'#1 社科·文化常识 · 长青基本盘',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/2026-06-22-image1.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W'},
+        {icon:'🎯', label:'转化', val:'3.3-4.3%'},
+        {icon:'🏆', label:'霸榜', val:'5 周连霸 #1', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'打认知信息差 — 「这些常识孩子答不上，但同龄人都会」。3000 问体系化补足语文素养盲区，戳中家长「怕娃见识比同龄人窄」的焦虑',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#2 社科·职场谋略 · 新爆款',
       roleClass:'opportunity',
       title:'闷声发大财',
       isbn:'9787558352744',
@@ -417,38 +433,22 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
         {icon:'📈', label:'新登榜', val:'直冲 #2', cls:'hot'}
       ],
       persona:'25-40 岁打工人 / 中小老板（关注职场博弈、副业思维）',
-      creativeCore:'锁定打工人 / 中小老板 — 给一份"不显山不露水把钱赚到手"的处世行动指南：管嘴/避坑/借势 3 步法，每步配真实场景'
+      creativeCore:'锁定打工人 / 中小老板 — 给一份"不显山不露水把钱赚到手"的处世行动指南：管嘴、避坑、借势 3 步法，每步配真实场景'
     },
     {
-      role:'#2 教辅·高中文言文 · 新晋黑马',
-      roleClass:'opportunity',
-      title:'高中文言文全解漫画笔记',
-      isbn:'9787575422185',
-      image:'rank-images/2026-06-22-image5.jpg',
+      role:'#3 教辅·幼小衔接 · 季节性刚需',
+      roleClass:'basic',
+      title:'预备一年级',
+      isbn:'9787575401920',
+      image:'rank-images/2026-06-22-image3.jpg',
       cat:'教辅',
       stats:[
         {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
-        {icon:'📈', label:'跳量级', val:'6/15 #17 → 6/22 #5', cls:'hot'},
-        {icon:'🎯', label:'转化', val:'8.5-9.5%'}
+        {icon:'🎯', label:'转化', val:'2.8-3.8%'},
+        {icon:'🏆', label:'霸榜', val:'4 周连续在榜', cls:'hot'}
       ],
-      persona:'准高一 / 高二学生家长（暑期文言文衔接刚需）',
-      creativeCore:'锁定准高一+高二家长 — 给一份用漫画把高考必背 70 篇文言文讲透的暑期 60 天预习路线图，开学考阅读理解直接抄'
-    },
-    {
-      role:'#3 健康·儿童身高营养 · 长青基本盘',
-      roleClass:'basic',
-      title:'这样吃长更高',
-      isbn:'9787500186250',
-      image:'rank-images/2026-06-22-image7.jpg',
-      cat:'健康',
-      stats:[
-        {icon:'📊', label:'日销售额', val:'5-10W'},
-        {icon:'🎯', label:'转化', val:'11.2-12.2%', cls:'hot'},
-        {icon:'🏆', label:'霸榜', val:'5 周连霸', cls:'hot'}
-      ],
-      persona:'奶奶 + 妈妈（家中"喂饭主理人"）',
-      creativeCore:'锁定家中「喂饭主理人」 — 给一份按年龄分段照着做的长高食谱：婴幼儿、学龄、青春期每天吃什么直接抄作业',
-      creativeWarning:'⚠️ 不得承诺具体长高厘米数，避免量化承诺'
+      persona:'5-6 岁孩子的妈妈（暑期幼升小衔接刚需）',
+      creativeCore:'锁定准小一家长 — 给一份暑期 60 天幼升小衔接照着做的方案：拼音、识字、20以内加减分阶段每天打卡，9 月入学不慌'
     }
   ],
 
