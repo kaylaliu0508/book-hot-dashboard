@@ -121,7 +121,7 @@ async function callDeepSeek(messages, apiKey) {
       "Authorization": `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      model: "deepseek-chat",
+      model: "deepseek-v4-flash", // 2026-06-26 优化: 切到 v4-flash，成本降 ~90%（A/B 已验证）
       messages,
       max_tokens: 1500,
       temperature: 0.7
@@ -223,7 +223,8 @@ export async function onRequestPost(context) {
   }
 
   const query = userMsgs[userMsgs.length - 1].content;
-  const history = messages.slice(0, -1).map(m => ({ role: m.role, content: m.content }));
+  // 2026-06-26 优化: history 截断到最近 12 条（前端最多传 10+1 轮，这里设 12 留余量）
+  const history = messages.slice(-12, -1).map(m => ({ role: m.role, content: m.content }));
 
   // Token 绑定指令
   const tokenMatch = query.match(/绑定[Tt]oken\s*(sk-mw-[a-zA-Z0-9]+)/);
@@ -289,10 +290,52 @@ export async function onRequestOptions() {
   });
 }
 
+// ── LRU 响应缓存（2026-06-26 优化）──
+// 同 query 在 TTL 内直接返回，省一次 DeepSeek 调用
+// 用 Map 维持 LRU，最大 100 条，TTL 30 分钟
+const _cache = new Map();
+const CACHE_MAX = 100;
+const CACHE_TTL_MS = 30 * 60 * 1000;
+
+function cacheKey(query, historyLen, isHybrid) {
+  // 简单归一化：去除空格/标点差异
+  const norm = query.replace(/[\s，。！？、；：,.!?;:]+/g, '').toLowerCase();
+  return `${norm}#h${historyLen}#${isHybrid ? 'H' : 'N'}`;
+}
+
+function cacheGet(key) {
+  const hit = _cache.get(key);
+  if (!hit) return null;
+  if (Date.now() - hit.t > CACHE_TTL_MS) {
+    _cache.delete(key);
+    return null;
+  }
+  // 命中后移到末尾（LRU 语义）
+  _cache.delete(key);
+  _cache.set(key, hit);
+  return hit.v;
+}
+
+function cacheSet(key, value) {
+  if (_cache.size >= CACHE_MAX) {
+    // 删除最久未用的（Map 第一个元素）
+    const firstKey = _cache.keys().next().value;
+    _cache.delete(firstKey);
+  }
+  _cache.set(key, { v: value, t: Date.now() });
+}
+
 async function handleBookKB(query, history, deepseekKey, miaowenToken, isHybrid) {
+  // 2026-06-26 优化: 先查缓存
+  const ck = cacheKey(query, history.length, isHybrid);
+  const cached = cacheGet(ck);
+  if (cached) {
+    return { content: cached, source: "book_kb_cache" };
+  }
+
   // 加载 FAQ（从 KV 或内嵌）
   const faqData = getEmbeddedFAQ();
-  const faqs = ragSearch(query, faqData);
+  const faqs = ragSearch(query, faqData, 2); // 2026-06-26 优化: top-3 → top-2，省 ~33% RAG token
 
   let knowledgeContext = "";
   if (faqs.length > 0) {
@@ -317,6 +360,10 @@ async function handleBookKB(query, history, deepseekKey, miaowenToken, isHybrid)
     }
   }
 
+  // 2026-06-26 优化: 写缓存（HYBRID 模式不缓存，因为含妙问实时数据）
+  if (!isHybrid) {
+    cacheSet(ck, content);
+  }
   return { content, source: "book_kb" };
 }
 
