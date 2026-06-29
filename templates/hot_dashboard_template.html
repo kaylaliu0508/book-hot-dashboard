@@ -2370,7 +2370,7 @@ function callAIAudit(batch, customRulesRawText){
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      model:'deepseek-chat',
+      // 2026-06-29: 不再传 model 字段——后端 completions.js 会默认改写为 deepseek-v4-flash
       messages:[
         {role:'system',content:sysPrompt},
         {role:'user',content:userPrompt}
@@ -2530,7 +2530,8 @@ function doCopyText(btn,b64text){
 // 通过 Pages Functions 反向代理调用，Key 不出现在前端
 // /api/deepseek/chat/completions  →  转发到 DeepSeek（Authorization 由服务端注入）
 // /api/zhipu/search               →  转发到智谱搜索
-var ISBN_API={baseUrl:'/api/deepseek',model:'deepseek-chat'};
+// 2026-06-29: model 字段不指定，后端强制改写为 deepseek-v4-flash（前端无 model 依赖）
+var ISBN_API={baseUrl:'/api/deepseek',model:undefined};
 var ZHIPU_SEARCH={apiUrl:'/api/zhipu/search'};
 
 // 联网搜索图书信息
