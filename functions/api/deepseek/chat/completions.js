@@ -16,6 +16,10 @@
  *   3. 🆕 限流收紧：30→5 次/分钟/IP（正常用户够用）
  *   4. 🆕 日累计熔断：每天总请求超 DAILY_QUOTA 自动 503（KV-backed）
  *   5. 限制 model 范围 + body 256KB 上限
+ *
+ * 模型策略（2026-06-29）：全量强制改写为 deepseek-v4-flash
+ *   根因：6 月仍 3102 次 pro 调用烧光 ¥108.97；flash A/B 验证质量 OK，成本降 ~90%
+ *   行为：请求体里 model 字段无论传什么，都会被改写为 'deepseek-v4-flash' 再转发
  */
 
 const UPSTREAM = 'https://api.deepseek.com/v1/chat/completions';
@@ -177,9 +181,15 @@ export async function onRequest(context) {
     return jsonError(400, 'Invalid JSON body', cors);
   }
 
-  const allowedModels = ['deepseek-chat', 'deepseek-reasoner'];
+  // 2026-06-29 优化: 强制只走 v4-flash（成本降 ~90%，A/B 已验证质量 OK）
+  // 任何传 pro/chat/reasoner 的请求都自动改写为 v4-flash，对调用方完全透明
+  const FLASH_MODEL = 'deepseek-v4-flash';
+  const allowedModels = [FLASH_MODEL, 'deepseek-v4-flash']; // 白名单收紧
   if (payload.model && !allowedModels.includes(payload.model)) {
-    return jsonError(400, 'Model not allowed', cors);
+    // 降级到 flash 并继续放行（不报错，保持调用方无感）
+    payload.model = FLASH_MODEL;
+  } else if (!payload.model) {
+    payload.model = FLASH_MODEL;
   }
 
   const upstreamResp = await fetch(UPSTREAM, {
