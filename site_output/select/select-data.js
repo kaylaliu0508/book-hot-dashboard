@@ -402,7 +402,57 @@ const WEEK_RHYTHM = {
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 6/22 周（最新）=====
+  // ===== 6/29 周（最新）=====
+  '2026-06-29': [
+    {
+      role:'#1 社科·文化常识 · 长青王者',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/2026-06-29-image1.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'20-30W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'5.2-6.2%'},
+        {icon:'🏆', label:'霸榜', val:'6 周连霸 #1', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'打认知信息差 — 「这些常识孩子答不上，但同龄人都会」。3000 问体系化补足语文素养盲区，戳中家长「怕娃见识比同龄人窄」的焦虑',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#2 童书·幼小衔接 · 季节性刚需',
+      roleClass:'basic',
+      title:'预备一年级',
+      isbn:'9787575401920',
+      image:'rank-images/2026-06-29-image2.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'2.8-3.8%'},
+        {icon:'🏆', label:'霸榜', val:'5 周连续 + 晋 #2', cls:'hot'}
+      ],
+      persona:'5-6 岁孩子的妈妈（暑期幼升小衔接刚需）',
+      creativeCore:'锁定准小一家长 — 给一份暑期 60 天幼升小衔接照着做的方案：拼音、识字、20以内加减分阶段每天打卡，9 月入学不慌'
+    },
+    {
+      role:'#3 教辅·初中语文 · 新登榜',
+      roleClass:'opportunity',
+      title:'初中必背古诗+初中背背文言文',
+      isbn:'9787511593351',
+      image:'rank-images/2026-06-29-image3.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.0-11.0%', cls:'hot'},
+        {icon:'📈', label:'新登榜', val:'直冲 #3', cls:'hot'}
+      ],
+      persona:'准初一 / 初二孩子的妈妈（暑期文言文古诗背诵刚需）',
+      creativeCore:'锁定准初一+初二家长 — 给一份按中考考纲清单照着背的暑期文言文路线图：每天 1 篇配翻译+理解题，开学考默写直接抄'
+    }
+  ],
+
+  // ===== 6/22 周 =====
   '2026-06-22': [
     {
       role:'#1 社科·文化常识 · 长青基本盘',
@@ -706,7 +756,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-22'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-29'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
