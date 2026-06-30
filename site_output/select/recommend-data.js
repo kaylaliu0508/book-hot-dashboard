@@ -1,9 +1,94 @@
-// 推荐书单数据（来自《【腾讯图书】预测推荐书单 (1).xlsx》）
+// 推荐书单数据（来自《【腾讯图书】预测推荐书单 (4).xlsx》7月期 + 历史 6月期）
 // 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 独立从 1 开始
-// 生成时间: 2026-06-02 18:45:00（补缺 recommend_time=6月）
+// 生成时间: 2026-06-30 17:00:00（追加 7月 59 本：教辅21+童书14+社科15+健康9，社科健康已剔除审核不准入项）
 
 const RECOMMEND_BOOKS = {
   "童书推荐书单": [
+    // ===== 童书推荐书单 · 7月新增（14 本，prepended 2026-06-30）=====
+    {
+      "title": "改变孩子命运的顶尖思维+赢在破局思维",
+      "rank": 1,
+      "recommend_time": "7月",
+      "isbn": "9787519483838"
+    },
+    {
+      "title": "小学生太有意思了 生活中的物理",
+      "rank": 2,
+      "recommend_time": "7月",
+      "isbn": "9787516533994"
+    },
+    {
+      "title": "经典儿童文学 10册",
+      "rank": 3,
+      "recommend_time": "7月",
+      "isbn": "9787570720620"
+    },
+    {
+      "title": "漫画版推恩令",
+      "rank": 4,
+      "recommend_time": "7月",
+      "isbn": "9787221196118"
+    },
+    {
+      "title": "漫画礼仪知识规矩篇+漫画礼仪知识教养篇+漫画应变思维变通篇+漫画应变思维智囊篇",
+      "rank": 5,
+      "recommend_time": "7月",
+      "isbn": "9787574507975"
+    },
+    {
+      "title": "儿童内驱力激发力绘本",
+      "rank": 6,
+      "recommend_time": "7月",
+      "isbn": "9787572326295"
+    },
+    {
+      "title": "漫画少年强者思维狼之魂",
+      "rank": 7,
+      "recommend_time": "7月",
+      "isbn": "9787511040657"
+    },
+    {
+      "title": "爱上表达绘本系列",
+      "rank": 8,
+      "recommend_time": "7月",
+      "isbn": "9787523706329"
+    },
+    {
+      "title": "安徒生童话+稻草人书+格林童话",
+      "rank": 9,
+      "recommend_time": "7月",
+      "isbn": "9787555280354"
+    },
+    {
+      "title": "孩子，你要懂点儿人情世故",
+      "rank": 10,
+      "recommend_time": "7月",
+      "isbn": "9787558760426"
+    },
+    {
+      "title": "小鲤鱼跳龙门",
+      "rank": 11,
+      "recommend_time": "7月",
+      "isbn": "9787576366327"
+    },
+    {
+      "title": "赢在破局思维",
+      "rank": 12,
+      "recommend_time": "7月",
+      "isbn": "9787512519251"
+    },
+    {
+      "title": "我命由我不由天",
+      "rank": 13,
+      "recommend_time": "7月",
+      "isbn": "9787502086572"
+    },
+    {
+      "title": "财商启蒙",
+      "rank": 14,
+      "recommend_time": "7月",
+      "isbn": "9787558197321"
+    },
     {
       "title": "桑尼有主意",
       "rank": 1,
@@ -464,6 +549,133 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "教辅推荐书单": [
+    // ===== 教辅推荐书单 · 7月新增（21 本，prepended 2026-06-30）=====
+    {
+      "title": "提分笔记",
+      "rank": 1,
+      "recommend_time": "7月",
+      "isbn": "9787545490572"
+    },
+    {
+      "title": "刘晓艳高考英语",
+      "rank": 2,
+      "recommend_time": "7月",
+      "isbn": "9787577110967"
+    },
+    {
+      "title": "初中学霸手账",
+      "rank": 3,
+      "recommend_time": "7月",
+      "isbn": "9787533090739"
+    },
+    {
+      "title": "学之舟 小学生知识通",
+      "rank": 4,
+      "recommend_time": "7月",
+      "isbn": "9787576231564"
+    },
+    {
+      "title": "秒记初中小四门",
+      "rank": 5,
+      "recommend_time": "7月",
+      "isbn": "9787511040657"
+    },
+    {
+      "title": "妙解数理化",
+      "rank": 6,
+      "recommend_time": "7月",
+      "isbn": "9787572448317"
+    },
+    {
+      "title": "预备新高一",
+      "rank": 7,
+      "recommend_time": "7月",
+      "isbn": "9787572453038"
+    },
+    {
+      "title": "语法提前学+双拼速记",
+      "rank": 8,
+      "recommend_time": "7月",
+      "isbn": "9787575400817"
+    },
+    {
+      "title": "名师教你读名著",
+      "rank": 9,
+      "recommend_time": "7月",
+      "isbn": "9787107384059"
+    },
+    {
+      "title": "考点笔记一本全",
+      "rank": 10,
+      "recommend_time": "7月",
+      "isbn": "9787569962369"
+    },
+    {
+      "title": "作文金句1000例",
+      "rank": 11,
+      "recommend_time": "7月",
+      "isbn": "9787807735816"
+    },
+    {
+      "title": "成大事者 我命由我不由天",
+      "rank": 12,
+      "recommend_time": "7月",
+      "isbn": "9787502086572"
+    },
+    {
+      "title": "【读者】每个人的傍晚都住着故乡的晚霞+【读者】人生只是路过 没有不可放下",
+      "rank": 13,
+      "recommend_time": "7月",
+      "isbn": "9787552708486"
+    },
+    {
+      "title": "课堂笔记",
+      "rank": 14,
+      "recommend_time": "7月",
+      "isbn": "9787511076496"
+    },
+    {
+      "title": "上下册语文数学英语书课本教材",
+      "rank": 15,
+      "recommend_time": "7月",
+      "isbn": "9787518720187"
+    },
+    {
+      "title": "暑假计算",
+      "rank": 16,
+      "recommend_time": "7月",
+      "isbn": "9787556891740"
+    },
+    {
+      "title": "小学语文同步字帖",
+      "rank": 17,
+      "recommend_time": "7月",
+      "isbn": "9787556883066"
+    },
+    {
+      "title": "初中名著导读考点精炼",
+      "rank": 18,
+      "recommend_time": "7月",
+      "isbn": "9787574708549"
+    },
+    {
+      "title": "画图法解应用题",
+      "rank": 19,
+      "recommend_time": "7月",
+      "isbn": "9787548961833"
+    },
+    {
+      "title": "神奇小纸条课课贴",
+      "rank": 20,
+      "recommend_time": "7月",
+      "isbn": "9787580104069"
+    },
+    {
+      "title": "暑期衔接一本通",
+      "rank": 21,
+      "recommend_time": "7月",
+      "isbn": "9787564968205"
+    },
     {
       "title": "这才是我要的大学+这才是我要的专业",
       "rank": 1,
@@ -770,6 +982,97 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "社科推荐书单": [
+    // ===== 社科推荐书单 · 7月新增（15 本，prepended 2026-06-30）=====
+    {
+      "title": "国学经典精粹10册",
+      "rank": 1,
+      "recommend_time": "7月",
+      "isbn": "9787516909249"
+    },
+    {
+      "title": "回话高手+高情商幽默接话",
+      "rank": 2,
+      "recommend_time": "7月",
+      "isbn": "9787558157851"
+    },
+    {
+      "title": "接话破冰+对答如流",
+      "rank": 3,
+      "recommend_time": "7月",
+      "isbn": "9787559624086"
+    },
+    {
+      "title": "红岩+红星照耀中国",
+      "rank": 4,
+      "recommend_time": "7月",
+      "isbn": "9787540256623"
+    },
+    {
+      "title": "渔樵问对",
+      "rank": 5,
+      "recommend_time": "7月",
+      "isbn": "9787201219561"
+    },
+    {
+      "title": "寒门诡将",
+      "rank": 6,
+      "recommend_time": "7月",
+      "isbn": "9787512519336"
+    },
+    {
+      "title": "负债翻盘",
+      "rank": 7,
+      "recommend_time": "7月",
+      "isbn": "9787531769910"
+    },
+    {
+      "title": "潮汕思维+运筹帷幄",
+      "rank": 8,
+      "recommend_time": "7月",
+      "isbn": "9787531769910"
+    },
+    {
+      "title": "乡土中国",
+      "rank": 9,
+      "recommend_time": "7月",
+      "isbn": "9787555286240"
+    },
+    {
+      "title": "高手接话",
+      "rank": 10,
+      "recommend_time": "7月",
+      "isbn": "9787519310240"
+    },
+    {
+      "title": "幽默接话",
+      "rank": 11,
+      "recommend_time": "7月",
+      "isbn": "9787515843100"
+    },
+    {
+      "title": "国学知识+人文知识",
+      "rank": 12,
+      "recommend_time": "7月",
+      "isbn": "978751803440602"
+    },
+    {
+      "title": "开口即成交",
+      "rank": 13,
+      "recommend_time": "7月",
+      "isbn": "9787547753248"
+    },
+    {
+      "title": "年入百万",
+      "rank": 14,
+      "recommend_time": "7月",
+      "isbn": "978751137924505"
+    },
+    {
+      "title": "天机+成事在谋",
+      "rank": 15,
+      "recommend_time": "7月",
+      "isbn": "9787560395661"
+    },
     {
       "title": "乡土中国",
       "rank": 1,
@@ -1374,6 +1677,61 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "健康推荐书单": [
+    // ===== 健康推荐书单 · 7月新增（9 本，prepended 2026-06-30）=====
+    {
+      "title": "最爱吃的家常菜",
+      "rank": 1,
+      "recommend_time": "7月",
+      "isbn": "9787543689831"
+    },
+    {
+      "title": "二十四节气养生药茶",
+      "rank": 2,
+      "recommend_time": "7月",
+      "isbn": "9787515224536"
+    },
+    {
+      "title": "美食课（夏季版）",
+      "rank": 3,
+      "recommend_time": "7月",
+      "isbn": "9787535979828"
+    },
+    {
+      "title": "舌尖上的中国",
+      "rank": 4,
+      "recommend_time": "7月",
+      "isbn": "9787511371898"
+    },
+    {
+      "title": "百吃不厌的能量果蔬汁",
+      "rank": 5,
+      "recommend_time": "7月",
+      "isbn": "9787543682078"
+    },
+    {
+      "title": "养生豆浆米糊果蔬汁一本全",
+      "rank": 6,
+      "recommend_time": "7月",
+      "isbn": "9787229060718"
+    },
+    {
+      "title": "四季蒸菜",
+      "rank": 7,
+      "recommend_time": "7月",
+      "isbn": "9787571902742"
+    },
+    {
+      "title": "精选家常菜",
+      "rank": 8,
+      "recommend_time": "7月",
+      "isbn": "9787518424412"
+    },
+    {
+      "title": "阳台种菜种花种香草",
+      "rank": 9,
+      "recommend_time": "7月",
+      "isbn": "9787550258433"
+    },
     {
       "title": "祛湿三步走：疏肝健脾养肾",
       "rank": 1,

@@ -1809,12 +1809,26 @@ function initOverview() {
   overviewInit = true;
 
   const months = MONTHS_DATA.map(m => m.m);
-  // 4 大品类浅色 + ECharts 浅色调色板
+  // 4 大品类浅色（当前月高亮）+ 灰度版（非当前月置灰但仍能区分品类）
   const LIGHT_CAT = { '教辅':'#FCA5A5', '童书':'#FCD68A', '健康':'#86EFAC', '社科':'#C4B5FD' };
+  const GRAY_CAT  = { '教辅':'#E5E7EB', '童书':'#EDEDED', '健康':'#F0F0F0', '社科':'#E0E0E0' };
+
+  // 当前月索引（current:true 的那一项；找不到则 fallback 系统月份）
+  let currentIdx = MONTHS_DATA.findIndex(m => m.current);
+  if (currentIdx < 0) currentIdx = (new Date().getMonth() + 1) - 1; // 0-11
 
   // 各品类绝对消耗 = 占比 × total（柱状反映真实消耗，高度=指数趋势）
-  const seriesData = ['教辅','童书','健康','社科'].map(cat => 
-    MONTHS_DATA.map(m => +(m[cat] * m.total / 100).toFixed(1))
+  // 每个数据点单独着色：当前月鲜艳，其他月置灰但保留品类深浅区分
+  const seriesData = ['教辅','童书','健康','社科'].map(cat =>
+    MONTHS_DATA.map((m, idx) => ({
+      value: +(m[cat] * m.total / 100).toFixed(1),
+      itemStyle: {
+        color: idx === currentIdx ? LIGHT_CAT[cat] : GRAY_CAT[cat],
+        opacity: idx === currentIdx ? 1 : 0.85,
+        // 顶层社科段加圆角
+        borderRadius: cat === '社科' ? [6,6,0,0] : 0
+      }
+    }))
   );
 
   echarts.init(document.getElementById('chartYearTrend')).setOption({
@@ -1850,7 +1864,14 @@ function initOverview() {
     grid:{top:50, bottom:50, left:55, right:50},
     xAxis:[{type:'category', data:months,
       axisLine:{lineStyle:{color:AXIS}}, axisTick:{show:false},
-      axisLabel:{color:TXT, fontSize:13, fontWeight:600}}],
+      axisLabel:{
+        fontSize:13, fontWeight:600,
+        color: (val) => {
+          // 当前月份 label 高亮
+          const idx = months.indexOf(val);
+          return idx === currentIdx ? '#ef4444' : TXT;
+        }
+      }}],
     yAxis:[
       {type:'value', name:'总消耗指数', max:100, nameTextStyle:{color:TXT,fontSize:11}, axisLine:{lineStyle:{color:AXIS}}, axisLabel:{color:TXT}, splitLine:{lineStyle:{color:SPLIT}}}
     ],
@@ -1865,15 +1886,14 @@ function initOverview() {
         itemStyle:{color:LIGHT_CAT['健康']}, emphasis:{focus:'series'},
         data: seriesData[2]},
       {name:'社科', type:'bar', stack:'total',
-        itemStyle:{color:LIGHT_CAT['社科'], borderRadius:[6,6,0,0]}, emphasis:{focus:'series'},
+        itemStyle:{color:LIGHT_CAT['社科']}, emphasis:{focus:'series'},
         data: seriesData[3]},
       {name:'总消耗趋势', type:'line', smooth:true,
         symbol:'circle', symbolSize:8,
         lineStyle:{color:'#3b82f6', width:3},
         itemStyle:{color:'#fff', borderColor:'#3b82f6', borderWidth:3},
         emphasis:{scale:1.5},
-        z:10, data: MONTHS_DATA.map(m => m.total),
-        markPoint:{data:[{type:'max', name:'峰值'}], symbolSize:50, itemStyle:{color:'#ef4444'}, label:{color:'#fff', fontSize:11, fontWeight:700}}
+        z:10, data: MONTHS_DATA.map(m => m.total)
       }
     ]
   });
