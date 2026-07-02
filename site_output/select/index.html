@@ -223,18 +223,6 @@ if(window.self !== window.top){
         </div>
       </a>
     </div>
-
-    <!-- 分组 4：投放参考（辅助决策）-->
-    <div class="rsn-group rsn-group-insight">
-      <a class="rsn-group-title rsn-group-link" href="#hub-block-bench" data-target="hub-block-bench">📉 投放参考<span class="rsn-group-tip">辅助决策</span></a>
-      <a class="rsn-item" href="#hub-block-bench" data-target="hub-block-bench">
-        <span class="rsn-icon">📉</span>
-        <div class="rsn-body">
-          <div class="rsn-name">大盘指标参考</div>
-          <div class="rsn-desc">品类×客单×链路</div>
-        </div>
-      </a>
-    </div>
   </aside>
 
   <div class="rec-main">
@@ -405,22 +393,7 @@ if(window.self !== window.top){
     <div id="recBodySocial"></div>
   </div>
 
-  <!-- 4.3 大盘投放指标参考 -->
-  <div class="panel" id="hub-block-bench">
-    <div class="panel-title">
-      <span class="dot"></span>📉 大盘投放指标参考<span class="badge-insight">洞察</span>
-      <span class="extra" id="benchPeriodLabel">图书行业大盘 · 视频号下单链路</span>
-    </div>
-    <!-- 期间切换器（最新在前，默认选中最新）-->
-    <div class="bench-period-switcher" id="benchPeriodSwitcher" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-      <!-- JS 注入：每期一个 button -->
-    </div>
-    <div class="bench-tabs">
-      <div class="bench-tab active" data-bench="cat_price">📚 品类 × 客单 效率</div>
-      <div class="bench-tab" data-bench="price_channel">🔗 客单 × 链路 效率</div>
-    </div>
-    <div id="benchBody"></div>
-  </div>
+  <!-- 4.3 大盘投放指标参考（已搬迁至 section-future / #future-block-bench） -->
 
 
   <!-- ========== 分组 2：潜力榜单 ========== -->
@@ -455,6 +428,13 @@ if(window.self !== window.top){
       <div class="rsn-body">
         <div class="rsn-name">7 月核心洞察</div>
         <div class="rsn-desc">下月选品策略</div>
+      </div>
+    </a>
+    <a class="rsn-item" href="#future-block-bench" data-target="future-block-bench">
+      <span class="rsn-icon">📉</span>
+      <div class="rsn-body">
+        <div class="rsn-name">大盘指标参考</div>
+        <div class="rsn-desc">品类×客单×链路</div>
       </div>
     </a>
     <a class="rsn-item" href="#future-block-nodes" data-target="future-block-nodes">
@@ -515,7 +495,27 @@ if(window.self !== window.top){
     </div>
   </div>
 
-  <!-- 2.3 7 月选品 by 周节奏图 -->
+  <!-- 2.3 大盘投放指标参考（原「看过去」下的模块，2026-07 起前移到「选品周节奏图」之前） -->
+  <div class="panel" id="future-block-bench">
+    <div class="panel-title">
+      <span class="dot"></span>📉 大盘投放指标参考<span class="badge-insight">洞察</span>
+      <span class="extra" id="benchPeriodLabel">图书行业大盘 · 视频号下单链路</span>
+    </div>
+    <!-- 期间切换器（最新在前，默认选中最新）-->
+    <div class="bench-period-switcher" id="benchPeriodSwitcher" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <!-- JS 注入：每期一个 button -->
+    </div>
+    <div class="bench-tabs">
+      <div class="bench-tab active" data-bench="cat_price">📚 品类 × 客单 效率</div>
+      <div class="bench-tab" data-bench="price_channel">🔗 客单 × 链路 效率</div>
+    </div>
+    <!-- 保留原 id 兼容旧脚本 selector（如 #hub-block-bench）-->
+    <div id="hub-block-bench" style="display:contents;">
+      <div id="benchBody"></div>
+    </div>
+  </div>
+
+  <!-- 2.4 7 月选品 by 周节奏图 -->
   <div class="panel" id="future-block-nodes">
     <div class="panel-title">
       <span class="dot"></span>📅 <span style="color:#3b82f6;">7 月</span> 选品 by 周节奏图
@@ -552,12 +552,12 @@ if(window.self !== window.top){
 
 </div>
 
-<script src="isbn-image-map.js?v=20260630-jul15"></script>
-<script src="rank-data.js?v=20260630-jul15"></script>
-<script src="bench-data.js?v=20260630-jul15"></script>
-<script src="select-data.js?v=20260630-jul15"></script>
-<script src="recommend-data.js?v=20260630-jul15"></script>
-<script src="select-app.js?v=20260630-jul15"></script>
+<script src="isbn-image-map.js?v=20260702-bench630"></script>
+<script src="rank-data.js?v=20260702-bench630"></script>
+<script src="bench-data.js?v=20260702-bench630"></script>
+<script src="select-data.js?v=20260702-bench630"></script>
+<script src="recommend-data.js?v=20260702-bench630"></script>
+<script src="select-app.js?v=20260702-bench630"></script>
 
 <!-- 埋点初始化：选品台 PV -->
 <script>
