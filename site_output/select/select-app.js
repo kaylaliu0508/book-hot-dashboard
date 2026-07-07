@@ -490,13 +490,11 @@ function renderRankCell(item, col, listName) {
   }
   if (col.key === 'title') {
     // ★ 优化方向二：跨模块交叉标记
-    //   - 榜单中的书 → 若同时在推荐书单 → 加「⭐ 精选」
     //   - 推荐书单中的书 → 若同时在本周榜单 → 加「✅ 本周在跑」
+    //   （原榜单侧「⭐ 精选」标签已按需下线）
     const isRecList = listName === '推荐书单' || listName === '适配腾讯生态推荐书单';
     let badge = '';
-    if (!isRecList && isInRecommend(item)) {
-      badge = `<span class="cross-badge cb-rec" title="本书同时在推荐书单中（适配腾讯生态）">⭐ 精选</span>`;
-    } else if (isRecList && isOnRank(item)) {
+    if (isRecList && isOnRank(item)) {
       badge = `<span class="cross-badge cb-onrank" title="本书本周已出现在 ADQ 热投 / 小店 / 潜力 / 预测榜单">✅ 在跑</span>`;
     }
     return `<div class="title-text">${escapeHtml(v||'')}${badge}</div>`;
