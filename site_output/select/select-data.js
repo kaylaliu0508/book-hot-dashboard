@@ -583,7 +583,57 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 6/29 周（最新）=====
+  // ===== 7/6 周（最新）=====
+  '2026-07-06': [
+    {
+      role:'#1 社科·文化常识 · 长青王者',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/2026-07-06-image1.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'5.1-6.1%'},
+        {icon:'🏆', label:'霸榜', val:'7 周连霸 #1', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'长青王者稳居 #1 已 7 周，本周日销从 20-30W 略回落到 10-20W，转化仍稳定在 5-6%。暑期档语文素养刚需盘持续释放，建议维持采访学霸抽问形式，通过「同龄人都会 vs 我家孩子答不上」的信息差焦虑持续渗透',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#2 童书·幼小衔接 · 转化爆发',
+      roleClass:'opportunity',
+      title:'预备一年级',
+      isbn:'9787575401920',
+      image:'rank-images/2026-07-06-image2.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.9%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'6 周连续 + 转化跃升 3×', cls:'hot'}
+      ],
+      persona:'5-6 岁孩子的妈妈（暑期幼升小衔接刚需）',
+      creativeCore:'关键跃升：转化率从上周 2.8-3.8% 直冲到 9.8-10.9%（翻 3 倍），暑期幼升小刚需完全兑现。可加码放量试试，创意延续「暑期 60 天衔接方案」但更聚焦近端行动，让家长看到"9 月开学不慌"的可信节奏'
+    },
+    {
+      role:'#3 教辅·初中物理 · 霸榜劲品',
+      roleClass:'basic',
+      title:'漫画初中物理早知道',
+      isbn:'978-7-5736-3985-1',
+      image:'rank-images/2026-07-06-image3.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'1.8-2.8%'},
+        {icon:'🏆', label:'霸榜', val:'8 周稳居 Top', cls:'hot'}
+      ],
+      persona:'准初一 / 初二孩子的妈妈（预习初中物理、消除畏难情绪）',
+      creativeCore:'8 周稳居前列的长青款，暑期是预备初一/初二关键窗口。漫画形式降低物理入门门槛，主打「暑假抢跑一步 → 开学不畏难」情绪，配合近期"初中必背古诗+文言文"衔接类爆款组合投放'
+    }
+  ],
+
+  // ===== 6/29 周 =====
   '2026-06-29': [
     {
       role:'#1 社科·文化常识 · 长青王者',
