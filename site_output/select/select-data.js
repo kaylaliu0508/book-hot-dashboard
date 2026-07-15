@@ -583,7 +583,58 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 7/6 周（最新）=====
+  // ===== 7/13 周（最新）=====
+  '2026-07-13': [
+    {
+      role:'#1 教辅·高中多科 · 新王登基',
+      roleClass:'opportunity',
+      title:'高中数理化公式法二级结论秒解+高中知识思维导图',
+      isbn:'9787554948163',
+      image:'rank-images/2026-07-13-image1.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'20-30W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'6.6-7.6%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'首次上榜 · 直冲 #1（小程序）', cls:'hot'}
+      ],
+      persona:'准高一 / 高二 / 高三孩子的妈妈（暑期冲刺、提分刚需）',
+      creativeCore:'首次登榜即直冲 #1，日销 20-30W 挤到最高档、转化 6.6-7.6% 全场靠前。**唯一小程序渠道的 Top10 爆款**——高中生付费力全场最强 × 暑期冲刺窗口 × 二级结论"秒解"卖点直击提分焦虑。建议加码放量，创意主打「一页公式抵一本资料」的效率对比 + 学霸口述"考场原题套结论"实证',
+      creativeWarning:'⚠️ 结论/公式类内容严禁夸大"必考""押题"，避免政策合规风险'
+    },
+    {
+      role:'#2 社科·文化常识 · 长青回落',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/2026-07-13-image2.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'5.9-6.9%'},
+        {icon:'🏆', label:'霸榜', val:'6 连霸终结 → #2 · 27 期全在榜', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'6 周 #1 连霸本周被终结（让位于高中数理化新王），但日销/转化仍稳、27 期全在榜的长青属性未变。暑期语文素养刚需盘依然坚挺，可以维持采访学霸抽问形式基本盘，同时结合"新初一/新高一衔接"补充新素材，防止创意疲劳',
+      creativeWarning:'⚠️ 不可拍摄孩子答错时的难堪表情，避免负面对比'
+    },
+    {
+      role:'#3 教辅·初中物理 · 霸榜劲品',
+      roleClass:'basic',
+      title:'漫画初中物理早知道',
+      isbn:'978-7-5736-3985-1',
+      image:'rank-images/2026-07-13-image3.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'2.1-3.5%'},
+        {icon:'🏆', label:'霸榜', val:'连续在榜 12 周 · 稳居 #3', cls:'hot'}
+      ],
+      persona:'准初一 / 初二孩子的妈妈（预习初中物理、消除畏难情绪）',
+      creativeCore:'4/20 起连续在榜 12 周，本周继续稳居 #3。暑期是预备初一/初二关键窗口，转化率环比略升。漫画降门槛策略验证成功，可继续配合"初中必背古诗+文言文"衔接类爆款组合投放，形成"新初一预习全科"打法'
+    }
+  ],
+
+  // ===== 7/6 周 =====
   '2026-07-06': [
     {
       role:'#1 社科·文化常识 · 长青王者',
@@ -987,7 +1038,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-06-29'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-07-13'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
