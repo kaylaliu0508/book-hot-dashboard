@@ -200,19 +200,42 @@ function parseHost(u) {
 }
 
 // =================== 查询 KV ===================
-export async function aggregateStats(env, range, tabFilter) {
+export async function aggregateStats(env, range, tabFilter, opts) {
   const KV = env.TRACKER_AGG;
   if (!KV) {
     logKvMissingOnce('aggregateStats');
     return { error: 'no_kv' };
   }
 
-  const days = ({ '1d': 1, '7d': 7, '14d': 14, '30d': 30, '90d': 90 })[range] || 7;
-  const today = new Date();
+  // 生成日期列表：
+  // - 优先使用 opts.from / opts.to（YYYYMMDD，闭区间），用于自定义评估周期
+  // - 否则退回 range（最近 N 天）
   const dateList = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
-    dateList.push(dayKey(d.getTime()));
+  const from = opts && opts.from ? String(opts.from).trim() : '';
+  const to = opts && opts.to ? String(opts.to).trim() : '';
+  const isYmd = (s) => /^\d{8}$/.test(s);
+  if (isYmd(from) && isYmd(to) && from <= to) {
+    const parseYmd = (s) => new Date(Date.UTC(
+      parseInt(s.slice(0, 4), 10),
+      parseInt(s.slice(4, 6), 10) - 1,
+      parseInt(s.slice(6, 8), 10)
+    ));
+    const dFrom = parseYmd(from);
+    const dTo = parseYmd(to);
+    // 上限保护：最多 180 天（约 6 个月），避免恶意超长参数
+    const spanDays = Math.floor((dTo - dFrom) / 86400000) + 1;
+    const N = Math.min(spanDays, 180);
+    for (let i = 0; i < N; i++) {
+      const d = new Date(dFrom.getTime() + i * 86400000);
+      dateList.push(dayKey(d.getTime()));
+    }
+  } else {
+    const days = ({ '1d': 1, '7d': 7, '14d': 14, '30d': 30, '90d': 90 })[range] || 7;
+    const today = new Date();
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+      dateList.push(dayKey(d.getTime()));
+    }
   }
 
   const tabs = tabFilter === 'all' ? Array.from(VALID_TABS) : [tabFilter];
