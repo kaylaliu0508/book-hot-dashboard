@@ -12,7 +12,7 @@
   window.__REPORT_FROM__ = '20260504';
   window.__REPORT_TO__   = '20260719';
   window.__REPORT_LABEL__= '2026-05-04 → 2026-07-19（77 天）';
-  window.__REPORT_VERSION__ = 'v2026-07-27-r1';
+  window.__REPORT_VERSION__ = 'v2026-07-27-r2';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -80,7 +80,7 @@ body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFo
 <body>
 
 <div class="report-hero">
-  <div class="badge" id="verBadge">评估报告 · v2026-07-27-r1</div>
+  <div class="badge" id="verBadge">评估报告 · v2026-07-27-r2</div>
   <h1>📈 图书灵感中心 · 效果评估报告</h1>
   <div class="period" id="periodLabel">评估周期：2026-05-04 → 2026-07-19（77 天）</div>
   <div class="desc">
@@ -154,7 +154,7 @@ body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFo
 </div>
 
 <div class="foot">
-  数据源：<code>/api/stats?from=20260504&to=20260719</code> · Cloudflare KV 实时聚合 · 报告页版本 <span id="verFoot">v2026-07-27-r1</span><br>
+  数据源：<code>/api/stats?from=…&to=…</code> · Cloudflare KV 实时聚合（77 天分 6 段前端并发拉取）· 报告页版本 <span id="verFoot">v2026-07-27-r2</span><br>
   评估周期涵盖：图书灵感中心从"1 个 tab"扩展到"7 个 tab（图书内容提取 / 口播脚本 / AI 预审 / 创意洞察 / 图书选品台 / 图片文案生成 / AI 营销助手）"的完整成长期
 </div>
 
@@ -210,24 +210,147 @@ function fmtNum(n){ n = n||0; if (n<1000) return String(n); if (n<10000) return 
 function pctBar(v, max, color){ var pct = max? (v/max*100):0; return '<span class="evt-bar" style="width:'+Math.max(2,pct)+'px;background:'+color+'"></span>'+v; }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
+// 分段拉取：Cloudflare Workers 单次请求 subrequest 上限 ~1000（免费 ~50），
+// 77 天 × 7 tabs × 6 类 key + events KV.list 会超限。经实测 ≤14 天段稳过、≥20 天必炸。
+// 因此把周期切成多段（每段 ≤ SEG_DAYS 天）在前端并行拉取，再前端聚合。
+var SEG_DAYS = 14;
+
+function ymdToDate(s){
+  return new Date(Date.UTC(parseInt(s.slice(0,4),10), parseInt(s.slice(4,6),10)-1, parseInt(s.slice(6,8),10)));
+}
+function dateToYmd(d){
+  var y=d.getUTCFullYear(), m=String(d.getUTCMonth()+1).padStart(2,'0'), day=String(d.getUTCDate()).padStart(2,'0');
+  return y+m+day;
+}
+function buildSegments(from, to, segDays){
+  var segs = [];
+  var dFrom = ymdToDate(from), dTo = ymdToDate(to);
+  var cur = new Date(dFrom.getTime());
+  while (cur <= dTo) {
+    var end = new Date(cur.getTime() + (segDays-1)*86400000);
+    if (end > dTo) end = new Date(dTo.getTime());
+    segs.push({ from: dateToYmd(cur), to: dateToYmd(end) });
+    cur = new Date(end.getTime() + 86400000);
+  }
+  return segs;
+}
+
+// 单段并发数限流：段可以完全并行，但保守起见分批 3 个并发，避免同一秒对 KV 打太狠
+function fetchSegments(segs, onProgress){
+  var results = new Array(segs.length);
+  var doneCount = 0;
+  var CONCURRENCY = 3;
+  return new Promise(function(resolve, reject){
+    var nextIdx = 0;
+    var failed = false;
+    function launch(){
+      if (failed) return;
+      if (nextIdx >= segs.length) return;
+      var idx = nextIdx++;
+      var seg = segs[idx];
+      var url = API + '?from=' + seg.from + '&to=' + seg.to + '&tab=all&_t=' + Date.now() + '_' + idx;
+      fetch(url, { credentials:'omit', cache:'no-store' })
+        .then(function(r){ if(!r.ok) throw new Error('段 '+seg.from+'-'+seg.to+' HTTP '+r.status); return r.json(); })
+        .then(function(data){
+          if (data && data.error) throw new Error('段 '+seg.from+'-'+seg.to+' 后端错误：'+data.error);
+          results[idx] = data;
+          doneCount++;
+          if (onProgress) onProgress(doneCount, segs.length);
+          if (doneCount === segs.length) { resolve(results); }
+          else { launch(); }
+        })
+        .catch(function(e){ failed = true; reject(e); });
+    }
+    for (var i=0;i<Math.min(CONCURRENCY, segs.length);i++) launch();
+  });
+}
+
+// 前端聚合：把 N 段 aggregateStats 结果合并成一份周期总数据
+function mergeSegments(segResults){
+  var merged = { range:'custom', from: segResults[0].from, to: segResults[segResults.length-1].to, tabs: {}, isbnBySource: {} };
+  var uvSetsByTab = {}; // 用于 UV 去重（各段 UV 是 set.size，段间可能有重复用户，只能取 max 近似；真实 UV 需要原始 uid 列表——后端只返回了 uv 数字，无法完美去重，因此这里用"最大段 UV"作为下界估计）
+  segResults.forEach(function(seg){
+    var t = seg.tabs || {};
+    Object.keys(t).forEach(function(tab){
+      var s = t[tab];
+      if (!merged.tabs[tab]) merged.tabs[tab] = { pv:0, uv:0, stayAvgSec:0, bounceRate:0, events:{}, devices:{}, referrers:{}, trend:[], _stayMs:0, _stayCnt:0, _sessSum:0, _bouncedSum:0 };
+      var m = merged.tabs[tab];
+      m.pv += (s.pv||0);
+      // UV 段间去重不可完美，取各段 UV 的最大值作为下界近似（会低估）；
+      // 若要精确，需要后端返回原始 uid 数组——现阶段先近似。
+      if ((s.uv||0) > m.uv) m.uv = s.uv||0;
+      if (!uvSetsByTab[tab]) uvSetsByTab[tab] = [];
+      uvSetsByTab[tab].push(s.uv||0);
+      // stay：还原成 sumMs/count 再合并（后端只返回 stayAvgSec，无法反推 count；这里对每段按 PV 加权）
+      m._stayMs += (s.stayAvgSec||0) * 1000 * (s.pv||0);
+      m._stayCnt += (s.pv||0);
+      // bounce：段的 bounceRate 已经是比率——按 PV 加权做近似
+      m._sessSum += (s.pv||0);
+      m._bouncedSum += (s.bounceRate||0) * (s.pv||0);
+      // events
+      var ev = s.events || {};
+      Object.keys(ev).forEach(function(k){ m.events[k] = (m.events[k]||0) + ev[k]; });
+      // devices
+      var dv = s.devices || {};
+      Object.keys(dv).forEach(function(k){ m.devices[k] = (m.devices[k]||0) + dv[k]; });
+      // referrers
+      var rf = s.referrers || {};
+      Object.keys(rf).forEach(function(k){ m.referrers[k] = (m.referrers[k]||0) + rf[k]; });
+      // trend：直接拼接（各段日期不重叠）
+      (s.trend||[]).forEach(function(p){ m.trend.push(p); });
+    });
+    // isbn 三来源
+    var ib = seg.isbnBySource || {};
+    Object.keys(ib).forEach(function(src){
+      if (!merged.isbnBySource[src]) merged.isbnBySource[src] = {};
+      (ib[src]||[]).forEach(function(it){
+        var isbn = it.isbn;
+        if (!merged.isbnBySource[src][isbn]) merged.isbnBySource[src][isbn] = { count:0, title:'', lastTs:0 };
+        var e = merged.isbnBySource[src][isbn];
+        e.count += (it.count||0);
+        if (it.title && !e.title) e.title = it.title;
+        if ((it.lastTs||0) > e.lastTs) e.lastTs = it.lastTs;
+      });
+    });
+  });
+  // 把 tabs 里的 stayAvgSec / bounceRate 从中间变量算出来 & 按日期排序 trend
+  Object.keys(merged.tabs).forEach(function(tab){
+    var m = merged.tabs[tab];
+    m.stayAvgSec = m._stayCnt ? Math.round((m._stayMs / m._stayCnt / 1000) * 10) / 10 : 0;
+    m.bounceRate = m._sessSum ? Math.round((m._bouncedSum / m._sessSum) * 1000) / 1000 : 0;
+    delete m._stayMs; delete m._stayCnt; delete m._sessSum; delete m._bouncedSum;
+    m.trend.sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+  });
+  // isbn 转数组 + Top 50
+  Object.keys(merged.isbnBySource).forEach(function(src){
+    var mp = merged.isbnBySource[src];
+    merged.isbnBySource[src] = Object.keys(mp).map(function(k){ return { isbn:k, count:mp[k].count, title:mp[k].title, lastTs:mp[k].lastTs }; })
+      .sort(function(a,b){ return b.count - a.count; })
+      .slice(0, 50);
+  });
+  return merged;
+}
+
 function load(){
   document.getElementById('loading').style.display='block';
   document.getElementById('content').style.display='none';
   document.getElementById('errorBox').style.display='none';
-  var url = API + '?from=' + FROM + '&to=' + TO + '&tab=all&_t=' + Date.now();
-  fetch(url, { credentials:'omit', cache:'no-store' })
-    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(data){
-      if (data && data.error) throw new Error('后端错误：' + data.error);
-      state.data = data;
-      render();
-    })
-    .catch(function(e){
-      var box = document.getElementById('errorBox');
-      box.textContent = '加载失败：' + e.message + '。请确认 /api/stats 已支持 from/to 参数（后端 stats.js + _tracker_lib.js 已升级）。';
-      box.style.display='block';
-      document.getElementById('loading').style.display='none';
-    });
+  var segs = buildSegments(FROM, TO, SEG_DAYS);
+  var loadEl = document.getElementById('loading');
+  loadEl.textContent = '加载中… 分段拉取 ' + segs.length + ' 段（每段 ≤' + SEG_DAYS + ' 天，规避 CF Workers 子请求上限）';
+  fetchSegments(segs, function(done, total){
+    loadEl.textContent = '加载中… ' + done + ' / ' + total + ' 段完成';
+  })
+  .then(function(segResults){
+    state.data = mergeSegments(segResults);
+    render();
+  })
+  .catch(function(e){
+    var box = document.getElementById('errorBox');
+    box.innerHTML = '加载失败：' + e.message + '<br><span style="color:#8b949e;font-size:11px">已把周期切成 '+segs.length+' 段拉取，仍失败的话通常是 KV 临时不可用，请点「重新拉取数据」重试。</span>';
+    box.style.display='block';
+    loadEl.style.display='none';
+  });
 }
 
 function render(){
@@ -282,7 +405,7 @@ function renderTotalKpis(){
     + kpi('评估天数', span + '<span class="unit">天</span>', FROM.slice(0,4)+'-'+FROM.slice(4,6)+'-'+FROM.slice(6,8) + ' → ' + TO.slice(0,4)+'-'+TO.slice(4,6)+'-'+TO.slice(6,8))
     + kpi('活跃模块', activeTabs + '<span class="unit">/ 7 个</span>', '有实际访问的 tab 数')
     + kpi('累计 PV', fmtNum(totalPV), '页面浏览量合计')
-    + kpi('UV 之和', fmtNum(sumUv), '各 tab UV 相加，含跨 tab 重复用户')
+    + kpi('UV 之和(下界)', fmtNum(sumUv), '各 tab 段间去重后取 max，会低估真实 UV')
     + kpi('累计事件', fmtNum(totalEvents), '按钮点击 + 功能使用总次数')
     + kpi('日均 PV', fmtNum(span ? Math.round(totalPV/span) : 0), '整体使用节奏')
     + kpi('平均停留', fmtSec(avgStay), 'PV 加权平均')
