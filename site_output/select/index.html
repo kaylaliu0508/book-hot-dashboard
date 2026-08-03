@@ -515,12 +515,14 @@ if(window.self !== window.top){
     </div>
   </div>
 
-  <!-- 2.4 7 月选品 by 周节奏图 -->
+  <!-- 2.4 选品 by 周节奏图（支持月份切换：默认最新月，可回看往期） -->
   <div class="panel" id="future-block-nodes">
     <div class="panel-title">
-      <span class="dot"></span>📅 <span style="color:#3b82f6;">7 月</span> 选品 by 周节奏图
+      <span class="dot"></span>📅 <span id="rhythmMonthLabel" style="color:#3b82f6;">7 月</span> 选品 by 周节奏图
       <span class="extra">W1-W4 × 品类优先级 · 选品方向 + 人群痛点 + 前置开跑节奏</span>
     </div>
+    <!-- 月份 tab 切换器（JS 注入）-->
+    <div class="rhythm-tabs" id="rhythmMonthTabs" role="tablist" aria-label="节奏图月份切换"></div>
     <!-- 周节奏矩阵 -->
     <div class="week-rhythm" id="weekRhythmGrid"></div>
   </div>

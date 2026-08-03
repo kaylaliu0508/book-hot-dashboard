@@ -268,7 +268,99 @@ const NODES_PERSONA = [
 //   2. 痛点（pain）= 目标人群的钩子，直接作为创意/标题灵感
 //   3. 部分单元格跨多周（span 字段），表示该方向贯穿整月
 //   4. 2026-06-30 起新增 7 月节奏：教辅主线=衔接升学+专项提升+多学段细分；童书=暑期亲子阅读高峰
-//
+//   5. 2026-07-27 新增月份 tab 切换：默认最新月，支持回看往期 5/6 月
+
+// ===== 5 月节奏（往期回看 · 母亲节+520+六一预热 · 教辅期中冲刺+高考前置铺品）=====
+const WEEK_RHYTHM_MAY = {
+  weeks: [
+    { key:'W1', summer:'五一小长假',         festival:'劳动节',     date:'5.1-5.7' },
+    { key:'W2', summer:'期中冲刺',           festival:'母亲节 5/11', date:'5.8-5.14' },
+    { key:'W3', summer:'520 送礼窗口',       festival:'520',        date:'5.15-5.21' },
+    { key:'W4', summer:'六一预热 + 高考倒计时', festival:'',           date:'5.22-5.31' }
+  ],
+  rows: [
+    {
+      cat:'教辅', icon:'📖', priority:'P0', colorClass:'wr-cat-color-jiaofu',
+      cells: [
+        {
+          week:'W1', span:2,
+          groups: [
+            { title:'📝 期中冲刺 + 错题归纳', items:['期中真题卷 / 错题本','单元测评 / 知识点梳理'], pain:'家长怕"期中考砸 家长会没面子"，孩子怕"和同学差距拉开"' },
+            { title:'🎓 高考冲刺（最后 30 天）', items:['高考押题卷 / 三年真题','高频考点 / 答题模板'], pain:'高三家长焦虑"最后一个月能不能再提 20 分"' }
+          ],
+          lead:'⏰ 5/1 起铺期中卷；高考卷 5/8 起前置，冲刺搜索同比 +65%'
+        },
+        {
+          week:'W3', span:1,
+          groups: [
+            { title:'📚 学科工具书 · 常态', items:['作文素材 / 单词速记','公式口诀 / 阅读理解'], pain:'家长"平时也想给娃补一补基本功"' }
+          ],
+          lead:'📚 常态铺货款，日销稳定'
+        },
+        {
+          week:'W4', span:1,
+          groups: [
+            { title:'☀️ 暑期预习前置铺品', items:['小升初分班题 / 初一预备','高一提升 / 高二暑假衔接'], pain:'家长"暑期不规划 秋季必掉队"，提前锁定预习方向' }
+          ],
+          lead:'⏰ 5/25 起前置暑期预习，搜索同比 +52%（进入 6 月加速）'
+        }
+      ]
+    },
+    {
+      cat:'童书', icon:'🧸', priority:'P0', colorClass:'wr-cat-color-tongshu',
+      cells: [
+        {
+          week:'W1', span:2,
+          groups: [
+            { title:'🌸 母亲节亲子共读', items:['亲子情感绘本 / 妈妈主题故事','家庭教育 / 育儿智慧'], pain:'妈妈想"和孩子有仪式感"；孩子想"给妈妈准备礼物"' }
+          ],
+          lead:'⏰ 5/1 起铺品，母亲节（5/11）当周爆量，搜索同比 +80%'
+        },
+        {
+          week:'W3',
+          direction:'520 情感教育：绘本 / 情商启蒙 / 家庭沟通',
+          pain:'年轻父母把 520 也当亲子仪式',
+          lead:'⏰ 520 短窗口，5/17 起铺品'
+        },
+        {
+          week:'W4',
+          direction:'六一预热：立体书 / 科普百科 / 漫画国学',
+          pain:'家长提前 1 周开始比价、下单，避免六一当天送不到',
+          lead:'⏰ 5/22-27 是六一预热黄金期，5/25 起铺高峰'
+        }
+      ]
+    },
+    {
+      cat:'社科', icon:'🏛', priority:'P1', colorClass:'wr-cat-color-sheke',
+      cells: [
+        {
+          week:'W1', span:2,
+          direction:'职场提升：沟通表达 / 副业理财 / 五一充电',
+          pain:'25-40 岁职场人"五一想利用假期充电"',
+          lead:'⏰ 五一假期高频阅读窗口，5/1-7 集中投放'
+        },
+        {
+          week:'W3', span:2,
+          direction:'520 心理学：亲密关系 / 沟通 / 情感成长',
+          pain:'年轻用户"想经营好感情但不会表达"',
+          lead:'⏰ 5/15 起铺，520 当周爆量'
+        }
+      ]
+    },
+    {
+      cat:'健康', icon:'🌿', priority:'P2', colorClass:'wr-cat-color-jiankang',
+      cells: [
+        {
+          week:'W1', span:4,
+          direction:'春夏轻食 + 减脂食谱 + 中老年膳食',
+          pain:'年轻女性"夏天前要瘦"；家庭主理人"换季食谱换花样"；中老年慢病饮食管理',
+          lead:'⏰ 全月铺底款，节气食谱 5/5（立夏）+ 5/21（小满）双峰'
+        }
+      ]
+    }
+  ]
+};
+
 // ===== 6 月节奏（原版保留）=====
 const WEEK_RHYTHM_JUNE = {
   weeks: [
@@ -560,8 +652,16 @@ const WEEK_RHYTHM_JULY = {
   ]
 };
 
-// ===== 当月切换：6/30 起切到 7 月初版（用户需求"马上7月，基于6月逻辑给7月初版"）=====
-// 切换规则：月份 >= 7 或 (6 月且 >= 30 号) 显示 7 月节奏；否则显示 6 月
+// ===== 月份注册表：最新在前，供节奏图 tab 切换使用 =====
+// 每项：key(用于内部标识/URL) · label(tab 显示文案) · sublabel(tab 下方小字) · data(节奏数据)
+const WEEK_RHYTHM_MONTHS = [
+  { key:'2026-07', label:'7 月',  sublabel:'当期', data: WEEK_RHYTHM_JULY },
+  { key:'2026-06', label:'6 月',  sublabel:'往期', data: WEEK_RHYTHM_JUNE },
+  { key:'2026-05', label:'5 月',  sublabel:'往期', data: WEEK_RHYTHM_MAY  }
+];
+
+// ===== 默认当月切换：6/30 起切到 7 月（原逻辑保留，兼容不打开 tab 场景）=====
+// 前端如启用 tab 切换器，会以 tab 选中项覆盖 window.WEEK_RHYTHM
 (function () {
   try {
     var now = new Date();
@@ -569,14 +669,25 @@ const WEEK_RHYTHM_JULY = {
     var d = now.getDate();
     if (m >= 7 || (m === 6 && d >= 30)) {
       window.WEEK_RHYTHM = WEEK_RHYTHM_JULY;
-    } else {
+      window.WEEK_RHYTHM_DEFAULT_KEY = '2026-07';
+    } else if (m === 6) {
       window.WEEK_RHYTHM = WEEK_RHYTHM_JUNE;
+      window.WEEK_RHYTHM_DEFAULT_KEY = '2026-06';
+    } else if (m === 5) {
+      window.WEEK_RHYTHM = WEEK_RHYTHM_MAY;
+      window.WEEK_RHYTHM_DEFAULT_KEY = '2026-05';
+    } else {
+      // 其它月份 fallback 到最新一档
+      window.WEEK_RHYTHM = WEEK_RHYTHM_MONTHS[0].data;
+      window.WEEK_RHYTHM_DEFAULT_KEY = WEEK_RHYTHM_MONTHS[0].key;
     }
   } catch (e) {
     window.WEEK_RHYTHM = WEEK_RHYTHM_JUNE;
+    window.WEEK_RHYTHM_DEFAULT_KEY = '2026-06';
   }
 })();
-// 同时暴露全局变量名（兼容 var 引用方式）
+// 暴露注册表 + 兼容 var 引用方式
+window.WEEK_RHYTHM_MONTHS = WEEK_RHYTHM_MONTHS;
 var WEEK_RHYTHM = window.WEEK_RHYTHM;
 
 // ==================== ADQ Top3 跑量书洞察（按周次组织 · 仅最新两期展示）====================

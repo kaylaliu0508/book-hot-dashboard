@@ -1040,12 +1040,33 @@ function renderCatShareBar() {
   }).join('');
 }
 
-// ==================== 6 月选品 by 周节奏图（替代旧的节点×人群画像）====================
-function renderWeekRhythm() {
+// ==================== 选品 by 周节奏图（月份可切换 · 默认最新月）====================
+// 2026-07-27 增强：支持月份 tab 切换，默认渲染 WEEK_RHYTHM_DEFAULT_KEY 对应月份
+let __rhythmCurrentKey = null; // 当前展示的月份 key
+function renderWeekRhythm(monthKey) {
   const grid = document.getElementById('weekRhythmGrid');
-  if (!grid || typeof WEEK_RHYTHM === 'undefined') return;
+  if (!grid) return;
 
-  const { weeks, rows } = WEEK_RHYTHM;
+  // 解析当前月份数据源
+  let data = null, curKey = null;
+  if (typeof window.WEEK_RHYTHM_MONTHS !== 'undefined' && Array.isArray(window.WEEK_RHYTHM_MONTHS)) {
+    // 用注册表切换
+    const wantKey = monthKey || __rhythmCurrentKey || window.WEEK_RHYTHM_DEFAULT_KEY || window.WEEK_RHYTHM_MONTHS[0].key;
+    const hit = window.WEEK_RHYTHM_MONTHS.find(m => m.key === wantKey) || window.WEEK_RHYTHM_MONTHS[0];
+    data = hit.data; curKey = hit.key;
+    __rhythmCurrentKey = curKey;
+    // 同步 panel-title 月份文案 + 更新 window.WEEK_RHYTHM 兼容旧引用
+    window.WEEK_RHYTHM = data;
+    const lbl = document.getElementById('rhythmMonthLabel');
+    if (lbl) lbl.textContent = hit.label;
+    // 渲染 tab 栏
+    renderRhythmMonthTabs(curKey);
+  } else if (typeof WEEK_RHYTHM !== 'undefined') {
+    data = WEEK_RHYTHM;
+  }
+  if (!data) return;
+
+  const { weeks, rows } = data;
   const weekIdx = {}; weeks.forEach((w,i) => weekIdx[w.key] = i + 1); // 第 1 列是品类标签列
 
   // 表头
@@ -1122,6 +1143,36 @@ function renderWeekRhythm() {
   });
 
   grid.innerHTML = html;
+}
+
+// 月份 tab 切换器渲染（幂等 · 每次 renderWeekRhythm 都会调用刷新 active 状态）
+function renderRhythmMonthTabs(activeKey) {
+  const bar = document.getElementById('rhythmMonthTabs');
+  if (!bar || typeof window.WEEK_RHYTHM_MONTHS === 'undefined') return;
+  const months = window.WEEK_RHYTHM_MONTHS;
+  bar.innerHTML = months.map(m => {
+    const isActive = m.key === activeKey;
+    const isDefault = m.key === window.WEEK_RHYTHM_DEFAULT_KEY;
+    return `
+      <button type="button" class="rhythm-tab${isActive ? ' active' : ''}" role="tab"
+              aria-selected="${isActive}" data-month="${m.key}"
+              title="切换到 ${m.label} 节奏图">
+        <span class="rt-label">${m.label}</span>
+        <span class="rt-sub">${isDefault ? '当期' : m.sublabel}</span>
+      </button>
+    `;
+  }).join('');
+  // 事件绑定（幂等：先移除后添加）
+  if (!bar.__rtBound) {
+    bar.addEventListener('click', function (e) {
+      const btn = e.target.closest('.rhythm-tab');
+      if (!btn) return;
+      const k = btn.getAttribute('data-month');
+      if (!k || k === __rhythmCurrentKey) return;
+      renderWeekRhythm(k);
+    });
+    bar.__rtBound = true;
+  }
 }
 
 // ==================== 典型跑量书拆解（精简版 · 仅最新 2 期展示）====================
