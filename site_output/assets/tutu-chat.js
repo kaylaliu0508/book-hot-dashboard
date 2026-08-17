@@ -309,11 +309,14 @@
       showTyping(hint);
 
       try {
+        var chatHeaders = {'Content-Type':'application/json'};
+        try { var ic = sessionStorage.getItem('bhd_invite_code_v2'); if (ic) chatHeaders['X-Invite-Code'] = ic; } catch(_){}
         var res = await fetch(API_BASE+'/api/chat', {
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:chatHeaders,
           body: JSON.stringify({messages: conversationHistory.slice(-10)}),
         });
+        if (res.status === 403) { try { sessionStorage.removeItem('bhd_invite_code_v2'); } catch(_){} location.reload(); return; }
         var data = await res.json();
         removeTyping();
         var reply = data.content || data.detail || '抱歉，暂时没有收到回复，请稍后再试～';
