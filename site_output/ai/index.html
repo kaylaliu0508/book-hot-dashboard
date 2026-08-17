@@ -499,17 +499,14 @@
 <script src="/assets/tracker.js?v=20260525a" defer></script>
 <script>
 (function(){
-  var KEY='bhd_invite_pass_v1';
+  // 2026-08-17 安全加固：登录态改读服务端校验后的邀请码（bhd_invite_code_v2）
   // 在 iframe 内（被主站嵌入）：完全跳过校验，让主站负责登录态
   try{
     if(window.top !== window.self || window.frameElement){ return; }
   }catch(e){ return; /* 跨域访问 top 抛异常说明在 iframe 中，直接渲染 */ }
   // 顶层访问：检查登录态
   try{
-    if(localStorage.getItem(KEY)==='1' || sessionStorage.getItem(KEY)==='1'){
-      try{ localStorage.setItem(KEY,'1'); }catch(e){}
-      return;
-    }
+    if(sessionStorage.getItem('bhd_invite_code_v2')){ return; }
   }catch(e){ return; }
   // 顶层 + 未登录 → 跳回主站
   location.replace('/');
@@ -921,19 +918,24 @@ async function sendMessage() {
 
   try {
     let response;
+    // 2026-08-17 安全加固：携带邀请码，403 时清除并跳回主站重新验证
+    const inviteHeaders = {};
+    try { const ic = sessionStorage.getItem('bhd_invite_code_v2'); if (ic) inviteHeaders['X-Invite-Code'] = ic; } catch(e){}
     if (imageToSend) {
       const form = new FormData();
       form.append('message', text || '');
       form.append('history', JSON.stringify(conversationHistory.slice(-6, -1)));
       form.append('image', imageToSend);
-      const res = await fetch(`${API_BASE}/api/chat/image`, { method: 'POST', body: form });
+      const res = await fetch(`${API_BASE}/api/chat/image`, { method: 'POST', headers: inviteHeaders, body: form });
+      if (res.status === 403) { try{ sessionStorage.removeItem('bhd_invite_code_v2'); }catch(e){} location.replace('/'); return; }
       response = await res.json();
     } else {
       const res = await fetch(`${API_BASE}/api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...inviteHeaders },
         body: JSON.stringify({ messages: conversationHistory.slice(-10) }),
       });
+      if (res.status === 403) { try{ sessionStorage.removeItem('bhd_invite_code_v2'); }catch(e){} location.replace('/'); return; }
       response = await res.json();
     }
 
