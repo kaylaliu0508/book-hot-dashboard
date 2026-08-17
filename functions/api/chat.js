@@ -7,6 +7,46 @@
  */
 import { BOOK_FAQ } from './_faq_data.js';
 
+// ── 安全加固（2026-08-17）：CORS 白名单 + 单 IP 限流 + 每日配额熔断 + 邀请码校验 ──
+const ALLOWED_ORIGINS = [
+  "https://book-hot-dashboard.pages.dev",
+  "http://localhost:8788",
+  "http://127.0.0.1:8788"
+];
+
+function pickOrigin(request) {
+  const o = request.headers.get("Origin") || "";
+  return ALLOWED_ORIGINS.includes(o) ? o : ALLOWED_ORIGINS[0];
+}
+
+// 滑动窗口限流：每 IP 每分钟最多 10 次（isolate 内存级，防脚本刷量）
+const rateBuckets = new Map();
+const RATE_LIMIT = 10;
+const RATE_WINDOW_MS = 60 * 1000;
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const hits = (rateBuckets.get(ip) || []).filter(t => now - t < RATE_WINDOW_MS);
+  if (hits.length >= RATE_LIMIT) {
+    rateBuckets.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  rateBuckets.set(ip, hits);
+  if (rateBuckets.size > 5000) rateBuckets.clear();
+  return false;
+}
+
+// 全站每日配额熔断（isolate 内存级计数，防 IP 池绕过单 IP 限流）
+let dailyCounter = { date: "", count: 0 };
+
+function hitDailyQuota(limit) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (dailyCounter.date !== today) dailyCounter = { date: today, count: 0 };
+  dailyCounter.count += 1;
+  return dailyCounter.count > limit;
+}
+
 // ── 意图路由 ──
 const INTENT_RULES = [
   {
@@ -198,15 +238,46 @@ const BAOBAO_LINK = "\n\n---\n📖 **图书百宝箱**：https://doc.weixin.qq.c
 // ── 主处理逻辑 ──
 export async function onRequestPost(context) {
   const { request, env } = context;
+  const origin = pickOrigin(request);
+
+  // 限流：超出频率直接 429
+  const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
+  if (isRateLimited(clientIP)) {
+    return new Response(JSON.stringify({
+      content: "⏱️ 操作太频繁啦，请 1 分钟后再试～",
+      source: "rate_limit",
+      intent_label: "⏱️ 限流保护"
+    }), { status: 429, headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": origin } });
+  }
+
+  // 邀请码服务端校验（配置 INVITE_CODE 环境变量后强制生效）
+  const INVITE_CODE = env.INVITE_CODE || "";
+  if (INVITE_CODE && request.headers.get("X-Invite-Code") !== INVITE_CODE) {
+    return new Response(JSON.stringify({
+      content: "🔒 邀请码无效或已过期，请刷新页面重新输入",
+      source: "auth",
+      intent_label: "🔒 访问受限"
+    }), { status: 403, headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": origin } });
+  }
+
+  // 全站每日配额熔断：超限全站暂停，防止大规模刷量
+  const dailyLimit = parseInt(env.DAILY_QUOTA || "500", 10);
+  if (hitDailyQuota(dailyLimit)) {
+    return new Response(JSON.stringify({
+      content: "😴 今日服务额度已用完，请明天再来～\n\n如有紧急需求请联系管理员。",
+      source: "quota",
+      intent_label: "😴 配额熔断"
+    }), { status: 429, headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": origin } });
+  }
   
   const DEEPSEEK_KEY = env.DEEPSEEK_API_KEY;
-  const MIAOWEN_TOKEN = env.MIAOWEN_TOKEN || "sk-mw-35830ece35964d41bfa1a83cb6232f61";
+  const MIAOWEN_TOKEN = env.MIAOWEN_TOKEN || ""; // 安全加固：不再硬编码兜底 Token
   
   if (!DEEPSEEK_KEY) {
     return new Response(JSON.stringify({ 
       content: "⚠️ 服务配置异常，请联系管理员设置 DEEPSEEK_API_KEY", 
       source: "error" 
-    }), { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" } });
+    }), { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": origin } });
   }
 
   let body;
@@ -216,7 +287,13 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: "无效请求" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
 
-  const messages = body.messages || [];
+  // 输入加固：最多保留最近 12 条消息，单条截断至 2000 字符，防止超大 history 烧 token
+  const messages = (Array.isArray(body.messages) ? body.messages : [])
+    .slice(-12)
+    .map(m => ({
+      role: m && m.role === "assistant" ? "assistant" : "user",
+      content: String((m && m.content) || "").slice(0, 2000)
+    }));
   const userMsgs = messages.filter(m => m.role === "user");
   if (!userMsgs.length) {
     return new Response(JSON.stringify({ error: "消息不能为空" }), { status: 400, headers: { "Content-Type": "application/json" } });
@@ -279,13 +356,26 @@ export async function onRequestPost(context) {
   }
 }
 
+// GET：轻量校验邀请码（前端邀请门专用，不消耗 LLM 额度）
+export async function onRequestGet(context) {
+  const { request, env } = context;
+  const origin = pickOrigin(request);
+  const INVITE_CODE = env.INVITE_CODE || "";
+  const ok = !INVITE_CODE || request.headers.get("X-Invite-Code") === INVITE_CODE;
+  return new Response(JSON.stringify({ ok }), {
+    status: ok ? 200 : 403,
+    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": origin }
+  });
+}
+
 // OPTIONS 预检请求
-export async function onRequestOptions() {
+export async function onRequestOptions(context) {
+  const origin = pickOrigin(context.request);
   return new Response(null, {
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-Invite-Code",
     }
   });
 }
@@ -371,7 +461,7 @@ function jsonResponse(data) {
   return new Response(JSON.stringify(data), {
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": ALLOWED_ORIGINS[0]
     }
   });
 }
