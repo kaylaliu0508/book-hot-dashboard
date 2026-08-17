@@ -150,30 +150,53 @@ tr.rl td{background:rgba(230,57,70,.02)}
 </style>
 <script>
 (function(){
-  var KEY='bhd_invite_pass_v1', CODE='6688';
-  // 已通过则立即移除遮罩
-  try{ if(sessionStorage.getItem(KEY)==='1'){ var g=document.getElementById('invite-gate'); if(g) g.parentNode.removeChild(g); return; } }catch(e){}
-  document.body.classList.add('invite-locked');
-  var gate=document.getElementById('invite-gate'),
-      inp=document.getElementById('invite-input'),
-      btn=document.getElementById('invite-btn'),
-      err=document.getElementById('invite-err');
-  setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
-  function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
-  function pass(){
-    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+  var CODE_KEY='bhd_invite_code_v2';
+  // 邀请码由服务端校验（2026-08-17 安全加固），前端不再硬编码真实邀请码
+  function removeGate(){
+    var g=document.getElementById('invite-gate');
+    if(!g) return;
     document.body.classList.remove('invite-locked');
-    gate.style.transition='opacity .3s'; gate.style.opacity='0';
-    setTimeout(function(){ if(gate&&gate.parentNode) gate.parentNode.removeChild(gate); },320);
+    g.style.transition='opacity .3s'; g.style.opacity='0';
+    setTimeout(function(){ if(g&&g.parentNode) g.parentNode.removeChild(g); },320);
   }
-  function submit(){
-    var v=(inp.value||'').trim();
-    if(!v){ fail('请输入邀请码'); return; }
-    if(v===CODE){ pass(); } else { fail(); }
+  function verify(code,onOk,onFail){
+    fetch('/api/chat',{method:'GET',headers:{'X-Invite-Code':code}})
+      .then(function(r){ if(r.ok) onOk(); else onFail(); })
+      .catch(function(){ onFail('网络异常，请重试'); });
   }
-  btn.addEventListener('click',submit);
-  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
-  inp.addEventListener('input',function(){ err.textContent=''; });
+  // 已保存邀请码：先经服务端校验，通过才移除遮罩
+  var saved=null;
+  try{ saved=sessionStorage.getItem(CODE_KEY); }catch(e){}
+  if(saved){
+    verify(saved,function(){ removeGate(); },function(){ try{sessionStorage.removeItem(CODE_KEY);}catch(e){} initGate(); });
+    return;
+  }
+  initGate();
+  function initGate(){
+    document.body.classList.add('invite-locked');
+    var gate=document.getElementById('invite-gate'),
+        inp=document.getElementById('invite-input'),
+        btn=document.getElementById('invite-btn'),
+        err=document.getElementById('invite-err');
+    setTimeout(function(){ try{ inp.focus(); }catch(e){} },50);
+    function fail(msg){ err.textContent=msg||'邀请码不正确，请重试'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); inp.select(); }
+    function submit(){
+      var v=(inp.value||'').trim();
+      if(!v){ fail('请输入邀请码'); return; }
+      btn.disabled=true;
+      verify(v,function(){
+        btn.disabled=false;
+        try{ sessionStorage.setItem(CODE_KEY,v); }catch(e){}
+        removeGate();
+      },function(msg){
+        btn.disabled=false;
+        fail(msg);
+      });
+    }
+    btn.addEventListener('click',submit);
+    inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+    inp.addEventListener('input',function(){ err.textContent=''; });
+  }
 })();
 </script>
 <!-- ===== /邀请码登录拦截层 ===== -->
