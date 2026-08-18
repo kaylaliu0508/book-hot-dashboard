@@ -1146,12 +1146,6 @@
     font-size: 11px; color: var(--text-muted);
     display: flex; gap: 10px;
   }
-  .script-relevance {
-    font-size: 12px;
-    color: var(--accent-summer);
-    font-weight: 600;
-  }
-
   .script-body {
     padding: 18px 20px;
   }
@@ -2135,7 +2129,6 @@ function renderScriptCard(s, c){
       <div class="script-head">
         <span class="script-cat-tag" style="${catTagStyle}">${cat.icon||''} ${cat.name||''}</span>
         <div class="script-title">${s.title}</div>
-        <div class="script-relevance">暑期相关度 ${s.summer_relevance}</div>
         <div class="script-meta">
           <span>⏱ ${s.duration_label || s.duration_range || (s.duration_sec ? s.duration_sec+'s' : '-')}</span>
           ${s.warning ? `<span class="warn-chip" title="${s.warning}">⚠️ 合规提示</span>` : ''}
