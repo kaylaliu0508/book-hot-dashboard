@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <title>图书行业创意洞察 · 分类目跑量情报站</title>
-<meta name="description" content="分类目创意洞察 · 教辅 / 童书 / 社科 / 泛健康 跑量脚本与标签" />
+<meta name="description" content="教辅类目创意洞察 · Top 消耗素材跑量脚本与标签拆解" />
 <meta property="og:title" content="图书行业创意洞察 · 分类目跑量情报站" />
 <meta property="og:description" content="分类目创意洞察 · 4 大类目跑量脚本与标签" />
 <style>
@@ -1767,24 +1767,20 @@
 
 <!-- ============ 左侧锚点导览 ============ -->
 <aside class="side-nav" id="sideNav">
-  <a class="side-nav-item active" href="#calendar" data-target="calendar" data-track="summer_nav_calendar" data-track-tab="summer">
+  <a class="side-nav-item active" href="#scripts" data-target="scripts" data-track="summer_nav_scripts" data-track-tab="summer">
     <span class="nav-num">①</span>
-    <span class="nav-label">暑期日历</span>
-  </a>
-  <a class="side-nav-item" href="#scripts" data-target="scripts" data-track="summer_nav_scripts" data-track-tab="summer">
-    <span class="nav-num">②</span>
     <span class="nav-label">脚本总结</span>
   </a>
   <a class="side-nav-item" href="#tags" data-target="tags" data-track="summer_nav_tags" data-track-tab="summer">
-    <span class="nav-num">③</span>
+    <span class="nav-num">②</span>
     <span class="nav-label">标签总结</span>
   </a>
 </aside>
 
 <!-- ============ Hero ============ -->
 <section class="hero">
-  <h1>分类目创意洞察</h1>
-  <p class="subtitle">教辅 · 童书 · 社科 · 泛健康｜4 大类目跑量脚本与标签</p>
+  <h1>教辅类目创意洞察</h1>
+  <p class="subtitle">教辅｜Top 消耗素材跑量脚本与标签拆解</p>
 </section>
 
 <!-- ============ 免责声明 ============ -->
@@ -1801,28 +1797,11 @@
 
 <main class="main">
 
-  <!-- ============ 模块①：暑期日历 ============ -->
-  <section class="section" id="calendar">
-    <div class="section-header">
-      <div class="section-num">①</div>
-      <div style="flex:1;">
-        <div class="section-title">暑期教育日历</div>
-        <div class="section-desc">2026年暑期教育相关重大事件</div>
-      </div>
-      <div class="section-update" id="calendarUpdate">2026年5-8月 · 全国统一</div>
-    </div>
-
-    <div class="calendar-grid" id="calendarGrid"></div>
-  </section>
-
-  <!-- ============ 类目切换条（教辅/童书/社科/泛健康，控制 ②③ 章节）============ -->
+  <!-- ============ 类目切换条（仅保留教辅）============ -->
   <div class="cat-switch-bar" id="catSwitchBar">
     <div class="cat-switch-label">📂 选择类目：</div>
     <div class="cat-switch-tabs">
       <button class="cat-tab active" data-cat="jiaofu"   data-label="教辅">📘 教辅</button>
-      <button class="cat-tab" data-cat="childbook" data-label="童书">📕 童书</button>
-      <button class="cat-tab"        data-cat="social"   data-label="社科">📗 社科</button>
-      <button class="cat-tab"        data-cat="health"   data-label="泛健康">📙 泛健康</button>
     </div>
   </div>
   <style>
@@ -1867,10 +1846,10 @@
     .v2-accordion .struct-step-v2.is-open .v2-caret{transform:rotate(180deg);color:#a78bfa}
   </style>
 
-  <!-- ============ 模块②：分类目爆款脚本总结 ============ -->
+  <!-- ============ 模块①：分类目爆款脚本总结 ============ -->
   <section class="section" id="scripts">
     <div class="section-header">
-      <div class="section-num">②</div>
+      <div class="section-num">①</div>
       <div style="flex:1;">
         <div class="section-title"><span id="scriptsCatLabel">教辅</span>类目爆款脚本总结</div>
         <div class="section-desc" id="scriptsCatDesc"></div>
@@ -1887,10 +1866,10 @@
     <div class="script-list" id="scriptList"></div>
   </section>
 
-  <!-- ============ 模块③：分类目爆款标签总结 ============ -->
+  <!-- ============ 模块②：分类目爆款标签总结 ============ -->
   <section class="section" id="tags">
     <div class="section-header">
-      <div class="section-num">③</div>
+      <div class="section-num">②</div>
       <div style="flex:1;">
         <div class="section-title"><span id="tagsCatLabel">教辅</span>类目爆款标签总结</div>
         <div class="section-desc">五维度拆解 · 痛点 / 效果 / 目标用户 / 场景 / 营销方式</div>
@@ -1916,190 +1895,14 @@
 try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('summer'); }); }catch(e){}
 // ============ 数据源路径 ============
 // cache-bust: 加版本号确保每次更新数据后浏览器拉取最新版
-const VER = 'v71-social-tags-20260618';
-const CALENDAR_JSON = './data/calendar_events.json?v=' + VER;
-// 分类目数据源（②③ 章节由 cat-switch-bar 控制）
+const VER = 'v100-jiaofu-top200-20260817';
+// 类目数据源（仅教辅）
 let CURRENT_CAT = 'jiaofu';
 function buildScriptsUrl(cat){ return `./data/creative_scripts_${cat}.json?v=` + VER; }
 function buildTagsUrl(cat){    return `./data/creative_tags_${cat}.json?v=`   + VER; }
 // 兼容旧引用
 const SCRIPTS_JSON = buildScriptsUrl(CURRENT_CAT);
 const TAGS_JSON    = buildTagsUrl(CURRENT_CAT);
-const TREND_JSON = './data/category_trend.json?v=' + VER;
-
-// ============ 模块①：暑期日历（全国统一）============
-let calendarData = null;
-let trendData = null;
-
-Promise.all([
-  fetch(CALENDAR_JSON).then(r=>r.json()),
-  fetch(TREND_JSON).then(r=>r.json()).catch(()=>null)
-]).then(([cal, trend])=>{
-  calendarData = cal;
-  trendData = trend;
-  renderCalendar();
-});
-
-function renderTrendInMonth(monthId){
-  if(!trendData || !trendData.months) return '';
-  const m = trendData.months.find(x => x.id === monthId);
-  if(!m || !m.categories || !m.categories.length) return '';
-
-  const cats = m.categories.map(c => {
-    const heat = Math.max(1, Math.min(5, c.heat || 3));
-    const heatHtml = Array.from({length:5}).map((_,i)=>
-      i < heat ? '<span class="lit">●</span>' : '<span class="dim">●</span>'
-    ).join('');
-    const examples = (c.examples || []).join(' · ');
-    return `
-      <div class="trend-cat heat-${heat}">
-        <div class="cat-row">
-          <span class="cat-name">${c.name}</span>
-          <span class="cat-heat">${heatHtml}</span>
-        </div>
-        ${c.audience ? `<span class="cat-audience">${c.audience}</span>` : ''}
-        ${examples ? `<div class="cat-examples">📚 ${examples}</div>` : ''}
-        ${c.creative_hint ? `<div class="cat-hint">💡 ${c.creative_hint}</div>` : ''}
-      </div>
-    `;
-  }).join('');
-
-  return `
-    <div class="month-trend">
-      <div class="trend-title">📈 选品风向 <span class="trend-tag">经验推演</span></div>
-      ${m.theme ? `<div class="trend-theme">${m.theme}</div>` : ''}
-      <div class="trend-cats">${cats}</div>
-    </div>
-  `;
-}
-
-function renderCalendar(){
-  if(!calendarData) return;
-  const regionMap = {};
-  (calendarData.regions || []).forEach(r => regionMap[r.id] = r);
-
-  const monthOrder = ['2026-05','2026-06','2026-07','2026-08'];
-  const monthLabels = {'2026-05':'5月','2026-06':'6月','2026-07':'7月','2026-08':'8月'};
-  const grouped = {};
-  monthOrder.forEach(m => grouped[m] = []);
-
-  calendarData.events.forEach(ev=>{
-    const mon = ev.date.substring(0,7);
-    if(grouped[mon]) grouped[mon].push(ev);
-  });
-
-  Object.keys(grouped).forEach(m=>{
-    grouped[m].sort((a,b)=> a.date.localeCompare(b.date));
-  });
-
-  const grid = document.getElementById('calendarGrid');
-
-  // 教育核心事件判定：考试 / 放假 / 行业节点 / 教育政策（但不含营养日/健康日/宣传月这种弱相关）
-  // 次要事件判定：memorial（母亲节/儿童节/建党节）、holiday（劳动节/端午）、弱相关policy
-  const MINOR_POLICY_KEYS = ['营养日','博物馆日','心理健康日','环境日'];
-  function classifyEvent(ev){
-    const cat = ev.category;
-    const title = ev.title || '';
-    // 弱化组
-    if(cat === 'memorial' || cat === 'holiday') {
-      return {level: 'minor', catClass: 'cat-minor', badge: null};
-    }
-    if(cat === 'policy' && MINOR_POLICY_KEYS.some(k => title.includes(k))){
-      return {level: 'minor', catClass: 'cat-minor', badge: null};
-    }
-    // 教育核心组
-    const catClassMap = {
-      exam: {cls: 'cat-exam', label: '考试'},
-      vacation: {cls: 'cat-vacation', label: '假期'},
-      industry: {cls: 'cat-industry', label: '行业'},
-      policy: {cls: 'cat-policy-edu', label: '政策'},
-    };
-    const info = catClassMap[cat] || {cls: 'cat-industry', label: '教育'};
-    return {level: 'core', catClass: info.cls, badge: info.label};
-  }
-
-  function formatDate(dateStr, endDate){
-    // 只显示 月/日
-    const d = dateStr.substring(5).replace('-', '/');
-    if(endDate){
-      const e = endDate.substring(5).replace('-', '/');
-      return `${d} ~ ${e}`;
-    }
-    return d;
-  }
-
-  grid.innerHTML = monthOrder.map(month=>{
-    const events = grouped[month];
-    if(!events || events.length===0) return '';
-    const coreCount = events.filter(e => classifyEvent(e).level === 'core').length;
-
-    // 同一日期的事件合并为一组
-    const byDate = {};
-    events.forEach(ev => {
-      const k = ev.date + (ev.end_date ? `~${ev.end_date}` : '');
-      (byDate[k] = byDate[k] || []).push(ev);
-    });
-    const dateGroups = Object.keys(byDate).sort().map(k => byDate[k]);
-
-    return `
-      <div class="month-card">
-        <div class="month-header">
-          <span class="month-big">${monthLabels[month]}</span>
-          <span style="color:var(--text-muted);font-size:13px;">教育节点</span>
-          <span class="month-meta">${coreCount > 0 ? '含核心节点' : ''}${coreCount > 0 && events.length - coreCount > 0 ? ' · ' : ''}${events.length - coreCount > 0 ? '含参考节点' : ''}</span>
-        </div>
-        <div class="month-events">
-          ${dateGroups.map(group => {
-            const first = group[0];
-            const dayText = formatDate(first.date, first.end_date);
-            // 组内以最高等级为准（core > minor）
-            const groupLevel = group.some(e => classifyEvent(e).level === 'core') ? 'core' : 'minor';
-            // 组内第一个核心事件决定主色
-            const coreEv = group.find(e => classifyEvent(e).level === 'core') || group[0];
-            const coreInfo = classifyEvent(coreEv);
-
-            // 单事件直接渲染
-            if(group.length === 1){
-              const ev = group[0];
-              const info = classifyEvent(ev);
-              const region = regionMap[ev.region];
-              const regionTag = (region && ev.region !== 'all') ? `<span style="font-size:11px;color:var(--text-muted);margin-left:4px;">${region.icon}${region.name}</span>` : '';
-              const badge = info.badge ? `<span class="cat-badge" style="background:var(--color-soft);color:var(--color-main);">${info.badge}</span>` : '';
-              return `
-                <div class="cal-event level-${info.level} ${info.catClass}">
-                  <span class="date"><span class="day">${dayText}</span>${regionTag}</span>
-                  <span class="title">${ev.title}${badge}</span>
-                  ${ev.scene ? `<span class="scene">📍 ${ev.scene}</span>` : ''}
-                </div>
-              `;
-            }
-
-            // 多事件：日期 + 子条目列表
-            const itemsHtml = group.map(ev => {
-              const info = classifyEvent(ev);
-              const region = regionMap[ev.region];
-              const regionTag = (region && ev.region !== 'all') ? `<span class="sub-region">${region.icon}${region.name}</span>` : '';
-              const badge = info.badge ? `<span class="cat-badge cat-badge-${info.catClass}">${info.badge}</span>` : '';
-              return `
-                <div class="sub-event sub-${info.level} ${info.catClass}">
-                  <span class="sub-title">${ev.title}${regionTag}${badge}</span>
-                  ${ev.scene ? `<span class="sub-scene">📍 ${ev.scene}</span>` : ''}
-                </div>
-              `;
-            }).join('');
-
-            return `
-              <div class="cal-event-group level-${groupLevel} ${coreInfo.catClass}">
-                <div class="group-date"><span class="day">${dayText}</span><span class="group-count">多事件</span></div>
-                <div class="group-items">${itemsHtml}</div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `;
-  }).filter(Boolean).join('');
-}
 
 // ============ 模块②：分类目爆款脚本总结 ============
 let scriptsData = null;
@@ -2568,7 +2371,7 @@ function renderCombos(){
 // ============ 左侧导航：平滑滚动 + 滚动监听激活态 ============
 (function(){
   const navItems = document.querySelectorAll('.side-nav-item');
-  const sections = ['calendar', 'scripts', 'tags'].map(id => document.getElementById(id));
+  const sections = ['scripts', 'tags'].map(id => document.getElementById(id));
 
   // 平滑滚动 + 阻止默认 hash 跳转闪烁
   navItems.forEach(item => {
