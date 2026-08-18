@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>图书行业创意洞察 · 分类目跑量情报站</title>
-<meta name="description" content="教辅类目创意洞察 · Top 消耗素材跑量脚本与标签拆解" />
-<meta property="og:title" content="图书行业创意洞察 · 分类目跑量情报站" />
-<meta property="og:description" content="分类目创意洞察 · 4 大类目跑量脚本与标签" />
+<title>开学季创意灵感 · 跑量素材拆解</title>
+<meta name="description" content="开学季创意灵感 · Top 消耗素材跑量脚本与标签拆解" />
+<meta property="og:title" content="开学季创意灵感" />
+<meta property="og:description" content="开学季创意灵感 · Top 消耗素材跑量脚本与标签拆解" />
 <style>
   :root {
     --bg-deep: #0a0e1a;
@@ -1702,8 +1702,8 @@
 </style>
 <script>
 (function(){
-  var CODE_KEY='bhd_invite_code_v2';
-  // 邀请码由服务端校验（2026-08-17 安全加固），前端不再硬编码真实邀请码
+  var CODE_KEY='bhd_invite_pass_v1';
+  // 邀请码固定为 6688（前端硬编码，与旧版一致）
   function removeGate(){
     var g=document.getElementById('invite-gate');
     if(!g) return;
@@ -1712,9 +1712,7 @@
     setTimeout(function(){ if(g&&g.parentNode) g.parentNode.removeChild(g); },320);
   }
   function verify(code,onOk,onFail){
-    fetch('/api/chat',{method:'GET',headers:{'X-Invite-Code':code}})
-      .then(function(r){ if(r.ok) onOk(); else onFail(); })
-      .catch(function(){ onFail('网络异常，请重试'); });
+    if(code==='6688') onOk(); else onFail();
   }
   var saved=null;
   try{ saved=sessionStorage.getItem(CODE_KEY); }catch(e){}
@@ -1761,7 +1759,7 @@
 <a href="/#p5" class="tb" data-track="tab_btn_script_gen">一键生成口播脚本</a>
 <a href="/#p6" class="tb">图片文案生成</a>
 <a href="/#p3" class="tb" data-track="tab_btn_ai_audit">AI预审</a>
-<a href="/summer/" class="tb on" data-track="tab_btn_summer">📂 创意洞察</a>
+<a href="/summer/" class="tb on" data-track="tab_btn_summer">开学季创意灵感</a>
 <a href="/#pai" class="tb tb-ai" data-track="tab_btn_ai_assistant">🤖 AI营销助手<span style="background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle">NEW</span></a>
 </div></div>
 
@@ -1779,8 +1777,8 @@
 
 <!-- ============ Hero ============ -->
 <section class="hero">
-  <h1>教辅类目创意洞察</h1>
-  <p class="subtitle">教辅｜Top 消耗素材跑量脚本与标签拆解</p>
+  <h1>开学季创意灵感</h1>
+  <p class="subtitle">2026 开学季 · Top 消耗素材跑量脚本与标签拆解</p>
 </section>
 
 <!-- ============ 免责声明 ============ -->
@@ -1797,20 +1795,7 @@
 
 <main class="main">
 
-  <!-- ============ 类目切换条（仅保留教辅）============ -->
-  <div class="cat-switch-bar" id="catSwitchBar">
-    <div class="cat-switch-label">📂 选择类目：</div>
-    <div class="cat-switch-tabs">
-      <button class="cat-tab active" data-cat="jiaofu"   data-label="教辅">📘 教辅</button>
-    </div>
-  </div>
   <style>
-    .cat-switch-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;margin:18px 0;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(37,99,235,.06));border-radius:12px;border:1px solid rgba(124,58,237,.18);flex-wrap:wrap}
-    .cat-switch-label{font-size:13px;color:var(--text-muted);font-weight:600;flex-shrink:0}
-    .cat-switch-tabs{display:flex;gap:8px;flex-wrap:wrap}
-    .cat-tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
-    .cat-tab:hover{background:rgba(124,58,237,.12);color:#fff;border-color:rgba(124,58,237,.4)}
-    .cat-tab.active{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border-color:transparent;box-shadow:0 4px 12px -2px rgba(124,58,237,.4)}
     .empty-state{padding:60px 30px;text-align:center;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.12);border-radius:14px;margin:20px 0}
     .empty-state .es-ic{font-size:48px;margin-bottom:14px;opacity:.5}
     .empty-state .es-title{font-size:15px;color:var(--text);font-weight:600;margin-bottom:6px}
@@ -1846,12 +1831,12 @@
     .v2-accordion .struct-step-v2.is-open .v2-caret{transform:rotate(180deg);color:#a78bfa}
   </style>
 
-  <!-- ============ 模块①：分类目爆款脚本总结 ============ -->
+  <!-- ============ 模块①：爆款脚本总结 ============ -->
   <section class="section" id="scripts">
     <div class="section-header">
       <div class="section-num">①</div>
       <div style="flex:1;">
-        <div class="section-title"><span id="scriptsCatLabel">教辅</span>类目爆款脚本总结</div>
+        <div class="section-title">爆款脚本总结</div>
         <div class="section-desc" id="scriptsCatDesc"></div>
       </div>
     </div>
@@ -1866,12 +1851,12 @@
     <div class="script-list" id="scriptList"></div>
   </section>
 
-  <!-- ============ 模块②：分类目爆款标签总结 ============ -->
+  <!-- ============ 模块②：爆款标签总结 ============ -->
   <section class="section" id="tags">
     <div class="section-header">
       <div class="section-num">②</div>
       <div style="flex:1;">
-        <div class="section-title"><span id="tagsCatLabel">教辅</span>类目爆款标签总结</div>
+        <div class="section-title">爆款标签总结</div>
         <div class="section-desc">五维度拆解 · 痛点 / 效果 / 目标用户 / 场景 / 营销方式</div>
       </div>
     </div>
@@ -1886,7 +1871,7 @@
 </main>
 
 <footer class="footer">
-  <div>📊 图书灵感中心 · 分类目创意洞察</div>
+  <div>📊 图书灵感中心 · 开学季创意灵感</div>
   <div>© 2026</div>
 </footer>
 
@@ -1895,8 +1880,8 @@
 try{ window.addEventListener('load',function(){ if(window.tracker) window.tracker.pv('summer'); }); }catch(e){}
 // ============ 数据源路径 ============
 // cache-bust: 加版本号确保每次更新数据后浏览器拉取最新版
-const VER = 'v100-jiaofu-top200-20260817';
-// 类目数据源（仅教辅）
+const VER = 'v101-kxq-20260818';
+// 数据源固定指向教辅素材（2026 开学季 Top 消耗）
 let CURRENT_CAT = 'jiaofu';
 function buildScriptsUrl(cat){ return `./data/creative_scripts_${cat}.json?v=` + VER; }
 function buildTagsUrl(cat){    return `./data/creative_tags_${cat}.json?v=`   + VER; }
@@ -1904,7 +1889,7 @@ function buildTagsUrl(cat){    return `./data/creative_tags_${cat}.json?v=`   + 
 const SCRIPTS_JSON = buildScriptsUrl(CURRENT_CAT);
 const TAGS_JSON    = buildTagsUrl(CURRENT_CAT);
 
-// ============ 模块②：分类目爆款脚本总结 ============
+// ============ 模块②：爆款脚本总结 ============
 let scriptsData = null;
 
 function loadScripts(cat){
@@ -1932,8 +1917,8 @@ function renderScriptList(){
     document.getElementById('scriptList').innerHTML = `
       <div class="empty-state">
         <div class="es-ic">📭</div>
-        <div class="es-title">本类目素材采集中</div>
-        <div class="es-desc">本类目暂无已采集的代表案例，<br/>素材入库后将自动生成 6 大套路 × 代表案例的脚本拆解。</div>
+        <div class="es-title">素材采集中</div>
+        <div class="es-desc">暂无已采集的代表案例，<br/>素材入库后将自动生成 6 大套路 × 代表案例的脚本拆解。</div>
       </div>`;
     return;
   }
@@ -2187,7 +2172,7 @@ function renderScriptCard(s, c){
   `;
 }
 
-// ============ 模块③：分类目爆款标签总结 ============
+// ============ 模块③：爆款标签总结 ============
 let tagsData = null;
 
 function loadTags(cat){
@@ -2198,26 +2183,6 @@ function loadTags(cat){
   });
 }
 loadTags(CURRENT_CAT);
-
-// ============ 类目切换条 ============
-(function bindCatSwitch(){
-  const bar = document.getElementById('catSwitchBar');
-  if(!bar) return;
-  bar.querySelectorAll('.cat-tab').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const cat = btn.dataset.cat;
-      const label = btn.dataset.label;
-      if(cat === CURRENT_CAT) return;
-      CURRENT_CAT = cat;
-      bar.querySelectorAll('.cat-tab').forEach(b=>b.classList.toggle('active', b===btn));
-      const lbl1 = document.getElementById('scriptsCatLabel'); if(lbl1) lbl1.textContent = label;
-      const lbl2 = document.getElementById('tagsCatLabel');    if(lbl2) lbl2.textContent = label;
-      try{ window.tracker && window.tracker.feature('cat_switch',{cat:cat},null,'summer'); }catch(e){}
-      loadScripts(cat);
-      loadTags(cat);
-    });
-  });
-})();
 
 function renderDimOverview(){
   const html = tagsData.dimensions.map(d=>{
@@ -2240,7 +2205,7 @@ function renderDimSections(){
     document.getElementById('dimSections').innerHTML = `
       <div class="empty-state">
         <div class="es-ic">🏷️</div>
-        <div class="es-title">本类目标签库采集中</div>
+        <div class="es-title">标签库采集中</div>
         <div class="es-desc">${(tagsData && tagsData.data_note) || '素材入库后将按 5 维度（痛点 / 效果 / 目标用户 / 场景 / 营销方式）自动聚合标签云。'}</div>
       </div>`;
     return;
