@@ -1,8 +1,600 @@
 // 周榜数据（自动从 xlsx 解析所有 sheet）
-// 生成时间: 2026-08-18 11:40:19（多 sheet 增量: 2026-08-10, 2026-08-18）
-// 共 32 期数据
+// 生成时间: 2026-08-31 11:54:44（多 sheet 增量: 2026-08-24）
+// 共 33 期数据
 
 const WEEK_RANK_LIST = [
+  {
+    "id": "2026-08-24",
+    "iso": "2026-08-24",
+    "label": "8月24日 | 2026-08-18 至 08-24",
+    "short": "8/24",
+    "data": {
+      "lists": {
+        "adq_hot": {
+          "name": "ADQ热投优品榜",
+          "subtitle": "近一周ADQ热投优品 🔥🔥🔥",
+          "items": [
+            {
+              "rank": 1,
+              "title": "中国孩子必知的文化常识3000问",
+              "isbn": "9787510699450",
+              "cat": "人文社科-文学/小说/文化传播-中国文化/民俗",
+              "price": "79",
+              "image": "rank-images/2026-08-24-image1.jpg",
+              "sales_range": "10-20W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "5.3-6.3%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 2,
+              "title": "会讲故事的经济学",
+              "isbn": "9787516685921",
+              "cat": "童书-科普百科",
+              "price": "189-388",
+              "image": "rank-images/2026-08-24-image2.jpg",
+              "sales_range": "10-20W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "4.4-5.4%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 3,
+              "title": "一菜一方",
+              "isbn": "978-7-5706-4274-8",
+              "cat": "生活-养生保健-中医养生",
+              "price": "40",
+              "image": "rank-images/2026-08-24-image3.jpg",
+              "sales_range": "10-20W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "7.8-9.8%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 4,
+              "title": "登顶+越努力越幸运",
+              "isbn": "9787516844564",
+              "cat": "人文社科-自我实现/励志",
+              "price": "90",
+              "image": "rank-images/2026-08-24-image4.jpg",
+              "sales_range": "10-20W",
+              "sales_idx": "9.8000000000000007",
+              "conv": "10.2-13.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 5,
+              "title": "漫画讲透易经养生+二十四节气养生吃法",
+              "isbn": "978-7-5236-2313-8",
+              "cat": "生活-养生保健-中医养生",
+              "price": "99",
+              "image": "rank-images/2026-08-24-image5.jpg",
+              "sales_range": "10-20W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "6.5-7.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 6,
+              "title": "千家诗增广贤文",
+              "isbn": "9787538645491",
+              "cat": "人文社科-文学/小说/文化传播-国学/古籍",
+              "price": "20",
+              "image": "rank-images/2026-08-24-image6.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "9.811.2%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 7,
+              "title": "人民日报中考语文作文源题",
+              "isbn": "9787511590473",
+              "cat": "教辅/考试-初中教辅-初中语文教辅",
+              "price": "39-69",
+              "image": "rank-images/2026-08-24-image7.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6",
+              "conv": "8.8-9.8%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 8,
+              "title": "语文导报",
+              "isbn": "CN 11-0703/（F）",
+              "cat": "报刊杂志-教辅期刊/青少年期刊",
+              "price": "118-216",
+              "image": "rank-images/2026-08-24-image8.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6",
+              "conv": "5.5-6.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 9,
+              "title": "高中数理化公式法二级结论秒解+高中知识思维导图",
+              "isbn": "9787554948163",
+              "cat": "教辅/考试-高中教辅-高中多科教辅",
+              "price": "65-188",
+              "image": "rank-images/2026-08-24-image9.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6",
+              "conv": "6.5-7.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 10,
+              "title": "小学周末小测卷",
+              "isbn": "9787575413633",
+              "cat": "教辅/考试-小学教辅-小学语文教辅",
+              "price": "23-69",
+              "image": "rank-images/2026-08-24-image10.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6",
+              "conv": "8.3-9.3%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 11,
+              "title": "快解思维秒题45招 + 初中几何辅助线重构43式",
+              "isbn": "9787572463761",
+              "cat": "教辅/考试-初中教辅-初中数学教辅",
+              "price": "100",
+              "image": "rank-images/2026-08-24-image11.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.5",
+              "conv": "7.8-8.9%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 12,
+              "title": "孩子反霸凌话术500句+戒掉弱者感+踢猫效应",
+              "isbn": "9787519311872",
+              "cat": "育儿-家庭教育",
+              "price": "99",
+              "image": "rank-images/2026-08-24-image12.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.5",
+              "conv": "4.2-5.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 13,
+              "title": "百姓食补",
+              "isbn": "9787522940076",
+              "cat": "生活-养生保健-中医养生",
+              "price": "40",
+              "image": "rank-images/2026-08-24-image13.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "7.1-8.1%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 14,
+              "title": "抗炎饮食",
+              "isbn": "978-7-5687-2193-6",
+              "cat": "生活-养生保健-饮食健康",
+              "price": "50",
+              "image": "rank-images/2026-08-24-image14.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "9.8-10.2%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 15,
+              "title": "小学作文金句800例提升写作能力",
+              "isbn": "9787511069825",
+              "cat": "教辅/考试-小学教辅-小学语文教辅",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image15.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "5.4-6.4%",
+              "channel_or_roi": "CID"
+            },
+            {
+              "rank": 16,
+              "title": "问鼎清北",
+              "isbn": "978-7-5110-8050-9",
+              "cat": "人文社科-自我实现/励志",
+              "price": "90",
+              "image": "rank-images/2026-08-24-image16.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "9.8-11.2%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 17,
+              "title": "考点笔记一本全",
+              "isbn": "9787569959901",
+              "cat": "教辅/考试-初中教辅-初中多科教辅",
+              "price": "60",
+              "image": "rank-images/2026-08-24-image17.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "4.5-6.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 18,
+              "title": "半小时晚读上册",
+              "isbn": "9787553988627",
+              "cat": "教辅/考试-小学教辅-小学语文教辅",
+              "price": "74",
+              "image": "rank-images/2026-08-24-image18.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "5.4-6.5%",
+              "channel_or_roi": "小店"
+            },
+            {
+              "rank": 19,
+              "title": "闷声发大财",
+              "isbn": "9787558352744",
+              "cat": "人文社科 - 自我实现/励志",
+              "price": "40",
+              "image": "rank-images/2026-08-24-image19.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "2.6-3.6%",
+              "channel_or_roi": "CID"
+            },
+            {
+              "rank": 20,
+              "title": "备战生地会考一本通",
+              "isbn": "978-7-5501-9589-9",
+              "cat": "教辅/考试-初中教辅-初中多科教辅",
+              "price": "40",
+              "image": "rank-images/2026-08-24-image20.jpg",
+              "sales_range": "1-5W",
+              "sales_idx": "9.5",
+              "conv": "8.8-9.8%",
+              "channel_or_roi": "小店"
+            }
+          ]
+        },
+        "weixinshop": {
+          "name": "腾讯营销（小店版）榜单",
+          "subtitle": "无转化不扣费",
+          "items": [
+            {
+              "rank": 1,
+              "title": "清雅诗词 让腹有诗书出口成章不是梦 告别词穷尴尬学会优雅表达",
+              "isbn": "978-7-5585-9339-0",
+              "cat": "人文社科-文学/小说/文化传播-中国诗词/诗歌",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image21.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.8000000000000007",
+              "conv": "8.8-9.8%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 2,
+              "title": "人民日报【语文作文+阅读源题】初中三年通用 作文阅读满分公式模版",
+              "isbn": "9787511590473",
+              "cat": "教辅/考试-初中教辅-初中语文教辅",
+              "price": "39-69",
+              "image": "rank-images/2026-08-24-image7.jpg",
+              "sales_range": "5-10W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "9.8-12.3%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 3,
+              "title": "新版会中文就会说英文零基础轻松高效学英语速成多功能口袋工具书",
+              "isbn": "9787558277863",
+              "cat": "教辅/考试-语言学习/考试-英语学习/考试",
+              "price": "40",
+              "image": "rank-images/2026-08-24-image24.jpg",
+              "sales_range": "5-6W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "8.8-9.8%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 4,
+              "title": "[全10册]国学经典原文+译文+注释哲学经典名著书籍道德经论语资治通鉴等正版新书",
+              "isbn": "9787518001521",
+              "cat": "人文社科-文学/小说/文化传播-国学/古籍",
+              "price": "128",
+              "image": "rank-images/2026-08-24-image26.jpg",
+              "sales_range": "5-6W",
+              "sales_idx": "9.8000000000000007",
+              "conv": "7.6-8.6%",
+              "channel_or_roi": "1.9-2.1"
+            },
+            {
+              "rank": 5,
+              "title": "管理智库｜ 208个管理思维（思维认知提升） + 带团队方法论（带团队方法论）体系化成长工具包",
+              "isbn": "9787511077813",
+              "cat": "人文社科-管理",
+              "price": "69-129",
+              "image": "rank-images/2026-08-24-image28.jpg",
+              "sales_range": "3-4W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "6.5-7.5%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 6,
+              "title": "罗浮山泰学论语易经道德经大字注音诵读本幼儿小学生",
+              "isbn": "9787507560053",
+              "cat": "童书-儿童文学",
+              "price": "189.2",
+              "image": "rank-images/2026-08-24-image30.jpg",
+              "sales_range": "3-4W",
+              "sales_idx": "9.6999999999999993",
+              "conv": "1.9-2.9%",
+              "channel_or_roi": "2.0-2.3"
+            },
+            {
+              "rank": 7,
+              "title": "大国重器 培养孩子的创新思维和科学素养少儿科普类百科全书小学生课外阅读书籍",
+              "isbn": "978-7-5585-9176-1",
+              "cat": "童书-科普百科",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image32.jpg",
+              "sales_range": "3-4W",
+              "sales_idx": "9.6",
+              "conv": "9.7-10.2%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 8,
+              "title": "[全8册]诺贝尔获奖文学作品选淬炼一个时代的智慧与锋芒献给所有不愿停止思考的灵魂",
+              "isbn": "9787576356045",
+              "cat": "人文社科-文学/小说/文化传播-外国文学/小说",
+              "price": "128",
+              "image": "rank-images/2026-08-24-image34.jpg",
+              "sales_range": "3-4W",
+              "sales_idx": "9.6",
+              "conv": "3.8-4.8%",
+              "channel_or_roi": "2.0-2.2"
+            },
+            {
+              "rank": 9,
+              "title": "【正版】漫画雄鹰定律 逆转人生的黄金法则学会负责养成强者思维社交力",
+              "isbn": "978-7-5237-1990-9",
+              "cat": "童书-儿童成长/教育书",
+              "price": "39-99.8",
+              "image": "rank-images/2026-08-24-image36.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.6",
+              "conv": "9.810.2%",
+              "channel_or_roi": "1.6-1.8"
+            },
+            {
+              "rank": 10,
+              "title": "初中数学思想与方法导引",
+              "isbn": "9787308273589",
+              "cat": "教辅/考试-初中教辅-初中多科教辅",
+              "price": "179",
+              "image": "rank-images/2026-08-24-image38.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.6",
+              "conv": "5.3-6.3%",
+              "channel_or_roi": "1.7-1.9"
+            },
+            {
+              "rank": 11,
+              "title": "地图上的中国通史（豪华精装印签版）图文并茂 百幅地图 20余朝兴衰更替",
+              "isbn": "9787511575920",
+              "cat": "人文社科-历史",
+              "price": "199",
+              "image": "rank-images/2026-08-24-image40.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.6",
+              "conv": "3.2-4.2%",
+              "channel_or_roi": "1.9-2.1"
+            },
+            {
+              "rank": 12,
+              "title": "语文导报",
+              "isbn": "CN 11-0703/（F）",
+              "cat": "报刊杂志-教辅期刊/青少年期刊",
+              "price": "118-216",
+              "image": "rank-images/2026-08-24-image8.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.5",
+              "conv": "5.5-6.5%",
+              "channel_or_roi": "2.6-2.8"
+            },
+            {
+              "rank": 13,
+              "title": "高情商幽默接话 回话高手 两册 掌握卓越的沟通技巧为人处世高情商 让你成为社交达人",
+              "isbn": "978-7-5585-9375-8",
+              "cat": "人文社科-自我实现/励志",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image43.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.5",
+              "conv": "7.8-8.8%",
+              "channel_or_roi": "1.7-1.9"
+            },
+            {
+              "rank": 14,
+              "title": "少年智谋天下 自律改变命运 两册 专为青少年打造孩子懂的智慧谋略培养孩子为人处事",
+              "isbn": "9787570828876",
+              "cat": "童书-儿童成长/教育书",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image45.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.5",
+              "conv": "8.8-9.8%",
+              "channel_or_roi": "1.7-1.9"
+            },
+            {
+              "rank": 15,
+              "title": "0~3岁婴幼儿家庭早教游戏全书 宝宝潜能开发黄金期玩出未来竞争力",
+              "isbn": "9787571330798",
+              "cat": "童书-科普百科",
+              "price": "29-49",
+              "image": "rank-images/2026-08-24-image47.jpg",
+              "sales_range": "1-2W",
+              "sales_idx": "9.5",
+              "conv": "7.8-9.8%",
+              "channel_or_roi": "1.7-1.9"
+            }
+          ]
+        },
+        "potential": {
+          "name": "潜力爆品",
+          "subtitle": "ADQ未投放/少量投放的各媒体爆品",
+          "items": [
+            {
+              "rank": 1,
+              "title": "【很冷门的知识】 少儿百科开拓视野 中小学生科普知识积累",
+              "isbn": "\r\n9787523708293",
+              "cat": "童书-科普百科",
+              "price": "19-39",
+              "image": "rank-images/2026-08-24-image22.jpg"
+            },
+            {
+              "rank": 2,
+              "title": "【官方正版】问对有谋：逆袭谋略之书，高情商接话回话口才技巧",
+              "isbn": "9787513950725",
+              "cat": "人文社科-自我实现/励志",
+              "price": "20",
+              "image": "rank-images/2026-08-24-image23.jpg"
+            },
+            {
+              "rank": 3,
+              "title": "文脉里的中国：系统梳理中华文化常识考点 掌握中国文化精髓",
+              "isbn": "9787806527498",
+              "cat": "人文社科-文学/小说/文化传播-中国文化/民俗",
+              "price": "25",
+              "image": "rank-images/2026-08-24-image25.jpg"
+            },
+            {
+              "rank": 4,
+              "title": "2026秋季新版一年级上册人教版语文数学同步训练课后练习册",
+              "isbn": "9787540983116",
+              "cat": "教辅/考试-小学教辅-小学语文教辅",
+              "price": "28",
+              "image": "rank-images/2026-08-24-image27.jpg"
+            },
+            {
+              "rank": 5,
+              "title": "儿童DIY手工立体几何书玩具模型数学启蒙趣味拉绳变立体几何图形",
+              "isbn": "",
+              "cat": "童书-科普百科",
+              "price": "25",
+              "image": "rank-images/2026-08-24-image29.jpg"
+            },
+            {
+              "rank": 6,
+              "title": "摆摊式创业 低成本创业 选品选址运营一本通思路点拨避坑教程书籍",
+              "isbn": "\r\n9787516844687",
+              "cat": "人文社科-自我实现/励志",
+              "price": "25",
+              "image": "rank-images/2026-08-24-image31.jpg"
+            },
+            {
+              "rank": 7,
+              "title": "【60+模版】小学生创意手抄报作业父母帮手一撕即用绘画本填色书",
+              "isbn": "9787507561807",
+              "cat": "童书-科普百科",
+              "price": "20",
+              "image": "rank-images/2026-08-24-image33.jpg"
+            },
+            {
+              "rank": 8,
+              "title": "【全18册】宝宝语言启蒙学说话 0-3岁宝宝学说话表达训练早教绘本",
+              "isbn": "9787547071656",
+              "cat": "童书-幼儿认知书/立体书",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image35.jpg"
+            },
+            {
+              "rank": 9,
+              "title": "2026小学入学前要知道的99件事幼小衔接亲子共读 缓解入学压力",
+              "isbn": "9787574715639",
+              "cat": "童书-学前启蒙/幼小衔接",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image37.jpg"
+            },
+            {
+              "rank": 10,
+              "title": "【时光学】同步句子仿写 小学生1-4年级语文优美句子作文专项训练",
+              "isbn": "10231399236325",
+              "cat": "教辅/考试-小学教辅-小学语文教辅",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image39.jpg"
+            },
+            {
+              "rank": 11,
+              "title": "新华【更新手抄报】10分钟快速搞定手抄报 家长必备神器 小学通用",
+              "isbn": "9787556291830",
+              "cat": "童书-科普百科",
+              "price": "30",
+              "image": "rank-images/2026-08-24-image41.jpg"
+            },
+            {
+              "rank": 12,
+              "title": "新华【默写小纸条】26新版春季下册1-6年级默写计算语数英同步训练",
+              "isbn": "9787556140077",
+              "cat": "教辅/考试-小学教辅-小学多科教辅",
+              "price": "24.9",
+              "image": "rank-images/2026-08-24-image42.jpg"
+            },
+            {
+              "rank": 13,
+              "title": "千门八将:窥天机 布天局 处世有道职场谋略翻身逆袭书籍",
+              "isbn": "\r\n9787512521841",
+              "cat": "人文社科-自我实现/励志",
+              "price": "170",
+              "image": "rank-images/2026-08-24-image44.jpg"
+            },
+            {
+              "rank": 14,
+              "title": "【全6册】了不起的大侦探 2-6岁儿童逻辑思维专注力脑力训练游戏书",
+              "isbn": "9787547072240",
+              "cat": "童书-儿童益智游戏书",
+              "price": "50",
+              "image": "rank-images/2026-08-24-image46.jpg"
+            },
+            {
+              "rank": 15,
+              "title": "2026秋1-6年级上册语文课课贴数学每天一道附加题同步提分小纸条",
+              "isbn": "9787573618405",
+              "cat": "教辅/考试-小学教辅-小学多科教辅",
+              "price": "19-40",
+              "image": "rank-images/2026-08-24-image48.jpg"
+            }
+          ]
+        },
+        "forecast": {
+          "name": "预测爆品榜单",
+          "subtitle": "去年下一周期 ADQ × 各媒体平台",
+          "items": []
+        }
+      },
+      "cat_share": [
+        {
+          "cat": "教辅",
+          "share": 32.0
+        },
+        {
+          "cat": "童书",
+          "share": 17.0
+        },
+        {
+          "cat": "健康",
+          "share": 16.0
+        },
+        {
+          "cat": "社科",
+          "share": 35.0
+        }
+      ],
+      "week_label": "2026-08-18 至 08-24"
+    }
+  },
   {
     "id": "2026-08-18",
     "iso": "2026-08-18",
