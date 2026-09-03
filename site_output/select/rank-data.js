@@ -20,7 +20,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523708293",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-08-24-image22.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "10.2-12.3%",
@@ -516,7 +516,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523708293",
               "cat": "童书-科普百科",
               "price": "19-39",
-              "image": ""
+              "image": "rank-images/2026-08-24-image22.jpg"
             },
             {
               "rank": 10,

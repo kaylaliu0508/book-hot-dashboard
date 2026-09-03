@@ -998,7 +998,56 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 7/13 周（最新）=====
+  // ===== 8/31 周（最新）=====
+  '2026-08-31': [
+    {
+      role:'#1 童书·科普百科 · 潜力转正黑马',
+      roleClass:'opportunity',
+      title:'很冷门的知识',
+      isbn:'9787523708293',
+      image:'rank-images/2026-08-24-image22.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.2-12.3%', cls:'hot'},
+        {icon:'🏆', label:'登顶', val:'潜力爆品转正 · 直冲 #1', cls:'hot'}
+      ],
+      persona:'中小学生家长（想开拓孩子视野、积累冷门科普知识）',
+      creativeCore:'锁定中小学生家长 · 主打「同龄人都答不上来的冷知识」信息差，30 元低客单走量，靠「涨见识」情绪拉动下单'
+    },
+    {
+      role:'#2 社科·文化常识 · 长青回落',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/image89.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'5.8-6.8%'},
+        {icon:'🏆', label:'霸榜', val:'8/24 #1 → 8/31 #2 · 长期在榜', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'维持采访学霸抽问形式基本盘 · 结合「开学季语文积累」补充新素材，防止创意疲劳'
+    },
+    {
+      role:'#3 健康·抗炎饮食 · 跃升劲品',
+      roleClass:'opportunity',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-08-24-image14.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.2%', cls:'hot'},
+        {icon:'📈', label:'跃升', val:'8/24 #14 → 8/31 #3', cls:'hot'}
+      ],
+      persona:'25-45 岁关注健康饮食的中青年（抗炎抗衰、换季养生）',
+      creativeCore:'锁定 25-45 岁健康饮食人群 · 给一份「抗炎怎么吃」照着做的清单（早中晚 + 外卖替换），切入换季养生刚需'
+    }
+  ],
+
+  // ===== 7/13 周 =====
   '2026-07-13': [
     {
       role:'#1 教辅·高中多科 · 新王登基',
@@ -1441,7 +1490,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-07-13'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-08-31'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
