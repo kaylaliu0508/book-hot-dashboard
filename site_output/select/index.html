@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>图书选品台 · 2026年8月</title>
+<title>图书选品台 · 2026年9月</title>
 <script>
 // 🛡️ 全局错误兜底（2026-06-16 修复客户反馈空白页）
 // 任何未捕获 JS 错误都不让用户看到全白页，给一个降级提示+刷新按钮
@@ -51,7 +51,7 @@ if(window.self !== window.top){
   try{
     if(sessionStorage.getItem(CODE_KEY)){ return; }
   }catch(e){ return; }
-  if(window.top === window.self){
+  if(window.top === window.self && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
     location.replace('/');
   }
 })();
@@ -82,7 +82,7 @@ if(window.self !== window.top){
   <div class="hero-inner">
     <div class="hero-top">
       <div>
-        <h1>📅 <span class="accent">2026 年 8 月</span> · 图书选品台</h1>
+        <h1>📅 <span class="accent">2026 年 9 月</span> · 图书选品台</h1>
         <div class="sub">
           <span>🎯 ISBN 全链路锚点</span>
           <span>📊 看过去 · 实战榜单 + 🔮 看趋势 · 当月品类趋势分析</span>
@@ -91,9 +91,9 @@ if(window.self !== window.top){
       </div>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-icon red">🎯</div><div class="stat-body"><div class="label">本月主推</div><div class="value">教辅 · 童书</div><div class="delta">开学季双主线 · 收官续单 + 入学准备</div></div></div>
+      <div class="stat"><div class="stat-icon red">🎯</div><div class="stat-body"><div class="label">本月主推</div><div class="value">教辅 · 健康</div><div class="delta">开学短爆发 + 秋冬养生主线</div></div></div>
       <div class="stat"><div class="stat-icon blue">📚</div><div class="stat-body"><div class="label">候选 ISBN</div><div class="value" id="statSku">283</div><div class="delta">↑ 实战 + 推荐书单</div></div></div>
-      <div class="stat"><div class="stat-icon orange">📍</div><div class="stat-body"><div class="label">关键节点</div><div class="value">4 个</div><div class="delta">立秋·处暑·开学季·开学倒计时</div></div></div>
+      <div class="stat"><div class="stat-icon orange">📍</div><div class="stat-body"><div class="label">关键节点</div><div class="value">4 个</div><div class="delta">白露·教师节·秋分·中秋</div></div></div>
       <div class="stat"><div class="stat-icon green">🛒</div><div class="stat-body"><div class="label">已选品</div><div class="value" id="heroPoolCount">0</div><div class="delta">→ 直通创意生产</div></div></div>
     </div>
   </div>
@@ -424,7 +424,7 @@ if(window.self !== window.top){
     <a class="rsn-item" href="#future-block-insight" data-target="future-block-insight">
       <span class="rsn-icon">📐</span>
       <div class="rsn-body">
-        <div class="rsn-name">8 月品类预算建议</div>
+        <div class="rsn-name">9 月品类预算建议</div>
         <div class="rsn-desc">本月选品策略</div>
       </div>
     </a>
@@ -457,7 +457,7 @@ if(window.self !== window.top){
     <div class="icon">🔮</div>
     <div class="text">
       <strong>看趋势 · 当月品类趋势分析：</strong>
-      基于<span class="hl">去年同期数据</span>推演 + <span class="hl">本月品类预算建议</span> + <span class="hl">关键节点 × 人群画像</span>，<strong>提前布局不落跑</strong>，预判 8 月该重点投什么品类、什么节点、打什么人群。
+      基于<span class="hl">去年同期数据</span>推演 + <span class="hl">本月品类预算建议</span> + <span class="hl">关键节点 × 人群画像</span>，<strong>提前布局不落跑</strong>，预判 9 月该重点投什么品类、什么节点、打什么人群。
     </div>
   </div>
 
@@ -473,15 +473,15 @@ if(window.self !== window.top){
   <!-- 2.2 8月品类预算建议 -->
   <div class="panel" id="future-block-insight">
     <div class="panel-title">
-      <span class="dot"></span>📐 <span style="color:#3b82f6;">8 月</span> 品类预算建议
-      <span class="extra">本月（8月）→ 下月（9月）选品策略</span>
+      <span class="dot"></span>📐 <span style="color:#3b82f6;">9 月</span> 品类预算建议
+      <span class="extra">本月（9月）→ 下月（10月）选品策略</span>
     </div>
     
     <div class="kpi-grid">
-      <div class="kpi tinted-red"><div class="kpi-label">📖 教辅</div><div class="kpi-value">30%</div><div class="kpi-sub up">暑期超车 → 开学教材同步 + 语文选题回升</div></div>
-      <div class="kpi tinted-orange"><div class="kpi-label">🧸 童书</div><div class="kpi-value">25%</div><div class="kpi-sub up">假期过半场景切换 · 收心痛点崛起</div></div>
-      <div class="kpi tinted-purple"><div class="kpi-label">🏛 社科</div><div class="kpi-value">25%</div><div class="kpi-sub up">高温浮躁 ·「避世 / 求生」双诉求</div></div>
-      <div class="kpi tinted-green"><div class="kpi-label">🌿 健康</div><div class="kpi-value">20%</div><div class="kpi-sub up">立秋换季 · 银发 + 轻养生小高峰</div></div>
+      <div class="kpi tinted-red"><div class="kpi-label">📖 教辅</div><div class="kpi-value">40%</div><div class="kpi-sub up">开学短爆发 → 教材同步 + 首次月考冲刺</div></div>
+      <div class="kpi tinted-orange"><div class="kpi-label">🧸 童书</div><div class="kpi-value">15%</div><div class="kpi-sub up">开学收心 · 教师节感恩 + 中秋亲子共读</div></div>
+      <div class="kpi tinted-purple"><div class="kpi-label">🏛 社科</div><div class="kpi-value">15%</div><div class="kpi-sub up">职场金九银十 · 中秋国庆人文送礼</div></div>
+      <div class="kpi tinted-green"><div class="kpi-label">🌿 健康</div><div class="kpi-value">30%</div><div class="kpi-sub up">秋冬养生主线 · 白露润燥 + 中秋养生送礼</div></div>
     </div>
 
     <!-- 引导下方周节奏图 -->
@@ -513,7 +513,7 @@ if(window.self !== window.top){
   <!-- 2.4 选品 by 周节奏图（支持月份切换：默认最新月，可回看往期） -->
   <div class="panel" id="future-block-nodes">
     <div class="panel-title">
-      <span class="dot"></span>📅 <span id="rhythmMonthLabel" style="color:#3b82f6;">8 月</span> 选品 by 周节奏图
+      <span class="dot"></span>📅 <span id="rhythmMonthLabel" style="color:#3b82f6;">9 月</span> 选品 by 周节奏图
       <span class="extra">W1-W4 × 品类优先级 · 选品方向 + 人群痛点 + 前置开跑节奏</span>
     </div>
     <!-- 月份 tab 切换器（JS 注入）-->
@@ -550,9 +550,9 @@ if(window.self !== window.top){
 </div>
 
 <script src="isbn-image-map.js?v=20260715-rank713b"></script>
-<script src="rank-data.js?v=20260824-rank824"></script>
-<script src="bench-data.js?v=20260820-bench815"></script>
-<script src="select-data.js?v=20260803-hotbook-slim"></script>
+<script src="rank-data.js?v=20260903-rank831"></script>
+<script src="bench-data.js?v=20260903-bench831"></script>
+<script src="select-data.js?v=20260903-select0903"></script>
 <script src="recommend-data.js?v=20260715-rank713b"></script>
 <script src="select-app.js?v=20260715-rank713b"></script>
 

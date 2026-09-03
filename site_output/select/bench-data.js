@@ -4,7 +4,8 @@
 
 // =============== 期次列表（最新在前）===============
 const BENCH_PERIODS = [
-  { id: '2026-08-01-to-15', label: '8月1日 - 8月15日',   short: '8/1-8/15', isLatest: true },
+  { id: '2026-08-16-to-31', label: '8月16日 - 8月31日', short: '8/16-8/31', isLatest: true },
+  { id: '2026-08-01-to-15', label: '8月1日 - 8月15日',   short: '8/1-8/15', isLatest: false },
   { id: '2026-07-16-to-31', label: '7月16日 - 7月31日', short: '7/16-7/31', isLatest: false },
   { id: '2026-07-01-to-15', label: '7月1日 - 7月15日',   short: '7/1-7/15', isLatest: false },
   { id: '2026-06-16-to-30', label: '6月16日 - 6月30日', short: '6/16-6/30', isLatest: false },
@@ -14,6 +15,61 @@ const BENCH_PERIODS = [
 
 // =============== 1. 品类 × 客单价 链路数据（按期）===============
 const BENCH_CAT_PRICE_BY_PERIOD = {
+  '2026-08-16-to-31': {
+    title: '图书下单 og 视频号版位客单价链路数据【8月16日-8月31日】',
+    priceRanges: [
+      {
+        range: '0元-50元区间',
+        items: [
+          {cat:'教辅', share:54, cpm:47, ctr:2.0, cvr:9.3, roi:1.5},
+          {cat:'童书', share:13, cpm:31, ctr:1.8, cvr:7.4, roi:1.5},
+          {cat:'社科', share:19, cpm:29, ctr:1.8, cvr:6.9, roi:1.5},
+          {cat:'健康', share:14, cpm:53, ctr:3.2, cvr:6.5, roi:1.5},
+          {cat:'整体', share:100, cpm:40, ctr:2.0, cvr:8.0, roi:1.5, isTotal:true}
+        ]
+      },
+      {
+        range: '50元-100元区间',
+        items: [
+          {cat:'教辅', share:53, cpm:68, ctr:1.9, cvr:7.9, roi:1.5},
+          {cat:'童书', share:16, cpm:58, ctr:1.6, cvr:8.7, roi:1.6},
+          {cat:'社科', share:22, cpm:47, ctr:1.7, cvr:6.5, roi:1.7},
+          {cat:'健康', share:9,  cpm:94, ctr:2.8, cvr:6.9, roi:1.5},
+          {cat:'整体', share:100, cpm:62, ctr:1.8, cvr:7.6, roi:1.6, isTotal:true}
+        ]
+      },
+      {
+        range: '100元-150元',
+        items: [
+          {cat:'教辅', share:55, cpm:75, ctr:1.4, cvr:7.6, roi:1.7},
+          {cat:'童书', share:10, cpm:91, ctr:2.0, cvr:7.6, roi:1.8},
+          {cat:'社科', share:19, cpm:60, ctr:1.7, cvr:5.7, roi:1.9},
+          {cat:'健康', share:15, cpm:53, ctr:1.0, cvr:7.8, roi:1.5},
+          {cat:'整体', share:100, cpm:68, ctr:1.4, cvr:7.1, roi:1.7, isTotal:true}
+        ]
+      },
+      {
+        range: '150元-300元',
+        items: [
+          {cat:'教辅', share:26, cpm:100, ctr:1.9, cvr:4.4, roi:1.7},
+          {cat:'童书', share:18, cpm:100, ctr:1.9, cvr:4.6, roi:2.0},
+          {cat:'社科', share:53, cpm:122, ctr:1.2, cvr:4.7, roi:1.5},
+          {cat:'健康', share:2,  cpm:322, ctr:4.4, cvr:6.8, roi:1.6},
+          {cat:'整体', share:100, cpm:113, ctr:1.6, cvr:4.6, roi:1.5, isTotal:true}
+        ]
+      },
+      {
+        range: '300元以上',
+        items: [
+          {cat:'教辅', share:17, cpm:165, ctr:1.5, cvr:3.9, roi:2.2},
+          {cat:'童书', share:45, cpm:183, ctr:1.8, cvr:5.8, roi:2.0},
+          {cat:'社科', share:36, cpm:239, ctr:1.6, cvr:5.0, roi:1.6},
+          {cat:'健康', share:2,  cpm:388, ctr:2.7, cvr:2.1, roi:2.0},
+          {cat:'整体', share:100, cpm:198, ctr:1.7, cvr:5.2, roi:1.9, isTotal:true}
+        ]
+      }
+    ]
+  },
   '2026-08-01-to-15': {
     title: '图书下单 og 视频号版位客单价链路数据【8月1日-8月15日】',
     priceRanges: [
@@ -348,6 +404,51 @@ const BENCH_CAT_PRICE_BY_PERIOD = {
 
 // =============== 2. 客单价 × 链路 消耗数据（按期）===============
 const BENCH_PRICE_CHANNEL_BY_PERIOD = {
+  '2026-08-16-to-31': {
+    title: '图书客单价 × 链路消耗占比【8月16日-8月31日】',
+    blocks: [
+      {
+        range: '0元-50元', share:45, cpm:41, ctr:2.0, cvr:7.9, roi:1.5,
+        sub: [
+          {channel:'小店直购', share:86, cpm:47, ctr:2.2, cvr:8.7, roi:1.5},
+          {channel:'直播',     share:8,  cpm:56, ctr:2.1, cvr:7.5, roi:1.5},
+          {channel:'直购',     share:7,  cpm:14, ctr:1.5, cvr:4.0, roi:1.6}
+        ]
+      },
+      {
+        range: '50元-100元', share:31, cpm:61, ctr:1.9, cvr:7.5, roi:1.6,
+        sub: [
+          {channel:'小店直购', share:83, cpm:63, ctr:2.0, cvr:7.5, roi:1.6},
+          {channel:'直播',     share:16, cpm:79, ctr:1.8, cvr:9.0, roi:1.5},
+          {channel:'直购',     share:2,  cpm:15, ctr:1.1, cvr:2.6, roi:1.5}
+        ]
+      },
+      {
+        range: '100元-150元', share:8, cpm:68, ctr:1.5, cvr:7.0, roi:1.8,
+        sub: [
+          {channel:'小店直购', share:69, cpm:78, ctr:1.8, cvr:7.0, roi:1.9},
+          {channel:'直播',     share:29, cpm:77, ctr:1.2, cvr:8.4, roi:1.5},
+          {channel:'直购',     share:1,  cpm:7,  ctr:0.5, cvr:1.7, roi:1.5}
+        ]
+      },
+      {
+        range: '150元-300元', share:12, cpm:112, ctr:1.6, cvr:4.6, roi:1.5,
+        sub: [
+          {channel:'小店直购', share:73, cpm:114, ctr:1.6, cvr:4.8, roi:1.5},
+          {channel:'直播',     share:6,  cpm:66,  ctr:1.6, cvr:3.5, roi:1.9},
+          {channel:'直购',     share:21, cpm:132, ctr:1.7, cvr:4.2, roi:1.5}
+        ]
+      },
+      {
+        range: '300元以上', share:4, cpm:152, ctr:1.4, cvr:3.9, roi:2.4,
+        sub: [
+          {channel:'小店直购', share:46, cpm:142, ctr:2.1, cvr:3.8, roi:2.2},
+          {channel:'直播',     share:31, cpm:108, ctr:0.8, cvr:2.4, roi:3.8},
+          {channel:'直购',     share:24, cpm:443, ctr:1.1, cvr:10.3, roi:1.5}
+        ]
+      }
+    ]
+  },
   '2026-08-01-to-15': {
     title: '图书客单价 × 链路消耗占比【8月1日-8月15日】',
     blocks: [
