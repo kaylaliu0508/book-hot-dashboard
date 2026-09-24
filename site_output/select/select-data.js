@@ -998,7 +998,105 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 8/31 周（最新）=====
+  // ===== 9/21 周（最新）=====
+  '2026-09-21': [
+    {
+      role:'#1 健康·抗炎饮食 · 连续霸榜',
+      roleClass:'basic',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-08-24-image14.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.5-9.8%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'连续 3 期 #1 · 9 月最强', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'锁定 25-45 岁健康饮食人群 · 给一份「抗炎怎么吃」照着做的清单（早中晚 + 外卖替换），切入秋冬换季高复购刚需'
+    },
+    {
+      role:'#2 健康·中医养生 · 节气刚需',
+      roleClass:'opportunity',
+      title:'漫画讲透易经养生+二十四节气养生吃法',
+      isbn:'978-7-5236-2313-8',
+      image:'rank-images/2026-08-10-image17.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'6.9-7.9%'},
+        {icon:'💰', label:'客单', val:'¥99'}
+      ],
+      persona:'30-55 岁关注节气养生、中医调理的人群',
+      creativeCore:'锁定节气养生人群 · 漫画降门槛讲透易经 + 二十四节气吃法，99 元组套适配秋冬进补场景'
+    },
+    {
+      role:'#3 童书·科普百科 · 高客单长青',
+      roleClass:'basic',
+      title:'会讲故事的经济学',
+      isbn:'9787516685921',
+      image:'rank-images/2026-08-03-image6.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'2.5-3.5%'},
+        {icon:'💰', label:'客单', val:'¥189-388'}
+      ],
+      persona:'6-12 岁孩子的家长（想做财商启蒙，愿为高客单组套买单）',
+      creativeCore:'锁定财商启蒙家长 · 用故事载体讲经济学降低理解门槛，189-388 元高客单组套，转化偏低需靠内容深度说服'
+    }
+  ],
+
+  // ===== 9/14 周 =====
+  '2026-09-14': [
+    {
+      role:'#1 健康·抗炎饮食 · 登顶霸榜',
+      roleClass:'basic',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-08-24-image14.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.2%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'8/31 #3 → 9/14 #1', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'锁定 25-45 岁健康饮食人群 · 主打「抗炎怎么吃」照着做的清单，日销跃升到 30-40W 档，健康成 9 月主线'
+    },
+    {
+      role:'#2 社科·文化常识 · 长青',
+      roleClass:'basic',
+      title:'中国孩子必知的文化常识3000问',
+      isbn:'9787510699450',
+      image:'rank-images/image89.jpg',
+      cat:'社科',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'4.7-5.8%'},
+        {icon:'🏆', label:'霸榜', val:'长期在榜 · 本周 #2', cls:'hot'}
+      ],
+      persona:'6-15 岁孩子的妈妈（关注语文素养、阅读积累）',
+      creativeCore:'维持采访学霸抽问形式基本盘 · 结合开学季语文积累补充新素材，防止创意疲劳'
+    },
+    {
+      role:'#3 童书·科普百科 · 高客单组套',
+      roleClass:'basic',
+      title:'会讲故事的经济学',
+      isbn:'9787516685921',
+      image:'rank-images/2026-08-03-image6.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'4.2-5.2%'},
+        {icon:'💰', label:'客单', val:'¥189-388'}
+      ],
+      persona:'6-12 岁孩子的家长（想做财商启蒙，愿为高客单组套买单）',
+      creativeCore:'锁定财商启蒙家长 · 故事载体讲经济学降低门槛，189-388 元组套走高客单，靠内容深度补足转化'
+    }
+  ],
+
+  // ===== 8/31 周 =====
   '2026-08-31': [
     {
       role:'#1 童书·科普百科 · 潜力转正黑马',
@@ -1490,7 +1588,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-08-31'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-09-21'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
