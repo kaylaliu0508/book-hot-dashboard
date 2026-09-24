@@ -20,7 +20,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5687-2193-6",
               "cat": "生活-养生保健-饮食健康",
               "price": "50",
-              "image": "rank-images/2026-08-24-image14.jpg",
+              "image": "rank-images/2026-09-21-image1.jpg",
               "sales_range": "30-40W",
               "sales_idx": "9.6999999999999993",
               "conv": "8.5-9.8%",
@@ -32,7 +32,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5236-2313-8",
               "cat": "生活-养生保健-中医养生",
               "price": "99",
-              "image": "rank-images/2026-08-10-image17.jpg",
+              "image": "rank-images/2026-09-21-image2.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "6.9-7.9%",
@@ -44,7 +44,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787516685921",
               "cat": "童书-科普百科",
               "price": "189-388",
-              "image": "rank-images/2026-08-03-image6.jpg",
+              "image": "rank-images/2026-09-21-image3.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "2.5-3.5%",
@@ -56,7 +56,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787510699450",
               "cat": "人文社科-文学/小说/文化传播-中国文化/民俗",
               "price": "79",
-              "image": "rank-images/image89.jpg",
+              "image": "rank-images/2026-09-21-image4.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.8000000000000007",
               "conv": "5.4-6.4%",
@@ -68,7 +68,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573428455",
               "cat": "教辅/考试-初中教辅-初中数学教辅",
               "price": "50",
-              "image": "",
+              "image": "rank-images/2026-09-21-image5.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "9.8-10.2%",
@@ -80,7 +80,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519311872",
               "cat": "育儿-家庭教育",
               "price": "99",
-              "image": "rank-images/image79.jpg",
+              "image": "rank-images/2026-09-21-image6.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "6.4-7.4%",
@@ -92,7 +92,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-21-image7.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "4.3-5.3%",
@@ -104,7 +104,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787520837705",
               "cat": "人文社科-管理",
               "price": "199",
-              "image": "rank-images/2026-07-21-image6.jpg",
+              "image": "rank-images/2026-09-21-image8.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "4.4-5.4%",
@@ -116,7 +116,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787574016682",
               "cat": "教辅/考试-小学教辅-其他小学教辅",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-21-image9.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "8.9-10.3%",
@@ -128,7 +128,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "41-123",
-              "image": "",
+              "image": "rank-images/2026-09-21-image10.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "2.8-3.8%",
@@ -140,7 +140,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN41-0111",
               "cat": "报刊杂志-报纸",
               "price": "199-399",
-              "image": "",
+              "image": "rank-images/2026-09-21-image11.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "2.3-3.8%",
@@ -152,7 +152,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523708293",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": "rank-images/2026-08-24-image22.jpg",
+              "image": "rank-images/2026-09-21-image12.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "10.2-11.3%",
@@ -164,7 +164,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787206068287",
               "cat": "教辅/考试-高中教辅-高中数学教辅",
               "price": "69-359",
-              "image": "",
+              "image": "rank-images/2026-09-21-image13.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "3.6-4.5%",
@@ -176,7 +176,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787516844564",
               "cat": "人文社科-自我实现/励志",
               "price": "40",
-              "image": "rank-images/2026-07-27-image26.jpg",
+              "image": "rank-images/2026-09-21-image14.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "9.8-10.2%",
@@ -188,7 +188,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787549645497",
               "cat": "生活-养生保健-中医养生",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-21-image15.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "10.2-12.3%",
@@ -200,7 +200,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554178225",
               "cat": "教辅/考试-小学教辅-小学英语教辅",
               "price": "20",
-              "image": "",
+              "image": "rank-images/2026-09-21-image16.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "9.8-10.2%",
@@ -212,7 +212,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590473",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39-69",
-              "image": "rank-images/2026-08-03-image12.jpg",
+              "image": "rank-images/2026-09-21-image17.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.6-8.6%",
@@ -224,7 +224,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787574228634",
               "cat": "自然科学与科技-医学",
               "price": "40",
-              "image": "rank-images/2026-08-18-image13.jpg",
+              "image": "rank-images/2026-09-21-image18.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "1.5-2.5%",
@@ -236,7 +236,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5706-4274-8",
               "cat": "生活-养生保健-中医养生",
               "price": "40",
-              "image": "rank-images/2026-08-10-image5.jpg",
+              "image": "rank-images/2026-09-21-image19.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "9.8-10.2%",
@@ -248,7 +248,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554710159",
               "cat": "人文社科-艺术-绘画",
               "price": "60",
-              "image": "",
+              "image": "rank-images/2026-09-21-image20.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "4.7-5.7%",
@@ -266,7 +266,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787576364040",
               "cat": "育儿-家庭教育",
               "price": "90",
-              "image": "",
+              "image": "rank-images/2026-09-21-image21.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.8000000000000007",
               "conv": "2.4-3.8%",
@@ -278,7 +278,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787221188007",
               "cat": "人文社科-文学/小说/文化传播-中国文学/小说",
               "price": "198",
-              "image": "",
+              "image": "rank-images/2026-09-21-image22.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "1.3-2.3%",
@@ -290,7 +290,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511073136",
               "cat": "教辅/考试-小学教辅-小学英语教辅",
               "price": "80",
-              "image": "rank-images/2026-06-22-image31.jpg",
+              "image": "rank-images/2026-09-21-image23.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.6999999999999993",
               "conv": "5.6-7.6%",
@@ -302,7 +302,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN 10-1344/F",
               "cat": "报刊杂志-文学文摘",
               "price": "1498",
-              "image": "",
+              "image": "rank-images/2026-09-21-image24.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.8000000000000007",
               "conv": "2.1-3.1%",
@@ -314,7 +314,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590473",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39-69",
-              "image": "rank-images/2026-08-03-image12.jpg",
+              "image": "rank-images/2026-09-21-image25.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6999999999999993",
               "conv": "9.8-10.2%",
@@ -326,7 +326,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787122482075",
               "cat": "自然科学与科技-工业技术",
               "price": "150",
-              "image": "",
+              "image": "rank-images/2026-09-21-image26.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "4.8-5.8%",
@@ -338,7 +338,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787520219860",
               "cat": "童书-科普百科",
               "price": "268-278",
-              "image": "rank-images/2026-07-27-image46.jpg",
+              "image": "rank-images/2026-09-21-image27.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "1.3-2.3%",
@@ -350,7 +350,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511077813",
               "cat": "人文社科-管理",
               "price": "69-129",
-              "image": "rank-images/2026-08-24-image28.jpg",
+              "image": "rank-images/2026-09-21-image28.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "4.5-5.5%",
@@ -362,7 +362,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "36.5-113",
-              "image": "",
+              "image": "rank-images/2026-09-21-image29.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "8.2-9.2%",
@@ -374,7 +374,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787577108858",
               "cat": "教辅/考试-初中教辅-初中英语教辅",
               "price": "89-178",
-              "image": "rank-images/2026-07-21-image73.jpg",
+              "image": "rank-images/2026-09-21-image30.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "3.7-4.7%",
@@ -386,7 +386,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787531497288",
               "cat": "人文社科-艺术-绘画",
               "price": "1798",
-              "image": "",
+              "image": "rank-images/2026-09-21-image31.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "1.3-2.3%",
@@ -398,7 +398,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787218170008",
               "cat": "教辅/考试-初中教辅-初中英语教辅",
               "price": "52-94",
-              "image": "",
+              "image": "rank-images/2026-09-21-image32.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "8.8-9.8%",
@@ -410,7 +410,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-21-image33.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "2.9-3.9%",
@@ -422,7 +422,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787540273798",
               "cat": "人文社科-文学/小说/文化传播-外国文学/小说",
               "price": "495",
-              "image": "",
+              "image": "rank-images/2026-09-21-image34.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "2.2-3.9%",
@@ -434,7 +434,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787514248784",
               "cat": "人文社科-自我实现/励志",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-21-image35.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "6.5-7.5%",
@@ -452,7 +452,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787574716186",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "20",
-              "image": ""
+              "image": "rank-images/2026-09-21-image36.jpg"
             },
             {
               "rank": 2,
@@ -460,7 +460,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575520232",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "20-30",
-              "image": ""
+              "image": "rank-images/2026-09-21-image37.jpg"
             },
             {
               "rank": 3,
@@ -468,7 +468,7 @@ const WEEK_RANK_LIST = [
               "isbn": "",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "45",
-              "image": ""
+              "image": "rank-images/2026-09-21-image38.jpg"
             },
             {
               "rank": 4,
@@ -476,7 +476,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787230068055",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-21-image39.jpg"
             },
             {
               "rank": 5,
@@ -484,7 +484,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519278595",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-21-image40.jpg"
             },
             {
               "rank": 6,
@@ -492,7 +492,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787830127190",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "36",
-              "image": ""
+              "image": "rank-images/2026-09-21-image41.jpg"
             },
             {
               "rank": 7,
@@ -500,7 +500,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556879441",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "20",
-              "image": ""
+              "image": "rank-images/2026-09-21-image42.jpg"
             },
             {
               "rank": 8,
@@ -508,7 +508,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787560793252",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-21-image43.jpg"
             },
             {
               "rank": 9,
@@ -516,7 +516,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575506472",
               "cat": "小学教辅/小学数学教辅",
               "price": "13.6-27.8",
-              "image": ""
+              "image": "rank-images/2026-09-21-image44.jpg"
             },
             {
               "rank": 10,
@@ -524,7 +524,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787540983116",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "28",
-              "image": "rank-images/2026-08-24-image27.jpg"
+              "image": "rank-images/2026-09-21-image45.jpg"
             },
             {
               "rank": 11,
@@ -532,7 +532,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556296408",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-21-image46.jpg"
             },
             {
               "rank": 12,
@@ -540,7 +540,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554916841",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "12.8-30.8",
-              "image": "rank-images/2026-07-21-image72.jpg"
+              "image": "rank-images/2026-09-21-image47.jpg"
             },
             {
               "rank": 13,
@@ -548,7 +548,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519267322",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "35",
-              "image": ""
+              "image": "rank-images/2026-09-21-image48.jpg"
             },
             {
               "rank": 14,
@@ -556,7 +556,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787560793252",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-21-image49.jpg"
             },
             {
               "rank": 15,
@@ -564,7 +564,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787542171290",
               "cat": "童书-学前启蒙/幼小衔接",
               "price": "39",
-              "image": "rank-images/2026-08-10-image68.jpg"
+              "image": "rank-images/2026-09-21-image50.jpg"
             }
           ]
         },
@@ -612,7 +612,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5687-2193-6",
               "cat": "生活-养生保健-饮食健康",
               "price": "50",
-              "image": "rank-images/2026-08-24-image14.jpg",
+              "image": "rank-images/2026-09-14-image1.jpg",
               "sales_range": "30-40W",
               "sales_idx": "9.6999999999999993",
               "conv": "9.8-10.2%",
@@ -624,7 +624,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787510699450",
               "cat": "人文社科-文学/小说/文化传播-中国文化/民俗",
               "price": "79",
-              "image": "rank-images/image89.jpg",
+              "image": "rank-images/2026-09-14-image2.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "4.7-5.8%",
@@ -636,7 +636,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787516685921",
               "cat": "童书-科普百科",
               "price": "189-388",
-              "image": "rank-images/2026-08-03-image6.jpg",
+              "image": "rank-images/2026-09-14-image3.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "4.2-5.2%",
@@ -648,7 +648,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523708293",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": "rank-images/2026-08-24-image22.jpg",
+              "image": "rank-images/2026-09-14-image4.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.8000000000000007",
               "conv": "8.8-9.8%",
@@ -660,7 +660,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787574016682",
               "cat": "教辅/考试-小学教辅-其他小学教辅",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-14-image5.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "10.2-13.5%",
@@ -672,7 +672,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519311872",
               "cat": "育儿-家庭教育",
               "price": "99",
-              "image": "rank-images/image79.jpg",
+              "image": "rank-images/2026-09-14-image6.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "6.4-7.4%",
@@ -684,7 +684,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN 11-0703/（F）",
               "cat": "报刊杂志-教辅期刊/青少年期刊",
               "price": "118-216",
-              "image": "rank-images/2026-08-03-image20.jpg",
+              "image": "rank-images/2026-09-14-image7.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "4.3-5.7%",
@@ -696,7 +696,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556877324",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "40-45",
-              "image": "",
+              "image": "rank-images/2026-09-14-image8.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "10.2-13.5%",
@@ -708,7 +708,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787549645497",
               "cat": "生活-养生保健-中医养生",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-14-image9.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "9.8-10.2%",
@@ -720,7 +720,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787206068287",
               "cat": "教辅/考试-高中教辅-高中数学教辅",
               "price": "69-359",
-              "image": "",
+              "image": "rank-images/2026-09-14-image10.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "3.8-4.8%",
@@ -732,7 +732,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787542168641",
               "cat": "教辅/考试-高中教辅-高中多科教辅",
               "price": "55",
-              "image": "",
+              "image": "rank-images/2026-09-14-image11.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "6.7-7.8%",
@@ -744,7 +744,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-14-image12.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "7.8-8.8%",
@@ -756,7 +756,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787558277863",
               "cat": "教辅/考试-语言学习/考试-英语学习/考试",
               "price": "40",
-              "image": "rank-images/2026-08-10-image21.jpg",
+              "image": "rank-images/2026-09-14-image13.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "6.8-9.8%",
@@ -768,7 +768,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556879038",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-14-image14.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "10.2-13.5%",
@@ -780,7 +780,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575413633",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "23-69",
-              "image": "rank-images/2026-08-24-image10.jpg",
+              "image": "rank-images/2026-09-14-image15.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.8-9.8%",
@@ -792,7 +792,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5125-2485-9",
               "cat": "生活-养生保健-饮食健康",
               "price": "99",
-              "image": "",
+              "image": "rank-images/2026-09-14-image16.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.8-8.8%",
@@ -804,7 +804,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5546-2923-9",
               "cat": "教辅/考试-其他教辅书籍-",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-14-image17.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "4.5-5.4%",
@@ -816,7 +816,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787520837705",
               "cat": "人文社科-管理",
               "price": "199",
-              "image": "rank-images/2026-07-21-image6.jpg",
+              "image": "rank-images/2026-09-14-image18.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "6.7-7.7%",
@@ -828,7 +828,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787512064980",
               "cat": "人文社科-艺术-书法篆刻",
               "price": "27.9",
-              "image": "rank-images/image87.jpg",
+              "image": "rank-images/2026-09-14-image19.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "8.3-10.3%",
@@ -840,7 +840,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787569959901",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "60",
-              "image": "rank-images/2026-07-06-image4.jpg",
+              "image": "rank-images/2026-09-14-image20.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "4.4-5.4%",
@@ -858,7 +858,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787576364040",
               "cat": "育儿-家庭教育",
               "price": "90",
-              "image": "",
+              "image": "rank-images/2026-09-14-image21.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.8000000000000007",
               "conv": "3.5-4.5%",
@@ -870,7 +870,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511073136",
               "cat": "教辅/考试-小学教辅-小学英语教辅",
               "price": "80",
-              "image": "rank-images/2026-06-22-image31.jpg",
+              "image": "rank-images/2026-09-14-image22.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "7.2-8.2%",
@@ -882,7 +882,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787558266546",
               "cat": "教辅/考试-小学教辅-小学数学教辅",
               "price": "12-38",
-              "image": "",
+              "image": "rank-images/2026-09-14-image23.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.6999999999999993",
               "conv": "5.6-7.8%",
@@ -894,7 +894,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-14-image24.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.8000000000000007",
               "conv": "8.8-9.8%",
@@ -906,7 +906,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511077813",
               "cat": "人文社科-管理",
               "price": "69-129",
-              "image": "rank-images/2026-08-24-image28.jpg",
+              "image": "rank-images/2026-09-14-image25.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6999999999999993",
               "conv": "5.5-6.9%",
@@ -918,7 +918,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "36.5-113",
-              "image": "",
+              "image": "rank-images/2026-09-14-image26.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "9.3-10.3%",
@@ -930,7 +930,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787538410754",
               "cat": "生活-养生保健-饮食健康",
               "price": "70",
-              "image": "",
+              "image": "rank-images/2026-09-14-image27.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "7.8-9.8%",
@@ -942,7 +942,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787558277863",
               "cat": "教辅/考试-语言学习/考试-英语学习/考试",
               "price": "40",
-              "image": "rank-images/2026-08-10-image21.jpg",
+              "image": "rank-images/2026-09-14-image28.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "9.9-10.3%",
@@ -954,7 +954,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590473",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39-69",
-              "image": "rank-images/2026-08-03-image12.jpg",
+              "image": "rank-images/2026-09-14-image29.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "7.8-9.8%",
@@ -966,7 +966,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787549427406",
               "cat": "教辅/考试 - 小学教辅 - 小学语文教辅",
               "price": "139",
-              "image": "rank-images/2026-06-15-image38.jpg",
+              "image": "rank-images/2026-09-14-image30.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "10.2-12.3%",
@@ -978,7 +978,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5337-6531-6",
               "cat": "生活-养生保健-饮食健康",
               "price": "20",
-              "image": "",
+              "image": "rank-images/2026-09-14-image31.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "11.2-13.4%",
@@ -990,7 +990,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN 10-1344/F",
               "cat": "报刊杂志-文学文摘",
               "price": "1498",
-              "image": "",
+              "image": "rank-images/2026-09-14-image32.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "2.8-3.9%",
@@ -1002,7 +1002,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787308273589",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "179",
-              "image": "rank-images/2026-07-27-image20.jpg",
+              "image": "rank-images/2026-09-14-image33.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "4.5-5.5%",
@@ -1014,7 +1014,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787574228627",
               "cat": "生活-养生保健-饮食健康",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-14-image34.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "9.8-12.3%",
@@ -1026,7 +1026,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787518001521",
               "cat": "人文社科-文学/小说/文化传播-国学/古籍",
               "price": "128",
-              "image": "rank-images/2026-08-03-image24.jpg",
+              "image": "rank-images/2026-09-14-image35.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "2.9-3.9%",
@@ -1044,7 +1044,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556296408",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-14-image36.jpg"
             },
             {
               "rank": 2,
@@ -1052,7 +1052,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554916841",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "12.8-30.8",
-              "image": "rank-images/2026-07-21-image72.jpg"
+              "image": "rank-images/2026-09-14-image37.jpg"
             },
             {
               "rank": 3,
@@ -1060,7 +1060,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787540983116",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "28",
-              "image": "rank-images/2026-08-24-image27.jpg"
+              "image": "rank-images/2026-09-14-image38.jpg"
             },
             {
               "rank": 4,
@@ -1068,7 +1068,7 @@ const WEEK_RANK_LIST = [
               "isbn": "",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "45",
-              "image": ""
+              "image": "rank-images/2026-09-14-image39.jpg"
             },
             {
               "rank": 5,
@@ -1076,7 +1076,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787536843899",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "13.8-22.8",
-              "image": ""
+              "image": "rank-images/2026-09-14-image40.jpg"
             },
             {
               "rank": 6,
@@ -1084,7 +1084,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575520232",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "20-30",
-              "image": ""
+              "image": "rank-images/2026-09-14-image41.jpg"
             },
             {
               "rank": 7,
@@ -1092,7 +1092,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787513730945",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-14-image42.jpg"
             },
             {
               "rank": 8,
@@ -1100,7 +1100,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787580104151",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "59",
-              "image": ""
+              "image": "rank-images/2026-09-14-image43.jpg"
             },
             {
               "rank": 9,
@@ -1108,7 +1108,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9875853256878",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-14-image44.jpg"
             },
             {
               "rank": 10,
@@ -1116,7 +1116,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787230068055",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-14-image45.jpg"
             },
             {
               "rank": 11,
@@ -1124,7 +1124,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523719787",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-14-image46.jpg"
             },
             {
               "rank": 12,
@@ -1132,7 +1132,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787547068496",
               "cat": "人文社科-自我实现/励志",
               "price": "29",
-              "image": ""
+              "image": "rank-images/2026-09-14-image47.jpg"
             },
             {
               "rank": 13,
@@ -1140,7 +1140,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519278595",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-14-image48.jpg"
             },
             {
               "rank": 14,
@@ -1148,7 +1148,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556879441",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "20",
-              "image": ""
+              "image": "rank-images/2026-09-14-image49.jpg"
             },
             {
               "rank": 15,
@@ -1156,7 +1156,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575506472",
               "cat": "小学教辅/小学数学教辅",
               "price": "13.6-27.8",
-              "image": ""
+              "image": "rank-images/2026-09-14-image50.jpg"
             }
           ]
         },
@@ -1204,7 +1204,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5687-2193-6",
               "cat": "生活-养生保健-饮食健康",
               "price": "50",
-              "image": "rank-images/2026-08-24-image14.jpg",
+              "image": "rank-images/2026-09-07-image1.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "9.8-12.3%",
@@ -1216,7 +1216,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5236-2313-8",
               "cat": "生活-养生保健-中医养生",
               "price": "99",
-              "image": "rank-images/2026-08-10-image17.jpg",
+              "image": "rank-images/2026-09-07-image2.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "6.6-7.8%",
@@ -1228,7 +1228,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787510699450",
               "cat": "人文社科-文学/小说/文化传播-中国文化/民俗",
               "price": "79",
-              "image": "rank-images/image89.jpg",
+              "image": "rank-images/2026-09-07-image3.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "4.8-5.8%",
@@ -1240,7 +1240,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523708293",
               "cat": "童书-科普百科",
               "price": "30",
-              "image": "rank-images/2026-08-24-image22.jpg",
+              "image": "rank-images/2026-09-07-image4.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.8000000000000007",
               "conv": "9.8-12.3%",
@@ -1252,7 +1252,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN 11-0703/（F）",
               "cat": "报刊杂志-教辅期刊/青少年期刊",
               "price": "118-216",
-              "image": "rank-images/2026-08-03-image20.jpg",
+              "image": "rank-images/2026-09-07-image5.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "4.5-5.5%",
@@ -1264,7 +1264,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787553988627",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "74",
-              "image": "rank-images/2026-08-18-image19.jpg",
+              "image": "rank-images/2026-09-07-image6.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "7.8-9.9%",
@@ -1276,7 +1276,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787516685921",
               "cat": "童书-科普百科",
               "price": "189-388",
-              "image": "rank-images/2026-08-03-image6.jpg",
+              "image": "rank-images/2026-09-07-image7.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "6.1-7.1%",
@@ -1288,7 +1288,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575413633",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "23-69",
-              "image": "rank-images/2026-08-24-image10.jpg",
+              "image": "rank-images/2026-09-07-image8.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "8.8-9.8%",
@@ -1300,7 +1300,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787206068287",
               "cat": "教辅/考试-高中教辅-高中数学教辅",
               "price": "69-359",
-              "image": "",
+              "image": "rank-images/2026-09-07-image9.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "4.7-5.7%",
@@ -1312,7 +1312,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787564968397",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "46",
-              "image": "rank-images/2026-07-06-image24.jpg",
+              "image": "rank-images/2026-09-07-image10.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "6.7-7.9%",
@@ -1324,7 +1324,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519311872",
               "cat": "育儿-家庭教育",
               "price": "99",
-              "image": "rank-images/image79.jpg",
+              "image": "rank-images/2026-09-07-image11.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "6.6-7.8%",
@@ -1336,7 +1336,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787536844025",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-07-image12.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.5",
               "conv": "9.8-12.3%",
@@ -1348,7 +1348,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5477-5359-0",
               "cat": "人文社科-经济/金融投资",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-07-image13.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "5.3-6.3%",
@@ -1360,7 +1360,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787569959901",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "60",
-              "image": "rank-images/2026-07-06-image4.jpg",
+              "image": "rank-images/2026-09-07-image14.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "4.3-5.9%",
@@ -1372,7 +1372,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787549645497",
               "cat": "生活-养生保健-中医养生",
               "price": "46",
-              "image": "",
+              "image": "rank-images/2026-09-07-image15.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "9.8-12.3%",
@@ -1384,7 +1384,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5527-0989-6",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-07-image16.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "8.9-10.1%",
@@ -1396,7 +1396,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787540986230",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-07-image17.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.6-8.8%",
@@ -1408,7 +1408,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590473",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39-69",
-              "image": "rank-images/2026-08-03-image12.jpg",
+              "image": "rank-images/2026-09-07-image18.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.8-8.8%",
@@ -1420,7 +1420,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787512064980",
               "cat": "日常学习用品-硬笔字帖",
               "price": "69",
-              "image": "rank-images/image87.jpg",
+              "image": "rank-images/2026-09-07-image19.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "8.7-9.8%",
@@ -1432,7 +1432,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556879038",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-07-image20.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "8.7-9.8%",
@@ -1450,7 +1450,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511073136",
               "cat": "教辅/考试-小学教辅-小学英语教辅",
               "price": "80",
-              "image": "rank-images/2026-06-22-image31.jpg",
+              "image": "rank-images/2026-09-07-image21.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.8000000000000007",
               "conv": "4.5-5.5%",
@@ -1462,7 +1462,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590473",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39-69",
-              "image": "rank-images/2026-08-03-image12.jpg",
+              "image": "rank-images/2026-09-07-image22.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6999999999999993",
               "conv": "9.8-10.2%",
@@ -1474,7 +1474,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511077813",
               "cat": "人文社科-管理",
               "price": "69-129",
-              "image": "rank-images/2026-08-24-image28.jpg",
+              "image": "rank-images/2026-09-07-image23.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.6999999999999993",
               "conv": "5.8-7.8%",
@@ -1486,7 +1486,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-07-image24.jpg",
               "sales_range": "5-6W",
               "sales_idx": "9.8000000000000007",
               "conv": "5.5-6.7%",
@@ -1498,7 +1498,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "36.5-113",
-              "image": "",
+              "image": "rank-images/2026-09-07-image25.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6999999999999993",
               "conv": "7.8-8.9%",
@@ -1510,7 +1510,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511590800",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "39.8-59.8",
-              "image": "rank-images/image83.jpg",
+              "image": "rank-images/2026-09-07-image26.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "8.6-9.6%",
@@ -1522,7 +1522,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573623072",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "29-39",
-              "image": "",
+              "image": "rank-images/2026-09-07-image27.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "8.8-9.8%",
@@ -1534,7 +1534,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554234914",
               "cat": "自然科学与科技-农业技术",
               "price": "40",
-              "image": "rank-images/2026-06-15-image39.jpg",
+              "image": "rank-images/2026-09-07-image28.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "6.9-7.9%",
@@ -1546,7 +1546,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-07-image29.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "5.6-6.6%",
@@ -1558,7 +1558,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787521514704",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "60",
-              "image": "rank-images/2026-07-21-image60.jpg",
+              "image": "rank-images/2026-09-07-image30.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "7.8-9.8%",
@@ -1570,7 +1570,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787571646684",
               "cat": "教辅/考试-初中教辅-初中语文教辅",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-07-image31.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "7.8-9.8%",
@@ -1582,7 +1582,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787512064980",
               "cat": "日常学习用品-硬笔字帖",
               "price": "69",
-              "image": "rank-images/image87.jpg",
+              "image": "rank-images/2026-09-07-image32.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "7.8-8.8%",
@@ -1594,7 +1594,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787533765316",
               "cat": "生活-养生保健-饮食健康",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-07-image33.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "9.8-12.3%",
@@ -1606,7 +1606,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787511575920",
               "cat": "人文社科-历史",
               "price": "199",
-              "image": "rank-images/image27.jpg",
+              "image": "rank-images/2026-09-07-image34.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "3.4-5.6%",
@@ -1636,7 +1636,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787554916841",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "12.8-30.8",
-              "image": "rank-images/2026-07-21-image72.jpg"
+              "image": "rank-images/2026-09-07-image35.jpg"
             },
             {
               "rank": 2,
@@ -1644,7 +1644,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556296408",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-07-image36.jpg"
             },
             {
               "rank": 3,
@@ -1652,7 +1652,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787536843899",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "13.8-22.8",
-              "image": ""
+              "image": "rank-images/2026-09-07-image37.jpg"
             },
             {
               "rank": 4,
@@ -1660,7 +1660,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787513730945",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image38.jpg"
             },
             {
               "rank": 5,
@@ -1668,7 +1668,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787581501928",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image39.jpg"
             },
             {
               "rank": 6,
@@ -1676,7 +1676,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787540983116",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "28",
-              "image": "rank-images/2026-08-24-image27.jpg"
+              "image": "rank-images/2026-09-07-image40.jpg"
             },
             {
               "rank": 7,
@@ -1684,7 +1684,7 @@ const WEEK_RANK_LIST = [
               "isbn": "",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "45",
-              "image": ""
+              "image": "rank-images/2026-09-07-image41.jpg"
             },
             {
               "rank": 8,
@@ -1692,7 +1692,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787502858667",
               "cat": "童书-儿童益智游戏书",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image42.jpg"
             },
             {
               "rank": 9,
@@ -1700,7 +1700,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787580104151",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "59",
-              "image": ""
+              "image": "rank-images/2026-09-07-image43.jpg"
             },
             {
               "rank": 10,
@@ -1708,7 +1708,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787830127008",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image44.jpg"
             },
             {
               "rank": 11,
@@ -1716,7 +1716,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573618405",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "19-40",
-              "image": "rank-images/2026-08-24-image48.jpg"
+              "image": "rank-images/2026-09-07-image45.jpg"
             },
             {
               "rank": 12,
@@ -1724,7 +1724,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787210174288",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "50",
-              "image": ""
+              "image": "rank-images/2026-09-07-image46.jpg"
             },
             {
               "rank": 13,
@@ -1732,7 +1732,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787210083672",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image47.jpg"
             },
             {
               "rank": 14,
@@ -1740,7 +1740,7 @@ const WEEK_RANK_LIST = [
               "isbn": "",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "20",
-              "image": ""
+              "image": "rank-images/2026-09-07-image48.jpg"
             },
             {
               "rank": 15,
@@ -1748,7 +1748,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787523719787",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image49.jpg"
             }
           ]
         },
@@ -1844,7 +1844,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787206068287",
               "cat": "教辅/考试-高中教辅-高中数学教辅",
               "price": "69-359",
-              "image": "",
+              "image": "rank-images/2026-09-21-image13.jpg",
               "sales_range": "10-20W",
               "sales_idx": "9.6999999999999993",
               "conv": "4.5-6.5%",
@@ -1868,7 +1868,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787533765316",
               "cat": "生活-养生保健-饮食健康",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-07-image33.jpg",
               "sales_range": "5-10W",
               "sales_idx": "9.6",
               "conv": "8.8-9.9%",
@@ -1964,7 +1964,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787549645497",
               "cat": "生活-养生保健-中医养生",
               "price": "30",
-              "image": "",
+              "image": "rank-images/2026-09-21-image15.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "10.3-12.3%",
@@ -1988,7 +1988,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5477-5359-0",
               "cat": "人文社科-经济/金融投资",
               "price": "40",
-              "image": "",
+              "image": "rank-images/2026-09-07-image13.jpg",
               "sales_range": "1-5W",
               "sales_idx": "9.5",
               "conv": "7.4-8.4%",
@@ -2126,7 +2126,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787575615044",
               "cat": "教辅/考试-初中教辅-初中多科教辅",
               "price": "36.5-113",
-              "image": "",
+              "image": "rank-images/2026-09-21-image10.jpg",
               "sales_range": "3-4W",
               "sales_idx": "9.6",
               "conv": "7.1-8.1%",
@@ -2138,7 +2138,7 @@ const WEEK_RANK_LIST = [
               "isbn": "CN 10-1344/F",
               "cat": "报刊杂志-文学文摘",
               "price": "1498",
-              "image": "",
+              "image": "rank-images/2026-09-21-image24.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "1.6-2.6%",
@@ -2150,7 +2150,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787573637635",
               "cat": "潮流玩具-收藏卡牌",
               "price": "49.9",
-              "image": "",
+              "image": "rank-images/2026-09-21-image7.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "3.5-4.8%",
@@ -2162,7 +2162,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787218170008",
               "cat": "教辅/考试-初中教辅-初中英语教辅",
               "price": "52-94",
-              "image": "",
+              "image": "rank-images/2026-09-21-image32.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.6",
               "conv": "7.8-8.8%",
@@ -2174,7 +2174,7 @@ const WEEK_RANK_LIST = [
               "isbn": "978-7-5337-6531-6",
               "cat": "生活-养生保健-饮食健康",
               "price": "20",
-              "image": "",
+              "image": "rank-images/2026-09-14-image31.jpg",
               "sales_range": "1-2W",
               "sales_idx": "9.5",
               "conv": "8.8-9.8%",
@@ -2244,7 +2244,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787536843899",
               "cat": "教辅/考试-小学教辅-小学多科教辅",
               "price": "13.8-22.8",
-              "image": ""
+              "image": "rank-images/2026-09-14-image40.jpg"
             },
             {
               "rank": 4,
@@ -2260,7 +2260,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787556296408",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "25",
-              "image": ""
+              "image": "rank-images/2026-09-21-image46.jpg"
             },
             {
               "rank": 6,
@@ -2268,7 +2268,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787519267322",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "35",
-              "image": ""
+              "image": "rank-images/2026-09-21-image48.jpg"
             },
             {
               "rank": 7,
@@ -2284,7 +2284,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787210083672",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-09-07-image47.jpg"
             },
             {
               "rank": 9,
@@ -2316,7 +2316,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787580104151",
               "cat": "教辅/考试-小学教辅-小学语文教辅",
               "price": "59",
-              "image": ""
+              "image": "rank-images/2026-09-14-image43.jpg"
             },
             {
               "rank": 13,
@@ -2340,7 +2340,7 @@ const WEEK_RANK_LIST = [
               "isbn": "9787516844489",
               "cat": "人文社科-文学/小说/文化传播-国学/古籍",
               "price": "30",
-              "image": ""
+              "image": "rank-images/2026-08-18-image38.jpg"
             }
           ]
         },
