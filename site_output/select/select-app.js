@@ -1922,7 +1922,7 @@ function initOverview() {
         }
       }}],
     yAxis:[
-      {type:'value', name:'总消耗指数', max:100, nameTextStyle:{color:TXT,fontSize:11}, axisLine:{lineStyle:{color:AXIS}}, axisLabel:{color:TXT}, splitLine:{lineStyle:{color:SPLIT}}}
+      {type:'value', name:'总消耗指数', max:110, nameTextStyle:{color:TXT,fontSize:11}, axisLine:{lineStyle:{color:AXIS}}, axisLabel:{color:TXT}, splitLine:{lineStyle:{color:SPLIT}}}
     ],
     series:[
       {name:'教辅', type:'bar', stack:'total', barWidth:'52%',
