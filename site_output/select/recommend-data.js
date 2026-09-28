@@ -1,9 +1,108 @@
-// 推荐书单数据（来自《【腾讯图书】预测推荐书单2026.xlsx》8月期 + 7月/6月历史）
-// 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 独立从 1 开始（新月份 prepended）
-// 生成时间: 2026-08-03 17:00:00（追加 8月 63 本：教辅22+童书11+社科17+健康13，健康部分书籍 ADQ 全禁投/初审已按 ams_status 字段标注）
+// 推荐书单数据（来自《【腾讯图书】2026预测书单（月维度准入评估）.xlsx》9-10月期 + 8月/7月/6月/Q1/Q2 历史）
+// 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 按月份独立从 1 开始（新月份 prepended）
+// 生成时间: 2026-09-28（补充 9-10月新书 75 本：仅按 ISBN 去重追加，已有书月份/准入状态未改动；新书封面从 xlsx 内嵌 _localImage 提取）
 
 const RECOMMEND_BOOKS = {
   "童书推荐书单": [
+    // ===== 童书推荐书单 · 9-10月新增（14 本，prepended 2026-09-28）=====
+    {
+      "title": "我在为自己读书",
+      "rank": 1,
+      "recommend_time": "10月",
+      "isbn": "9787531895046",
+      "image": "forecast-images/forecast-童书-9787531895046.jpg"
+    },
+    {
+      "title": "儿童时间管理能力培训",
+      "rank": 2,
+      "recommend_time": "10月",
+      "isbn": "9787230015387",
+      "image": "forecast-images/forecast-童书-9787230015387.jpg"
+    },
+    {
+      "title": "漫画梅拉宾法则",
+      "rank": 3,
+      "recommend_time": "10月",
+      "isbn": "9787513199193",
+      "image": "forecast-images/forecast-童书-9787513199193.jpg"
+    },
+    {
+      "title": "漫画八面玲珑",
+      "rank": 4,
+      "recommend_time": "10月",
+      "isbn": "9787515844121",
+      "image": "forecast-images/forecast-童书-9787515844121.jpg"
+    },
+    {
+      "title": "藏起来的小秘密",
+      "rank": 5,
+      "recommend_time": "10月",
+      "isbn": "9787555726999",
+      "image": "forecast-images/forecast-童书-9787555726999.jpg"
+    },
+    {
+      "title": "写给孩子的丛林法则",
+      "rank": 6,
+      "recommend_time": "10月",
+      "isbn": "9787807737247",
+      "image": "forecast-images/forecast-童书-9787807737247.jpg"
+    },
+    {
+      "title": "趣味漫画儿童心理学",
+      "rank": 7,
+      "recommend_time": "10月",
+      "isbn": "9787807736691",
+      "image": "forecast-images/forecast-童书-9787807736691.jpg"
+    },
+    {
+      "title": "儿童逆情商教育绘本",
+      "rank": 8,
+      "recommend_time": "10月",
+      "isbn": "9787547272657",
+      "image": "forecast-images/forecast-童书-9787547272657.jpg"
+    },
+    {
+      "title": "漫画讲透易经+漫画讲透道德经",
+      "rank": 9,
+      "recommend_time": "10月",
+      "isbn": "9787513948593",
+      "image": "forecast-images/forecast-童书-9787513948593.jpg"
+    },
+    {
+      "title": "中国.世界立体地图",
+      "rank": 10,
+      "recommend_time": "10月",
+      "isbn": "9787520443265",
+      "image": "forecast-images/forecast-童书-9787520443265.jpg"
+    },
+    {
+      "title": "和大人一起读",
+      "rank": 11,
+      "recommend_time": "9月",
+      "isbn": "9787551172868",
+      "image": "forecast-images/forecast-童书-9787551172868.jpg"
+    },
+    {
+      "title": "小自然",
+      "rank": 12,
+      "recommend_time": "9月",
+      "isbn": "9787537766944",
+      "image": "forecast-images/forecast-童书-9787537766944.jpg"
+    },
+    {
+      "title": "点阵控笔",
+      "rank": 13,
+      "recommend_time": "9月",
+      "isbn": "9787559389152",
+      "image": "forecast-images/forecast-童书-9787559389152.jpg"
+    },
+    {
+      "title": "不要辱骂我",
+      "rank": 14,
+      "recommend_time": "9月",
+      "isbn": "9787574503762",
+      "image": "forecast-images/forecast-童书-9787574503762.jpg"
+    },
     // ===== 童书推荐书单 · 8月新增（11 本，prepended 2026-08-03）=====
     {
       "title": "生命里的第一课",
@@ -627,6 +726,56 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "教辅推荐书单": [
+    // ===== 教辅推荐书单 · 9-10月新增（7 本，prepended 2026-09-28）=====
+    {
+      "title": "初中作文高分句1000+例+古文年今用",
+      "rank": 1,
+      "recommend_time": "10月",
+      "isbn": "9787581000971",
+      "image": "forecast-images/forecast-教辅-9787581000971.jpg"
+    },
+    {
+      "title": "速算技巧",
+      "rank": 2,
+      "recommend_time": "10月",
+      "isbn": "9787230089432",
+      "image": "forecast-images/forecast-教辅-9787230089432.jpg"
+    },
+    {
+      "title": "高考关键真题必刷",
+      "rank": 3,
+      "recommend_time": "10月",
+      "isbn": "9787570456994",
+      "image": "forecast-images/forecast-教辅-9787570456994.jpg"
+    },
+    {
+      "title": "口诀秒记",
+      "rank": 4,
+      "recommend_time": "10月",
+      "isbn": "9787554181539",
+      "image": "forecast-images/forecast-教辅-9787554181539.jpg"
+    },
+    {
+      "title": "笠翁对韵+龙文鞭影+声律启蒙+幼学琼林",
+      "rank": 5,
+      "recommend_time": "10月",
+      "isbn": "9787512691889",
+      "image": "forecast-images/forecast-教辅-9787512691889.jpg"
+    },
+    {
+      "title": "我是拼读小能手",
+      "rank": 6,
+      "recommend_time": "10月",
+      "isbn": "9787548471493",
+      "image": "forecast-images/forecast-教辅-9787548471493.jpg"
+    },
+    {
+      "title": "小学数学公式定律词典",
+      "rank": 7,
+      "recommend_time": "10月",
+      "isbn": "9787575410106",
+      "image": "forecast-images/forecast-教辅-9787575410106.jpg"
+    },
     // ===== 教辅推荐书单 · 8月新增（22 本，prepended 2026-08-03）=====
     {
       "title": "幼小衔接每日一练",
@@ -1215,6 +1364,47 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "社科推荐书单": [
+    // ===== 社科推荐书单 · 9-10月新增（5 本，prepended 2026-09-28）=====
+    {
+      "title": "教会你800个思维",
+      "rank": 1,
+      "recommend_time": "Q4",
+      "isbn": "9787576358223",
+      "image": "forecast-images/forecast-社科-9787576358223.jpg",
+      "ams_status": "全流量可投，常触发夸大及负面描述，注意素材合规"
+    },
+    {
+      "title": "草莽的崛起+雕琢自我",
+      "rank": 2,
+      "recommend_time": "Q4",
+      "isbn": "9787504783318",
+      "image": "forecast-images/forecast-社科-9787504783318.jpg",
+      "ams_status": "全流量可投，常触发夸大及负面描述，注意素材合规"
+    },
+    {
+      "title": "小生意大收益",
+      "rank": 3,
+      "recommend_time": "Q4",
+      "isbn": "9787558763663",
+      "image": "forecast-images/forecast-社科-9787558763663.jpg",
+      "ams_status": "全流量可投，常触发夸大及负面描述，注意素材合规"
+    },
+    {
+      "title": "城府+布局 控局 破局",
+      "rank": 4,
+      "recommend_time": "Q4",
+      "isbn": "9787548874676",
+      "image": "forecast-images/forecast-社科-9787548874676.jpg",
+      "ams_status": "全流量可投，常触发夸大及负面描述，注意素材合规"
+    },
+    {
+      "title": "从0到1用AI赚钱",
+      "rank": 5,
+      "recommend_time": "7月",
+      "isbn": "9787548049388",
+      "image": "forecast-images/forecast-社科-9787548049388.jpg",
+      "ams_status": "不得宣传推广推广境外大模型"
+    },
     // ===== 社科推荐书单 · 8月新增（17 本，prepended 2026-08-03）=====
     {
       "title": "一句话点亮人生",
@@ -2033,6 +2223,400 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "健康推荐书单": [
+    // ===== 健康推荐书单 · 9-10月新增（49 本，prepended 2026-09-28）=====
+    {
+      "title": "土菜方",
+      "rank": 1,
+      "recommend_time": "10月",
+      "isbn": "9787523224649",
+      "image": "forecast-images/forecast-健康-9787523224649.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "药膳汤膳粥膳",
+      "rank": 2,
+      "recommend_time": "10月",
+      "isbn": "9787574435186",
+      "image": "forecast-images/forecast-健康-9787574435186.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "拍打健康法",
+      "rank": 3,
+      "recommend_time": "10月",
+      "isbn": "9787573639288",
+      "image": "forecast-images/forecast-健康-9787573639288.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "对症拉伸拍打",
+      "rank": 4,
+      "recommend_time": "10月",
+      "isbn": "9787554233870",
+      "image": "forecast-images/forecast-健康-9787554233870.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "拉筋拍打一身轻",
+      "rank": 5,
+      "recommend_time": "10月",
+      "isbn": "9787538160697",
+      "image": "forecast-images/forecast-健康-9787538160697.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "黄帝内经养生1000问",
+      "rank": 6,
+      "recommend_time": "10月",
+      "isbn": "9787524603702",
+      "image": "forecast-images/forecast-健康-9787524603702.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "食养百病消",
+      "rank": 7,
+      "recommend_time": "10月",
+      "isbn": "9787574241015",
+      "image": "forecast-images/forecast-健康-9787574241015.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "抗炎生活",
+      "rank": 8,
+      "recommend_time": "10月",
+      "isbn": "9787568721776",
+      "image": "forecast-images/forecast-健康-9787568721776.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "华佗妙方大全",
+      "rank": 9,
+      "recommend_time": "10月",
+      "isbn": "9787571926366",
+      "image": "forecast-images/forecast-健康-9787571926366.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "民间偏方奇效方",
+      "rank": 10,
+      "recommend_time": "10月",
+      "isbn": "9787574400436",
+      "image": "forecast-images/forecast-健康-9787574400436.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "奇经八脉考",
+      "rank": 11,
+      "recommend_time": "10月",
+      "isbn": "9787521453119",
+      "image": "forecast-images/forecast-健康-9787521453119.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "本草纲目100滋补汤",
+      "rank": 12,
+      "recommend_time": "10月",
+      "isbn": "9787557602956",
+      "image": "forecast-images/forecast-健康-9787557602956.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "药酒大全",
+      "rank": 13,
+      "recommend_time": "10月",
+      "isbn": "9787554232354",
+      "image": "forecast-images/forecast-健康-9787554232354.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "美味炸物",
+      "rank": 14,
+      "recommend_time": "10月",
+      "isbn": "9787553752990",
+      "image": "forecast-images/forecast-健康-9787553752990.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "豆浆五谷米糊蔬菜汁",
+      "rank": 15,
+      "recommend_time": "10月",
+      "isbn": "9787506499057",
+      "image": "forecast-images/forecast-健康-9787506499057.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "偶尔出格",
+      "rank": 16,
+      "recommend_time": "10月",
+      "isbn": "9787554627037",
+      "image": "forecast-images/forecast-健康-9787554627037.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "图解3秒定位精准取穴缓解疲乏",
+      "rank": 17,
+      "recommend_time": "10月",
+      "isbn": "9787121497902",
+      "image": "forecast-images/forecast-健康-9787121497902.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "易筋经",
+      "rank": 18,
+      "recommend_time": "10月",
+      "isbn": "9787533766641",
+      "image": "forecast-images/forecast-健康-9787533766641.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "无毒清洁术",
+      "rank": 19,
+      "recommend_time": "10月",
+      "isbn": "9787229050115",
+      "image": "forecast-images/forecast-健康-9787229050115.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "智慧生活-3秒精准取穴",
+      "rank": 20,
+      "recommend_time": "10月",
+      "isbn": "9787523622957",
+      "publisher": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
+      "image": "forecast-images/forecast-健康-9787523622957.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "养生蔬果汁",
+      "rank": 21,
+      "recommend_time": "10月",
+      "isbn": "9787559689238",
+      "image": "forecast-images/forecast-健康-9787559689238.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "从零开始学做小炒",
+      "rank": 22,
+      "recommend_time": "10月",
+      "isbn": "9787533765262",
+      "image": "forecast-images/forecast-健康-9787533765262.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "豆浆米糊杂粮粥",
+      "rank": 23,
+      "recommend_time": "10月",
+      "isbn": "9787553742359",
+      "image": "forecast-images/forecast-健康-9787553742359.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "滋补养生百姓汤",
+      "rank": 24,
+      "recommend_time": "10月",
+      "isbn": "9787522940823",
+      "image": "forecast-images/forecast-健康-9787522940823.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "家相实用操作指南",
+      "rank": 25,
+      "recommend_time": "10月",
+      "isbn": "9787806537039",
+      "image": "forecast-images/forecast-健康-9787806537039.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "一碗好汤喝出好气色",
+      "rank": 26,
+      "recommend_time": "10月",
+      "isbn": "9787539048697",
+      "image": "forecast-images/forecast-健康-9787539048697.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "爱上家常菜",
+      "rank": 27,
+      "recommend_time": "10月",
+      "isbn": "9787557860363",
+      "image": "forecast-images/forecast-健康-9787557860363.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "黄帝内经",
+      "rank": 28,
+      "recommend_time": "10月",
+      "isbn": "9787511069351",
+      "image": "forecast-images/forecast-健康-9787511069351.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "秘方验证",
+      "rank": 29,
+      "recommend_time": "10月",
+      "isbn": "9787801741110",
+      "image": "forecast-images/forecast-健康-9787801741110.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "百病食疗",
+      "rank": 30,
+      "recommend_time": "9月",
+      "isbn": "9787513250313",
+      "image": "forecast-images/forecast-健康-9787513250313.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "很老很老的偏方",
+      "rank": 31,
+      "recommend_time": "9月",
+      "isbn": "9787542764270",
+      "image": "forecast-images/forecast-健康-9787542764270.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "减糖生活",
+      "rank": 32,
+      "recommend_time": "9月",
+      "isbn": "9787515842875",
+      "image": "forecast-images/forecast-健康-9787515842875.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "新版疾病预防",
+      "rank": 33,
+      "recommend_time": "9月",
+      "isbn": "9787521415827",
+      "image": "forecast-images/forecast-健康-9787521415827.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "养好脾胃怎么吃",
+      "rank": 34,
+      "recommend_time": "9月",
+      "isbn": "9787536966147",
+      "image": "forecast-images/forecast-健康-9787536966147.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "一天一碗汤",
+      "rank": 35,
+      "recommend_time": "9月",
+      "isbn": "9787572324505",
+      "image": "forecast-images/forecast-健康-9787572324505.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "24节气养生食补",
+      "rank": 36,
+      "recommend_time": "9月",
+      "isbn": "9787533559397",
+      "image": "forecast-images/forecast-健康-9787533559397.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "焦虑心理学",
+      "rank": 37,
+      "recommend_time": "9月",
+      "isbn": "9787511732057",
+      "image": "forecast-images/forecast-健康-9787511732057.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "本草纲目",
+      "rank": 38,
+      "recommend_time": "9月",
+      "isbn": "9787506783934",
+      "image": "forecast-images/forecast-健康-9787506783934.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "肠胃病怎么吃",
+      "rank": 39,
+      "recommend_time": "9月",
+      "isbn": "9787530876237",
+      "image": "forecast-images/forecast-健康-9787530876237.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "糖尿病饮食调养全书",
+      "rank": 40,
+      "recommend_time": "9月",
+      "isbn": "9787530885895",
+      "image": "forecast-images/forecast-健康-9787530885895.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "图解刮痧一看就会",
+      "rank": 41,
+      "recommend_time": "9月",
+      "isbn": "9787557852726",
+      "image": "forecast-images/forecast-健康-9787557852726.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "伤寒论",
+      "rank": 42,
+      "recommend_time": "9月",
+      "isbn": "9787515222585",
+      "image": "forecast-images/forecast-健康-9787515222585.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "中国居民膳食指南",
+      "rank": 43,
+      "recommend_time": "9月",
+      "isbn": "9787117314046",
+      "image": "forecast-images/forecast-健康-9787117314046.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "降血糖你就照着吃",
+      "rank": 44,
+      "recommend_time": "9月",
+      "isbn": "9787571348601",
+      "image": "forecast-images/forecast-健康-9787571348601.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "生命的重建",
+      "rank": 45,
+      "recommend_time": "9月",
+      "isbn": "9787801445445",
+      "image": "forecast-images/forecast-健康-9787801445445.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "节气针灸",
+      "rank": 46,
+      "recommend_time": "9月",
+      "isbn": "9787122402301",
+      "image": "forecast-images/forecast-健康-9787122402301.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "5+2轻断食",
+      "rank": 47,
+      "recommend_time": "9月",
+      "isbn": "9787539045894",
+      "image": "forecast-images/forecast-健康-9787539045894.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "高血脂",
+      "rank": 48,
+      "recommend_time": "9月",
+      "isbn": "9787030399878",
+      "image": "forecast-images/forecast-健康-9787030399878.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "养生一碗汤",
+      "rank": 49,
+      "recommend_time": "7月",
+      "isbn": "9787539062754",
+      "image": "forecast-images/forecast-健康-9787539062754.jpg",
+      "ams_status": "限投搜狗"
+    },
     // ===== 健康推荐书单 · 8月新增（13 本，prepended 2026-08-03）=====
     {
       "title": "一人锅：一个人的小锅料理",
