@@ -4133,9 +4133,13 @@ function scriptBuildChunksPrompt(bookContent,audience,duration,chunks,tones,cate
 }
 
 async function scriptCallAI(prompt, maxTokens){
-var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。**严格遵守用户给出的字数区间，不允许超出或低于该区间。**当用户要求 JSON 输出时，只输出合法 JSON，不带任何 markdown 代码块包裹，不带任何前后解释文字。'},{role:'user',content:prompt}],temperature:0.85,max_tokens:maxTokens||4096})});
+var response=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:[{role:'system',content:'你是一个真正做过图书短视频带货的口播达人。你说话像朋友聊天——有语气词、有停顿、有情绪起伏。你从不用"首先其次最后"等AI废话。你用"你"对话，每句短小有力。你写的脚本必须能通过腾讯广告审核。你绝不编造书中没有的内容。**严格遵守用户给出的字数区间，不允许超出或低于该区间。**当用户要求 JSON 输出时，只输出合法 JSON，不带任何 markdown 代码块包裹，不带任何前后解释文字。'},{role:'user',content:prompt}],temperature:0.85,max_tokens:maxTokens||4096,thinking:{type:'disabled'}})});
 if(!response.ok){var err=await response.json().catch(function(){return{};});throw new Error((err.error&&err.error.message)||'API请求失败('+response.status+')');}
-var data=await response.json();return data.choices[0].message.content.trim();
+var data=await response.json();
+var choice=data&&data.choices&&data.choices[0];
+var content=choice&&choice.message&&choice.message.content?String(choice.message.content).trim():'';
+if(!content){throw new Error(choice&&choice.finish_reason==='length'?'AI 输出被截断（token 不足），请重试或缩短时长':'AI 返回内容为空，请重试');}
+return content;
 }
 
 // 解析 LLM 返回的 JSON（带容错：去除 ```json 包裹/末尾 ```）
