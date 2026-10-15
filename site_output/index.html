@@ -3044,6 +3044,16 @@ function doCopyText(btn,b64text){
 // /api/zhipu/search               →  转发到智谱搜索
 // 2026-06-29: model 字段不指定，后端强制改写为 deepseek-v4-flash（前端无 model 依赖）
 var ISBN_API={baseUrl:'/api/deepseek',model:undefined};
+// ISBN 多源代理：CF 边缘回源国内库偶发超时，若本次失败且含 timeout 源则自动重试 1 次
+async function fetchIsbnLookup(isbn){
+  var r=await fetch('/api/isbn/lookup?isbn='+isbn);
+  if(!r.ok) return r;
+  var j=await r.clone().json().catch(function(){return null;});
+  if(j && !j.ok && (j.attempted||[]).some(function(a){return a.reason==='timeout';})){
+    try{ var r2=await fetch('/api/isbn/lookup?isbn='+isbn); if(r2.ok) return r2; }catch(e){}
+  }
+  return r;
+}
 var ZHIPU_SEARCH={apiUrl:'/api/zhipu/search'};
 
 // 联网搜索图书信息
@@ -3486,7 +3496,7 @@ async function autoLookupISBN(){
   var proxyAttempted = null;
   try{
     status.innerHTML='<span style="color:#8b949e">🔍 正在查询多源图书数据库（ISBN国内库 / 豆瓣 / 当当 / Google Books）...</span>';
-    var respPxy=await fetch('/api/isbn/lookup?isbn='+isbn);
+    var respPxy=await fetchIsbnLookup(isbn);
     if(respPxy.ok){
       var dPxy=await respPxy.json();
       // 即使本次未命中，也保存 attempted 便于失败提示精确展示
@@ -4461,7 +4471,7 @@ async function _adAutoLookupImpl(){
   adBookInfo=null;
   // ① 优先：CF Function 多源代理（解决 isbn.work appKey 限流问题）
   try{
-    var rPxy=await fetch('/api/isbn/lookup?isbn='+isbn);
+    var rPxy=await fetchIsbnLookup(isbn);
     if(rPxy.ok){
       var dPx=await rPxy.json();
       if(dPx && dPx.ok && dPx.title){
