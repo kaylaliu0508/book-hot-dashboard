@@ -18,7 +18,10 @@ const DEFAULT_ALLOWED_HOSTS = ['book-hot-dashboard.pages.dev'];
 const PREVIEW_HOST_PATTERN = /^[a-z0-9-]+\.book-hot-dashboard\.pages\.dev$/i;
 
 const rateMap = new Map();
-const RATE_LIMIT = 10; // 10 次/分钟/IP（zhipu 单次 ISBN 采集会 8 条并发，10/min 留一定 buffer）
+// 2026-10-15: 10 → 30。单次 ISBN 采集 = 1 次识别 + 8 条主查询 + 最多 8 条降级宽搜 = 17 次，
+// 原 10/min 会让一次正常采集自己撞限流（降级查询/ISBN 识别全部 429，检索结果残缺）；
+// 办公网多人共用出口 IP 时更明显。成本仍由 ZHIPU_DAILY_QUOTA 日熔断兜底。
+const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60 * 1000;
 
 function rateLimited(ip) {

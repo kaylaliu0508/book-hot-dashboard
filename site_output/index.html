@@ -3629,7 +3629,7 @@ async function autoLookupISBN(){
   })();
 }
 async function callApi(msgs,onChunk){
-  var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0}),signal:isbnController.signal});
+  var resp=await fetch(ISBN_API.baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:ISBN_API.model,messages:msgs,stream:true,max_tokens:8192,temperature:0,thinking:{type:'disabled'}}),signal:isbnController.signal});
   if(!resp.ok){var er=await resp.text();throw new Error('API错误 '+resp.status+': '+er.substring(0,200));}
   var reader=resp.body.getReader(),decoder=new TextDecoder(),full='',buf='';
   while(true){var r=await reader.read();if(r.done)break;buf+=decoder.decode(r.value,{stream:true});var lines=buf.split('\n');buf=lines.pop()||'';for(var i=0;i<lines.length;i++){var ln=lines[i].trim();if(!ln||ln==='data: [DONE]')continue;if(!ln.startsWith('data: '))continue;try{var j=JSON.parse(ln.slice(6));var d=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;if(d){full+=d;if(onChunk)onChunk(full,d);}}catch(e){}}}
@@ -3874,6 +3874,7 @@ async function runIsbnCollect(force){
       else ptxt.textContent='正在完善报告...';
       body.innerHTML=all;
     });
+    if(!full||!full.trim()) throw new Error('AI 未返回报告内容（可能是输出被截断或服务繁忙），请稍后点击「重新采集」');
     full=stripEmptyApology(full);
 
     fill.style.width='100%';ptxt.textContent='✅ 采集完成！'+full.length+' 字（已缓存）';

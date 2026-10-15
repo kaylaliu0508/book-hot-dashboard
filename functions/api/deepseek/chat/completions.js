@@ -192,6 +192,13 @@ export async function onRequest(context) {
     payload.model = FLASH_MODEL;
   }
 
+  // 2026-10-15: v4-flash 默认开启思维链，reasoning_tokens 计入 max_tokens，
+  // 会把输出额度吃光（finish_reason=length、content 为空），流式场景则长时间只有推理没有正文，
+  // 表现为口播脚本「返回格式异常」、图书内容提取卡在第3步。调用方未显式指定时统一关闭。
+  if (payload.thinking === undefined) {
+    payload.thinking = { type: 'disabled' };
+  }
+
   const upstreamResp = await fetch(UPSTREAM, {
     method: 'POST',
     headers: {

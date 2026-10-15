@@ -164,7 +164,8 @@ async function callDeepSeek(messages, apiKey) {
       model: "deepseek-v4-flash", // 2026-06-26 优化: 切到 v4-flash，成本降 ~90%（A/B 已验证）
       messages,
       max_tokens: 1500,
-      temperature: 0.7
+      temperature: 0.7,
+      thinking: { type: "disabled" } // v4-flash 默认思维链会吃光 max_tokens，导致回复为空
     })
   });
   if (!resp.ok) {
