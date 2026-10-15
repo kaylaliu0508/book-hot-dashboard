@@ -4439,7 +4439,14 @@ function adCleanName(name,author,publisher){
   return _titleSpaceToComma(c);
 }
 
-async function adAutoLookup(){
+// 去重：onblur 与点击「生成」几乎同时触发时复用同一次识别，避免 runAdGen 读到空书名
+var adLookupPromise=null;
+function adAutoLookup(){
+  if(adLookupPromise) return adLookupPromise;
+  adLookupPromise=_adAutoLookupImpl().finally(function(){adLookupPromise=null;});
+  return adLookupPromise;
+}
+async function _adAutoLookupImpl(){
   var isbn=document.getElementById('adIsbnInput').value.trim().replace(/[-\s]/g,'');
   if(!isbn||!/^\d{10,13}$/.test(isbn))return;
 
@@ -4522,31 +4529,14 @@ async function runAdGen(force){
 
   // 自动识别书名（如未填）
   if(!title){
-    var status=document.getElementById('adLookupStatus');status.style.display='block';
-    status.innerHTML='<span style="color:#8b949e">🔍 正在通过ISBN查询书名...</span>';
-    try{
-      var resp=await fetch('https://data.isbn.work/openApi/getInfoByIsbn?isbn='+isbn+'&appKey=ae1718d4587744b0b79f940fbef69e77');
-      var data=await resp.json();
-      if(data.code===0&&data.data&&data.data.bookName&&!/次数不足|请求过快|api|key/i.test(data.data.bookName)){
-        title=adCleanName(data.data.bookName,data.data.author||'',data.data.press||'');
-        adBookInfo={title:title,authors:data.data.author||'',publisher:data.data.press||'',date:data.data.pressDate||'',source:'ISBN国内数据库 (data.isbn.work)',sourceUrl:'https://data.isbn.work/'};
-        document.getElementById('adBookTitleInput').value=title;
-        status.innerHTML='<div style="color:#3fb950">✅ 已识别图书：<strong>'+title+'</strong></div><div style="font-size:10px;color:#484f58;margin-top:4px">📡 ISBN国内数据库</div>';
-      }
-    }catch(e){}
+    // 复用 adAutoLookup（优先走 /api/isbn/lookup 服务端多源代理）。
+    // 原先这里浏览器直连 data.isbn.work（无 CORS 头，必失败）+ Google Books（国内 429/不可达），
+    // 导致「输完 ISBN 直接点生成」总是提示无法识别。
+    try{ await adAutoLookup(); }catch(e){}
+    title=document.getElementById('adBookTitleInput').value.trim();
+    var status=document.getElementById('adLookupStatus');
     if(!title){
-      try{
-        var resp2=await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn+'&maxResults=1');
-        var data2=await resp2.json();
-        if(data2.totalItems>0){
-          var info=data2.items[0].volumeInfo;
-          title=info.title+(info.subtitle?' '+info.subtitle:'');
-          adBookInfo={title:title,authors:(info.authors||[]).join('/'),publisher:info.publisher||'',date:info.publishedDate||'',source:'Google Books',sourceUrl:'https://books.google.com/books?isbn='+isbn};
-          document.getElementById('adBookTitleInput').value=title;
-        }
-      }catch(e){}
-    }
-    if(!title){
+      status.style.display='block';
       status.innerHTML='<div style="color:#f85149"><strong>❌ 无法识别该ISBN</strong></div><div style="font-size:11px;color:#8b949e;margin-top:4px">请在上方"书名"栏手动填写后重试</div>';
       return;
     }
