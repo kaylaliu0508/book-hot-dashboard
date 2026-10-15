@@ -1174,7 +1174,103 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 9/28 周（最新）=====
+  // ===== 10/13 周（最新）=====
+  '2026-10-13': [
+    {
+      role:'#1 教辅·文化常识 · 重回榜首',
+      roleClass:'potential',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-10-13-image1.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.6-9.6%'},
+        {icon:'🏆', label:'霸榜', val:'21 期在榜 · 8月连霸 #1 后重回', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）',
+      creativeCore:'锁定重视大语文素养的家长 · 文化常识认同感 + 课外积累/考试常识双场景，40 元低客单长线常销；暑期后开学季需求回流，转化较暑期明显走高'
+    },
+    {
+      role:'#2 健康·抗炎饮食 · 稳定长青',
+      roleClass:'basic',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-10-13-image2.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.2-12.3%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'8 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'锁定已建立抗炎认知的人群 · 强化「吃对食物就是低成本养生」，50 元客单适配自用与送长辈双场景；入秋冬补节点可延伸送礼话术'
+    },
+    {
+      role:'#3 健康·抗炎饮食 · 同期新品跟随',
+      roleClass:'basic',
+      title:'抗炎食物清单',
+      isbn:'978-7-5236-2187-5',
+      image:'rank-images/2026-10-13-image3.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-12.3%', cls:'hot'},
+        {icon:'🆕', label:'轨迹', val:'3 期在榜 · 9/28 曾登顶 #1'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'与 #2 同赛道打法互补 · 主打「照着吃」的清单式方案（一日三餐搭配 + 常见食材替换），40 元低客单低决策门槛，适合做引流款'
+    }
+  ],
+  // ===== 10/8 周 =====
+  '2026-10-08': [
+    {
+      role:'#1 教辅·文化常识 · 开学季回流登顶',
+      roleClass:'potential',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-10-08-image1.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.7-9.8%'},
+        {icon:'🏆', label:'霸榜', val:'20 期在榜 · 本期重回 #1', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）',
+      creativeCore:'锁定重视大语文素养的家长 · 开学后课内外积累需求集中释放，日销冲到 30-40W 为近期高位，40 元低客单长线常销'
+    },
+    {
+      role:'#2 健康·抗炎饮食 · 稳定长青',
+      roleClass:'basic',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-10-08-image2.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.8%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'7 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'锁定已建立抗炎认知的人群 · 强化「吃对食物就是低成本养生」，50 元客单适配自用与送长辈双场景'
+    },
+    {
+      role:'#3 健康·抗炎饮食 · 同期新品跟随',
+      roleClass:'basic',
+      title:'抗炎食物清单',
+      isbn:'978-7-5236-2187-5',
+      image:'rank-images/2026-10-08-image3.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.8-12.3%', cls:'hot'},
+        {icon:'🆕', label:'轨迹', val:'2 期在榜 · 9/28 曾登顶 #1'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'与 #2 同赛道打法互补 · 主打「照着吃」的清单式方案，转化 10.8-12.3% 为三书中最高，40 元低客单适合做引流款'
+    }
+  ],
+  // ===== 9/28 周 =====
   '2026-09-28': [
     {
       role:'#1 健康·抗炎饮食 · 新晋登顶',
@@ -1812,7 +1908,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-09-28'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-10-13'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
