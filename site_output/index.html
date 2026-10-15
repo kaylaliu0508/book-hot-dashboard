@@ -3298,15 +3298,7 @@ async function autoLookupISBN(){
   status.style.display='block';
   status.innerHTML='<span style="color:#8b949e">🔍 正在识别ISBN...</span>';
   isbnBookInfo=null;
-  // 🆕 主+副标题型书名展示美化：上游数据源（data.isbn.work / 当当列表）会把书名里的
-  // 中文逗号/冒号转成空格，这里在书名内部仅剩 1 个空格、且空格两侧均为中文时还原中文逗号。
-  // 例：「我是中国人 所以我知道」→「我是中国人，所以我知道」
-  function _titleSpaceToComma(s){
-    if(!s) return s;
-    var spaces=(s.match(/[\s\u3000]/g)||[]).length;
-    if(spaces!==1) return s;
-    return s.replace(/([\u4e00-\u9fa5])[\s\u3000]([\u4e00-\u9fa5])/, '$1，$2');
-  }
+  // _titleSpaceToComma 已提升为顶层函数（见 adCleanName 上方），p4/p6 共用
   function _cleanName(name,author,publisher){
     if(!name) return '';
     // 🆕 版本/装帧/赠品/营销前缀清洗（前置步骤，最高优先级）
@@ -4434,6 +4426,18 @@ isbnToast('📝 示例已填入');
 // 复用：ISBN_API / isbnBookInfo / 共享识别逻辑；输出严格JSON后渲染卡片
 var adBookInfo=null;
 var adController=null;
+
+// 主+副标题型书名展示美化：上游数据源（data.isbn.work / 当当列表）会把书名里的
+// 中文逗号/冒号转成空格，这里在书名内部仅剩 1 个空格、且空格两侧均为中文时还原中文逗号。
+// 例：「我是中国人 所以我知道」→「我是中国人，所以我知道」
+// ⚠️ 必须是顶层函数：原先嵌套在 autoLookupISBN 内，adCleanName 调用时抛 ReferenceError，
+//    被 adAutoLookup 的 try/catch 吞掉 → 图片文案生成 ISBN 识别必失败。
+function _titleSpaceToComma(s){
+  if(!s) return s;
+  var spaces=(s.match(/[\s\u3000]/g)||[]).length;
+  if(spaces!==1) return s;
+  return s.replace(/([\u4e00-\u9fa5])[\s\u3000]([\u4e00-\u9fa5])/, '$1，$2');
+}
 
 function adCleanName(name,author,publisher){
   if(!name) return '';
