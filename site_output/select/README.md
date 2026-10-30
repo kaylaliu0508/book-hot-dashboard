@@ -10,7 +10,7 @@ prototype-dist/
 ├── select.html              ← 主入口页面
 ├── select.css               ← 全部样式
 ├── select-app.js            ← 渲染逻辑（约 1200 行）
-├── select-data.js           ← 6 月节点 / 跑量书 / 深度品类 / 月度趋势数据
+├── select-data.js           ← 节点×人群画像 / 跑量书洞察 / 深度品类选品 / 月度趋势 / 周节奏图（当前 11 月）
 ├── rank-data.js             ← 89 周实战榜单数据（5/18 → 2025-05-19）
 ├── recommend-data.js        ← 推荐书单（选品 + 跟品）
 ├── recommend.json           ← 备用 JSON
