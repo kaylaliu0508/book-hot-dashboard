@@ -198,8 +198,8 @@ const MONTHS_DATA = [
   {m:'7月',  total:85, 教辅:60, 童书:16, 健康:10, 社科:14, season:'暑期', focus:'暑期教辅主导：衔接升学+专项提升+多学段细分，童书承接亲子阅读'},
   {m:'8月',  total:63, 教辅:30, 童书:25, 健康:20, 社科:25, season:'暑期收官+开学倒计时', focus:'教辅收官续单+开学抢跑，童书入学准备，健康秋季食补启动'},
   {m:'9月',  total:80, 教辅:40, 童书:15, 健康:30, 社科:15, season:'开学季+秋冬养生季', focus:'教辅开学短爆发 + 健康秋冬养生主线'},
-  {m:'10月', total:65, 教辅:30, 童书:20, 健康:30, 社科:20, season:'国庆长假+重阳', focus:'教辅期中备考 + 健康重阳秋冬进补双主线', current:true},
-  {m:'11月', total:62, 教辅:15, 童书:18, 健康:33, 社科:34, season:'双11/立冬', focus:'社科双11爆发，健康冬补黄金期'},
+  {m:'10月', total:65, 教辅:30, 童书:20, 健康:30, 社科:20, season:'国庆长假+重阳', focus:'教辅期中备考 + 健康重阳秋冬进补双主线'},
+  {m:'11月', total:62, 教辅:25, 童书:20, 健康:30, 社科:25, season:'双11/立冬/小雪', focus:'教辅双11囤货+语文作文/数理化硬提分+寒假预习前置，健康立冬小雪冬补，社科知识付费+企管年末复盘+2027日历送礼，童书早教启蒙识字+精品绘本礼盒', current:true},
   {m:'12月', total:60, 教辅:18, 童书:18, 健康:35, 社科:29, season:'年末/考试', focus:'健康年终送礼，社科年度盘点'}
 ];
 
@@ -1122,8 +1122,200 @@ const WEEK_RHYTHM_OCT = {
   ]
 };
 
+// ===== 11 月节奏图（立冬 + 双11 + 小雪 + 感恩 / 优先级：教辅 P0 25% · 健康 P0 30% · 社科 P1 25% · 童书 P1 20%）=====
+// 设计：双11不喊"全年大促"，落到品质囤书 / 精品绘本礼盒 / 知识礼盒等具体选品；
+//       日历送礼贯穿教辅(古诗词/励志金句日历)·社科(2027精品日历)·童书(儿童日历)；下旬进寒假预习/亲子阅读预热
+const WEEK_RHYTHM_NOV = {
+  weeks: [
+    { key:'W1', summer:'立冬进补 · 双11预热',   festival:'立冬 11/7',    date:'11.1-11.8'   },
+    { key:'W2', summer:'双11品质囤书',           festival:'双11 11/11',   date:'11.9-11.15'  },
+    { key:'W3', summer:'小雪深冬 · 日历送礼',   festival:'小雪 11/22',   date:'11.16-11.23' },
+    { key:'W4', summer:'感恩送礼 · 寒假预热',   festival:'感恩节 11/26', date:'11.24-11.30' }
+  ],
+  rows: [
+    {
+      cat:'教辅', icon:'📖', priority:'P0', colorClass:'wr-cat-color-jiaofu',
+      cells: [
+        {
+          week:'W1', span:2,
+          groups: [
+            {
+              title:'📐 双11硬提分 · 数理化专项',
+              items: [
+                '数理化专项提分 / 全科套装',
+                '真题模考 / 错题归纳本',
+                '工具书 / 字词典'
+              ],
+              pain:'双11趁大促囤整年教辅，硬提分刚需优先'
+            },
+            {
+              title:'✍️ 语文作文 · 长期积累',
+              items: [
+                '同步作文 / 满分范文',
+                '阅读理解 / 课外积累',
+                '字帖练字 / 好词好句'
+              ],
+              pain:'语文靠长期积累，大促是囤作文素材的好窗口'
+            }
+          ],
+          lead:'⏰ 11/1 起双11囤货 · 数理化硬提分 + 语文作文双线'
+        },
+        {
+          week:'W3', span:1,
+          groups: [
+            {
+              title:'📅 古诗词日历 · 励志金句日历',
+              items: [
+                '古诗词日历 / 每日一诗一词',
+                '励志金句 / 中高考倒计时日历'
+              ],
+              pain:'日历兼具实用与仪式感，学生党自用 + 家长送礼双场景'
+            }
+          ],
+          lead:'⏰ 11/16 起铺 · 日历送礼窗口'
+        },
+        {
+          week:'W4', span:1,
+          groups: [
+            {
+              title:'📘 期末复习 + 寒假预习前置',
+              items: [
+                '期末冲刺卷 / 单元测评',
+                '下学期衔接 / 寒假专项训练'
+              ],
+              pain:'12 月底期末 + 寒假预习刚需，家长提前铺品'
+            }
+          ],
+          lead:'📝 11/24 起前置 · 承接期末到寒假'
+        }
+      ]
+    },
+    {
+      cat:'健康', icon:'🌿', priority:'P0', colorClass:'wr-cat-color-jiankang',
+      cells: [
+        {
+          week:'W1', span:1,
+          groups: [
+            {
+              title:'🍲 立冬进补启动',
+              items: [
+                '冬令食补 / 温补汤谱',
+                '膏方养生 / 应季食材',
+                '家常温补 / 汤粥换花样'
+              ],
+              pain:'立冬正式入冬，想开始给全家补一补'
+            }
+          ],
+          lead:'⏰ 立冬 11/7 起铺底款'
+        },
+        {
+          week:'W2', span:1,
+          groups: [
+            {
+              title:'🛒 双11冬补囤货',
+              items: [
+                '养生食疗套装 / 系列组品',
+                '精品健康礼盒'
+              ],
+              pain:'趁双11囤一整季的养生食材与食谱'
+            }
+          ],
+          lead:'⏰ 11/9 双11起量'
+        },
+        {
+          week:'W3', span:1,
+          groups: [
+            {
+              title:'❄️ 小雪深冬调理',
+              items: [
+                '慢病调理 / 血糖血压管理',
+                '长辈食养 / 温和进补'
+              ],
+              pain:'小雪后寒气加重，慢病人群与长辈调理需求集中'
+            }
+          ],
+          lead:'⏰ 小雪 11/22 起势'
+        },
+        {
+          week:'W4', span:1,
+          groups: [
+            {
+              title:'🎁 冬补送礼 + 年货预热',
+              items: [
+                '食养礼盒 / 养生礼盒',
+                '冬令进补好物'
+              ],
+              pain:'冬补送长辈实用有心意，顺势承接年货季'
+            }
+          ],
+          lead:'⏰ 11/24 起 · 承接双12/年货'
+        }
+      ]
+    },
+    {
+      cat:'社科', icon:'🏛', priority:'P1', colorClass:'wr-cat-color-sheke',
+      cells: [
+        {
+          week:'W1', span:1,
+          direction:'💼 双11知识预热 · 职场搞钱',
+          pain:'季度末职场晋升 + 搞钱创富长青诉求，低客单引流',
+          lead:'⏰ 11/1 起铺'
+        },
+        {
+          week:'W2', span:1,
+          direction:'📈 企业管理 · 年末企业复盘',
+          pain:'企管书/管理方法论，年末企业复盘、团队盘点刚需',
+          lead:'⏰ 11/9 双11知识礼盒 + 年度书单'
+        },
+        {
+          week:'W3', span:1,
+          direction:'📅 2027 日历送礼',
+          pain:'故宫/诗词/生肖精品日历，企业团购 + 个人自购，元旦春节送礼预热',
+          lead:'⏰ 11/16 起铺 · 日历送礼主场'
+        },
+        {
+          week:'W4', span:1,
+          direction:'🗓️ 规划新年布局 + 年末盘点',
+          pain:'新年计划/年度规划 + 年度好书盘点/人物传记，感恩送礼',
+          lead:'⏰ 11/24 起 · 年末→新年布局长线'
+        }
+      ]
+    },
+    {
+      cat:'童书', icon:'🧸', priority:'P1', colorClass:'wr-cat-color-tongshu',
+      cells: [
+        {
+          week:'W1', span:1,
+          direction:'🎈 早教启蒙 · 识字认知',
+          pain:'早教启蒙/识字认知低龄刚需，双11前先铺引流款',
+          lead:'⏰ 11/1 起铺品'
+        },
+        {
+          week:'W2', span:1,
+          direction:'📚 精品绘本礼盒爆发',
+          pain:'双11送礼属性拉满，经典套装/科普百科/立体书',
+          lead:'⏰ 11/9 双11当周'
+        },
+        {
+          week:'W3', span:1,
+          direction:'📅 儿童日历 + 识字启蒙延续',
+          pain:'儿童成长日历/习惯养成日历，识字早教持续承接',
+          lead:'⏰ 11/16 起铺'
+        },
+        {
+          week:'W4', span:1,
+          direction:'🧸 寒假亲子阅读预热',
+          pain:'桥梁书/分级阅读，寒假长周期亲子共读提前布局',
+          lead:'⏰ 11/24 起 · 寒假预热'
+        }
+      ]
+    }
+  ]
+};
+
 const WEEK_RHYTHM_MONTHS = [
-  { key:'2026-10', label:'10 月', sublabel:'当期', data: WEEK_RHYTHM_OCT  },
+  { key:'2026-11', label:'11 月', sublabel:'当期', data: WEEK_RHYTHM_NOV  },
+  { key:'2026-10', label:'10 月', sublabel:'往期', data: WEEK_RHYTHM_OCT  },
   { key:'2026-09', label:'9 月',  sublabel:'往期', data: WEEK_RHYTHM_SEP  },
   { key:'2026-08', label:'8 月',  sublabel:'往期', data: WEEK_RHYTHM_AUG  },
   { key:'2026-07', label:'7 月',  sublabel:'往期', data: WEEK_RHYTHM_JULY },
@@ -1138,7 +1330,10 @@ const WEEK_RHYTHM_MONTHS = [
     var now = new Date();
     var m = now.getMonth() + 1; // 1-12
     var d = now.getDate();
-    if (m >= 10 || (m === 9 && d >= 24)) {
+    if (m >= 11 || (m === 10 && d >= 28)) {
+      window.WEEK_RHYTHM = WEEK_RHYTHM_NOV;
+      window.WEEK_RHYTHM_DEFAULT_KEY = '2026-11';
+    } else if (m >= 10 || (m === 9 && d >= 24)) {
       window.WEEK_RHYTHM = WEEK_RHYTHM_OCT;
       window.WEEK_RHYTHM_DEFAULT_KEY = '2026-10';
     } else if (m === 9) {
@@ -1162,8 +1357,8 @@ const WEEK_RHYTHM_MONTHS = [
       window.WEEK_RHYTHM_DEFAULT_KEY = WEEK_RHYTHM_MONTHS[0].key;
     }
   } catch (e) {
-    window.WEEK_RHYTHM = WEEK_RHYTHM_OCT;
-    window.WEEK_RHYTHM_DEFAULT_KEY = '2026-10';
+    window.WEEK_RHYTHM = WEEK_RHYTHM_NOV;
+    window.WEEK_RHYTHM_DEFAULT_KEY = '2026-11';
   }
 })();
 // 暴露注册表 + 兼容 var 引用方式
