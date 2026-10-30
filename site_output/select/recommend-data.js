@@ -1,9 +1,179 @@
-// 推荐书单数据（来自《【腾讯图书】2026预测书单（月维度准入评估）.xlsx》9-10月期 + 8月/7月/6月/Q1/Q2 历史）
+// 推荐书单数据（来自《【腾讯图书】2026预测书单（月维度准入评估）》11月期 (1).xlsx + 9-10月期 + 8月/7月/6月/Q1/Q2 历史）
 // 4 大品类 + ISBN + 推荐投放时间，每个品类内 rank 按月份独立从 1 开始（新月份 prepended）
-// 生成时间: 2026-09-28（补充 9-10月新书 75 本：仅按 ISBN 去重追加，已有书月份/准入状态未改动；新书封面从 xlsx 内嵌 _localImage 提取）
+// 生成时间: 2026-10-30（补充 11月期新书 114 本：仅按 ISBN 去重追加，已有书月份/准入状态未改动；新书封面从 xlsx drawing 锚定图提取）
 
 const RECOMMEND_BOOKS = {
   "童书推荐书单": [
+    // ===== 童书推荐书单 · 11月期新增（23 本，prepended 2026-10-30）=====
+    {
+      "title": "我想去看海",
+      "rank": 1,
+      "recommend_time": "11月",
+      "isbn": "7539135166",
+      "image": "forecast-images/forecast-童书-7539135166.jpg"
+    },
+    {
+      "title": "我会变得更勇敢",
+      "rank": 2,
+      "recommend_time": "11月",
+      "isbn": "9787551434904",
+      "image": "forecast-images/forecast-童书-9787551434904.jpg"
+    },
+    {
+      "title": "冒险家希尔达",
+      "rank": 3,
+      "recommend_time": "11月",
+      "isbn": "9787572163036",
+      "image": "forecast-images/forecast-童书-9787572163036.jpg"
+    },
+    {
+      "title": "查理和巧克力工厂",
+      "rank": 4,
+      "recommend_time": "11月",
+      "isbn": "9787533259617",
+      "image": "forecast-images/forecast-童书-9787533259617.jpg"
+    },
+    {
+      "title": "猫武士",
+      "rank": 5,
+      "recommend_time": "11月",
+      "isbn": "9787541743429",
+      "image": "forecast-images/forecast-童书-9787541743429.jpg"
+    },
+    {
+      "title": "十万个为什么",
+      "rank": 6,
+      "recommend_time": "11月",
+      "isbn": "9787558918193",
+      "image": "forecast-images/forecast-童书-9787558918193.jpg"
+    },
+    {
+      "title": "夏洛的网",
+      "rank": 7,
+      "recommend_time": "11月",
+      "isbn": "7532466094",
+      "image": "forecast-images/forecast-童书-7532466094.jpg"
+    },
+    {
+      "title": "泉州寻宝记",
+      "rank": 8,
+      "recommend_time": "11月",
+      "isbn": "9787521734898",
+      "image": "forecast-images/forecast-童书-9787521734898.jpg"
+    },
+    {
+      "title": "神奇校车小百科",
+      "rank": 9,
+      "recommend_time": "11月",
+      "isbn": "9787558344589",
+      "image": "forecast-images/forecast-童书-9787558344589.jpg"
+    },
+    {
+      "title": "宝葫芦的秘密",
+      "rank": 10,
+      "recommend_time": "11月",
+      "isbn": "9787559827517",
+      "image": "forecast-images/forecast-童书-9787559827517.jpg"
+    },
+    {
+      "title": "心理学启蒙学",
+      "rank": 11,
+      "recommend_time": "11月",
+      "isbn": "7810319655",
+      "image": "forecast-images/forecast-童书-7810319655.jpg"
+    },
+    {
+      "title": "漫画梅拉宾法则",
+      "rank": 12,
+      "recommend_time": "11月",
+      "isbn": "9787558597046",
+      "image": "forecast-images/forecast-童书-9787558597046.jpg"
+    },
+    {
+      "title": "中国儿童百科全书",
+      "rank": 13,
+      "recommend_time": "11月",
+      "isbn": "9787520214070",
+      "image": "forecast-images/forecast-童书-9787520214070.jpg"
+    },
+    {
+      "title": "漫画版推恩令",
+      "rank": 14,
+      "recommend_time": "8月",
+      "isbn": "109787807737278",
+      "image": "forecast-images/forecast-童书-109787807737278.jpg"
+    },
+    {
+      "title": "漫画中华文化1000问",
+      "rank": 15,
+      "recommend_time": "8月",
+      "isbn": "109787553699424",
+      "image": "forecast-images/forecast-童书-109787553699424.jpg"
+    },
+    {
+      "title": "小学生太有意思了 生活中的物理",
+      "rank": 16,
+      "recommend_time": "7月",
+      "isbn": "109787516533994",
+      "image": "forecast-images/forecast-童书-109787516533994.jpg"
+    },
+    {
+      "title": "漫画礼仪知识规矩篇+漫画礼仪知识教养篇+漫画应变思维变通篇+漫画应变思维智囊篇",
+      "rank": 17,
+      "recommend_time": "7月",
+      "isbn": "109787574507975",
+      "image": "forecast-images/forecast-童书-109787574507975.jpg"
+    },
+    {
+      "title": "三国演义绘本",
+      "rank": 18,
+      "recommend_time": "6月",
+      "isbn": "102025112700420",
+      "publisher": "中信出版集团",
+      "image": "forecast-images/forecast-童书-102025112700420.jpg"
+    },
+    {
+      "title": "中国儿童百科全书",
+      "rank": 19,
+      "recommend_time": "6月",
+      "isbn": "109787520211130",
+      "author": "&#10;《中国儿童百科全书》编委会",
+      "publisher": "中国大百科全书出版社",
+      "image": "forecast-images/forecast-童书-109787520211130.jpg"
+    },
+    {
+      "title": "儿童科学大百科",
+      "rank": 20,
+      "recommend_time": "6月",
+      "isbn": "109787545577341",
+      "author": "巨童文化",
+      "publisher": "中国大百科全书出版社",
+      "image": "forecast-images/forecast-童书-109787545577341.jpg"
+    },
+    {
+      "title": "彩虹色的花",
+      "rank": 21,
+      "recommend_time": "6月",
+      "isbn": "109787556834280",
+      "publisher": "&#10;二十一世纪出版社集团",
+      "image": "forecast-images/forecast-童书-109787556834280.jpg"
+    },
+    {
+      "title": "有趣的物理",
+      "rank": 22,
+      "recommend_time": "6月",
+      "isbn": "109787547731710",
+      "publisher": "&#10;北京日报出版社",
+      "image": "forecast-images/forecast-童书-109787547731710.jpg"
+    },
+    {
+      "title": "DK儿童海洋百科全书",
+      "rank": 23,
+      "recommend_time": "6月",
+      "isbn": "109787520200851",
+      "publisher": "中国大百科全书出版社",
+      "image": "forecast-images/forecast-童书-109787520200851.jpg"
+    },
     // ===== 童书推荐书单 · 9-10月新增（14 本，prepended 2026-09-28）=====
     {
       "title": "我在为自己读书",
@@ -726,6 +896,324 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "教辅推荐书单": [
+    // ===== 教辅推荐书单 · 11月期新增（45 本，prepended 2026-10-30）=====
+    {
+      "title": "初中学霸手账",
+      "rank": 1,
+      "recommend_time": "11月",
+      "isbn": "9787570123001",
+      "image": "forecast-images/forecast-教辅-9787570123001.jpg"
+    },
+    {
+      "title": "学之舟小学生知识通",
+      "rank": 2,
+      "recommend_time": "11月",
+      "isbn": "9787533089986",
+      "image": "forecast-images/forecast-教辅-9787533089986.jpg"
+    },
+    {
+      "title": "高中教材随堂提分笔记",
+      "rank": 3,
+      "recommend_time": "11月",
+      "isbn": "9787545434873",
+      "image": "forecast-images/forecast-教辅-9787545434873.jpg"
+    },
+    {
+      "title": "考来考去就这5000英语单词",
+      "rank": 4,
+      "recommend_time": "11月",
+      "isbn": "9787573444264",
+      "image": "forecast-images/forecast-教辅-9787573444264.jpg"
+    },
+    {
+      "title": "零基础英语口语马上说",
+      "rank": 5,
+      "recommend_time": "11月",
+      "isbn": "9787500180869",
+      "image": "forecast-images/forecast-教辅-9787500180869.jpg"
+    },
+    {
+      "title": "高中物化生考点默写小纸条",
+      "rank": 6,
+      "recommend_time": "11月",
+      "isbn": "9787542168634",
+      "image": "forecast-images/forecast-教辅-9787542168634.jpg"
+    },
+    {
+      "title": "阅读答题满分公式",
+      "rank": 7,
+      "recommend_time": "11月",
+      "isbn": "9787576102796",
+      "image": "forecast-images/forecast-教辅-9787576102796.jpg"
+    },
+    {
+      "title": "开口就说地道英语口语",
+      "rank": 8,
+      "recommend_time": "11月",
+      "isbn": "9787572451348",
+      "image": "forecast-images/forecast-教辅-9787572451348.jpg"
+    },
+    {
+      "title": "语文报金奖作文",
+      "rank": 9,
+      "recommend_time": "11月",
+      "isbn": "9787512521100",
+      "image": "forecast-images/forecast-教辅-9787512521100.jpg"
+    },
+    {
+      "title": "思维导图速记初中2500词",
+      "rank": 10,
+      "recommend_time": "11月",
+      "isbn": "9787569959475",
+      "image": "forecast-images/forecast-教辅-9787569959475.jpg"
+    },
+    {
+      "title": "分层练",
+      "rank": 11,
+      "recommend_time": "11月",
+      "isbn": "9787560783451",
+      "image": "forecast-images/forecast-教辅-9787560783451.jpg"
+    },
+    {
+      "title": "语法抢先学",
+      "rank": 12,
+      "recommend_time": "11月",
+      "isbn": "9787807738015",
+      "image": "forecast-images/forecast-教辅-9787807738015.jpg"
+    },
+    {
+      "title": "DK英语10000词",
+      "rank": 13,
+      "recommend_time": "11月",
+      "isbn": "9787500174424",
+      "image": "forecast-images/forecast-教辅-9787500174424.jpg"
+    },
+    {
+      "title": "小学生一句话日记",
+      "rank": 14,
+      "recommend_time": "11月",
+      "isbn": "9787542760210",
+      "image": "forecast-images/forecast-教辅-9787542760210.jpg"
+    },
+    {
+      "title": "读出好英语",
+      "rank": 15,
+      "recommend_time": "11月",
+      "isbn": "9787575513463",
+      "image": "forecast-images/forecast-教辅-9787575513463.jpg"
+    },
+    {
+      "title": "考点笔记一本全",
+      "rank": 16,
+      "recommend_time": "11月",
+      "isbn": "9787569959901",
+      "image": "forecast-images/forecast-教辅-9787569959901.jpg"
+    },
+    {
+      "title": "阅读理解公式+阅读理解真题100篇",
+      "rank": 17,
+      "recommend_time": "11月",
+      "isbn": "9787575900751",
+      "image": "forecast-images/forecast-教辅-9787575900751.jpg"
+    },
+    {
+      "title": "儿童魔法字帖",
+      "rank": 18,
+      "recommend_time": "9月",
+      "isbn": "9787545720976",
+      "image": "forecast-images/forecast-教辅-9787545720976.jpg"
+    },
+    {
+      "title": "趣读大语文",
+      "rank": 19,
+      "recommend_time": "9月",
+      "isbn": "9787575416238",
+      "image": "forecast-images/forecast-教辅-9787575416238.jpg"
+    },
+    {
+      "title": "坐标定位",
+      "rank": 20,
+      "recommend_time": "9月",
+      "isbn": "9787570469093",
+      "image": "forecast-images/forecast-教辅-9787570469093.jpg"
+    },
+    {
+      "title": "英语晨读美文",
+      "rank": 21,
+      "recommend_time": "9月",
+      "isbn": "9787556867981",
+      "image": "forecast-images/forecast-教辅-9787556867981.jpg"
+    },
+    {
+      "title": "自然拼读",
+      "rank": 22,
+      "recommend_time": "9月",
+      "isbn": "9787513199063",
+      "image": "forecast-images/forecast-教辅-9787513199063.jpg"
+    },
+    {
+      "title": "默写小纸条",
+      "rank": 23,
+      "recommend_time": "8月",
+      "isbn": "109787556140077",
+      "image": "forecast-images/forecast-教辅-109787556140077.jpg"
+    },
+    {
+      "title": "趣味诵读识千字",
+      "rank": 24,
+      "recommend_time": "8月",
+      "isbn": "109787511320506",
+      "image": "forecast-images/forecast-教辅-109787511320506.jpg"
+    },
+    {
+      "title": "作文金句归类大全",
+      "rank": 25,
+      "recommend_time": "8月",
+      "isbn": "109787559072382",
+      "image": "forecast-images/forecast-教辅-109787559072382.jpg"
+    },
+    {
+      "title": "课本里的百科全书",
+      "rank": 26,
+      "recommend_time": "8月",
+      "isbn": "1097875526499879",
+      "image": "forecast-images/forecast-教辅-1097875526499879.jpg"
+    },
+    {
+      "title": "在白话里邂逅古诗词",
+      "rank": 27,
+      "recommend_time": "8月",
+      "isbn": "109787512520912",
+      "image": "forecast-images/forecast-教辅-109787512520912.jpg"
+    },
+    {
+      "title": "图解不一样的九九乘除法",
+      "rank": 28,
+      "recommend_time": "8月",
+      "isbn": "109787575511933",
+      "image": "forecast-images/forecast-教辅-109787575511933.jpg"
+    },
+    {
+      "title": "词语积归类大全+作文金句归类大全",
+      "rank": 29,
+      "recommend_time": "8月",
+      "isbn": "109787573440631",
+      "image": "forecast-images/forecast-教辅-109787573440631.jpg"
+    },
+    {
+      "title": "语文导报",
+      "rank": 30,
+      "recommend_time": "8月",
+      "isbn": "109787565662355",
+      "image": "forecast-images/forecast-教辅-109787565662355.jpg"
+    },
+    {
+      "title": "开口就说地道英语口语",
+      "rank": 31,
+      "recommend_time": "8月",
+      "isbn": "109787558277863",
+      "image": "forecast-images/forecast-教辅-109787558277863.jpg"
+    },
+    {
+      "title": "学霸课堂笔记",
+      "rank": 32,
+      "recommend_time": "8月",
+      "isbn": "109787540878474",
+      "image": "forecast-images/forecast-教辅-109787540878474.jpg"
+    },
+    {
+      "title": "漫画初中物理+漫画初中化学",
+      "rank": 33,
+      "recommend_time": "8月",
+      "isbn": "109787575411578",
+      "image": "forecast-images/forecast-教辅-109787575411578.jpg"
+    },
+    {
+      "title": "朝读晚背",
+      "rank": 34,
+      "recommend_time": "8月",
+      "isbn": "109787573438683",
+      "image": "forecast-images/forecast-教辅-109787573438683.jpg"
+    },
+    {
+      "title": "学之舟 小学生知识通",
+      "rank": 35,
+      "recommend_time": "7月",
+      "isbn": "109787576231564",
+      "image": "forecast-images/forecast-教辅-109787576231564.jpg"
+    },
+    {
+      "title": "秒记初中小四门",
+      "rank": 36,
+      "recommend_time": "7月",
+      "isbn": "109787511040657",
+      "image": "forecast-images/forecast-教辅-109787511040657.jpg"
+    },
+    {
+      "title": "妙解数理化",
+      "rank": 37,
+      "recommend_time": "7月",
+      "isbn": "109787572448317",
+      "image": "forecast-images/forecast-教辅-109787572448317.jpg"
+    },
+    {
+      "title": "【读者】每个人的傍晚都住着故乡的晚霞+【读者】人生只是路过 没有不可放下",
+      "rank": 38,
+      "recommend_time": "7月",
+      "isbn": "109787552708486",
+      "image": "forecast-images/forecast-教辅-109787552708486.jpg"
+    },
+    {
+      "title": "暑假计算",
+      "rank": 39,
+      "recommend_time": "7月",
+      "isbn": "109787556891740",
+      "image": "forecast-images/forecast-教辅-109787556891740.jpg"
+    },
+    {
+      "title": "初中名著导读考点精炼",
+      "rank": 40,
+      "recommend_time": "7月",
+      "isbn": "109787574708549",
+      "image": "forecast-images/forecast-教辅-109787574708549.jpg"
+    },
+    {
+      "title": "画图法解应用题",
+      "rank": 41,
+      "recommend_time": "7月",
+      "isbn": "109787548961833",
+      "image": "forecast-images/forecast-教辅-109787548961833.jpg"
+    },
+    {
+      "title": "神奇小纸条课课贴",
+      "rank": 42,
+      "recommend_time": "7月",
+      "isbn": "109787580104069",
+      "image": "forecast-images/forecast-教辅-109787580104069.jpg"
+    },
+    {
+      "title": "这才是我要的大学+这才是我要的专业",
+      "rank": 43,
+      "recommend_time": "6月",
+      "isbn": "101191990663105",
+      "image": "forecast-images/forecast-教辅-101191990663105.jpg"
+    },
+    {
+      "title": "小学同步作文练字贴",
+      "rank": 44,
+      "recommend_time": "6月",
+      "isbn": "109787536843929",
+      "publisher": "陕西人民美术出版社",
+      "image": "forecast-images/forecast-教辅-109787536843929.jpg"
+    },
+    {
+      "title": "新课堂笔记",
+      "rank": 45,
+      "recommend_time": "6月",
+      "isbn": "109787573633507",
+      "publisher": "青岛出版社",
+      "image": "forecast-images/forecast-教辅-109787573633507.jpg"
+    },
     // ===== 教辅推荐书单 · 9-10月新增（7 本，prepended 2026-09-28）=====
     {
       "title": "初中作文高分句1000+例+古文年今用",
@@ -1364,6 +1852,153 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "社科推荐书单": [
+    // ===== 社科推荐书单 · 11月期新增（20 本，prepended 2026-10-30）=====
+    {
+      "title": "势道",
+      "rank": 1,
+      "recommend_time": "Q4",
+      "isbn": "9787558352546",
+      "image": "forecast-images/forecast-社科-9787558352546.jpg"
+    },
+    {
+      "title": "财经",
+      "rank": 2,
+      "recommend_time": "Q4",
+      "isbn": "9787523116845",
+      "image": "forecast-images/forecast-社科-9787523116845.jpg"
+    },
+    {
+      "title": "福运之书",
+      "rank": 3,
+      "recommend_time": "Q4",
+      "isbn": "9787519312008",
+      "image": "forecast-images/forecast-社科-9787519312008.jpg"
+    },
+    {
+      "title": "财神",
+      "rank": 4,
+      "recommend_time": "Q4",
+      "isbn": "9787540275785",
+      "image": "forecast-images/forecast-社科-9787540275785.jpg"
+    },
+    {
+      "title": "2026年初中高中生励志金句日历化茧成蝶",
+      "rank": 5,
+      "recommend_time": "Q4",
+      "isbn": "9787550068537",
+      "image": "forecast-images/forecast-社科-9787550068537.jpg"
+    },
+    {
+      "title": "中国诗历",
+      "rank": 6,
+      "recommend_time": "Q4",
+      "isbn": "9787580900869",
+      "image": "forecast-images/forecast-社科-9787580900869.jpg"
+    },
+    {
+      "title": "诗词日历",
+      "rank": 7,
+      "recommend_time": "Q4",
+      "isbn": "9787208147362",
+      "image": "forecast-images/forecast-社科-9787208147362.jpg"
+    },
+    {
+      "title": "把日子过成诗",
+      "rank": 8,
+      "recommend_time": "Q4",
+      "isbn": "9787559607911",
+      "image": "forecast-images/forecast-社科-9787559607911.jpg"
+    },
+    {
+      "title": "一日一诗",
+      "rank": 9,
+      "recommend_time": "Q4",
+      "isbn": "9787547320549",
+      "image": "forecast-images/forecast-社科-9787547320549.jpg"
+    },
+    {
+      "title": "一句顶万句",
+      "rank": 10,
+      "recommend_time": "Q4",
+      "isbn": "9787508478852",
+      "image": "forecast-images/forecast-社科-9787508478852.jpg"
+    },
+    {
+      "title": "段位",
+      "rank": 11,
+      "recommend_time": "Q4",
+      "isbn": "9787111223894",
+      "image": "forecast-images/forecast-社科-9787111223894.jpg"
+    },
+    {
+      "title": "AI时代白手创富天机",
+      "rank": 12,
+      "recommend_time": "Q4",
+      "isbn": "9787516843468",
+      "image": "forecast-images/forecast-社科-9787516843468.jpg"
+    },
+    {
+      "title": "每日诵读",
+      "rank": 13,
+      "recommend_time": "Q4",
+      "isbn": "9787559012920",
+      "image": "forecast-images/forecast-社科-9787559012920.jpg"
+    },
+    {
+      "title": "天道+天局",
+      "rank": 14,
+      "recommend_time": "Q4",
+      "isbn": "9787512520851",
+      "image": "forecast-images/forecast-社科-9787512520851.jpg"
+    },
+    {
+      "title": "事以密成 让不熟悉的人帮你成事",
+      "rank": 15,
+      "recommend_time": "Q4",
+      "isbn": "9787570645329",
+      "image": "forecast-images/forecast-社科-9787570645329.jpg"
+    },
+    {
+      "title": "上岸",
+      "rank": 16,
+      "recommend_time": "Q4",
+      "isbn": "9787559488879",
+      "image": "forecast-images/forecast-社科-9787559488879.jpg"
+    },
+    {
+      "title": "高手接话+社交高手养成记",
+      "rank": 17,
+      "recommend_time": "8月",
+      "isbn": "109787202174180",
+      "image": "forecast-images/forecast-社科-109787202174180.jpg",
+      "ams_status": "全流量可投，常触发夸大及负面描述，注意素材合规"
+    },
+    {
+      "title": "中小公司股权合伙全案",
+      "rank": 18,
+      "recommend_time": "8月",
+      "isbn": "109787557032449",
+      "image": "forecast-images/forecast-社科-109787557032449.jpg",
+      "ams_status": "全流量可投"
+    },
+    {
+      "title": "从0到1用AI赚钱",
+      "rank": 19,
+      "recommend_time": "7月",
+      "isbn": "109787548049388",
+      "image": "forecast-images/forecast-社科-109787548049388.jpg",
+      "ams_status": "不得宣传推广推广境外大模型"
+    },
+    {
+      "title": "deepseek+AI炒股一本通",
+      "rank": 20,
+      "recommend_time": "Q1",
+      "isbn": "109787576352795",
+      "author": "恒盛杰资讯",
+      "publisher": "北京理工大学出版社",
+      "image": "forecast-images/forecast-社科-109787576352795.jpg",
+      "ams_status": "全流量可投，DeepSeek需提黑词加白"
+    },
     // ===== 社科推荐书单 · 9-10月新增（5 本，prepended 2026-09-28）=====
     {
       "title": "教会你800个思维",
@@ -2223,6 +2858,196 @@ const RECOMMEND_BOOKS = {
     }
   ],
   "健康推荐书单": [
+    // ===== 健康推荐书单 · 11月期新增（26 本，prepended 2026-10-30）=====
+    {
+      "title": "本草纲目百病食疗1000问",
+      "rank": 1,
+      "recommend_time": "Q4",
+      "isbn": "9787523236178",
+      "image": "forecast-images/forecast-健康-9787523236178.jpg"
+    },
+    {
+      "title": "百病不生",
+      "rank": 2,
+      "recommend_time": "Q4",
+      "isbn": "9787520223812",
+      "image": "forecast-images/forecast-健康-9787520223812.jpg"
+    },
+    {
+      "title": "小病小痛全扫光",
+      "rank": 3,
+      "recommend_time": "Q4",
+      "isbn": "9787538891300",
+      "image": "forecast-images/forecast-健康-9787538891300.jpg"
+    },
+    {
+      "title": "古人养生强身功法",
+      "rank": 4,
+      "recommend_time": "Q4",
+      "isbn": "9787516931646",
+      "image": "forecast-images/forecast-健康-9787516931646.jpg"
+    },
+    {
+      "title": "民间祖传秘方",
+      "rank": 5,
+      "recommend_time": "Q4",
+      "isbn": "9787539085746",
+      "image": "forecast-images/forecast-健康-9787539085746.jpg"
+    },
+    {
+      "title": "黄帝内经十二经脉养生法",
+      "rank": 6,
+      "recommend_time": "Q4",
+      "isbn": "9787229019358",
+      "image": "forecast-images/forecast-健康-9787229019358.jpg"
+    },
+    {
+      "title": "零失败烤箱菜谱",
+      "rank": 7,
+      "recommend_time": "Q4",
+      "isbn": "9787571314859",
+      "image": "forecast-images/forecast-健康-9787571314859.jpg"
+    },
+    {
+      "title": "清血管降三高",
+      "rank": 8,
+      "recommend_time": "Q4",
+      "isbn": "9787571310189",
+      "image": "forecast-images/forecast-健康-9787571310189.jpg"
+    },
+    {
+      "title": "漫画中医",
+      "rank": 9,
+      "recommend_time": "Q4",
+      "isbn": "9787509178263",
+      "image": "forecast-images/forecast-健康-9787509178263.jpg"
+    },
+    {
+      "title": "300种舌象图谱",
+      "rank": 10,
+      "recommend_time": "Q4",
+      "isbn": "9787571350000",
+      "image": "forecast-images/forecast-健康-9787571350000.jpg"
+    },
+    {
+      "title": "惊人的蔬菜汤",
+      "rank": 11,
+      "recommend_time": "Q4",
+      "isbn": "9787557699529",
+      "image": "forecast-images/forecast-健康-9787557699529.jpg"
+    },
+    {
+      "title": "修复肠漏",
+      "rank": 12,
+      "recommend_time": "Q4",
+      "isbn": "9787523536117",
+      "image": "forecast-images/forecast-健康-9787523536117.jpg"
+    },
+    {
+      "title": "炙热的你",
+      "rank": 13,
+      "recommend_time": "Q4",
+      "isbn": "9787571429652",
+      "image": "forecast-images/forecast-健康-9787571429652.jpg"
+    },
+    {
+      "title": "拍拍健康来",
+      "rank": 14,
+      "recommend_time": "Q4",
+      "isbn": "9787572527395",
+      "image": "forecast-images/forecast-健康-9787572527395.jpg"
+    },
+    {
+      "title": "中国人的血脂管理指南",
+      "rank": 15,
+      "recommend_time": "Q4",
+      "isbn": "9787574233317",
+      "image": "forecast-images/forecast-健康-9787574233317.jpg"
+    },
+    {
+      "title": "抗炎生活",
+      "rank": 16,
+      "recommend_time": "Q4",
+      "isbn": "9787518463664",
+      "image": "forecast-images/forecast-健康-9787518463664.jpg"
+    },
+    {
+      "title": "小儿推拿技法图谱",
+      "rank": 17,
+      "recommend_time": "Q4",
+      "isbn": "9787553791258",
+      "image": "forecast-images/forecast-健康-9787553791258.jpg"
+    },
+    {
+      "title": "你怎么过今天",
+      "rank": 18,
+      "recommend_time": "Q4",
+      "isbn": "9787559695178",
+      "image": "forecast-images/forecast-健康-9787559695178.jpg"
+    },
+    {
+      "title": "预防衰老   从50岁开始",
+      "rank": 19,
+      "recommend_time": "Q4",
+      "isbn": "9787520737319",
+      "image": "forecast-images/forecast-健康-9787520737319.jpg"
+    },
+    {
+      "title": "野外认采草药彩色图鉴",
+      "rank": 20,
+      "recommend_time": "Q4",
+      "isbn": "9787557890469",
+      "image": "forecast-images/forecast-健康-9787557890469.jpg"
+    },
+    {
+      "title": "豆浆米糊果蔬汁",
+      "rank": 21,
+      "recommend_time": "Q4",
+      "isbn": "9787514626346",
+      "image": "forecast-images/forecast-健康-9787514626346.jpg"
+    },
+    {
+      "title": "救命食谱",
+      "rank": 22,
+      "recommend_time": "Q4",
+      "isbn": "9787121371516",
+      "image": "forecast-images/forecast-健康-9787121371516.jpg"
+    },
+    {
+      "title": "一看就会的百姓家常菜",
+      "rank": 23,
+      "recommend_time": "10月",
+      "isbn": "109787560395630",
+      "publisher": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持",
+      "image": "forecast-images/forecast-健康-109787560395630.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若素材涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "低碳水",
+      "rank": 24,
+      "recommend_time": "8月",
+      "isbn": "109787571445010",
+      "image": "forecast-images/forecast-健康-109787571445010.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
+    {
+      "title": "养生一碗汤",
+      "rank": 25,
+      "recommend_time": "7月",
+      "isbn": "109787539062754",
+      "image": "forecast-images/forecast-健康-109787539062754.jpg",
+      "ams_status": "限投搜狗"
+    },
+    {
+      "title": "中老年人必知的365个养生法",
+      "rank": 26,
+      "recommend_time": "Q2",
+      "isbn": "109787122250087",
+      "author": "李柏",
+      "publisher": "化学工业出版社",
+      "image": "forecast-images/forecast-健康-109787122250087.jpg",
+      "ams_status": "普通书籍全流量可投，仅封面初审通过；若内容涉疾病治疗，仍不予支持"
+    },
     // ===== 健康推荐书单 · 9-10月新增（49 本，prepended 2026-09-28）=====
     {
       "title": "土菜方",
