@@ -1270,7 +1270,7 @@ function renderDeepCats() {
     const c = d.cat || '童书';
     (groups[c] = groups[c] || []).push(d);
   });
-  const order = ['教辅','童书','健康','社科'];
+  const order = ['社科','童书','教辅','健康'];
   const catIcons = {童书:'🧸', 教辅:'📖', 健康:'🌿', 社科:'🏛'};
   const catColors = {童书:'#f59e0b', 教辅:'#ef4444', 健康:'#10b981', 社科:'#8b5cf6'};
   const cardHtml = d => `
