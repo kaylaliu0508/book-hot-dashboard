@@ -1174,7 +1174,103 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 10/13 周（最新）=====
+  // ===== 10/26 周（最新）=====
+  '2026-10-26': [
+    {
+      role:'#1 教辅·文化常识 · 重回榜首但转化走弱',
+      roleClass:'potential',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-10-26-image1.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'4.7-5.7%'},
+        {icon:'🏆', label:'霸榜', val:'23 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）',
+      creativeCore:'⚠️ 本期虽重回 #1，但转化从上期 6.6-7.8% 掉到 4.7-5.7%（近三月最低），量在、效率在退——是素材疲劳或人群泛化的典型信号。建议换素材角度、收紧人群包，别只看着榜首继续加投'
+    },
+    {
+      role:'#2 健康·抗炎饮食 · 稳定长青',
+      roleClass:'basic',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-10-26-image2.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.3%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'10 期在榜 · 上期刚登顶 #1', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'转化 9.8-10.3% 连续多期稳在 10% 附近，是本榜效率最稳的一本。上期登顶 #1、本期小幅回落 #2 属正常位次波动；「吃对食物就是低成本养生」，50 元客单自用与送长辈双场景'
+    },
+    {
+      role:'#3 健康·中医养生 · 持续爬升至新高',
+      roleClass:'potential',
+      title:'本草入膳',
+      isbn:'9787573628725',
+      image:'rank-images/2026-10-26-image3.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'6.5-10.3%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'4 期在榜 · #10→#7→#7→#3', cls:'hot'}
+      ],
+      persona:'关注食疗调理、厨房养生的中青年与中老年',
+      creativeCore:'四期位次单调爬升（#10→#7→#7→#3），是本期最值得跟的上升品种。「把药材放进一日三餐」的低门槛食疗切入点，49-69 元客单介于引流与利润之间；与 #2 抗炎饮食同属健康赛道但打法互补（吃对 vs 吃补）'
+    }
+  ],
+  // ===== 10/19 周 =====
+  '2026-10-19': [
+    {
+      role:'#1 健康·抗炎饮食 · 登顶榜首',
+      roleClass:'potential',
+      title:'抗炎饮食',
+      isbn:'978-7-5687-2193-6',
+      image:'rank-images/2026-10-19-image2.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.9-10.3%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'9 期在榜 · 本期首次登顶 #1', cls:'hot'}
+      ],
+      persona:'25-45 岁关注抗炎抗衰、换季养生的中青年',
+      creativeCore:'从 8/24 的 #14 一路爬到本期 #1，用时 9 期，是健康赛道最稳定的主力款。转化稳在 9-10%，入秋冬进补节点可叠加「送长辈」话术放大 50 元客单'
+    },
+    {
+      role:'#2 健康·中医养生 · 高客单冲上第二',
+      roleClass:'potential',
+      title:'漫画讲透易经养生+中医养生1000问',
+      isbn:'978-7-5236-2313-8',
+      image:'rank-images/2026-10-19-image8.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'7.8-8.9%'},
+        {icon:'💰', label:'客单', val:'¥99', cls:'hot'}
+      ],
+      persona:'对中医养生、易经国学感兴趣的中老年与中年自学者',
+      creativeCore:'11 期在榜的老品，本期冲到 #2 为历史最高（此前多在 #4-#8）。99 元高客单仍能进 Top2，说明「漫画讲透 + 1000 问」的成体系内容对养生人群有强说服力；下期已回落 #8，属脉冲式爆发'
+    },
+    {
+      role:'#3 教辅·文化常识 · 位次下探',
+      roleClass:'basic',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-10-19-image1.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'6.6-7.8%'},
+        {icon:'🏆', label:'霸榜', val:'22 期在榜 · 前两期连霸 #1 后回落 #3'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）',
+      creativeCore:'开学季红利退潮，位次从 #1 滑到 #3、转化同步从 8.6-9.6% 降至 6.6-7.8%，量级（10-20W）仍稳但效率连续两期走低，需警惕继续下探'
+    }
+  ],
+  // ===== 10/13 周 =====
   '2026-10-13': [
     {
       role:'#1 教辅·文化常识 · 重回榜首',
@@ -1908,7 +2004,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-10-13'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-10-26'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
