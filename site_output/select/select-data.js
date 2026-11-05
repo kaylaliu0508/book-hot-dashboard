@@ -1371,7 +1371,52 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 10/26 周（最新）=====
+  // ===== 11/2 周（最新）=====
+  '2026-11-02': [
+    {
+      role:'#1 健康·中医养生 · 新晋登顶',
+      roleClass:'potential',
+      title:'中华药膳',
+      isbn:'9787522931425',
+      image:'rank-images/2026-11-02-image1.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.2-11.2%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'2 期在榜 · 上期 #4 → 本期 #1', cls:'hot'}
+      ],
+      persona:'30-55 岁关注节气食养、中医调理与家常滋补的人群'
+    },
+    {
+      role:'#2 教辅·文化常识 · 超长青基本盘回落',
+      roleClass:'basic',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-11-02-image2.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'5.3-6.3%'},
+        {icon:'🏆', label:'霸榜', val:'24 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）'
+    },
+    {
+      role:'#3 健康·中医养生 · 跃升劲品（本期转化最高）',
+      roleClass:'potential',
+      title:'回春饮食',
+      isbn:'9787518085606',
+      image:'rank-images/2026-11-02-image3.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'11.2-13.5%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'2 期在榜 · 上期 #10 → 本期 #3', cls:'hot'}
+      ],
+      persona:'关注食疗调理、跟着经典学饮食养生的中青年与中老年'
+    }
+  ],
+  // ===== 10/26 周 =====
   '2026-10-26': [
     {
       role:'#1 教辅·文化常识 · 重回榜首但转化走弱',
@@ -2201,7 +2246,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-10-26'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-11-02'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
