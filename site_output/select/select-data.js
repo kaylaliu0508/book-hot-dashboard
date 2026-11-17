@@ -1371,7 +1371,97 @@ var WEEK_RHYTHM = window.WEEK_RHYTHM;
 // 渲染顺序：封面 → 数据条 → 目标人群 → 创意核心（合规警示语紧随其后）
 // key = ISO 日期；前端按 currentWeekIndex 取 WEEK_RANK_LIST[idx].iso 自动匹配
 const HOT_BOOK_BREAKDOWN_BY_WEEK = {
-  // ===== 11/2 周（最新）=====
+  // ===== 11/17 周（最新）=====
+  '2026-11-17': [
+    {
+      role:'#1 健康·中医养生 · 爆发登顶（本期日销跳量级）',
+      roleClass:'hot',
+      title:'中华药膳',
+      isbn:'9787515229904',
+      image:'rank-images/2026-11-17-image1.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'80-100W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'11.5-12.3%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'换ISBN版位后 2 期在榜 · #4 → #1', cls:'hot'}
+      ],
+      persona:'30-55 岁关注节气食养、中医调理与家常滋补的人群'
+    },
+    {
+      role:'#2 教辅·文化常识 · 超长青基本盘',
+      roleClass:'basic',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-11-17-image2.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'6.7-8.7%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'26 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）'
+    },
+    {
+      role:'#3 童书·科普百科 · 稳步上升',
+      roleClass:'potential',
+      title:'漫画物理化学1000问+漫画百科常识1000问',
+      isbn:'9787570551200',
+      image:'rank-images/2026-11-17-image3.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.5-12.3%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'3 期在榜 · #6 → #2 → #3', cls:'hot'}
+      ],
+      persona:'小学高年级至初中生家长（想用漫画轻松补物化与百科常识）'
+    }
+  ],
+  // ===== 11/9 周 =====
+  '2026-11-09': [
+    {
+      role:'#1 健康·中医养生 · 连庄榜首',
+      roleClass:'basic',
+      title:'【中华药膳】正版中医养生食疗书籍 四季养生食谱配方大全',
+      isbn:'9787522931425',
+      image:'rank-images/2026-11-09-image23.jpg',
+      cat:'健康',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'30-40W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'9.8-10.3%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'旧 ISBN 版位 3 期 #4 → #1 → #1', cls:'hot'}
+      ],
+      persona:'30-55 岁关注节气食养、中医调理与家常滋补的人群'
+    },
+    {
+      role:'#2 童书·科普百科 · 跃升',
+      roleClass:'potential',
+      title:'漫画物理化学1000问+漫画百科常识1000问',
+      isbn:'9787570551200',
+      image:'rank-images/2026-11-09-image3.jpg',
+      cat:'童书',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'10.3-12.3%', cls:'hot'},
+        {icon:'📈', label:'轨迹', val:'3 期在榜 · #6 → #2 → #3', cls:'hot'}
+      ],
+      persona:'小学高年级至初中生家长（想用漫画轻松补物化与百科常识）'
+    },
+    {
+      role:'#3 教辅·文化常识 · 超长青基本盘',
+      roleClass:'basic',
+      title:'我是中国人 所以我知道',
+      isbn:'9787510699450',
+      image:'rank-images/2026-11-09-image2.jpg',
+      cat:'教辅',
+      stats:[
+        {icon:'📊', label:'日销售额', val:'10-20W', cls:'hot'},
+        {icon:'🎯', label:'转化', val:'8.4-9.4%', cls:'hot'},
+        {icon:'🏆', label:'霸榜', val:'26 期在榜 · 长期 Top3', cls:'hot'}
+      ],
+      persona:'中小学生家长（想补大语文与文化常识积累）'
+    }
+  ],
+  // ===== 11/2 周 =====
   '2026-11-02': [
     {
       role:'#1 健康·中医养生 · 新晋登顶',
@@ -2246,7 +2336,7 @@ const HOT_BOOK_BREAKDOWN_BY_WEEK = {
 };
 
 // 兼容旧引用（默认指向最新一周）
-const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-11-02'];
+const HOT_BOOK_BREAKDOWN = HOT_BOOK_BREAKDOWN_BY_WEEK['2026-11-17'];
 
 // ==================== 4 大品类细分类目 ====================
 const SUBCAT_DETAIL = {
